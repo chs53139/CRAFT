@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="800" y2="600" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#141416"/>
+      <stop offset="0.5" stop-color="#0a0a0b"/>
+      <stop offset="1" stop-color="#1a1510"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="400" y1="120" x2="400" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#c9a962" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#c9a962" stop-opacity="0.05"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="translate(400 280) scale(220 180)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#c9a962" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#c9a962" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <rect width="800" height="600" fill="url(#glow)"/>
+  <path d="M320 140h160l-24 200c-8 68-48 120-56 120s-48-52-56-120L320 140z" fill="url(#gold)" stroke="#c9a962" stroke-opacity="0.25" stroke-width="2"/>
+  <ellipse cx="400" cy="460" rx="72" ry="10" fill="#c9a962" fill-opacity="0.12"/>
+  <text x="400" y="540" text-anchor="middle" fill="#8a7340" font-family="Georgia, serif" font-size="22" letter-spacing="8">CRAFT</text>
+</svg>

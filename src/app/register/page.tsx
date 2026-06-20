@@ -26,7 +26,7 @@ export default function RegisterPage() {
       password,
       options: {
         data: { display_name: name.trim() || null },
-        emailRedirectTo: `${window.location.origin}/auth/callback?next=/bar`,
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     });
 

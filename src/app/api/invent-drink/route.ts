@@ -1,8 +1,10 @@
 import {
   findExistingCocktail,
   findCocktailVariation,
+  generateMocktailOriginal,
   generateOriginalCocktail,
 } from "@/lib/mixologist/engine";
+import { getIngredientById } from "@/lib/cocktail-matching";
 import { InventDrinkResponse } from "@/lib/mixologist/types";
 
 export const runtime = "nodejs";
@@ -54,12 +56,19 @@ export async function POST(request: Request) {
     } satisfies InventDrinkResponse);
   }
 
-  const invention = generateOriginalCocktail(uniqueIds);
+  const invention =
+    generateOriginalCocktail(uniqueIds) ??
+    generateMocktailOriginal(uniqueIds);
+
   if (!invention) {
+    const hasSpirits = uniqueIds.some(
+      (id) => getIngredientById(id)?.category === "spirit"
+    );
     return Response.json(
       {
-        error:
-          "Could not build a balanced drink from these ingredients. Try adding a spirit, citrus, or sweetener.",
+        error: hasSpirits
+          ? "Could not build a balanced drink from these ingredients. Try adding citrus or a sweetener."
+          : "Could not build a balanced zero-proof drink. Try adding juice, syrup, or a mixer.",
       } satisfies InventDrinkResponse,
       { status: 422 }
     );

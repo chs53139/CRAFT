@@ -21,7 +21,6 @@ import {
   searchCatalogue,
 } from "@/lib/cocktail-discovery";
 import { cocktailCount, isPourable, matchCocktails, matchSingleCocktail, mocktailCount } from "@/lib/cocktail-matching";
-import { filterMatchesByDrinkType } from "@/lib/drink-type";
 import { CocktailCollection } from "@/lib/types";
 import { useMyBar } from "@/hooks/use-my-bar";
 

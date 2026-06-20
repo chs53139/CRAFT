@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { BarHealthCard } from "@/components/BarHealthCard";
 import { BarScan } from "@/components/BarScan";
 import { BarStarterKits } from "@/components/BarStarterKits";
 import { BestNextBuy } from "@/components/BestNextBuy";
@@ -12,13 +13,13 @@ import { BarPageSkeleton } from "@/components/LoadingState";
 import { MyBarInventory } from "@/components/MyBarInventory";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { SearchField } from "@/components/SearchField";
+import { buildBarIntelligence } from "@/lib/bar-intelligence";
 import {
-  getBestNextIngredient,
   getIngredientsByIds,
   ingredients,
 } from "@/lib/cocktail-matching";
 import { getShopCategory, SHOP_CATEGORIES, ShopCategory } from "@/lib/ingredient-categories";
-import { useMyBar } from "@/hooks/use-my-bar";
+import { useFavorites, useMyBar, useRecentCocktails } from "@/hooks/use-my-bar";
 import { useCocktailMatches } from "@/hooks/use-cocktail-matches";
 
 export default function BarPage() {
@@ -33,6 +34,8 @@ export default function BarPage() {
     clearError,
     isAuthenticated,
   } = useMyBar();
+  const { favoriteIds } = useFavorites();
+  const { recentIds } = useRecentCocktails();
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState<ShopCategory | "all">("all");
   const [scanOpen, setScanOpen] = useState(false);
@@ -56,9 +59,15 @@ export default function BarPage() {
       });
   }, [search, activeCategory, barIds]);
 
-  const recommendation = useMemo(
-    () => (barIds.length > 0 ? getBestNextIngredient(barIds) : null),
-    [barIds]
+  const intelligence = useMemo(
+    () =>
+      buildBarIntelligence({
+        barIds,
+        favoriteIds,
+        recentIds,
+        matches,
+      }),
+    [barIds, favoriteIds, recentIds, matches]
   );
 
   if (!loaded) {
@@ -136,6 +145,12 @@ export default function BarPage() {
         <MyBarInventory ingredients={barIngredients} onRemove={toggleIngredient} />
       </div>
 
+      {intelligence.health && barIds.length > 0 && (
+        <div className="mt-8">
+          <BarHealthCard report={intelligence.health} />
+        </div>
+      )}
+
       {barIds.length === 0 ? (
         <div className="mt-4 space-y-6">
           <BarStarterKits barIds={barIds} onApply={addIngredients} />
@@ -172,9 +187,9 @@ export default function BarPage() {
         </>
       )}
 
-      {recommendation && barIds.length > 0 && (
+      {intelligence.bestUnlock && barIds.length > 0 && (
         <div className="mt-10">
-          <BestNextBuy recommendation={recommendation} />
+          <BestNextBuy recommendation={intelligence.bestUnlock} />
         </div>
       )}
 

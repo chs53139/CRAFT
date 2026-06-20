@@ -46,6 +46,7 @@ const CATEGORY_RANGE: Record<
   mixer: { min: 3, max: 8 },
   garnish: { min: 2, max: 6 },
   other: { min: 6, max: 14 },
+  "na-spirit": { min: 18, max: 36 },
 };
 
 function hashId(id: string): number {

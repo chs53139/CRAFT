@@ -555,7 +555,6 @@ export function generateMocktailOriginal(selectedIds: string[]): MixologistInven
   const name = best.style;
   const ingredients = toMixologistIngredients(best.items);
   const ids = ingredients.map((i) => i.ingredientId);
-  const amounts = ingredients.map((i) => i.amount);
   const confidence = Math.min(86, 55 + Math.round(best.score * 0.32));
 
   return {

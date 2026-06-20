@@ -11,6 +11,9 @@ const SOURCE_LABELS = {
 type Props = {
   invention: MixologistInvention;
   onTryAgain?: () => void;
+  onSave?: () => void;
+  saved?: boolean;
+  canSave?: boolean;
 };
 
 function Metric({ label, value }: { label: string; value: string }) {
@@ -22,7 +25,7 @@ function Metric({ label, value }: { label: string; value: string }) {
   );
 }
 
-export function MixologistResult({ invention, onTryAgain }: Props) {
+export function MixologistResult({ invention, onTryAgain, onSave, saved, canSave }: Props) {
   const sourceLabel = SOURCE_LABELS[invention.source];
 
   return (
@@ -88,6 +91,16 @@ export function MixologistResult({ invention, onTryAgain }: Props) {
       </section>
 
       <div className="mt-6 flex flex-col gap-3">
+        {canSave && onSave && (
+          <button
+            type="button"
+            onClick={onSave}
+            disabled={saved}
+            className="btn-primary w-full"
+          >
+            {saved ? "Saved to your originals" : "Save to CRAFT Originals"}
+          </button>
+        )}
         {invention.cocktailId && (
           <Link href={`/cocktails/${invention.cocktailId}`} className="btn-primary w-full text-center">
             View full recipe

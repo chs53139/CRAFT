@@ -10,10 +10,12 @@ import { PageLoader } from "@/components/LoadingState";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { InventDrinkResponse, MixologistInvention } from "@/lib/mixologist/types";
 import { getIngredientsByIds } from "@/lib/cocktail-matching";
+import { useSavedInventions } from "@/hooks/use-saved-inventions";
 import { useMyBar } from "@/hooks/use-my-bar";
 
 export default function MixologistPage() {
   const { barIds, loaded } = useMyBar();
+  const { inventions, saveInvention, removeInvention, isSaved } = useSavedInventions();
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [result, setResult] = useState<MixologistInvention | null>(null);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
@@ -134,7 +136,43 @@ export default function MixologistPage() {
           {!inventing && result && (
             <div className="app-section">
               {statusMessage && <p className="bar-scan-demo-note mb-4">{statusMessage}</p>}
-              <MixologistResult invention={result} onTryAgain={handleInvent} />
+              <MixologistResult
+                invention={result}
+                onTryAgain={handleInvent}
+                canSave={result.source === "original"}
+                saved={isSaved(result)}
+                onSave={() => saveInvention(result)}
+              />
+            </div>
+          )}
+
+          {inventions.length > 0 && (
+            <div className="app-section">
+              <h2 className="section-row-title">Your CRAFT Originals</h2>
+              <p className="section-row-subtitle">
+                {inventions.length} saved creation{inventions.length === 1 ? "" : "s"} from your bar
+              </p>
+              <div className="mt-4 space-y-3">
+                {inventions.slice(0, 5).map((item) => (
+                  <div key={item.id} className="premium-card p-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="font-[family-name:var(--font-display)] text-lg text-[var(--foreground)]">
+                          {item.name}
+                        </p>
+                        <p className="mt-1 text-sm text-[var(--muted)]">{item.tagline}</p>
+                      </div>
+                      <button
+                        type="button"
+                        className="text-xs text-[var(--muted)]"
+                        onClick={() => removeInvention(item.id)}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 

@@ -1,11 +1,18 @@
 import Link from "next/link";
 import { getBuyLabel } from "@/lib/ingredient-brands";
+import { UnlockRecommendation } from "@/lib/bar-intelligence";
 import { cocktails } from "@/lib/cocktail-data";
 import { IngredientRecommendation } from "@/lib/types";
 
 type Props = {
-  recommendation: IngredientRecommendation;
+  recommendation: IngredientRecommendation | UnlockRecommendation;
 };
+
+function isUnlockRecommendation(
+  value: IngredientRecommendation | UnlockRecommendation
+): value is UnlockRecommendation {
+  return "reason" in value && typeof value.reason === "string";
+}
 
 function findCocktailSlug(name: string): string | undefined {
   return cocktails.find((c) => c.name === name)?.id;
@@ -15,17 +22,19 @@ export function BestNextBuy({ recommendation }: Props) {
   const { ingredient, unlocksCount, exampleCocktails, costUsd } = recommendation;
   const label = getBuyLabel(ingredient);
   const remaining = unlocksCount - exampleCocktails.length;
+  const enriched = isUnlockRecommendation(recommendation) ? recommendation : null;
 
   return (
     <div className="featured-card animate-fade-in-up">
       <div className="relative p-6 sm:p-8 md:p-10">
-        <p className="eyebrow">Greatest unlock</p>
+        <p className="eyebrow">Smart purchase</p>
 
         <h3 className="mt-5 font-[family-name:var(--font-display)] text-3xl font-medium leading-tight text-[var(--foreground)] sm:text-4xl">
           {label}
         </h3>
         <p className="mt-2 text-sm text-[var(--muted)]">
-          The one bottle that opens the most new pours from your shelf.
+          {enriched?.reason ??
+            "The one bottle that opens the most new pours from your shelf."}
         </p>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2 sm:gap-5">
@@ -43,12 +52,16 @@ export function BestNextBuy({ recommendation }: Props) {
 
           <div className="glass-panel rounded-xl px-5 py-5">
             <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--muted)]">
-              Estimated bottle cost
+              {enriched ? "Purchase ROI" : "Estimated bottle cost"}
             </p>
             <p className="mt-3 font-[family-name:var(--font-display)] text-4xl text-[var(--foreground)]">
-              ${costUsd}
+              {enriched ? enriched.roiScore : `$${costUsd}`}
             </p>
-            <p className="mt-1 text-xs text-[var(--muted)]">Typical shelf price</p>
+            <p className="mt-1 text-xs text-[var(--muted)]">
+              {enriched
+                ? `$${costUsd} est. · ${enriched.movesToOneAway} move to one-away`
+                : "Typical shelf price"}
+            </p>
           </div>
         </div>
 

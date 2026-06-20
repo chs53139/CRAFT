@@ -3,7 +3,6 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { CocktailCard } from "@/components/CocktailCard";
-import { DrinkTypeFilter } from "@/components/DrinkTypeFilter";
 import { EmptyState } from "@/components/EmptyState";
 import { MocktailSubcategoryFilter } from "@/components/MocktailSubcategoryFilter";
 import { PageLoader } from "@/components/LoadingState";

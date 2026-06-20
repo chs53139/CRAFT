@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useMemo } from "react";
+import { BarHealthCard } from "@/components/BarHealthCard";
 import { BestNextBuy } from "@/components/BestNextBuy";
+import { DiscoveryModes } from "@/components/DiscoveryModes";
 import { EmptyState } from "@/components/EmptyState";
 import { HorizontalCocktailRow } from "@/components/HorizontalCocktailRow";
 import { RecentCocktails } from "@/components/RecentCocktails";
@@ -10,31 +12,39 @@ import { SkeletonGrid } from "@/components/LoadingState";
 import { StatPillAction, StatPills } from "@/components/StatPills";
 import { SurpriseMe } from "@/components/SurpriseMe";
 import { getHiddenGems } from "@/lib/cocktail-discovery";
+import { buildBarIntelligence } from "@/lib/bar-intelligence";
 import {
   cocktailCount,
   getBarSummaryFromMatches,
-  getBestNextIngredient,
   getIngredientsByIds,
   mocktailCount,
 } from "@/lib/cocktail-matching";
 import { useCocktailMatches } from "@/hooks/use-cocktail-matches";
-import { useMyBar } from "@/hooks/use-my-bar";
+import { useFavorites, useMyBar, useRecentCocktails } from "@/hooks/use-my-bar";
 
 export default function HomePage() {
   const { barIds, loaded } = useMyBar();
+  const { favoriteIds } = useFavorites();
+  const { recentIds } = useRecentCocktails();
   const { matches, grouped } = useCocktailMatches(barIds);
 
   const summary = useMemo(() => getBarSummaryFromMatches(matches), [matches]);
+  const intelligence = useMemo(
+    () =>
+      buildBarIntelligence({
+        barIds,
+        favoriteIds,
+        recentIds,
+        matches,
+      }),
+    [barIds, favoriteIds, recentIds, matches]
+  );
   const tonight = grouped.exactMatches;
   const withSwaps = useMemo(
     () => grouped.availableWithSubstitutions,
     [grouped.availableWithSubstitutions]
   );
   const hiddenGems = useMemo(() => getHiddenGems(barIds, 10, matches), [barIds, matches]);
-  const recommendation = useMemo(
-    () => (barIds.length > 0 ? getBestNextIngredient(barIds) : null),
-    [barIds]
-  );
   const barIngredients = useMemo(() => getIngredientsByIds(barIds), [barIds]);
 
   if (!loaded) {
@@ -88,6 +98,12 @@ export default function HomePage() {
         }
       />
 
+      {intelligence.health && (
+        <div className="app-section">
+          <BarHealthCard report={intelligence.health} compact />
+        </div>
+      )}
+
       <HorizontalCocktailRow
         title="Pour tonight"
         subtitle={
@@ -112,11 +128,22 @@ export default function HomePage() {
         />
       )}
 
-      {recommendation && (
+      {intelligence.bestUnlock && (
         <div className="app-section">
-          <BestNextBuy recommendation={recommendation} />
+          <BestNextBuy recommendation={intelligence.bestUnlock} />
         </div>
       )}
+
+      <div className="app-section">
+        <DiscoveryModes
+          barIds={barIds}
+          matches={matches}
+          tasteVector={intelligence.health?.tasteProfile?.vector}
+          favoriteIds={favoriteIds}
+          recentIds={recentIds}
+          categoryCounts={intelligence.health?.categoryCounts}
+        />
+      </div>
 
       {hiddenGems.length > 0 && (
         <HorizontalCocktailRow

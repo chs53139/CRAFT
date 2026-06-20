@@ -81,8 +81,8 @@ export default function MixologistPage() {
   return (
     <div className="app-screen animate-fade-in">
       <ScreenHeader
-        title="AI Mixologist"
-        subtitle="Invent a drink first — adjust your shelf below if you want to remix."
+        title="Mixologist"
+        subtitle="Invent a drink from your shelf using CRAFT's recipe engine — adjust ingredients below to remix."
         large
       />
 

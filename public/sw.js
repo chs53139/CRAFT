@@ -1,4 +1,4 @@
-const CACHE_VERSION = "craft-v3";
+const CACHE_VERSION = "craft-v4";
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
@@ -8,6 +8,9 @@ const PRECACHE_URLS = [
   "/bar",
   "/discover",
   "/mixologist",
+  "/favorites",
+  "/more",
+  "/account",
   "/manifest.json",
   "/brand/craft-mark.svg",
   "/icons/icon.svg",

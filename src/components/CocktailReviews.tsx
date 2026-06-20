@@ -20,6 +20,7 @@ export function CocktailReviews({ cocktailId, cocktailName }: Props) {
     loaded,
     submitting,
     error,
+    reviewsUnavailable,
     isAuthenticated,
     submitReview,
     clearError,
@@ -82,6 +83,21 @@ export function CocktailReviews({ cocktailId, cocktailName }: Props) {
 
   const displayReviews = reviews.slice(0, 5);
   const showEmptySummary = summary.reviewCount === 0;
+
+  if (reviewsUnavailable) {
+    return (
+      <section className="app-section">
+        <div className="review-card">
+          <p className="eyebrow text-[var(--accent-dim)]">CRAFT ratings</p>
+          <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
+            Reviews are not enabled on this server yet. Run{" "}
+            <code className="text-xs text-[var(--foreground)]">002_reviews.sql</code> in Supabase
+            to turn them on.
+          </p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="app-section">

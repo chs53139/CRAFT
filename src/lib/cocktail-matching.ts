@@ -105,9 +105,9 @@ export function filterMatchesBySearch(
   );
 }
 
-export function getBarSummary(barIds: string[]) {
+export function getBarSummaryFromMatches(matches: CocktailMatch[]) {
   const { exactMatches, availableWithSubstitutions, experimentalMatches, stillMissing } =
-    groupCocktailMatches(matchCocktails(barIds));
+    groupCocktailMatches(matches);
   return {
     readyTonight: exactMatches.length,
     withSubstitutions: availableWithSubstitutions.length,
@@ -115,6 +115,22 @@ export function getBarSummary(barIds: string[]) {
     stillMissing: stillMissing.length,
     oneAway: stillMissing.filter((m) => m.missingCount === 1).length,
   };
+}
+
+export function getBarSummary(barIds: string[]) {
+  return getBarSummaryFromMatches(matchCocktails(barIds));
+}
+
+/** Exact make, or makeable with a standard substitution swap. */
+export function isPourable(match: CocktailMatch): boolean {
+  return match.canMake || match.canMakeWithSubstitutions;
+}
+
+function candidateMayUnlockExact(before: CocktailMatch, candidateId: string): boolean {
+  if (before.canMake) return false;
+  if (before.missing.some((m) => m.id === candidateId)) return true;
+  if (before.substitutions.some((s) => s.requiredId === candidateId)) return true;
+  return false;
 }
 
 export function getCocktailById(id: string) {
@@ -140,15 +156,18 @@ export function getBestNextIngredient(
 
   let best: IngredientRecommendation | null = null;
   let bestUnlocks = 0;
+  const extendedBar = [...barIds];
 
   for (const ingredient of candidates) {
-    const after = matchCocktails([...barIds, ingredient.id]);
+    extendedBar.length = barIds.length;
+    extendedBar.push(ingredient.id);
     const newlyUnlocked: string[] = [];
 
-    for (const a of after) {
-      const b = before.find((x) => x.cocktail.id === a.cocktail.id);
-      if (b && a.canMake && !b.canMake) {
-        newlyUnlocked.push(a.cocktail.name);
+    for (const match of before) {
+      if (!candidateMayUnlockExact(match, ingredient.id)) continue;
+      const after = matchSingleCocktail(match.cocktail, extendedBar);
+      if (after.canMake && !match.canMake) {
+        newlyUnlocked.push(match.cocktail.name);
       }
     }
 

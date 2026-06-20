@@ -79,6 +79,16 @@ export async function removeFavorite(
   if (error) throw error;
 }
 
+export async function syncFavoritesToServer(
+  supabase: SupabaseClient,
+  userId: string,
+  favoriteIds: string[]
+): Promise<void> {
+  await Promise.all(
+    favoriteIds.map((cocktailId) => addFavorite(supabase, userId, cocktailId))
+  );
+}
+
 export async function fetchRecentCocktails(
   supabase: SupabaseClient,
   userId: string

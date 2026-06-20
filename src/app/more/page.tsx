@@ -1,0 +1,101 @@
+"use client";
+
+import Link from "next/link";
+import { ScreenHeader } from "@/components/ScreenHeader";
+import { useUserData } from "@/components/UserDataProvider";
+
+export default function MorePage() {
+  const { user, isAuthenticated, signOut } = useUserData();
+
+  const displayName =
+    user?.user_metadata?.display_name ||
+    user?.email?.split("@")[0] ||
+    "Guest";
+
+  return (
+    <div className="app-screen animate-fade-in">
+      <ScreenHeader title="More" subtitle="Explore CRAFT" large />
+
+      <div className="app-section space-y-3">
+        <Link href="/discover" className="account-row">
+          <div>
+            <p className="text-sm font-semibold text-[var(--foreground)]">Discover</p>
+            <p className="mt-0.5 text-xs text-[var(--muted)]">
+              Browse 500+ cocktails by collection
+            </p>
+          </div>
+          <span className="text-[var(--accent)]">→</span>
+        </Link>
+
+        <Link href="/mixologist" className="account-row">
+          <div>
+            <p className="text-sm font-semibold text-[var(--foreground)]">Mixologist</p>
+            <p className="mt-0.5 text-xs text-[var(--muted)]">
+              Invent a drink from your shelf
+            </p>
+          </div>
+          <span className="text-[var(--accent)]">→</span>
+        </Link>
+
+        <Link href="/favorites" className="account-row">
+          <div>
+            <p className="text-sm font-semibold text-[var(--foreground)]">Saved cocktails</p>
+            <p className="mt-0.5 text-xs text-[var(--muted)]">Your starred recipes</p>
+          </div>
+          <span className="text-[var(--accent)]">→</span>
+        </Link>
+      </div>
+
+      <div className="app-section">
+        <div className="premium-card p-5">
+          <div className="flex items-center gap-4">
+            <div className="flex h-14 w-14 items-center justify-center rounded-full border border-[var(--accent)]/25 bg-[var(--accent)]/10 font-[family-name:var(--font-display)] text-xl text-[var(--accent)]">
+              {displayName.charAt(0).toUpperCase()}
+            </div>
+            <div className="min-w-0">
+              <p className="truncate text-lg font-semibold text-[var(--foreground)]">
+                {displayName}
+              </p>
+              <p className="truncate text-sm text-[var(--muted)]">
+                {isAuthenticated ? user?.email : "Guest · data saved on this device"}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-3 space-y-3">
+          {isAuthenticated ? (
+            <>
+              <Link href="/account" className="account-row">
+                <span className="text-sm font-medium text-[var(--foreground)]">
+                  Account settings
+                </span>
+                <span className="text-[var(--accent)]">→</span>
+              </Link>
+              <button
+                type="button"
+                onClick={() => signOut()}
+                className="account-row w-full text-left"
+              >
+                <span className="text-sm font-medium text-[var(--foreground)]">Sign out</span>
+                <span className="text-[var(--muted)]">→</span>
+              </button>
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="btn-primary w-full text-center">
+                Sign in
+              </Link>
+              <Link href="/register" className="btn-secondary w-full text-center">
+                Create account
+              </Link>
+              <p className="text-center text-xs leading-relaxed text-[var(--muted)]">
+                Sync your bar, favorites, and recents across devices.
+              </p>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

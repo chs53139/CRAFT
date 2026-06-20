@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { BarScan } from "@/components/BarScan";
+import { BarStarterKits } from "@/components/BarStarterKits";
 import { BestNextBuy } from "@/components/BestNextBuy";
 import { EmptyState } from "@/components/EmptyState";
 import { ErrorBanner } from "@/components/ErrorBanner";
@@ -15,10 +16,10 @@ import {
   getBestNextIngredient,
   getIngredientsByIds,
   ingredients,
-  matchCocktails,
 } from "@/lib/cocktail-matching";
 import { getShopCategory, SHOP_CATEGORIES, ShopCategory } from "@/lib/ingredient-categories";
 import { useMyBar } from "@/hooks/use-my-bar";
+import { useCocktailMatches } from "@/hooks/use-cocktail-matches";
 
 export default function BarPage() {
   const {
@@ -35,6 +36,8 @@ export default function BarPage() {
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState<ShopCategory | "all">("all");
   const [scanOpen, setScanOpen] = useState(false);
+
+  const { matches } = useCocktailMatches(barIds);
 
   const filteredIngredients = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -53,14 +56,17 @@ export default function BarPage() {
       });
   }, [search, activeCategory, barIds]);
 
+  const recommendation = useMemo(
+    () => (barIds.length > 0 ? getBestNextIngredient(barIds) : null),
+    [barIds]
+  );
+
   if (!loaded) {
     return <BarPageSkeleton />;
   }
 
   const barIngredients = getIngredientsByIds(barIds);
-  const matches = matchCocktails(barIds);
   const tonightCount = matches.filter((m) => m.canMake).length;
-  const recommendation = getBestNextIngredient(barIds);
 
   function handleClearBar() {
     if (
@@ -96,9 +102,9 @@ export default function BarPage() {
             <button
               type="button"
               onClick={() => setScanOpen(true)}
-              className="min-h-11 rounded-full px-3 text-sm font-medium text-[var(--accent)] transition active:opacity-80"
+              className="min-h-11 rounded-full px-3 text-sm font-medium text-[var(--muted)] transition active:text-[var(--accent)]"
             >
-              Scan
+              Demo scan
             </button>
             {barIds.length > 0 ? (
               <button
@@ -131,14 +137,15 @@ export default function BarPage() {
       </div>
 
       {barIds.length === 0 ? (
-        <div className="mt-4">
+        <div className="mt-4 space-y-6">
+          <BarStarterKits barIds={barIds} onApply={addIngredients} />
           <EmptyState
             title="Your shelf is empty"
-            description="Tap Scan to photo-match bottles, or add ingredients manually below."
+            description="Use a quick start above, try the demo scan, or add ingredients manually below."
             icon="🍾"
             action={
-              <button type="button" className="btn-primary mt-2" onClick={() => setScanOpen(true)}>
-                Scan My Bar
+              <button type="button" className="btn-secondary mt-2" onClick={() => setScanOpen(true)}>
+                Try demo scan
               </button>
             }
           />
@@ -157,7 +164,7 @@ export default function BarPage() {
 
           <Link href="/mixologist" className="account-row mt-3">
             <div>
-              <p className="text-sm font-semibold text-[var(--foreground)]">AI Mixologist</p>
+              <p className="text-sm font-semibold text-[var(--foreground)]">Mixologist</p>
               <p className="mt-0.5 text-xs text-[var(--muted)]">Invent a drink from your shelf</p>
             </div>
             <span className="text-[var(--accent)]">→</span>

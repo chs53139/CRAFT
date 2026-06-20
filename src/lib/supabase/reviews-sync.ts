@@ -27,6 +27,18 @@ function mapReviewRow(row: ReviewRow, currentUserId?: string): CocktailReview {
   };
 }
 
+export function isReviewsTableMissing(error: unknown): boolean {
+  if (!error || typeof error !== "object") return false;
+  const e = error as { code?: string; message?: string };
+  return (
+    e.code === "42P01" ||
+    e.code === "PGRST205" ||
+    (typeof e.message === "string" &&
+      e.message.toLowerCase().includes("reviews") &&
+      (e.message.includes("does not exist") || e.message.includes("Could not find")))
+  );
+}
+
 export async function fetchReviewsForCocktail(
   supabase: SupabaseClient,
   cocktailId: string,

@@ -18,7 +18,7 @@ import { ERA_LABELS } from "@/lib/cocktail-curation";
 import {
   getCocktailById,
   getIngredientById,
-  matchCocktails,
+  matchSingleCocktail,
 } from "@/lib/cocktail-matching";
 import { formatSubstitutionLine } from "@/lib/substitution-display";
 import { useFavorites, useMyBar, useRecentCocktails } from "@/hooks/use-my-bar";
@@ -59,7 +59,7 @@ export default function CocktailDetailPage() {
     );
   }
 
-  const match = matchCocktails(barIds).find((m) => m.cocktail.id === id);
+  const match = matchSingleCocktail(cocktail, barIds);
   const barSet = new Set(barIds);
   const substitutionMap = new Map(
     match?.substitutions.map((sub) => [sub.requiredId, sub]) ?? []

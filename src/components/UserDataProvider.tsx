@@ -17,6 +17,7 @@ import {
   fetchRecentCocktails,
   removeFavorite,
   saveBarItems,
+  syncFavoritesToServer,
   trackRecentCocktail,
 } from "@/lib/supabase/bar-sync";
 import { createClient } from "@/lib/supabase/client";
@@ -132,9 +133,17 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
               ? serverBar
               : localBar;
         const mergedFavorites =
-          serverFavorites.length > 0 ? serverFavorites : localFavorites;
+          serverFavorites.length > 0 && localFavorites.length > 0
+            ? [...new Set([...serverFavorites, ...localFavorites])]
+            : serverFavorites.length > 0
+              ? serverFavorites
+              : localFavorites;
         const mergedRecent =
-          serverRecent.length > 0 ? serverRecent : localRecent;
+          serverRecent.length > 0 && localRecent.length > 0
+            ? [...new Set([...serverRecent, ...localRecent])].slice(0, 12)
+            : serverRecent.length > 0
+              ? serverRecent
+              : localRecent;
 
         if (cancelled) return;
 
@@ -147,6 +156,13 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
 
         if (mergedBar.length > 0 && serverBar.length === 0 && localBar.length > 0) {
           await saveBarItems(supabase, user!.id, mergedBar);
+        }
+
+        const localOnlyFavorites = localFavorites.filter(
+          (id) => !serverFavorites.includes(id)
+        );
+        if (localOnlyFavorites.length > 0) {
+          await syncFavoritesToServer(supabase, user!.id, localOnlyFavorites);
         }
 
         hydratedForUser.current = user!.id;

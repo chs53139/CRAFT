@@ -19,7 +19,7 @@ import {
   getCollectionCounts,
   searchCatalogue,
 } from "@/lib/cocktail-discovery";
-import { cocktailCount, matchCocktails, matchSingleCocktail } from "@/lib/cocktail-matching";
+import { cocktailCount, isPourable, matchCocktails, matchSingleCocktail } from "@/lib/cocktail-matching";
 import { CocktailCollection } from "@/lib/types";
 import { useMyBar } from "@/hooks/use-my-bar";
 
@@ -56,7 +56,7 @@ function DiscoverContent() {
       .filter((m): m is NonNullable<typeof m> => !!m);
   }, [barIds, catalogue, loaded]);
 
-  const makeable = matches.filter((m) => m.canMake);
+  const makeable = matches.filter((m) => isPourable(m));
   const totalVisible = showMakeable ? makeable.length : catalogue.length;
 
   const visible = showMakeable
@@ -155,7 +155,7 @@ function DiscoverContent() {
       <div className="app-section">
         <Link href="/mixologist" className="account-row">
           <div>
-            <p className="text-sm font-semibold text-[var(--foreground)]">AI Mixologist</p>
+            <p className="text-sm font-semibold text-[var(--foreground)]">Mixologist</p>
             <p className="mt-0.5 text-xs text-[var(--muted)]">Invent something new from your bar</p>
           </div>
           <span className="text-[var(--accent)]">→</span>

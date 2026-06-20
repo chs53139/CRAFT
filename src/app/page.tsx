@@ -1,24 +1,40 @@
 "use client";
 
 import Link from "next/link";
+import { useMemo } from "react";
 import { BestNextBuy } from "@/components/BestNextBuy";
 import { EmptyState } from "@/components/EmptyState";
 import { HorizontalCocktailRow } from "@/components/HorizontalCocktailRow";
+import { RecentCocktails } from "@/components/RecentCocktails";
 import { SkeletonGrid } from "@/components/LoadingState";
 import { StatPillAction, StatPills } from "@/components/StatPills";
 import { SurpriseMe } from "@/components/SurpriseMe";
 import { getHiddenGems } from "@/lib/cocktail-discovery";
 import {
   cocktailCount,
-  getBarSummary,
+  getBarSummaryFromMatches,
   getBestNextIngredient,
   getIngredientsByIds,
-  matchCocktails,
 } from "@/lib/cocktail-matching";
+import { useCocktailMatches } from "@/hooks/use-cocktail-matches";
 import { useMyBar } from "@/hooks/use-my-bar";
 
 export default function HomePage() {
   const { barIds, loaded } = useMyBar();
+  const { matches, grouped } = useCocktailMatches(barIds);
+
+  const summary = useMemo(() => getBarSummaryFromMatches(matches), [matches]);
+  const tonight = grouped.exactMatches;
+  const withSwaps = useMemo(
+    () => grouped.availableWithSubstitutions,
+    [grouped.availableWithSubstitutions]
+  );
+  const hiddenGems = useMemo(() => getHiddenGems(barIds, 10, matches), [barIds, matches]);
+  const recommendation = useMemo(
+    () => (barIds.length > 0 ? getBestNextIngredient(barIds) : null),
+    [barIds]
+  );
+  const barIngredients = useMemo(() => getIngredientsByIds(barIds), [barIds]);
 
   if (!loaded) {
     return (
@@ -48,13 +64,6 @@ export default function HomePage() {
     );
   }
 
-  const summary = getBarSummary(barIds);
-  const matches = matchCocktails(barIds);
-  const tonight = matches.filter((m) => m.canMake);
-  const hiddenGems = getHiddenGems(barIds, 10);
-  const recommendation = getBestNextIngredient(barIds);
-  const barIngredients = getIngredientsByIds(barIds);
-
   return (
     <div className="app-screen animate-fade-in">
       <p className="screen-subtitle mb-4">
@@ -64,6 +73,11 @@ export default function HomePage() {
       <StatPills
         stats={[
           { value: summary.readyTonight, label: "Ready", href: "/cocktails?view=ready" },
+          {
+            value: summary.withSubstitutions,
+            label: "With swaps",
+            href: "/cocktails",
+          },
           { value: summary.oneAway, label: "One away", href: "/cocktails?view=one-away" },
           { value: cocktailCount, label: "Catalogue", href: "/discover" },
         ]}
@@ -76,13 +90,25 @@ export default function HomePage() {
         title="Pour tonight"
         subtitle={
           tonight.length > 0
-            ? `${tonight.length} ready to make`
-            : "Add a bottle to unlock more"
+            ? `${tonight.length} exact match${tonight.length === 1 ? "" : "es"}`
+            : withSwaps.length > 0
+              ? "No exact matches — try a swap below"
+              : "Add a bottle to unlock more"
         }
         items={tonight.slice(0, 10)}
         seeAllHref="/cocktails?view=ready"
         empty="Stock a few more bottles and the magic happens."
       />
+
+      {withSwaps.length > 0 && (
+        <HorizontalCocktailRow
+          title="Close with a swap"
+          subtitle={`${withSwaps.length} cocktail${withSwaps.length === 1 ? "" : "s"} with a simple substitute`}
+          items={withSwaps.slice(0, 10)}
+          seeAllHref="/cocktails"
+          empty=""
+        />
+      )}
 
       {recommendation && (
         <div className="app-section">
@@ -100,6 +126,8 @@ export default function HomePage() {
           empty=""
         />
       )}
+
+      <RecentCocktails />
 
       <div className="app-section">
         <SurpriseMe barIds={barIds} />

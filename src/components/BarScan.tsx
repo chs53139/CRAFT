@@ -193,10 +193,10 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
 
         <div className="bar-scan-header">
           <div>
-            <p className="eyebrow text-[var(--accent-dim)]">Scan My Bar</p>
+            <p className="eyebrow text-[var(--accent-dim)]">Demo bar scan</p>
             <h2 id="bar-scan-title" className="screen-title mt-1">
-              {step === "capture" && (hasPhoto ? "Ready to scan" : "Snap your shelf")}
-              {step === "scanning" && "Reading labels…"}
+              {step === "capture" && (hasPhoto ? "Ready to preview" : "Snap your shelf")}
+              {step === "scanning" && "Running demo scan…"}
               {step === "review" && "Confirm additions"}
               {step === "done" && "Bar updated"}
             </h2>
@@ -215,10 +215,14 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
 
           {step === "capture" && (
             <>
+              <p className="bar-scan-demo-note">
+                Demo mode — sample bottle detections only. Your photo is not analyzed yet. Confirm
+                each item before adding.
+              </p>
               <p className="text-sm leading-relaxed text-[var(--muted)]">
                 {hasPhoto
-                  ? "Looks good — scan this photo to find bottles on your shelf."
-                  : "Take or upload a photo of your bottles. Nothing is added until you confirm."}
+                  ? "Preview your photo, then run the demo scan to see sample matches."
+                  : "Take or upload a photo to walk through the flow. Nothing is added until you confirm."}
               </p>
 
               <div className="bar-scan-upload">
@@ -244,7 +248,7 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
                 {hasPhoto ? (
                   <>
                     <button type="button" className="btn-primary w-full" onClick={handleScan}>
-                      Scan bottles
+                      Run demo scan
                     </button>
                     <button
                       type="button"
@@ -286,12 +290,17 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
           {step === "scanning" && (
             <div className="bar-scan-thinking">
               <div className="bar-scan-spinner" aria-hidden />
-              <p className="mt-4 text-sm text-[var(--muted)]">Identifying bottles and mapping to CRAFT…</p>
+              <p className="mt-4 text-sm text-[var(--muted)]">Loading sample detections…</p>
             </div>
           )}
 
           {step === "review" && result && (
             <>
+              {result.mock && (
+                <p className="bar-scan-demo-note">
+                  These are sample results for demo purposes — not from your photo.
+                </p>
+              )}
               <p className="text-sm text-[var(--muted)]">
                 Uncheck anything that looks wrong. Items marked <strong>Needs Review</strong> should be
                 double-checked before adding.

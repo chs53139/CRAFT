@@ -23,6 +23,7 @@ CRAFT stores user data in four tables, all protected by **Row Level Security (RL
 | `bar_items` | Saved bar inventory (`ingredient_id` per row) |
 | `favorites` | Starred cocktails |
 | `recent_cocktails` | Recently viewed cocktails |
+| `reviews` | Cocktail ratings and short reviews (**optional** — run `002_reviews.sql`) |
 
 ### Run the migration
 
@@ -33,6 +34,16 @@ CRAFT stores user data in four tables, all protected by **Row Level Security (RL
 
 You should see “Success. No rows returned.”
 
+### Enable reviews (recommended)
+
+If you want cocktail ratings on detail pages:
+
+1. Open **SQL Editor** → **New query**
+2. Copy [`supabase/migrations/002_reviews.sql`](../supabase/migrations/002_reviews.sql)
+3. Click **Run**
+
+Without this migration, CRAFT still works — the reviews section shows a friendly “not enabled” message.
+
 ### Verify tables
 
 Open **Table Editor** — you should see:
@@ -41,6 +52,7 @@ Open **Table Editor** — you should see:
 - `bar_items`
 - `favorites`
 - `recent_cocktails`
+- `reviews` (if you ran `002_reviews.sql`)
 
 Open **Authentication → Policies** — each table should have RLS policies enabled.
 

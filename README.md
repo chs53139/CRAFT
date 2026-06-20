@@ -21,8 +21,9 @@ Summary:
 
 1. Create a Supabase project
 2. Run `supabase/migrations/001_craft_schema.sql` in the SQL Editor
-3. Configure auth redirect URLs (`/auth/callback`)
-4. Add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` to `.env`
+3. Run `supabase/migrations/002_reviews.sql` for cocktail ratings (optional)
+4. Configure auth redirect URLs (`/auth/callback`)
+5. Add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` to `.env`
 
 ## Features
 
@@ -30,6 +31,7 @@ Summary:
 - **My Bar** — saved to Supabase when signed in
 - **Accounts** — email/password via Supabase Auth
 - Favorites & recently viewed (synced when signed in)
+- Cocktail reviews (requires `002_reviews.sql` migration)
 - Guest mode via localStorage (no account required)
 
 ## Stack

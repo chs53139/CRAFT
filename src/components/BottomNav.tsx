@@ -75,22 +75,21 @@ const tabs = [
     ),
   },
   {
-    href: "/account",
-    label: "You",
+    href: "/more",
+    label: "More",
     icon: (active: boolean) => (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
-        <circle
-          cx="12"
-          cy="8"
-          r="4"
+        <circle cx="6" cy="12" r="1.75" fill="currentColor" />
+        <circle cx="12" cy="12" r="1.75" fill="currentColor" />
+        <circle cx="18" cy="12" r="1.75" fill="currentColor" />
+        <rect
+          x="3"
+          y="5"
+          width="18"
+          height="14"
+          rx="2"
           stroke="currentColor"
           strokeWidth={active ? 2 : 1.5}
-        />
-        <path
-          d="M5 21c0-3.3 3.1-6 7-6s7 2.7 7 6"
-          stroke="currentColor"
-          strokeWidth={active ? 2 : 1.5}
-          strokeLinecap="round"
         />
       </svg>
     ),

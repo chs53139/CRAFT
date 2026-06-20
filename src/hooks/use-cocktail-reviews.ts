@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { summarizeReviews } from "@/lib/cocktail-reviews";
 import {
   fetchReviewsForCocktail,
+  isReviewsTableMissing,
   upsertCocktailReview,
 } from "@/lib/supabase/reviews-sync";
 import { createClient } from "@/lib/supabase/client";
@@ -17,16 +18,23 @@ export function useCocktailReviews(cocktailId: string) {
   const [loaded, setLoaded] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [reviewsUnavailable, setReviewsUnavailable] = useState(false);
 
   const loadReviews = useCallback(async () => {
     setError(null);
+    setReviewsUnavailable(false);
 
     try {
       const data = await fetchReviewsForCocktail(supabase, cocktailId, user?.id);
       setReviews(data);
-    } catch {
-      setError("Could not load reviews right now.");
-      setReviews([]);
+    } catch (loadError) {
+      if (isReviewsTableMissing(loadError)) {
+        setReviewsUnavailable(true);
+        setReviews([]);
+      } else {
+        setError("Could not load reviews right now.");
+        setReviews([]);
+      }
     } finally {
       setLoaded(true);
     }
@@ -55,7 +63,11 @@ export function useCocktailReviews(cocktailId: string) {
       try {
         await upsertCocktailReview(supabase, user.id, cocktailId, input);
         await loadReviews();
-      } catch {
+      } catch (submitError) {
+        if (isReviewsTableMissing(submitError)) {
+          setReviewsUnavailable(true);
+          throw new Error("Reviews are not enabled on this server yet.");
+        }
         setError("Could not save your review. Try again.");
         throw new Error("Could not save your review. Try again.");
       } finally {
@@ -72,6 +84,7 @@ export function useCocktailReviews(cocktailId: string) {
     loaded,
     submitting,
     error,
+    reviewsUnavailable,
     isAuthenticated,
     submitReview,
     refresh: loadReviews,

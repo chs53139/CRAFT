@@ -14,10 +14,14 @@ export type SurpriseFilters = {
 
 const HIDDEN_GEM_MIN_SCORE = 58;
 
-export function getHiddenGems(barIds: string[], limit = 10): CocktailMatch[] {
+export function getHiddenGems(
+  barIds: string[],
+  limit = 10,
+  precomputed?: CocktailMatch[]
+): CocktailMatch[] {
   if (barIds.length === 0) return [];
 
-  const makeable = matchCocktails(barIds).filter((m) => m.canMake);
+  const makeable = (precomputed ?? matchCocktails(barIds)).filter((m) => m.canMake);
 
   const gems = makeable
     .filter(

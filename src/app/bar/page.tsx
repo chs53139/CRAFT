@@ -107,24 +107,15 @@ export default function BarPage() {
         }
         large
         action={
-          <div className="flex items-center gap-1">
+          barIds.length > 0 ? (
             <button
               type="button"
-              onClick={() => setScanOpen(true)}
+              onClick={handleClearBar}
               className="min-h-11 rounded-full px-3 text-sm font-medium text-[var(--muted)] transition active:text-[var(--accent)]"
             >
-              Demo scan
+              Clear
             </button>
-            {barIds.length > 0 ? (
-              <button
-                type="button"
-                onClick={handleClearBar}
-                className="min-h-11 rounded-full px-3 text-sm font-medium text-[var(--muted)] transition active:text-[var(--accent)]"
-              >
-                Clear
-              </button>
-            ) : null}
-          </div>
+          ) : undefined
         }
       />
 
@@ -141,15 +132,15 @@ export default function BarPage() {
         </div>
       )}
 
-      {advice && (
+      <div className="mt-8">
+        <MyBarInventory ingredients={barIngredients} onRemove={toggleIngredient} />
+      </div>
+
+      {advice && barIds.length > 0 && (
         <div className="mt-8">
           <MyBarAdvice advice={advice} />
         </div>
       )}
-
-      <div className="mt-8">
-        <MyBarInventory ingredients={barIngredients} onRemove={toggleIngredient} />
-      </div>
 
       {barIds.length === 0 && (
         <div className="mt-4 space-y-6">

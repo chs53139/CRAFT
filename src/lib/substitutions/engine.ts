@@ -159,7 +159,7 @@ export function matchCocktailWithSubstitutions(
 export function getMatchQualityLabel(quality: MatchQuality): string | null {
   if (quality === "exact") return "Exact Match";
   if (quality === "substitution") return "Substitution";
-  if (quality === "experimental") return "Experimental";
+  if (quality === "experimental") return "Bold swap";
   if (quality === "missing") return "Still Missing";
   return null;
 }

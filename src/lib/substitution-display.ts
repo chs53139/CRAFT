@@ -6,7 +6,7 @@ export type SubstitutionMode = "exact-only" | "include-substitutions" | "experim
 export const SUBSTITUTION_MODE_LABELS: Record<SubstitutionMode, string> = {
   "exact-only": "Exact only",
   "include-substitutions": "Include substitutions",
-  "experimental-allowed": "Experimental allowed",
+  "experimental-allowed": "Bold swaps allowed",
 };
 
 export function formatSubstitutionLine(sub: AppliedSubstitution): string {

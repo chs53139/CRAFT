@@ -38,13 +38,13 @@ export type MatchQuality = MatchGroup | "unavailable";
 export const MATCH_GROUP_LABELS: Record<MatchGroup, string> = {
   exact: "Exact Matches",
   substitution: "Available With Substitutions",
-  experimental: "Experimental Substitutions",
+  experimental: "Bold Swaps",
   missing: "Still Missing Ingredients",
 };
 
 export const MATCH_QUALITY_LABELS: Record<Exclude<MatchQuality, "unavailable">, string> = {
   exact: "Exact Match",
   substitution: "Substitution",
-  experimental: "Experimental",
+  experimental: "Bold swap",
   missing: "Still Missing",
 };

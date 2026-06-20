@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { BestNextBuy } from "@/components/BestNextBuy";
 import { CocktailSection } from "@/components/CocktailSection";
 import { CollectionFilter } from "@/components/CollectionFilter";
 import { DrinkTypeFilter } from "@/components/DrinkTypeFilter";
@@ -13,11 +12,8 @@ import { MenuPageSkeleton, PageLoader } from "@/components/LoadingState";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { SearchField } from "@/components/SearchField";
 import { SubstitutionModeFilter } from "@/components/SubstitutionModeFilter";
-import { SurpriseMe } from "@/components/SurpriseMe";
-import { getHiddenGems } from "@/lib/cocktail-discovery";
 import {
   filterMatchesBySearch,
-  getBestNextIngredient,
   groupCocktailMatches,
   matchCocktails,
 } from "@/lib/cocktail-matching";
@@ -34,14 +30,14 @@ const SECTION_LIMIT = 24;
 type TonightView = "all" | "ready" | "one-away";
 
 const VIEW_TABS: Array<{ id: TonightView; label: string; href: string }> = [
-  { id: "all", label: "All", href: "/cocktails" },
-  { id: "ready", label: "Ready now", href: "/cocktails?view=ready" },
+  { id: "ready", label: "Ready now", href: "/cocktails" },
+  { id: "all", label: "All", href: "/cocktails?view=all" },
   { id: "one-away", label: "One away", href: "/cocktails?view=one-away" },
 ];
 
 function parseView(value: string | null): TonightView {
-  if (value === "ready" || value === "one-away") return value;
-  return "all";
+  if (value === "all" || value === "one-away") return value;
+  return "ready";
 }
 
 function SectionTruncation({ shown, total }: { shown: number; total: number }) {
@@ -78,7 +74,8 @@ function CocktailsContent() {
   const [substitutionMode, setSubstitutionMode] =
     useState<SubstitutionMode>("include-substitutions");
   const [drinkTypeFilter, setDrinkTypeFilter] =
-    useState<"both" | "cocktails" | "mocktails">("both");
+    useState<"both" | "cocktails" | "mocktails">("cocktails");
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
 
   const allMatches = useMemo(() => matchCocktails(barIds), [barIds]);
   const drinkFilteredMatches = useMemo(
@@ -122,15 +119,6 @@ function CocktailsContent() {
   }
 
   const oneAway = stillMissing.filter((m) => m.missingCount === 1);
-  const hiddenGems = getHiddenGems(barIds, 12).filter(
-    (m) =>
-      (collection === "all" || m.cocktail.collections.includes(collection)) &&
-      matchPassesSubstitutionMode(m, substitutionMode) &&
-      (drinkTypeFilter === "both" ||
-        (drinkTypeFilter === "mocktails" && m.cocktail.drinkType === "mocktail") ||
-        (drinkTypeFilter === "cocktails" && m.cocktail.drinkType === "cocktail"))
-  );
-  const recommendation = getBestNextIngredient(barIds);
   const searchActive = search.trim().length > 0;
   const showAllSections = view === "all";
   const showReady = view === "all" || view === "ready";
@@ -139,7 +127,6 @@ function CocktailsContent() {
   const hasVisibleResults =
     (showReady &&
       (visibleExact.length > 0 ||
-        hiddenGems.length > 0 ||
         visibleSubstitutions.length > 0 ||
         visibleExperimental.length > 0)) ||
     (showOneAway && oneAway.length > 0) ||
@@ -184,9 +171,30 @@ function CocktailsContent() {
           />
 
           <div className="app-section space-y-4">
-            <DrinkTypeFilter value={drinkTypeFilter} onChange={setDrinkTypeFilter} />
             <SubstitutionModeFilter value={substitutionMode} onChange={setSubstitutionMode} />
-            <CollectionFilter value={collection} onChange={setCollection} />
+
+            <button
+              type="button"
+              className="text-xs font-semibold text-[var(--accent)]"
+              onClick={() => setShowAdvancedFilters((value) => !value)}
+            >
+              {showAdvancedFilters ? "Hide filters" : "More filters"}
+            </button>
+
+            {showAdvancedFilters && (
+              <>
+                <DrinkTypeFilter
+                  value={drinkTypeFilter}
+                  onChange={setDrinkTypeFilter}
+                  hideMocktails
+                />
+                <CollectionFilter
+                  value={collection}
+                  onChange={setCollection}
+                  hideMocktails
+                />
+              </>
+            )}
           </div>
 
           {noSearchResults ? (
@@ -205,26 +213,10 @@ function CocktailsContent() {
                     title="Exact matches"
                     subtitle={`${visibleExact.length} cocktails — everything in your bar`}
                     items={visibleExact.slice(0, SECTION_LIMIT)}
-                    empty="Not quite there yet — check the recommendation below."
+                    empty="Not quite there yet — add a bottle in My Bar or try a swap below."
                   />
                   <SectionTruncation shown={SECTION_LIMIT} total={visibleExact.length} />
                 </>
-              )}
-
-              {showReady && recommendation && collection === "all" && (
-                <div className="app-section">
-                  <BestNextBuy recommendation={recommendation} />
-                </div>
-              )}
-
-              {showReady && hiddenGems.length > 0 && (
-                <CocktailSection
-                  title="Hidden gems"
-                  subtitle="Unusual pours you can make now"
-                  items={hiddenGems}
-                  showObscurity
-                  empty=""
-                />
               )}
 
               {showReady && visibleSubstitutions.length > 0 && (
@@ -245,7 +237,7 @@ function CocktailsContent() {
               {showReady && visibleExperimental.length > 0 && (
                 <>
                   <CocktailSection
-                    title="Experimental"
+                    title="Bold swaps"
                     subtitle="Low-confidence swaps or homemade builds — expect a different drink"
                     items={visibleExperimental.slice(0, SECTION_LIMIT)}
                     empty=""
@@ -279,12 +271,6 @@ function CocktailsContent() {
                     compact
                   />
                   <SectionTruncation shown={SECTION_LIMIT} total={stillMissing.length} />
-
-                  {collection === "all" && (
-                    <div className="app-section">
-                      <SurpriseMe barIds={barIds} />
-                    </div>
-                  )}
                 </>
               )}
             </>

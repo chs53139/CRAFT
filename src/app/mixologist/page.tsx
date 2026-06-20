@@ -85,7 +85,7 @@ export default function MixologistPage() {
     <div className="app-screen animate-fade-in">
       <ScreenHeader
         title="Mixologist"
-        subtitle="Invent a drink from your shelf using CRAFT's recipe engine — adjust ingredients below to remix."
+        subtitle="Pick ingredients from your shelf, then invent something original."
         large
       />
 
@@ -105,6 +105,54 @@ export default function MixologistPage() {
             </div>
           )}
 
+          <div className="premium-card p-4">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="text-sm font-semibold text-[var(--foreground)]">Your ingredients</p>
+                <p className="mt-0.5 text-xs text-[var(--muted)]">
+                  {selectedIds.length} of {barIds.length} selected · tweak, then invent
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  className="text-xs font-semibold text-[var(--accent)]"
+                  onClick={() => {
+                    setSelectedIds(barIds);
+                    setResult(null);
+                    setStatusMessage(null);
+                    setError(null);
+                  }}
+                >
+                  All
+                </button>
+                <button
+                  type="button"
+                  className="text-xs font-semibold text-[var(--muted)]"
+                  onClick={() => {
+                    setSelectedIds([]);
+                    setResult(null);
+                    setStatusMessage(null);
+                    setError(null);
+                  }}
+                >
+                  Clear
+                </button>
+              </div>
+            </div>
+
+            <div className="mt-4 flex flex-wrap gap-2">
+              {getIngredientsByIds(barIds).map((ing) => (
+                <IngredientChip
+                  key={ing.id}
+                  name={ing.name}
+                  selected={selectedIds.includes(ing.id)}
+                  onClick={() => toggleSelected(ing.id)}
+                />
+              ))}
+            </div>
+          </div>
+
           <div className="app-section">
             <button
               type="button"
@@ -121,7 +169,7 @@ export default function MixologistPage() {
             )}
             {!result && !inventing && selectedIds.length < 2 && (
               <p className="mt-3 text-center text-xs text-[var(--muted)]">
-                Select at least two ingredients below to invent a drink.
+                Select at least two ingredients above to invent a drink.
               </p>
             )}
           </div>
@@ -179,54 +227,6 @@ export default function MixologistPage() {
               </div>
             </div>
           )}
-
-          <div className="premium-card p-4">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <p className="text-sm font-semibold text-[var(--foreground)]">Your ingredients</p>
-                <p className="mt-0.5 text-xs text-[var(--muted)]">
-                  {selectedIds.length} of {barIds.length} selected · tweak, then invent again
-                </p>
-              </div>
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  className="text-xs font-semibold text-[var(--accent)]"
-                  onClick={() => {
-                    setSelectedIds(barIds);
-                    setResult(null);
-                    setStatusMessage(null);
-                    setError(null);
-                  }}
-                >
-                  All
-                </button>
-                <button
-                  type="button"
-                  className="text-xs font-semibold text-[var(--muted)]"
-                  onClick={() => {
-                    setSelectedIds([]);
-                    setResult(null);
-                    setStatusMessage(null);
-                    setError(null);
-                  }}
-                >
-                  Clear
-                </button>
-              </div>
-            </div>
-
-            <div className="mt-4 flex flex-wrap gap-2">
-              {getIngredientsByIds(barIds).map((ing) => (
-                <IngredientChip
-                  key={ing.id}
-                  name={ing.name}
-                  selected={selectedIds.includes(ing.id)}
-                  onClick={() => toggleSelected(ing.id)}
-                />
-              ))}
-            </div>
-          </div>
 
           <div className="app-section">
             <Link href="/bar" className="account-row">

@@ -146,7 +146,7 @@ export const COLLECTION_LABELS: Record<CocktailCollection, string> = {
   "hidden-gem": "Hidden Gem",
   historical: "Historical",
   tiki: "Tiki",
-  experimental: "Experimental",
+  experimental: "Avant-garde",
   "craft-original": "CRAFT Original",
   mocktail: "Mocktails",
 };

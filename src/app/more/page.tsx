@@ -14,9 +14,19 @@ export default function MorePage() {
 
   return (
     <div className="app-screen animate-fade-in">
-      <ScreenHeader title="More" subtitle="Explore CRAFT" large />
+      <ScreenHeader title="More" subtitle="Browse, account, and tools" large />
 
       <div className="app-section space-y-3">
+        <Link href="/bar/analysis" className="account-row">
+          <div>
+            <p className="text-sm font-semibold text-[var(--foreground)]">Full Bar Analysis</p>
+            <p className="mt-0.5 text-xs text-[var(--muted)]">
+              Health score, unlock graph, and discovery modes
+            </p>
+          </div>
+          <span className="text-[var(--accent)]">→</span>
+        </Link>
+
         <Link href="/mocktails" className="account-row">
           <div>
             <p className="text-sm font-semibold text-[var(--foreground)]">Mocktails</p>
@@ -31,7 +41,7 @@ export default function MorePage() {
           <div>
             <p className="text-sm font-semibold text-[var(--foreground)]">Discover</p>
             <p className="mt-0.5 text-xs text-[var(--muted)]">
-              Browse 500+ cocktails by collection
+              Browse cocktails by collection
             </p>
           </div>
           <span className="text-[var(--accent)]">→</span>
@@ -43,14 +53,6 @@ export default function MorePage() {
             <p className="mt-0.5 text-xs text-[var(--muted)]">
               Invent a drink from your shelf
             </p>
-          </div>
-          <span className="text-[var(--accent)]">→</span>
-        </Link>
-
-        <Link href="/favorites" className="account-row">
-          <div>
-            <p className="text-sm font-semibold text-[var(--foreground)]">Saved cocktails</p>
-            <p className="mt-0.5 text-xs text-[var(--muted)]">Your starred recipes</p>
           </div>
           <span className="text-[var(--accent)]">→</span>
         </Link>
@@ -76,12 +78,17 @@ export default function MorePage() {
         <div className="mt-3 space-y-3">
           {isAuthenticated ? (
             <>
-              <Link href="/account" className="account-row">
-                <span className="text-sm font-medium text-[var(--foreground)]">
-                  Account settings
+              <div className="account-row">
+                <div>
+                  <p className="text-sm font-medium text-[var(--foreground)]">Sync status</p>
+                  <p className="mt-0.5 text-xs text-[var(--muted)]">
+                    Bar, favorites, and recents sync to your account
+                  </p>
+                </div>
+                <span className="rounded-full bg-emerald-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-emerald-300">
+                  On
                 </span>
-                <span className="text-[var(--accent)]">→</span>
-              </Link>
+              </div>
               <button
                 type="button"
                 onClick={() => signOut()}

@@ -1,6 +1,7 @@
 type Props = {
   value: "both" | "cocktails" | "mocktails";
   onChange: (value: "both" | "cocktails" | "mocktails") => void;
+  hideMocktails?: boolean;
 };
 
 const OPTIONS: Array<{ id: "both" | "cocktails" | "mocktails"; label: string }> = [
@@ -9,10 +10,14 @@ const OPTIONS: Array<{ id: "both" | "cocktails" | "mocktails"; label: string }> 
   { id: "mocktails", label: "Mocktails" },
 ];
 
-export function DrinkTypeFilter({ value, onChange }: Props) {
+export function DrinkTypeFilter({ value, onChange, hideMocktails }: Props) {
+  const options = hideMocktails
+    ? OPTIONS.filter((option) => option.id !== "mocktails")
+    : OPTIONS;
+
   return (
     <div className="flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-      {OPTIONS.map((option) => (
+      {options.map((option) => (
         <button
           key={option.id}
           type="button"

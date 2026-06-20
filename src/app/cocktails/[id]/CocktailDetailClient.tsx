@@ -202,7 +202,7 @@ export function CocktailDetailClient() {
                 : match.matchGroup === "substitution"
                   ? "Available with substitutions — expect a different but related drink."
                   : match.matchGroup === "experimental"
-                    ? "Experimental substitutes — bold swaps or homemade builds."
+                    ? "Bold swaps — low-confidence substitutes or homemade builds."
                     : "Still missing:"}
             </p>
             {match.matchGroup === "missing" && match.missing.length > 0 && (

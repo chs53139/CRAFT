@@ -3,7 +3,7 @@ import { MatchQuality } from "@/lib/substitutions/types";
 const LABELS: Record<Exclude<MatchQuality, "unavailable">, string> = {
   exact: "Exact Match",
   substitution: "Substitution",
-  experimental: "Experimental",
+  experimental: "Bold swap",
   missing: "Still Missing",
 };
 

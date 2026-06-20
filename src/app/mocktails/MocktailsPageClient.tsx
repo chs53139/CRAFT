@@ -9,11 +9,6 @@ import { PageLoader } from "@/components/LoadingState";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { SearchField } from "@/components/SearchField";
 import {
-  MOCKTAIL_SUBCATEGORIES,
-  MOCKTAIL_SUBCATEGORY_DESCRIPTIONS,
-  MOCKTAIL_SUBCATEGORY_LABELS,
-} from "@/lib/mocktail-curation";
-import {
   filterMatchesByDrinkType,
   filterMatchesByMocktailSubcategory,
 } from "@/lib/drink-type";
@@ -61,27 +56,6 @@ export default function MocktailsPageClient() {
         subtitle={`${mocktailCount} zero-proof pours — classics, wellness, coffee, tea, and party-ready.`}
         large
       />
-
-      <div className="discover-collection-grid">
-        {MOCKTAIL_SUBCATEGORIES.map((id) => (
-          <button
-            key={id}
-            type="button"
-            onClick={() => {
-              setSubcategory(id);
-              setLimit(PAGE_SIZE);
-            }}
-            className={`discover-collection-card ${
-              subcategory === id ? "discover-collection-card-active" : ""
-            }`}
-          >
-            <p className="discover-collection-title">{MOCKTAIL_SUBCATEGORY_LABELS[id]}</p>
-            <p className="discover-collection-copy">
-              {MOCKTAIL_SUBCATEGORY_DESCRIPTIONS[id]}
-            </p>
-          </button>
-        ))}
-      </div>
 
       <div className="app-section space-y-4">
         <SearchField

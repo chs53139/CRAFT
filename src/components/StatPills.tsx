@@ -27,7 +27,6 @@ export function StatPills({ stats, trailingAction }: Props) {
 export function StatPillAction({
   href,
   label,
-  subtitle,
 }: {
   href: string;
   label: string;
@@ -39,7 +38,6 @@ export function StatPillAction({
         ✦
       </span>
       <span className="stat-pill-action-label">{label}</span>
-      {subtitle && <span className="stat-pill-action-subtitle">{subtitle}</span>}
     </Link>
   );
 }

@@ -58,6 +58,8 @@ export function filterMatchesBySearch(
       m.cocktail.name.toLowerCase().includes(q) ||
       m.cocktail.category.toLowerCase().includes(q) ||
       m.cocktail.flavorProfile.some((f) => f.includes(q)) ||
+      m.cocktail.collections.some((c) => c.replace(/-/g, " ").includes(q)) ||
+      m.cocktail.funFact.toLowerCase().includes(q) ||
       m.missing.some((ing) => ing.name.toLowerCase().includes(q))
   );
 }

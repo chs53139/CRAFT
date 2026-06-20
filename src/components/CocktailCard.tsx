@@ -5,16 +5,24 @@ import { CocktailMatch } from "@/lib/types";
 import { CocktailImage } from "./CocktailImage";
 import { DifficultyBadge } from "./DifficultyBadge";
 import { FavoriteButton } from "./FavoriteButton";
+import { ObscurityBadge } from "./ObscurityBadge";
 import { useFavorites } from "@/hooks/use-my-bar";
 
 type Props = {
   match: CocktailMatch;
   compact?: boolean;
   showFavorite?: boolean;
+  showObscurity?: boolean;
   variant?: "default" | "carousel";
 };
 
-export function CocktailCard({ match, compact, showFavorite = true, variant = "default" }: Props) {
+export function CocktailCard({
+  match,
+  compact,
+  showFavorite = true,
+  showObscurity = false,
+  variant = "default",
+}: Props) {
   const { cocktail, canMake, missing, missingCount } = match;
   const { isFavorite, toggleFavorite, loaded } = useFavorites();
   const fav = loaded && isFavorite(cocktail.id);
@@ -47,7 +55,9 @@ export function CocktailCard({ match, compact, showFavorite = true, variant = "d
       <div className={`card-shine border-b border-[var(--border-subtle)] ${isCarousel ? "px-3.5 py-2.5" : "px-4 py-3"}`}>
         <div className="flex items-center justify-between gap-2">
           <DifficultyBadge difficulty={cocktail.difficulty} />
-          {canMake ? (
+          {showObscurity ? (
+            <ObscurityBadge score={cocktail.obscurityScore} compact />
+          ) : canMake ? (
             <span className="rounded-full bg-[var(--accent)]/15 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--accent)]">
               Ready
             </span>

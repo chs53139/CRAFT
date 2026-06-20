@@ -11,6 +11,22 @@ export type CocktailIngredient = {
 
 export type Difficulty = "easy" | "medium" | "hard";
 
+export type CocktailEra =
+  | "pre-prohibition"
+  | "golden-age"
+  | "midcentury"
+  | "contemporary"
+  | "tiki"
+  | "timeless";
+
+export type CocktailCollection =
+  | "modern-classic"
+  | "tiki"
+  | "historical"
+  | "rare"
+  | "experimental"
+  | "bartender-favorite";
+
 export type CocktailCategory =
   | "Sour"
   | "Spirit-Forward"
@@ -33,6 +49,12 @@ export type Cocktail = {
   difficulty: Difficulty;
   flavorProfile: string[];
   category: CocktailCategory | string;
+  era: CocktailEra;
+  collections: CocktailCollection[];
+  obscurityScore: number;
+  funFact: string;
+  method: string;
+  tags: string[];
   glassware: string;
   garnish: string;
   imageUrl: string;
@@ -75,4 +97,9 @@ export type RawCocktail = {
   ingredients: RawCocktailIngredient[];
   garnish: string[];
   preparation: string[];
+  movieAppearances?: Array<{
+    movie: string;
+    year: number;
+    note: string;
+  }>;
 };

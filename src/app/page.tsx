@@ -6,6 +6,8 @@ import { EmptyState } from "@/components/EmptyState";
 import { HorizontalCocktailRow } from "@/components/HorizontalCocktailRow";
 import { SkeletonGrid } from "@/components/LoadingState";
 import { StatPills } from "@/components/StatPills";
+import { SurpriseMe } from "@/components/SurpriseMe";
+import { getHiddenGems } from "@/lib/cocktail-discovery";
 import {
   cocktailCount,
   getBarSummary,
@@ -50,6 +52,7 @@ export default function HomePage() {
   const matches = matchCocktails(barIds);
   const tonight = matches.filter((m) => m.canMake);
   const oneAway = matches.filter((m) => m.missingCount === 1);
+  const hiddenGems = getHiddenGems(barIds, 10);
   const recommendation = getBestNextIngredient(barIds);
   const barIngredients = getIngredientsByIds(barIds);
 
@@ -84,6 +87,21 @@ export default function HomePage() {
           <BestNextBuy recommendation={recommendation} />
         </div>
       )}
+
+      {hiddenGems.length > 0 && (
+        <HorizontalCocktailRow
+          title="Hidden gems"
+          subtitle="Unusual pours your bar can make right now"
+          items={hiddenGems}
+          seeAllHref="/cocktails"
+          showObscurity
+          empty=""
+        />
+      )}
+
+      <div className="app-section">
+        <SurpriseMe barIds={barIds} />
+      </div>
 
       <HorizontalCocktailRow
         title="Almost there"

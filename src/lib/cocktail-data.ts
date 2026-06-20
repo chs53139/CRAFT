@@ -1,4 +1,5 @@
 import rawCocktails from "@/data/cocktails.json";
+import { enrichCocktail } from "@/lib/cocktail-enrichment";
 import { getCocktailImageUrl } from "@/lib/cocktail-images";
 import {
   Cocktail,
@@ -156,6 +157,8 @@ export function buildIngredientsFromCocktails(cocktails: RawCocktail[]): Ingredi
 }
 
 export function transformCocktail(raw: RawCocktail, index: number): Cocktail {
+  const enriched = enrichCocktail(raw, SOURCE);
+
   return {
     id: raw.slug,
     name: raw.name,
@@ -164,6 +167,12 @@ export function transformCocktail(raw: RawCocktail, index: number): Cocktail {
     difficulty: inferDifficulty(raw),
     flavorProfile: inferFlavorProfile(raw),
     category: raw.family as CocktailCategory,
+    era: enriched.era,
+    collections: enriched.collections,
+    obscurityScore: enriched.obscurityScore,
+    funFact: enriched.funFact,
+    method: enriched.method,
+    tags: enriched.tags,
     glassware: raw.glass,
     garnish: raw.garnish.length > 0 ? raw.garnish.join(", ") : "None",
     imageUrl: getCocktailImageUrl(raw.slug),

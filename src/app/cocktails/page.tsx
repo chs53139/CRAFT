@@ -3,16 +3,20 @@
 import { useMemo, useState } from "react";
 import { BestNextBuy } from "@/components/BestNextBuy";
 import { CocktailSection } from "@/components/CocktailSection";
+import { CollectionFilter } from "@/components/CollectionFilter";
 import { EmptyState } from "@/components/EmptyState";
 import { ErrorBanner } from "@/components/ErrorBanner";
 import { MenuPageSkeleton } from "@/components/LoadingState";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { SearchField } from "@/components/SearchField";
+import { SurpriseMe } from "@/components/SurpriseMe";
+import { getHiddenGems } from "@/lib/cocktail-discovery";
 import {
   filterMatchesBySearch,
   getBestNextIngredient,
   matchCocktails,
 } from "@/lib/cocktail-matching";
+import { CocktailCollection } from "@/lib/types";
 import { useMyBar } from "@/hooks/use-my-bar";
 
 const SECTION_LIMIT = 24;
@@ -29,12 +33,17 @@ function SectionTruncation({ shown, total }: { shown: number; total: number }) {
 export default function CocktailsPage() {
   const { barIds, loaded, error, clearError } = useMyBar();
   const [search, setSearch] = useState("");
+  const [collection, setCollection] = useState<"all" | CocktailCollection>("all");
 
   const allMatches = useMemo(() => matchCocktails(barIds), [barIds]);
-  const filteredMatches = useMemo(
+  const searchedMatches = useMemo(
     () => filterMatchesBySearch(allMatches, search),
     [allMatches, search]
   );
+  const filteredMatches = useMemo(() => {
+    if (collection === "all") return searchedMatches;
+    return searchedMatches.filter((m) => m.cocktail.collections.includes(collection));
+  }, [searchedMatches, collection]);
 
   if (!loaded) {
     return <MenuPageSkeleton />;
@@ -45,6 +54,9 @@ export default function CocktailsPage() {
   const twoAway = filteredMatches.filter((m) => m.missingCount === 2);
   const threeAway = filteredMatches.filter((m) => m.missingCount === 3);
   const furtherAway = filteredMatches.filter((m) => m.missingCount >= 4);
+  const hiddenGems = getHiddenGems(barIds, 12).filter(
+    (m) => collection === "all" || m.cocktail.collections.includes(collection)
+  );
   const recommendation = getBestNextIngredient(barIds);
   const searchActive = search.trim().length > 0;
   const noSearchResults =
@@ -85,14 +97,18 @@ export default function CocktailsPage() {
           <SearchField
             value={search}
             onChange={setSearch}
-            placeholder="Search cocktails or ingredients…"
+            placeholder="Search cocktails, eras, or collections…"
           />
+
+          <div className="app-section">
+            <CollectionFilter value={collection} onChange={setCollection} />
+          </div>
 
           {noSearchResults ? (
             <div className="app-section">
               <EmptyState
                 title={`No matches for “${search.trim()}”`}
-                description="Try a cocktail name, spirit, or flavor — like gin, sour, or Negroni."
+                description="Try a cocktail name, spirit, flavor, or collection."
                 icon="🔍"
               />
             </div>
@@ -106,10 +122,20 @@ export default function CocktailsPage() {
               />
               <SectionTruncation shown={SECTION_LIMIT} total={tonight.length} />
 
-              {recommendation && (
+              {recommendation && collection === "all" && (
                 <div className="app-section">
                   <BestNextBuy recommendation={recommendation} />
                 </div>
+              )}
+
+              {hiddenGems.length > 0 && (
+                <CocktailSection
+                  title="Hidden gems"
+                  subtitle="Unusual pours you can make now"
+                  items={hiddenGems}
+                  showObscurity
+                  empty=""
+                />
               )}
 
               <CocktailSection
@@ -149,6 +175,12 @@ export default function CocktailsPage() {
                     </p>
                   )}
                 </>
+              )}
+
+              {collection === "all" && (
+                <div className="app-section">
+                  <SurpriseMe barIds={barIds} />
+                </div>
               )}
             </>
           )}

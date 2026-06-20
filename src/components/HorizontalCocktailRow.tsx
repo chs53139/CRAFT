@@ -8,6 +8,7 @@ type Props = {
   items: CocktailMatch[];
   seeAllHref?: string;
   empty?: string;
+  showObscurity?: boolean;
 };
 
 export function HorizontalCocktailRow({
@@ -16,6 +17,7 @@ export function HorizontalCocktailRow({
   items,
   seeAllHref,
   empty,
+  showObscurity,
 }: Props) {
   return (
     <section className="app-section">
@@ -37,7 +39,7 @@ export function HorizontalCocktailRow({
         <div className="carousel-track">
           {items.map((match) => (
             <div key={match.cocktail.id} className="carousel-item">
-              <CocktailCard match={match} compact variant="carousel" />
+              <CocktailCard match={match} compact variant="carousel" showObscurity={showObscurity} />
             </div>
           ))}
         </div>

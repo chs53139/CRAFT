@@ -4,11 +4,14 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { CocktailImage } from "@/components/CocktailImage";
+import { CollectionTags } from "@/components/CollectionTags";
 import { DifficultyBadge } from "@/components/DifficultyBadge";
 import { EmptyState } from "@/components/EmptyState";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { FlavorTags } from "@/components/FlavorTags";
+import { ObscurityBadge } from "@/components/ObscurityBadge";
 import { PageLoader } from "@/components/LoadingState";
+import { ERA_LABELS } from "@/lib/cocktail-curation";
 import {
   getCocktailById,
   getIngredientById,
@@ -86,19 +89,42 @@ export default function CocktailDetailPage() {
       <div className="app-screen pt-5">
         <div className="flex flex-wrap items-center gap-2">
           <DifficultyBadge difficulty={cocktail.difficulty} />
+          <ObscurityBadge score={cocktail.obscurityScore} compact />
           <span className="rounded-full border border-[var(--border)] px-3 py-1 text-[10px] uppercase tracking-wider text-[var(--muted)]">
             {cocktail.category}
           </span>
+          <span className="rounded-full border border-[var(--border)] px-3 py-1 text-[10px] uppercase tracking-wider text-[var(--muted)]">
+            {ERA_LABELS[cocktail.era] ?? cocktail.era}
+          </span>
         </div>
-        <div className="mt-3">
+        <div className="mt-3 space-y-3">
           <FlavorTags flavors={cocktail.flavorProfile} />
+          <CollectionTags collections={cocktail.collections} limit={4} />
         </div>
 
         <h1 className="screen-title-large mt-5">{cocktail.name}</h1>
         <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">{cocktail.description}</p>
         <p className="mt-2 text-sm italic text-[var(--accent-dim)]">{cocktail.cheekyLine}</p>
 
-        <div className="mt-6 grid gap-3">
+        <div className="premium-card mt-6 px-4 py-4">
+          <p className="eyebrow text-[var(--accent-dim)]">History & fun fact</p>
+          <p className="mt-2 text-sm leading-relaxed text-[var(--foreground)]">{cocktail.funFact}</p>
+        </div>
+
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          <div className="premium-card px-4 py-3.5">
+            <p className="eyebrow text-[var(--accent-dim)]">Method</p>
+            <p className="mt-1.5 text-sm text-[var(--foreground)]">{cocktail.method}</p>
+          </div>
+          <div className="premium-card px-4 py-3.5">
+            <p className="eyebrow text-[var(--accent-dim)]">Obscurity</p>
+            <div className="mt-2">
+              <ObscurityBadge score={cocktail.obscurityScore} />
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3">
           <div className="premium-card px-4 py-3.5">
             <p className="eyebrow text-[var(--accent-dim)]">Glassware</p>
             <p className="mt-1.5 text-sm text-[var(--foreground)]">{cocktail.glassware}</p>

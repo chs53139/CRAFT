@@ -112,15 +112,25 @@ export default function BarPage() {
           />
         </div>
       ) : (
-        <Link href="/cocktails" className="account-row mt-4">
-          <div>
-            <p className="text-sm font-semibold text-[var(--foreground)]">
-              {tonightCount} cocktail{tonightCount !== 1 ? "s" : ""} ready
-            </p>
-            <p className="mt-0.5 text-xs text-[var(--muted)]">View Tonight tab</p>
-          </div>
-          <span className="text-[var(--accent)]">→</span>
-        </Link>
+        <>
+          <Link href="/cocktails" className="account-row mt-4">
+            <div>
+              <p className="text-sm font-semibold text-[var(--foreground)]">
+                {tonightCount} cocktail{tonightCount !== 1 ? "s" : ""} ready
+              </p>
+              <p className="mt-0.5 text-xs text-[var(--muted)]">View Tonight tab</p>
+            </div>
+            <span className="text-[var(--accent)]">→</span>
+          </Link>
+
+          <Link href="/mixologist" className="account-row mt-3">
+            <div>
+              <p className="text-sm font-semibold text-[var(--foreground)]">AI Mixologist</p>
+              <p className="mt-0.5 text-xs text-[var(--muted)]">Invent a drink from your shelf</p>
+            </div>
+            <span className="text-[var(--accent)]">→</span>
+          </Link>
+        </>
       )}
 
       {recommendation && barIds.length > 0 && (

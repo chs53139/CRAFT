@@ -103,6 +103,18 @@ export default function HomePage() {
         <SurpriseMe barIds={barIds} />
       </div>
 
+      <div className="app-section">
+        <Link href="/mixologist" className="account-row">
+          <div>
+            <p className="text-sm font-semibold text-[var(--foreground)]">AI Mixologist</p>
+            <p className="mt-0.5 text-xs text-[var(--muted)]">
+              Select ingredients and invent a balanced pour
+            </p>
+          </div>
+          <span className="text-[var(--accent)]">→</span>
+        </Link>
+      </div>
+
       <HorizontalCocktailRow
         title="Almost there"
         subtitle="One ingredient away"

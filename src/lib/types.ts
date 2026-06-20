@@ -111,6 +111,7 @@ export type RawCocktail = {
 export type CocktailReview = {
   id: string;
   cocktailId: string;
+  userId?: string;
   rating: number;
   text: string;
   wouldMakeAgain: boolean;

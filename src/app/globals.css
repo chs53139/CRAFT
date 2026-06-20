@@ -1388,6 +1388,15 @@ h3 {
   padding-top: 1.125rem;
 }
 
+.review-sign-in {
+  padding-top: 1.125rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.review-empty {
+  padding-top: 0.5rem;
+}
+
 .review-form-title {
   font-family: var(--font-display), Georgia, serif;
   font-size: 1.25rem;

@@ -137,6 +137,48 @@ h3 {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
+.app-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  padding: calc(0.625rem + env(safe-area-inset-top, 0px)) 1rem 0.75rem;
+  border-bottom: 1px solid var(--border-subtle);
+  background: rgba(5, 5, 6, 0.82);
+  backdrop-filter: blur(16px);
+}
+
+.app-logo {
+  display: block;
+  min-width: 0;
+}
+
+.app-logo-mark {
+  display: block;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.375rem;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  color: var(--foreground);
+}
+
+.app-logo-tagline {
+  margin-top: 0.125rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .app-logo:hover .app-logo-tagline,
+  .app-logo:focus-visible .app-logo-tagline {
+    color: var(--accent-dim);
+  }
+}
+
 .app-screen {
   padding: 0.75rem 1rem 1.5rem;
 }

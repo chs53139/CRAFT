@@ -5,7 +5,6 @@ import { BestNextBuy } from "@/components/BestNextBuy";
 import { EmptyState } from "@/components/EmptyState";
 import { HorizontalCocktailRow } from "@/components/HorizontalCocktailRow";
 import { SkeletonGrid } from "@/components/LoadingState";
-import { ScreenHeader } from "@/components/ScreenHeader";
 import { StatPills } from "@/components/StatPills";
 import {
   cocktailCount,
@@ -36,7 +35,6 @@ export default function HomePage() {
   if (barIds.length === 0) {
     return (
       <div className="app-screen">
-        <ScreenHeader title="Home" subtitle="Your personal bar dashboard" large />
         <EmptyState
           title="Stock your bar"
           description="Add what you own and CRAFT will show you exactly what you can pour tonight."
@@ -57,11 +55,9 @@ export default function HomePage() {
 
   return (
     <div className="app-screen animate-fade-in">
-      <ScreenHeader
-        title="Home"
-        subtitle={`${barIngredients.length} bottles on your shelf`}
-        large
-      />
+      <p className="screen-subtitle mb-4">
+        {barIngredients.length} bottles on your shelf
+      </p>
 
       <StatPills
         stats={[

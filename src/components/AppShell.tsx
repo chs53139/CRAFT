@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { AppTopBar } from "./AppTopBar";
 import { BottomNav } from "./BottomNav";
 
 function shouldHideNav(pathname: string) {
@@ -16,6 +17,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="app-frame">
+      {showNav && <AppTopBar />}
       <main className={showNav ? "app-main" : "app-main app-main-full"}>{children}</main>
       {showNav && <BottomNav />}
     </div>

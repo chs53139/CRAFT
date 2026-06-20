@@ -59,6 +59,9 @@ export function filterMatchesBySearch(
       m.cocktail.category.toLowerCase().includes(q) ||
       m.cocktail.flavorProfile.some((f) => f.includes(q)) ||
       m.cocktail.collections.some((c) => c.replace(/-/g, " ").includes(q)) ||
+      m.cocktail.regionOfOrigin.toLowerCase().includes(q) ||
+      m.cocktail.sourceAttribution.toLowerCase().includes(q) ||
+      String(m.cocktail.yearInvented).includes(q) ||
       m.cocktail.funFact.toLowerCase().includes(q) ||
       m.missing.some((ing) => ing.name.toLowerCase().includes(q))
   );

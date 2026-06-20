@@ -1,4 +1,5 @@
 import rawCocktails from "@/data/cocktails.json";
+import craftOriginals from "@/data/craft-originals.json";
 import { enrichCocktail } from "@/lib/cocktail-enrichment";
 import { getCocktailImageUrl } from "@/lib/cocktail-images";
 import {
@@ -9,7 +10,7 @@ import {
   RawCocktail,
 } from "@/lib/types";
 
-const SOURCE = rawCocktails as RawCocktail[];
+const SOURCE = [...(rawCocktails as RawCocktail[]), ...(craftOriginals as RawCocktail[])];
 
 const familyFlavors: Record<string, string[]> = {
   Sour: ["citrus", "bright", "balanced"],
@@ -170,6 +171,10 @@ export function transformCocktail(raw: RawCocktail, index: number): Cocktail {
     era: enriched.era,
     collections: enriched.collections,
     obscurityScore: enriched.obscurityScore,
+    popularityScore: enriched.popularityScore,
+    yearInvented: enriched.yearInvented,
+    regionOfOrigin: enriched.regionOfOrigin,
+    sourceAttribution: enriched.sourceAttribution,
     funFact: enriched.funFact,
     method: enriched.method,
     tags: enriched.tags,

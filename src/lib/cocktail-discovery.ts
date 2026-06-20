@@ -1,6 +1,7 @@
-import { matchCocktails } from "@/lib/cocktail-matching";
+import { cocktails, matchCocktails } from "@/lib/cocktail-matching";
+import { DISCOVER_COLLECTIONS } from "@/lib/cocktail-curation";
 import { matchesMood, matchesRarity } from "@/lib/cocktail-enrichment";
-import { CocktailCollection, CocktailMatch, Difficulty } from "@/lib/types";
+import { Cocktail, CocktailCollection, CocktailMatch, Difficulty } from "@/lib/types";
 
 export type SurpriseFilters = {
   mood?: string;
@@ -22,7 +23,7 @@ export function getHiddenGems(barIds: string[], limit = 10): CocktailMatch[] {
     .filter(
       (m) =>
         m.cocktail.obscurityScore >= HIDDEN_GEM_MIN_SCORE ||
-        m.cocktail.collections.includes("rare") ||
+        m.cocktail.collections.includes("hidden-gem") ||
         m.cocktail.collections.includes("experimental")
     )
     .sort((a, b) => {
@@ -119,4 +120,42 @@ export function getCollectionMatches(
     .filter((m) => m.cocktail.collections.includes(collection))
     .sort((a, b) => a.cocktail.name.localeCompare(b.cocktail.name))
     .slice(0, limit);
+}
+
+export function getCatalogueByCollection(collection: CocktailCollection): Cocktail[] {
+  return cocktails
+    .filter((cocktail) => cocktail.collections.includes(collection))
+    .sort((a, b) => b.popularityScore - a.popularityScore || a.name.localeCompare(b.name));
+}
+
+export function getCollectionCounts(): Record<CocktailCollection, number> {
+  const counts = Object.fromEntries(
+    DISCOVER_COLLECTIONS.map((id) => [id, 0])
+  ) as Record<CocktailCollection, number>;
+
+  for (const cocktail of cocktails) {
+    for (const collection of cocktail.collections) {
+      if (collection in counts) counts[collection] += 1;
+    }
+  }
+
+  return counts;
+}
+
+export function searchCatalogue(query: string, collection?: CocktailCollection): Cocktail[] {
+  const q = query.trim().toLowerCase();
+  const pool = collection ? getCatalogueByCollection(collection) : cocktails;
+
+  if (!q) return pool;
+
+  return pool.filter(
+    (cocktail) =>
+      cocktail.name.toLowerCase().includes(q) ||
+      cocktail.category.toLowerCase().includes(q) ||
+      cocktail.regionOfOrigin.toLowerCase().includes(q) ||
+      cocktail.sourceAttribution.toLowerCase().includes(q) ||
+      cocktail.collections.some((c) => c.replace(/-/g, " ").includes(q)) ||
+      cocktail.flavorProfile.some((f) => f.includes(q)) ||
+      String(cocktail.yearInvented).includes(q)
+  );
 }

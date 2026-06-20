@@ -5,12 +5,12 @@ import { CocktailCollection } from "@/lib/types";
 
 const COLLECTIONS: Array<{ id: "all" | CocktailCollection; label: string }> = [
   { id: "all", label: "All" },
-  { id: "modern-classic", label: COLLECTION_LABELS["modern-classic"] },
-  { id: "tiki", label: COLLECTION_LABELS.tiki },
-  { id: "historical", label: COLLECTION_LABELS.historical },
-  { id: "rare", label: COLLECTION_LABELS.rare },
-  { id: "experimental", label: COLLECTION_LABELS.experimental },
-  { id: "bartender-favorite", label: "Bartender picks" },
+  { id: "verified-classic", label: "Classics" },
+  { id: "hidden-gem", label: "Hidden Gems" },
+  { id: "historical", label: "Historical" },
+  { id: "tiki", label: "Tiki" },
+  { id: "experimental", label: "Experimental" },
+  { id: "craft-original", label: "CRAFT" },
 ];
 
 type Props = {
@@ -33,4 +33,8 @@ export function CollectionFilter({ value, onChange }: Props) {
       ))}
     </div>
   );
+}
+
+export function getCollectionLabel(id: CocktailCollection) {
+  return COLLECTION_LABELS[id];
 }

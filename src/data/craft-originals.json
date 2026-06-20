@@ -1,0 +1,123 @@
+[
+  {
+    "name": "The Ember Line",
+    "slug": "craft-ember-line",
+    "glass": "Rocks",
+    "family": "Spirit-Forward",
+    "method": "Stirred",
+    "tags": ["craft-original"],
+    "ingredients": [
+      { "ref": "rye-whiskey", "name": "Rye whiskey", "type": "spirit", "amount": 60, "unit": "ml" },
+      { "ref": "sweet-vermouth", "name": "Sweet vermouth", "type": "fortified-wine", "amount": 22.5, "unit": "ml" },
+      { "ref": "maraschino-liqueur", "name": "Maraschino liqueur", "type": "liqueur", "amount": 7.5, "unit": "ml" },
+      { "ref": "angostura-bitters", "name": "Angostura bitters", "type": "bitters", "amount": 2, "unit": "dash" }
+    ],
+    "garnish": ["Orange twist"],
+    "preparation": [
+      "Stir all ingredients with ice until chilled.",
+      "Strain over a large ice cube in a rocks glass.",
+      "Express an orange twist over the surface and drop it in."
+    ]
+  },
+  {
+    "name": "Velvet Compass",
+    "slug": "craft-velvet-compass",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": ["craft-original"],
+    "ingredients": [
+      { "ref": "gin", "name": "Gin", "type": "spirit", "amount": 45, "unit": "ml" },
+      { "ref": "lemon-juice", "name": "Lemon juice", "type": "juice", "amount": 22.5, "unit": "ml" },
+      { "ref": "simple-syrup", "name": "Simple syrup", "type": "syrup", "amount": 15, "unit": "ml" },
+      { "ref": "green-chartreuse", "name": "Green Chartreuse", "type": "liqueur", "amount": 7.5, "unit": "ml" }
+    ],
+    "garnish": ["Lemon twist"],
+    "preparation": [
+      "Shake all ingredients hard with ice.",
+      "Fine-strain into a chilled coupe.",
+      "Garnish with a lemon twist."
+    ]
+  },
+  {
+    "name": "Copper Orchard",
+    "slug": "craft-copper-orchard",
+    "glass": "Highball",
+    "family": "Highball",
+    "method": "Built",
+    "tags": ["craft-original"],
+    "ingredients": [
+      { "ref": "bourbon", "name": "Bourbon", "type": "spirit", "amount": 45, "unit": "ml" },
+      { "ref": "apple-juice", "name": "Apple juice", "type": "juice", "amount": 30, "unit": "ml" },
+      { "ref": "ginger-beer", "name": "Ginger beer", "type": "mixer", "amount": 90, "unit": "ml" },
+      { "ref": "lime-juice", "name": "Lime juice", "type": "juice", "amount": 15, "unit": "ml" }
+    ],
+    "garnish": ["Apple slice", "lime wheel"],
+    "preparation": [
+      "Build bourbon and lime juice in a highball glass over ice.",
+      "Top with apple juice and ginger beer.",
+      "Stir gently once and garnish."
+    ]
+  },
+  {
+    "name": "Midnight Saber",
+    "slug": "craft-midnight-saber",
+    "glass": "Coupe",
+    "family": "Spirit-Forward",
+    "method": "Stirred",
+    "tags": ["craft-original"],
+    "ingredients": [
+      { "ref": "mezcal", "name": "Mezcal", "type": "spirit", "amount": 45, "unit": "ml" },
+      { "ref": "campari", "name": "Campari", "type": "liqueur", "amount": 22.5, "unit": "ml" },
+      { "ref": "sweet-vermouth", "name": "Sweet vermouth", "type": "fortified-wine", "amount": 22.5, "unit": "ml" }
+    ],
+    "garnish": ["Grapefruit twist"],
+    "preparation": [
+      "Stir ingredients with ice until cold.",
+      "Strain into a chilled coupe.",
+      "Flame or express a grapefruit twist over the top."
+    ]
+  },
+  {
+    "name": "Tidepool Club",
+    "slug": "craft-tidepool-club",
+    "glass": "Collins",
+    "family": "Tiki",
+    "method": "Shaken",
+    "tags": ["craft-original", "tiki"],
+    "ingredients": [
+      { "ref": "rum-white", "name": "White rum", "type": "spirit", "amount": 45, "unit": "ml" },
+      { "ref": "lime-juice", "name": "Lime juice", "type": "juice", "amount": 30, "unit": "ml" },
+      { "ref": "orgeat", "name": "Orgeat", "type": "syrup", "amount": 15, "unit": "ml" },
+      { "ref": "falernum", "name": "Falernum", "type": "liqueur", "amount": 15, "unit": "ml" },
+      { "ref": "club-soda", "name": "Club soda", "type": "mixer", "amount": 60, "unit": "ml" }
+    ],
+    "garnish": ["Mint sprig", "nutmeg"],
+    "preparation": [
+      "Shake rum, lime, orgeat, and falernum with ice.",
+      "Strain into a Collins glass over ice and top with soda.",
+      "Garnish with mint and grated nutmeg."
+    ]
+  },
+  {
+    "name": "Laboratory No. 7",
+    "slug": "craft-laboratory-no-7",
+    "glass": "Nick & Nora",
+    "family": "Other",
+    "method": "Stirred",
+    "tags": ["craft-original", "experimental"],
+    "ingredients": [
+      { "ref": "gin", "name": "Gin", "type": "spirit", "amount": 45, "unit": "ml" },
+      { "ref": "dry-vermouth", "name": "Dry vermouth", "type": "fortified-wine", "amount": 15, "unit": "ml" },
+      { "ref": "elderflower-liqueur", "name": "Elderflower liqueur", "type": "liqueur", "amount": 15, "unit": "ml" },
+      { "ref": "absinthe", "name": "Absinthe", "type": "spirit", "amount": 1, "unit": "dash" },
+      { "ref": "orange-bitters", "name": "Orange bitters", "type": "bitters", "amount": 2, "unit": "dash" }
+    ],
+    "garnish": ["Edible flower or lemon twist"],
+    "preparation": [
+      "Rinse a chilled glass with absinthe and discard excess.",
+      "Stir remaining ingredients with ice and strain into the glass.",
+      "Garnish delicately — this one is meant to feel impossible on paper."
+    ]
+  }
+]

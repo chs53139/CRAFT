@@ -113,6 +113,25 @@ export default function CocktailDetailPage() {
 
         <div className="mt-4 grid grid-cols-2 gap-3">
           <div className="premium-card px-4 py-3.5">
+            <p className="eyebrow text-[var(--accent-dim)]">Year</p>
+            <p className="mt-1.5 text-sm text-[var(--foreground)]">{cocktail.yearInvented}</p>
+          </div>
+          <div className="premium-card px-4 py-3.5">
+            <p className="eyebrow text-[var(--accent-dim)]">Region</p>
+            <p className="mt-1.5 text-sm text-[var(--foreground)]">{cocktail.regionOfOrigin}</p>
+          </div>
+          <div className="premium-card px-4 py-3.5">
+            <p className="eyebrow text-[var(--accent-dim)]">Source</p>
+            <p className="mt-1.5 text-sm text-[var(--foreground)]">{cocktail.sourceAttribution}</p>
+          </div>
+          <div className="premium-card px-4 py-3.5">
+            <p className="eyebrow text-[var(--accent-dim)]">Popularity</p>
+            <p className="mt-1.5 text-sm text-[var(--foreground)]">{cocktail.popularityScore}/100</p>
+          </div>
+        </div>
+
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          <div className="premium-card px-4 py-3.5">
             <p className="eyebrow text-[var(--accent-dim)]">Method</p>
             <p className="mt-1.5 text-sm text-[var(--foreground)]">{cocktail.method}</p>
           </div>

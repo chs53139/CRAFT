@@ -20,12 +20,12 @@ export type CocktailEra =
   | "timeless";
 
 export type CocktailCollection =
-  | "modern-classic"
-  | "tiki"
+  | "verified-classic"
+  | "hidden-gem"
   | "historical"
-  | "rare"
+  | "tiki"
   | "experimental"
-  | "bartender-favorite";
+  | "craft-original";
 
 export type CocktailCategory =
   | "Sour"
@@ -52,6 +52,10 @@ export type Cocktail = {
   era: CocktailEra;
   collections: CocktailCollection[];
   obscurityScore: number;
+  popularityScore: number;
+  yearInvented: number;
+  regionOfOrigin: string;
+  sourceAttribution: string;
   funFact: string;
   method: string;
   tags: string[];

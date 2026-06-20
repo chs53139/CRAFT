@@ -1,3 +1,5 @@
+import { CocktailCollection } from "@/lib/types";
+
 /** Widely known drinks — lower obscurity scores */
 export const WELL_KNOWN_SLUGS = new Set([
   "margarita",
@@ -139,14 +141,32 @@ export const FUN_FACTS: Record<string, string> = {
     "Equal parts mezcal, Aperol, yellow Chartreuse, and lime — Joaquín Simó's 2011 hit.",
 };
 
-export const COLLECTION_LABELS: Record<string, string> = {
-  "modern-classic": "Modern Classic",
-  tiki: "Tiki",
+export const COLLECTION_LABELS: Record<CocktailCollection, string> = {
+  "verified-classic": "Verified Classic",
+  "hidden-gem": "Hidden Gem",
   historical: "Historical",
-  rare: "Rare Find",
+  tiki: "Tiki",
   experimental: "Experimental",
-  "bartender-favorite": "Bartender Favorite",
+  "craft-original": "CRAFT Original",
 };
+
+export const COLLECTION_DESCRIPTIONS: Record<CocktailCollection, string> = {
+  "verified-classic": "Canon-worthy pours every bar should know.",
+  "hidden-gem": "Under-the-radar drinks worth hunting down.",
+  historical: "Pre-Prohibition and Golden Age legends.",
+  tiki: "Tropical escapism, rum, and elaborate builds.",
+  experimental: "Unusual ratios, rare bottles, bold ideas.",
+  "craft-original": "Recipes created exclusively for CRAFT.",
+};
+
+export const DISCOVER_COLLECTIONS: CocktailCollection[] = [
+  "verified-classic",
+  "hidden-gem",
+  "historical",
+  "tiki",
+  "experimental",
+  "craft-original",
+];
 
 export const ERA_LABELS: Record<string, string> = {
   "pre-prohibition": "Pre-Prohibition",

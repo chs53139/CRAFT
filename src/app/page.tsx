@@ -115,6 +115,18 @@ export default function HomePage() {
       />
 
       <div className="app-section">
+        <Link href="/discover" className="account-row">
+          <div>
+            <p className="text-sm font-semibold text-[var(--foreground)]">Discover collections</p>
+            <p className="mt-0.5 text-xs text-[var(--muted)]">
+              Classics, hidden gems, tiki, and CRAFT originals
+            </p>
+          </div>
+          <span className="text-[var(--accent)]">→</span>
+        </Link>
+      </div>
+
+      <div className="app-section">
         <Link href="/bar" className="account-row">
           <div>
             <p className="text-sm font-semibold text-[var(--foreground)]">Manage bar</p>

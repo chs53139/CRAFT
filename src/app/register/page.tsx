@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import { getSupabaseConfigError, humanizeAuthError } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/client";
 
 export default function RegisterPage() {
@@ -14,10 +15,22 @@ export default function RegisterPage() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    const configError = getSupabaseConfigError();
+    if (configError) setError(configError);
+  }, []);
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
     setMessage("");
+
+    const configError = getSupabaseConfigError();
+    if (configError) {
+      setError(configError);
+      return;
+    }
+
     setLoading(true);
 
     const supabase = createClient();
@@ -26,14 +39,13 @@ export default function RegisterPage() {
       password,
       options: {
         data: { display_name: name.trim() || null },
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     });
 
     setLoading(false);
 
     if (signUpError) {
-      setError(signUpError.message);
+      setError(humanizeAuthError(signUpError.message));
       return;
     }
 
@@ -44,7 +56,7 @@ export default function RegisterPage() {
     }
 
     setMessage(
-      "Check your email to confirm your account, then sign in. (Disable email confirmation in Supabase for instant access during development.)"
+      "Check your email to confirm your account, then sign in. (In Supabase → Authentication → Email, turn off Confirm email for instant access.)"
     );
   }
 

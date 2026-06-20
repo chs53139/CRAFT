@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, Suspense, useState } from "react";
+import { getSupabaseConfigError, humanizeAuthError } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/client";
 
 function LoginForm() {
@@ -23,6 +24,12 @@ function LoginForm() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
+    const configError = getSupabaseConfigError();
+    if (configError) {
+      setError(configError);
+      return;
+    }
+
     setLoading(true);
 
     const supabase = createClient();
@@ -34,7 +41,7 @@ function LoginForm() {
     setLoading(false);
 
     if (signInError) {
-      setError(signInError.message);
+      setError(humanizeAuthError(signInError.message));
       return;
     }
 

@@ -148,7 +148,7 @@ function DiscoverContent() {
       ) : (
         <div className="list-card-grid">
           {visible.map((match) => (
-            <CocktailCard key={match.cocktail.id} match={match} showObscurity compact />
+            <CocktailCard key={match.cocktail.id} match={match} showObscurity showShare compact />
           ))}
         </div>
       )}

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FlavorTags } from "@/components/FlavorTags";
+import { ShareInventionButton } from "@/components/ShareCocktailButton";
 import { MixologistInvention } from "@/lib/mixologist/types";
 
 const SOURCE_LABELS = {
@@ -38,9 +39,12 @@ export function MixologistResult({ invention, onTryAgain, onSave, saved, canSave
           <h3 className="mixologist-result-title">{invention.name}</h3>
           <p className="mixologist-result-tagline">{invention.tagline}</p>
         </div>
-        <div className="mixologist-confidence" aria-label={`Confidence ${invention.confidence} percent`}>
-          <span className="mixologist-confidence-value">{invention.confidence}</span>
-          <span className="mixologist-confidence-label">Confidence</span>
+        <div className="flex items-start gap-2">
+          <ShareInventionButton invention={invention} compact className="h-11 w-11" />
+          <div className="mixologist-confidence" aria-label={`Confidence ${invention.confidence} percent`}>
+            <span className="mixologist-confidence-value">{invention.confidence}</span>
+            <span className="mixologist-confidence-label">Confidence</span>
+          </div>
         </div>
       </div>
 

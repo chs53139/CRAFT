@@ -39,7 +39,13 @@ export function HorizontalCocktailRow({
         <div className="carousel-track">
           {items.map((match) => (
             <div key={match.cocktail.id} className="carousel-item">
-              <CocktailCard match={match} compact variant="carousel" showObscurity={showObscurity} />
+              <CocktailCard
+                match={match}
+                compact
+                variant="carousel"
+                showObscurity={showObscurity}
+                showShare={showObscurity}
+              />
             </div>
           ))}
         </div>

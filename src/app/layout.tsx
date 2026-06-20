@@ -4,6 +4,7 @@ import { AppShell } from "@/components/AppShell";
 import { Providers } from "@/components/Providers";
 import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
 import { CRAFT_DESCRIPTION } from "@/lib/brand";
+import { buildDefaultCraftOpenGraph } from "@/lib/share-metadata";
 import "./globals.css";
 
 const display = Cormorant_Garamond({
@@ -28,6 +29,13 @@ export const metadata: Metadata = {
     template: "%s · CRAFT",
   },
   description: CRAFT_DESCRIPTION,
+  openGraph: buildDefaultCraftOpenGraph(),
+  twitter: {
+    card: "summary_large_image",
+    title: "CRAFT",
+    description: CRAFT_DESCRIPTION,
+    images: ["/icons/icon-512.png"],
+  },
   manifest: "/manifest.json",
   icons: {
     icon: [

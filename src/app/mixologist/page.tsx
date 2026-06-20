@@ -7,6 +7,7 @@ import { ErrorBanner } from "@/components/ErrorBanner";
 import { IngredientChip } from "@/components/IngredientChip";
 import { MixologistResult } from "@/components/MixologistResult";
 import { PageLoader } from "@/components/LoadingState";
+import { ShareInventionButton } from "@/components/ShareCocktailButton";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { InventDrinkResponse, MixologistInvention } from "@/lib/mixologist/types";
 import { getIngredientsByIds } from "@/lib/cocktail-matching";
@@ -156,19 +157,22 @@ export default function MixologistPage() {
                 {inventions.slice(0, 5).map((item) => (
                   <div key={item.id} className="premium-card p-4">
                     <div className="flex items-start justify-between gap-3">
-                      <div>
+                      <div className="min-w-0 flex-1">
                         <p className="font-[family-name:var(--font-display)] text-lg text-[var(--foreground)]">
                           {item.name}
                         </p>
                         <p className="mt-1 text-sm text-[var(--muted)]">{item.tagline}</p>
                       </div>
-                      <button
-                        type="button"
-                        className="text-xs text-[var(--muted)]"
-                        onClick={() => removeInvention(item.id)}
-                      >
-                        Remove
-                      </button>
+                      <div className="flex shrink-0 items-center gap-2">
+                        <ShareInventionButton invention={item} compact className="h-9 w-9" />
+                        <button
+                          type="button"
+                          className="text-xs text-[var(--muted)]"
+                          onClick={() => removeInvention(item.id)}
+                        >
+                          Remove
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}

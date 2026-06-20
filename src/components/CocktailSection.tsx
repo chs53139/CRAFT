@@ -30,7 +30,13 @@ export function CocktailSection({
       ) : (
         <div className="list-card-grid mt-4">
           {items.map((match) => (
-            <CocktailCard key={match.cocktail.id} match={match} compact={compact} showObscurity={showObscurity} />
+            <CocktailCard
+              key={match.cocktail.id}
+              match={match}
+              compact={compact}
+              showObscurity={showObscurity}
+              showShare={showObscurity}
+            />
           ))}
         </div>
       )}

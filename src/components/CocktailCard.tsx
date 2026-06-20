@@ -10,6 +10,7 @@ import {
 import { CocktailImage } from "./CocktailImage";
 import { DifficultyBadge } from "./DifficultyBadge";
 import { AlcoholBadge } from "./AlcoholBadge";
+import { ShareCocktailButton } from "@/components/ShareCocktailButton";
 import { FavoriteButton } from "./FavoriteButton";
 import { MatchQualityBadge } from "./MatchQualityBadge";
 import { ObscurityBadge } from "./ObscurityBadge";
@@ -20,6 +21,7 @@ type Props = {
   compact?: boolean;
   showFavorite?: boolean;
   showObscurity?: boolean;
+  showShare?: boolean;
   variant?: "default" | "carousel";
 };
 
@@ -28,6 +30,7 @@ export function CocktailCard({
   compact,
   showFavorite = true,
   showObscurity = false,
+  showShare = false,
   variant = "default",
 }: Props) {
   const { cocktail, missing, missingCount, matchGroup, substitutions } = match;
@@ -45,13 +48,22 @@ export function CocktailCard({
         isCarousel ? "premium-card-carousel" : ""
       }`}
     >
-      {showFavorite && loaded && (
-        <div className="absolute right-2.5 top-2.5 z-10">
-          <FavoriteButton
-            active={fav}
-            onToggle={() => toggleFavorite(cocktail.id)}
-            className={isCarousel ? "h-9 w-9" : undefined}
-          />
+      {(showFavorite || showShare) && loaded && (
+        <div className="absolute right-2.5 top-2.5 z-10 flex gap-2">
+          {showShare && (
+            <ShareCocktailButton
+              cocktail={cocktail}
+              compact
+              className={isCarousel ? "h-9 w-9" : undefined}
+            />
+          )}
+          {showFavorite && (
+            <FavoriteButton
+              active={fav}
+              onToggle={() => toggleFavorite(cocktail.id)}
+              className={isCarousel ? "h-9 w-9" : undefined}
+            />
+          )}
         </div>
       )}
 

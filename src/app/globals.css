@@ -620,6 +620,56 @@ h3 {
   color: var(--foreground);
 }
 
+.detail-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.share-button {
+  display: inline-flex;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--muted);
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.share-button-compact {
+  padding: 0;
+}
+
+.share-button:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) {
+  .share-button:hover {
+    border-color: rgba(212, 181, 106, 0.4);
+    color: var(--accent);
+  }
+}
+
+.share-button-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.share-button-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
 .auth-screen {
   display: flex;
   min-height: 100dvh;

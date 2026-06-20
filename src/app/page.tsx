@@ -1,38 +1,113 @@
+"use client";
+
 import Link from "next/link";
-import { HomeDashboard } from "@/components/HomeDashboard";
-import { HeroStats } from "@/components/HeroStats";
+import { BestNextBuy } from "@/components/BestNextBuy";
+import { EmptyState } from "@/components/EmptyState";
+import { HorizontalCocktailRow } from "@/components/HorizontalCocktailRow";
+import { SkeletonGrid } from "@/components/LoadingState";
+import { ScreenHeader } from "@/components/ScreenHeader";
+import { StatPills } from "@/components/StatPills";
+import {
+  cocktailCount,
+  getBarSummary,
+  getBestNextIngredient,
+  getIngredientsByIds,
+  matchCocktails,
+} from "@/lib/cocktail-matching";
+import { useMyBar } from "@/hooks/use-my-bar";
 
 export default function HomePage() {
-  return (
-    <>
-      <section className="hero-glow relative overflow-hidden">
-        <div className="mx-auto max-w-6xl px-4 pb-16 pt-10 sm:px-6 md:pb-24 md:pt-24">
-          <p className="eyebrow animate-fade-in">CRAFT</p>
-          <h1 className="display-xl mt-5 max-w-3xl animate-fade-in-up animate-delay-1">
-            Your bar knows more than you think.
-          </h1>
-          <p className="lead mt-6 max-w-lg animate-fade-in-up animate-delay-2">
-            Tell us what&apos;s on your shelf. We&apos;ll tell you what to pour,
-            what you&apos;re one bottle from, and exactly what to buy next.
-            No judgment. Okay, a little judgment.
-          </p>
+  const { barIds, loaded } = useMyBar();
 
-          <div className="mt-10 flex flex-col gap-3 animate-fade-in-up animate-delay-3 sm:flex-row sm:items-center sm:gap-4">
-            <Link href="/bar" className="btn-primary">
-              Stock My Bar
-            </Link>
-            <Link href="/cocktails" className="btn-secondary">
-              See Tonight&apos;s Menu
-            </Link>
-          </div>
-
-          <div className="animate-fade-in-up animate-delay-3">
-            <HeroStats />
-          </div>
+  if (!loaded) {
+    return (
+      <div className="app-screen space-y-6">
+        <div className="h-12 w-40 shimmer rounded-xl" />
+        <div className="flex gap-3">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-24 w-32 shrink-0 shimmer rounded-2xl" />
+          ))}
         </div>
-      </section>
+        <SkeletonGrid count={2} />
+      </div>
+    );
+  }
 
-      <HomeDashboard />
-    </>
+  if (barIds.length === 0) {
+    return (
+      <div className="app-screen">
+        <ScreenHeader title="Home" subtitle="Your personal bar dashboard" large />
+        <EmptyState
+          title="Stock your bar"
+          description="Add what you own and CRAFT will show you exactly what you can pour tonight."
+          actionLabel="Open My Bar"
+          actionHref="/bar"
+          icon="🍾"
+        />
+      </div>
+    );
+  }
+
+  const summary = getBarSummary(barIds);
+  const matches = matchCocktails(barIds);
+  const tonight = matches.filter((m) => m.canMake);
+  const oneAway = matches.filter((m) => m.missingCount === 1);
+  const recommendation = getBestNextIngredient(barIds);
+  const barIngredients = getIngredientsByIds(barIds);
+
+  return (
+    <div className="app-screen animate-fade-in">
+      <ScreenHeader
+        title="Home"
+        subtitle={`${barIngredients.length} bottles on your shelf`}
+        large
+      />
+
+      <StatPills
+        stats={[
+          { value: summary.readyTonight, label: "Ready now" },
+          { value: summary.oneAway, label: "One away" },
+          { value: cocktailCount, label: "In catalogue" },
+        ]}
+      />
+
+      {recommendation && (
+        <div className="app-section">
+          <BestNextBuy recommendation={recommendation} />
+        </div>
+      )}
+
+      <HorizontalCocktailRow
+        title="Pour tonight"
+        subtitle={
+          tonight.length > 0
+            ? `${tonight.length} ready to make`
+            : "Add a bottle to unlock more"
+        }
+        items={tonight.slice(0, 10)}
+        seeAllHref="/cocktails"
+        empty="Stock a few more bottles and the magic happens."
+      />
+
+      <HorizontalCocktailRow
+        title="Almost there"
+        subtitle="One ingredient away"
+        items={oneAway.slice(0, 10)}
+        seeAllHref="/cocktails"
+        empty="Keep building — these show up as your bar grows."
+      />
+
+      <div className="app-section">
+        <Link href="/bar" className="account-row">
+          <div>
+            <p className="text-sm font-semibold text-[var(--foreground)]">Manage bar</p>
+            <p className="mt-0.5 text-xs text-[var(--muted)]">
+              {barIngredients.length} ingredients saved
+            </p>
+          </div>
+          <span className="text-[var(--accent)]">→</span>
+        </Link>
+      </div>
+    </div>
   );
 }

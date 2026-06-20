@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { CocktailImage } from "@/components/CocktailImage";
 import { DifficultyBadge } from "@/components/DifficultyBadge";
 import { EmptyState } from "@/components/EmptyState";
@@ -18,6 +18,7 @@ import { useFavorites, useMyBar, useRecentCocktails } from "@/hooks/use-my-bar";
 
 export default function CocktailDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const id = params.id as string;
   const { barIds, loaded: barLoaded } = useMyBar();
   const { isFavorite, toggleFavorite, loaded: favLoaded } = useFavorites();
@@ -35,11 +36,16 @@ export default function CocktailDetailPage() {
 
   if (!cocktail) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
+      <div className="app-screen">
+        <div className="detail-topbar">
+          <button type="button" onClick={() => router.back()} className="detail-back">
+            ← Back
+          </button>
+        </div>
         <EmptyState
           title="Cocktail not found"
           description="This one's off the menu. Maybe it finished last call?"
-          actionLabel="Back to menu"
+          actionLabel="Browse Tonight"
           actionHref="/cocktails"
         />
       </div>
@@ -51,137 +57,137 @@ export default function CocktailDetailPage() {
   const fav = favLoaded && isFavorite(cocktail.id);
 
   return (
-    <div className="page-shell-narrow animate-fade-in">
-      <div className="flex items-center justify-between gap-4">
-        <Link
-          href="/cocktails"
-          className="text-sm tracking-wide text-[var(--muted)] transition hover:text-[var(--accent)]"
-        >
-          ← Back to menu
-        </Link>
-        {favLoaded && (
-          <FavoriteButton
-            active={fav}
-            onToggle={() => toggleFavorite(cocktail.id)}
-            className="h-10 w-10"
-          />
-        )}
+    <div className="animate-fade-in pb-6">
+      <div className="app-screen pb-0">
+        <div className="detail-topbar">
+          <button type="button" onClick={() => router.back()} className="detail-back">
+            ← Back
+          </button>
+          {favLoaded && (
+            <FavoriteButton
+              active={fav}
+              onToggle={() => toggleFavorite(cocktail.id)}
+              className="h-11 w-11"
+            />
+          )}
+        </div>
       </div>
 
-      <div className="premium-card mt-8 overflow-hidden">
+      <div className="-mx-0 overflow-hidden">
         <CocktailImage
           slug={cocktail.id}
           name={cocktail.name}
           priority
-          className="aspect-[16/9] w-full sm:aspect-[2/1]"
-          sizes="(max-width: 768px) 100vw, 768px"
+          className="aspect-[4/5] w-full"
+          sizes="(max-width: 448px) 100vw, 448px"
         />
       </div>
 
-      <div className="mt-6 flex flex-wrap items-center gap-3">
-        <DifficultyBadge difficulty={cocktail.difficulty} />
-        <span className="rounded-md border border-[var(--border)] px-2.5 py-0.5 text-[10px] uppercase tracking-wider text-[var(--muted)]">
-          {cocktail.category}
-        </span>
-        <FlavorTags flavors={cocktail.flavorProfile} />
-      </div>
-
-      <h1 className="display-lg mt-8">{cocktail.name}</h1>
-      <p className="lead mt-4">{cocktail.description}</p>
-      <p className="mt-2 text-sm italic text-[var(--accent-dim)]">{cocktail.cheekyLine}</p>
-
-      <div className="mt-8 grid gap-4 sm:grid-cols-2">
-        <div className="glass-panel rounded-xl px-5 py-4">
-          <p className="eyebrow text-[var(--accent-dim)]">Glassware</p>
-          <p className="mt-2 text-sm text-[var(--foreground)]">{cocktail.glassware}</p>
+      <div className="app-screen pt-5">
+        <div className="flex flex-wrap items-center gap-2">
+          <DifficultyBadge difficulty={cocktail.difficulty} />
+          <span className="rounded-full border border-[var(--border)] px-3 py-1 text-[10px] uppercase tracking-wider text-[var(--muted)]">
+            {cocktail.category}
+          </span>
         </div>
-        <div className="glass-panel rounded-xl px-5 py-4">
-          <p className="eyebrow text-[var(--accent-dim)]">Garnish</p>
-          <p className="mt-2 text-sm text-[var(--foreground)]">{cocktail.garnish}</p>
+        <div className="mt-3">
+          <FlavorTags flavors={cocktail.flavorProfile} />
         </div>
-      </div>
 
-      {match && (
-        <div
-          className={`mt-6 rounded-xl border px-5 py-4 ${
-            match.canMake
-              ? "border-[var(--accent)]/30 bg-[var(--accent)]/10"
-              : "border-[var(--border)] bg-[var(--card)]"
-          }`}
-        >
-          <p
-            className={`text-sm font-medium ${
-              match.canMake ? "text-[var(--accent)]" : "text-[var(--foreground)]"
+        <h1 className="screen-title-large mt-5">{cocktail.name}</h1>
+        <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">{cocktail.description}</p>
+        <p className="mt-2 text-sm italic text-[var(--accent-dim)]">{cocktail.cheekyLine}</p>
+
+        <div className="mt-6 grid gap-3">
+          <div className="premium-card px-4 py-3.5">
+            <p className="eyebrow text-[var(--accent-dim)]">Glassware</p>
+            <p className="mt-1.5 text-sm text-[var(--foreground)]">{cocktail.glassware}</p>
+          </div>
+          <div className="premium-card px-4 py-3.5">
+            <p className="eyebrow text-[var(--accent-dim)]">Garnish</p>
+            <p className="mt-1.5 text-sm text-[var(--foreground)]">{cocktail.garnish}</p>
+          </div>
+        </div>
+
+        {match && (
+          <div
+            className={`mt-5 rounded-2xl border px-4 py-3.5 ${
+              match.canMake
+                ? "border-[var(--accent)]/30 bg-[var(--accent)]/10"
+                : "border-[var(--border)] bg-[var(--card)]"
             }`}
           >
-            {match.canMake
-              ? "You're good to go. Everything's in your bar."
-              : `You need ${match.missing.map((m) => m.name).join(", ")}.`}
-          </p>
-        </div>
-      )}
+            <p
+              className={`text-sm font-medium ${
+                match.canMake ? "text-[var(--accent)]" : "text-[var(--foreground)]"
+              }`}
+            >
+              {match.canMake
+                ? "You're good to go. Everything's in your bar."
+                : `You need ${match.missing.map((m) => m.name).join(", ")}.`}
+            </p>
+          </div>
+        )}
 
-      <section className="mt-14">
-        <h2 className="eyebrow">Ingredients</h2>
-        <ul className="mt-5 space-y-2">
-          {cocktail.ingredients.map((ci) => {
-            const ing = getIngredientById(ci.ingredientId);
-            const haveIt = ing ? barSet.has(ing.id) : false;
-            return (
-              <li
-                key={ci.ingredientId}
-                className={`flex items-center justify-between rounded-xl border px-4 py-3.5 ${
-                  haveIt
-                    ? "border-[var(--accent)]/20 bg-[var(--accent)]/5"
-                    : "border-[var(--border)] bg-[var(--card)]"
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <span
-                    className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] ${
-                      haveIt
-                        ? "bg-[var(--accent)]/20 text-[var(--accent)]"
-                        : "bg-[var(--border)] text-[var(--muted)]"
-                    }`}
-                  >
-                    {haveIt ? "✓" : "·"}
-                  </span>
-                  <span className={haveIt ? "text-[var(--foreground)]" : "text-[var(--muted)]"}>
-                    {ing?.name ?? ci.ingredientId}
-                  </span>
-                </div>
-                <span className="text-sm text-[var(--muted)]">{ci.amount}</span>
+        <section className="app-section">
+          <h2 className="section-row-title">Ingredients</h2>
+          <ul className="mt-4 space-y-2">
+            {cocktail.ingredients.map((ci) => {
+              const ing = getIngredientById(ci.ingredientId);
+              const haveIt = ing ? barSet.has(ing.id) : false;
+              return (
+                <li
+                  key={ci.ingredientId}
+                  className={`flex min-h-[3.25rem] items-center justify-between rounded-2xl border px-4 py-3 ${
+                    haveIt
+                      ? "border-[var(--accent)]/20 bg-[var(--accent)]/5"
+                      : "border-[var(--border)] bg-[var(--card)]"
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <span
+                      className={`flex h-6 w-6 items-center justify-center rounded-full text-[11px] ${
+                        haveIt
+                          ? "bg-[var(--accent)]/20 text-[var(--accent)]"
+                          : "bg-[var(--border)] text-[var(--muted)]"
+                      }`}
+                    >
+                      {haveIt ? "✓" : "·"}
+                    </span>
+                    <span className={haveIt ? "text-[var(--foreground)]" : "text-[var(--muted)]"}>
+                      {ing?.name ?? ci.ingredientId}
+                    </span>
+                  </div>
+                  <span className="text-sm text-[var(--muted)]">{ci.amount}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+
+        <section className="app-section">
+          <h2 className="section-row-title">Instructions</h2>
+          <ol className="mt-4 space-y-0">
+            {cocktail.instructions.map((step, i) => (
+              <li key={`${i}-${step.slice(0, 20)}`} className="relative flex gap-4 pb-7 last:pb-0">
+                {i < cocktail.instructions.length - 1 && (
+                  <span className="absolute left-4 top-10 h-full w-px bg-[var(--border)]" />
+                )}
+                <span className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--accent)]/40 bg-[var(--card)] font-[family-name:var(--font-display)] text-sm text-[var(--accent)]">
+                  {i + 1}
+                </span>
+                <p className="pt-1 text-sm leading-relaxed text-[var(--foreground)]">{step}</p>
               </li>
-            );
-          })}
-        </ul>
-      </section>
+            ))}
+          </ol>
+        </section>
 
-      <section className="mt-14">
-        <h2 className="eyebrow">Instructions</h2>
-        <ol className="mt-6 space-y-0">
-          {cocktail.instructions.map((step, i) => (
-            <li key={`${i}-${step.slice(0, 20)}`} className="relative flex gap-4 pb-8 last:pb-0 sm:gap-5">
-              {i < cocktail.instructions.length - 1 && (
-                <span className="absolute left-4 top-10 h-full w-px bg-[var(--border)]" />
-              )}
-              <span className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--accent)]/40 bg-[var(--card)] font-[family-name:var(--font-display)] text-sm text-[var(--accent)]">
-                {i + 1}
-              </span>
-              <p className="pt-1 leading-relaxed text-[var(--foreground)]">{step}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      {!match?.canMake && (
-        <Link
-          href="/bar"
-          className="mt-10 inline-block text-sm text-[var(--accent)] hover:underline"
-        >
-          Update My Bar →
-        </Link>
-      )}
+        {!match?.canMake && (
+          <Link href="/bar" className="btn-secondary mt-2 inline-flex w-full justify-center">
+            Update My Bar
+          </Link>
+        )}
+      </div>
     </div>
   );
 }

@@ -7,7 +7,7 @@ import { FormEvent, Suspense, useState } from "react";
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const next = searchParams.get("next") || "/bar";
+  const next = searchParams.get("next") || "/";
   const urlError = searchParams.get("error");
 
   const [email, setEmail] = useState("");
@@ -48,74 +48,68 @@ function LoginForm() {
   }
 
   return (
-    <div className="mx-auto max-w-md px-4 py-16 sm:px-6">
-      <p className="text-xs uppercase tracking-[0.3em] text-[var(--accent)]">Welcome back</p>
-      <h1 className="mt-3 font-[family-name:var(--font-display)] text-4xl font-light text-[var(--foreground)]">
-        Sign in
-      </h1>
-      <p className="mt-2 text-sm text-[var(--muted)]">
-        Pick up where you left off — your bar saves when you sign in.
-      </p>
+    <div className="auth-screen">
+      <div className="auth-card animate-fade-in-up">
+        <p className="eyebrow">CRAFT</p>
+        <h1 className="screen-title-large mt-3">Sign in</h1>
+        <p className="screen-subtitle">Your bar syncs when you&apos;re signed in.</p>
 
-      <form onSubmit={handleSubmit} className="mt-10 space-y-4">
-        {error && (
-          <p
-            role="alert"
-            className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"
-          >
-            {error}
-          </p>
-        )}
-        <div>
-          <label htmlFor="email" className="text-xs uppercase tracking-wide text-[var(--muted)]">
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            required
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="mt-2 w-full rounded-xl border border-[var(--border)] bg-[var(--card)] px-4 py-3 text-sm text-[var(--foreground)] outline-none focus:border-[var(--accent)]/50"
-          />
-        </div>
-        <div>
-          <label htmlFor="password" className="text-xs uppercase tracking-wide text-[var(--muted)]">
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            required
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="mt-2 w-full rounded-xl border border-[var(--border)] bg-[var(--card)] px-4 py-3 text-sm text-[var(--foreground)] outline-none focus:border-[var(--accent)]/50"
-          />
-        </div>
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full rounded-full bg-[var(--accent)] py-3.5 text-sm font-semibold text-[#070708] transition hover:brightness-110 disabled:opacity-60"
-        >
-          {loading ? "Signing in…" : "Sign in"}
-        </button>
-      </form>
+        <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+          {error && (
+            <p
+              role="alert"
+              className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"
+            >
+              {error}
+            </p>
+          )}
+          <div>
+            <label htmlFor="email" className="text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              required
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="input-field mt-2"
+            />
+          </div>
+          <div>
+            <label htmlFor="password" className="text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              required
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="input-field mt-2"
+            />
+          </div>
+          <button type="submit" disabled={loading} className="btn-primary w-full disabled:opacity-60">
+            {loading ? "Signing in…" : "Sign in"}
+          </button>
+        </form>
 
-      <p className="mt-8 text-center text-sm text-[var(--muted)]">
-        No account?{" "}
-        <Link href="/register" className="text-[var(--accent)] hover:underline">
-          Create one
-        </Link>
-      </p>
+        <p className="mt-6 text-center text-sm text-[var(--muted)]">
+          No account?{" "}
+          <Link href="/register" className="font-semibold text-[var(--accent)]">
+            Create one
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="py-24 text-center text-[var(--muted)]">Loading…</div>}>
+    <Suspense fallback={<div className="auth-screen text-center text-[var(--muted)]">Loading…</div>}>
       <LoginForm />
     </Suspense>
   );

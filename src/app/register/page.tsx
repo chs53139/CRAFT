@@ -73,98 +73,94 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="mx-auto max-w-md px-4 py-16 sm:px-6">
-      <p className="text-xs uppercase tracking-[0.3em] text-[var(--accent)]">Join CRAFT</p>
-      <h1 className="mt-3 font-[family-name:var(--font-display)] text-4xl font-light text-[var(--foreground)]">
-        Create account
-      </h1>
-      <p className="mt-2 text-sm text-[var(--muted)]">
-        Save your bar and favorites — pour the same drinks on any device.
-      </p>
+    <div className="auth-screen">
+      <div className="auth-card animate-fade-in-up">
+        <p className="eyebrow">CRAFT</p>
+        <h1 className="screen-title-large mt-3">Create account</h1>
+        <p className="screen-subtitle">Save your bar and favorites across devices.</p>
 
-      <form onSubmit={handleSubmit} className="mt-10 space-y-4">
-        {checking && (
-          <p className="text-sm text-[var(--muted)]">Checking connection…</p>
-        )}
-        {configError && (
-          <p
-            role="alert"
-            className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"
+        <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+          {checking && <p className="text-sm text-[var(--muted)]">Checking connection…</p>}
+          {configError && (
+            <p
+              role="alert"
+              className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"
+            >
+              {configError}
+            </p>
+          )}
+          {error && (
+            <p
+              role="alert"
+              className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"
+            >
+              {error}
+            </p>
+          )}
+          {message && (
+            <p className="rounded-xl border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-4 py-3 text-sm text-[var(--foreground)]">
+              {message}
+            </p>
+          )}
+          <div>
+            <label htmlFor="name" className="text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
+              Name (optional)
+            </label>
+            <input
+              id="name"
+              type="text"
+              autoComplete="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="input-field mt-2"
+            />
+          </div>
+          <div>
+            <label htmlFor="email" className="text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              required
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="input-field mt-2"
+            />
+          </div>
+          <div>
+            <label htmlFor="password" className="text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              required
+              minLength={8}
+              autoComplete="new-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="input-field mt-2"
+            />
+            <p className="mt-1 text-xs text-[var(--muted)]">At least 8 characters</p>
+          </div>
+          <button
+            type="submit"
+            disabled={loading || checking || !!configError}
+            className="btn-primary w-full disabled:opacity-60"
           >
-            {configError}
-          </p>
-        )}
-        {error && (
-          <p
-            role="alert"
-            className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"
-          >
-            {error}
-          </p>
-        )}
-        {message && (
-          <p className="rounded-lg border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-4 py-3 text-sm text-[var(--foreground)]">
-            {message}
-          </p>
-        )}
-        <div>
-          <label htmlFor="name" className="text-xs uppercase tracking-wide text-[var(--muted)]">
-            Name (optional)
-          </label>
-          <input
-            id="name"
-            type="text"
-            autoComplete="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="mt-2 w-full rounded-xl border border-[var(--border)] bg-[var(--card)] px-4 py-3 text-sm text-[var(--foreground)] outline-none focus:border-[var(--accent)]/50"
-          />
-        </div>
-        <div>
-          <label htmlFor="email" className="text-xs uppercase tracking-wide text-[var(--muted)]">
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            required
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="mt-2 w-full rounded-xl border border-[var(--border)] bg-[var(--card)] px-4 py-3 text-sm text-[var(--foreground)] outline-none focus:border-[var(--accent)]/50"
-          />
-        </div>
-        <div>
-          <label htmlFor="password" className="text-xs uppercase tracking-wide text-[var(--muted)]">
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            required
-            minLength={8}
-            autoComplete="new-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="mt-2 w-full rounded-xl border border-[var(--border)] bg-[var(--card)] px-4 py-3 text-sm text-[var(--foreground)] outline-none focus:border-[var(--accent)]/50"
-          />
-          <p className="mt-1 text-xs text-[var(--muted)]">At least 8 characters</p>
-        </div>
-        <button
-          type="submit"
-          disabled={loading || checking || !!configError}
-          className="w-full rounded-full bg-[var(--accent)] py-3.5 text-sm font-semibold text-[#070708] transition hover:brightness-110 disabled:opacity-60"
-        >
-          {loading ? "Creating account…" : "Create account"}
-        </button>
-      </form>
+            {loading ? "Creating account…" : "Create account"}
+          </button>
+        </form>
 
-      <p className="mt-8 text-center text-sm text-[var(--muted)]">
-        Already have an account?{" "}
-        <Link href="/login" className="text-[var(--accent)] hover:underline">
-          Sign in
-        </Link>
-      </p>
+        <p className="mt-6 text-center text-sm text-[var(--muted)]">
+          Already have an account?{" "}
+          <Link href="/login" className="font-semibold text-[var(--accent)]">
+            Sign in
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }

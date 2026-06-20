@@ -8,6 +8,7 @@ import { ErrorBanner } from "@/components/ErrorBanner";
 import { IngredientChip } from "@/components/IngredientChip";
 import { BarPageSkeleton } from "@/components/LoadingState";
 import { MyBarInventory } from "@/components/MyBarInventory";
+import { ScreenHeader } from "@/components/ScreenHeader";
 import { SearchField } from "@/components/SearchField";
 import {
   getBestNextIngredient,
@@ -68,30 +69,29 @@ export default function BarPage() {
     : "Pick another category above — your bottle is probably hiding in Spirits or Mixers.";
 
   return (
-    <div className="page-shell">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="eyebrow">Inventory</p>
-          <h1 className="display-lg mt-3">My Bar</h1>
-          <p className="mt-2 max-w-lg text-sm text-[var(--muted)] sm:text-base">
-            {ingredients.length} ingredients ·{" "}
-            {isAuthenticated
-              ? syncing
-                ? "Saving…"
-                : "Saved to your account"
-              : "On this device — sign in to sync"}
-          </p>
-        </div>
-        {barIds.length > 0 && (
-          <button
-            type="button"
-            onClick={handleClearBar}
-            className="min-h-11 text-sm text-[var(--muted)] transition hover:text-[var(--accent)]"
-          >
-            Clear bar
-          </button>
-        )}
-      </div>
+    <div className="app-screen animate-fade-in">
+      <ScreenHeader
+        title="My Bar"
+        subtitle={
+          isAuthenticated
+            ? syncing
+              ? "Saving…"
+              : `${ingredients.length} ingredients · synced`
+            : `${ingredients.length} ingredients · on this device`
+        }
+        large
+        action={
+          barIds.length > 0 ? (
+            <button
+              type="button"
+              onClick={handleClearBar}
+              className="min-h-11 rounded-full px-3 text-sm font-medium text-[var(--muted)] transition active:text-[var(--accent)]"
+            >
+              Clear
+            </button>
+          ) : undefined
+        }
+      />
 
       {error && (
         <div className="mt-6">
@@ -104,26 +104,23 @@ export default function BarPage() {
       </div>
 
       {barIds.length === 0 ? (
-        <div className="mt-8">
+        <div className="mt-4">
           <EmptyState
             title="Your shelf is empty"
-            description="Search or browse categories below and tap what you own. We'll handle the rest."
+            description="Tap ingredients below to build your bar."
             icon="🍾"
           />
         </div>
       ) : (
-        <div className="mt-6 flex flex-wrap items-center gap-3 rounded-2xl border border-[var(--border-subtle)] bg-[var(--card)]/60 px-4 py-4 sm:gap-4 sm:px-5">
-          <p className="text-sm text-[var(--muted)]">
-            <span className="font-semibold text-[var(--accent)]">{tonightCount}</span>{" "}
-            cocktail{tonightCount !== 1 ? "s" : ""} ready tonight
-          </p>
-          <Link
-            href="/cocktails"
-            className="text-sm font-medium text-[var(--accent)] hover:underline"
-          >
-            See Tonight&apos;s menu →
-          </Link>
-        </div>
+        <Link href="/cocktails" className="account-row mt-4">
+          <div>
+            <p className="text-sm font-semibold text-[var(--foreground)]">
+              {tonightCount} cocktail{tonightCount !== 1 ? "s" : ""} ready
+            </p>
+            <p className="mt-0.5 text-xs text-[var(--muted)]">View Tonight tab</p>
+          </div>
+          <span className="text-[var(--accent)]">→</span>
+        </Link>
       )}
 
       {recommendation && barIds.length > 0 && (
@@ -132,20 +129,17 @@ export default function BarPage() {
         </div>
       )}
 
-      <div className="mt-14">
-        <div className="mb-6 space-y-4">
+      <div className="app-section">
+        <div className="mb-4 space-y-4">
           <div>
-            <h2 className="section-title">Add ingredients</h2>
-            <p className="mt-1 text-sm text-[var(--muted)]">
-              Tap to add or remove · already on your shelf sink to the bottom
-            </p>
+            <h2 className="section-row-title">Add ingredients</h2>
+            <p className="section-row-subtitle">Tap to add or remove</p>
           </div>
 
           <SearchField
             value={search}
             onChange={setSearch}
             placeholder="Search by name…"
-            className="sm:max-w-md"
           />
 
           <div className="relative">
@@ -187,15 +181,6 @@ export default function BarPage() {
           </div>
         )}
       </div>
-
-      {barIds.length === 0 && (
-        <Link
-          href="/cocktails"
-          className="btn-primary mt-14"
-        >
-          Browse cocktails anyway →
-        </Link>
-      )}
     </div>
   );
 }

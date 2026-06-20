@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, DM_Sans } from "next/font/google";
-import { Header } from "@/components/Header";
+import { AppShell } from "@/components/AppShell";
 import { Providers } from "@/components/Providers";
 import "./globals.css";
 
@@ -17,8 +17,21 @@ const body = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "CRAFT — Your bar knows more than you think.",
-  description: "Discover cocktails you can make from what's in your bar.",
+  title: "CRAFT",
+  description: "Your bar knows more than you think.",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "CRAFT",
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  viewportFit: "cover",
+  themeColor: "#050506",
 };
 
 export default function RootLayout({
@@ -28,10 +41,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
-      <body className="min-h-screen antialiased">
+      <body className="antialiased">
         <Providers>
-          <Header />
-          <main className="pb-safe">{children}</main>
+          <AppShell>{children}</AppShell>
         </Providers>
       </body>
     </html>

@@ -6,14 +6,11 @@ import { CocktailSection } from "@/components/CocktailSection";
 import { EmptyState } from "@/components/EmptyState";
 import { ErrorBanner } from "@/components/ErrorBanner";
 import { MenuPageSkeleton } from "@/components/LoadingState";
-import { MyBarInventory } from "@/components/MyBarInventory";
-import { RecentCocktails } from "@/components/RecentCocktails";
+import { ScreenHeader } from "@/components/ScreenHeader";
 import { SearchField } from "@/components/SearchField";
 import {
-  cocktailCount,
   filterMatchesBySearch,
   getBestNextIngredient,
-  getIngredientsByIds,
   matchCocktails,
 } from "@/lib/cocktail-matching";
 import { useMyBar } from "@/hooks/use-my-bar";
@@ -30,7 +27,7 @@ function SectionTruncation({ shown, total }: { shown: number; total: number }) {
 }
 
 export default function CocktailsPage() {
-  const { barIds, toggleIngredient, loaded, error, clearError } = useMyBar();
+  const { barIds, loaded, error, clearError } = useMyBar();
   const [search, setSearch] = useState("");
 
   const allMatches = useMemo(() => matchCocktails(barIds), [barIds]);
@@ -43,7 +40,6 @@ export default function CocktailsPage() {
     return <MenuPageSkeleton />;
   }
 
-  const barIngredients = getIngredientsByIds(barIds);
   const tonight = filteredMatches.filter((m) => m.canMake);
   const oneAway = filteredMatches.filter((m) => m.missingCount === 1);
   const twoAway = filteredMatches.filter((m) => m.missingCount === 2);
@@ -60,57 +56,46 @@ export default function CocktailsPage() {
     furtherAway.length === 0;
 
   return (
-    <div className="page-shell">
-      <p className="eyebrow">Tonight&apos;s menu</p>
-      <h1 className="display-lg mt-3">What can you pour?</h1>
-      <p className="lead mt-3 max-w-xl">
-        {cocktailCount} recipes in the catalogue — sorted by what your bar can handle.
-      </p>
+    <div className="app-screen animate-fade-in">
+      <ScreenHeader
+        title="Tonight"
+        subtitle={
+          barIds.length === 0
+            ? "Stock your bar first"
+            : `${tonight.length} ready · ${oneAway.length} one away`
+        }
+        large
+      />
 
       {error && (
-        <div className="mt-6">
+        <div className="mb-4">
           <ErrorBanner message={error} onDismiss={clearError} />
         </div>
       )}
 
       {barIds.length === 0 ? (
-        <div className="mt-10">
-          <EmptyState
-            title="Your bar is empty"
-            description="Hard to make a Negroni with nothing but ambition. Stock your bar first."
-            actionLabel="Go to My Bar"
-            actionHref="/bar"
-          />
-        </div>
+        <EmptyState
+          title="Your bar is empty"
+          description="Add ingredients in the Bar tab, then come back here for matches."
+          actionLabel="Open My Bar"
+          actionHref="/bar"
+        />
       ) : (
         <>
-          <div className="mt-8 sm:max-w-md">
-            <SearchField
-              value={search}
-              onChange={setSearch}
-              placeholder="Search cocktails or ingredients…"
-            />
-          </div>
-
-          {barIngredients.length > 0 && (
-            <div className="mt-10">
-              <MyBarInventory
-                ingredients={barIngredients}
-                onRemove={toggleIngredient}
-              />
-            </div>
-          )}
+          <SearchField
+            value={search}
+            onChange={setSearch}
+            placeholder="Search cocktails or ingredients…"
+          />
 
           {recommendation && (
-            <div className="mt-10">
+            <div className="app-section">
               <BestNextBuy recommendation={recommendation} />
             </div>
           )}
 
-          <RecentCocktails />
-
           {noSearchResults ? (
-            <div className="mt-10">
+            <div className="app-section">
               <EmptyState
                 title={`No matches for “${search.trim()}”`}
                 description="Try a cocktail name, spirit, or flavor — like gin, sour, or Negroni."
@@ -120,30 +105,30 @@ export default function CocktailsPage() {
           ) : (
             <>
               <CocktailSection
-                title="You Can Make Tonight"
-                subtitle={`${tonight.length} ready`}
+                title="Ready now"
+                subtitle={`${tonight.length} cocktails`}
                 items={tonight.slice(0, SECTION_LIMIT)}
                 empty="Not quite there yet — check the recommendation above."
               />
               <SectionTruncation shown={SECTION_LIMIT} total={tonight.length} />
 
               <CocktailSection
-                title="One Ingredient Away"
-                subtitle="One bottle between you and glory."
+                title="One away"
+                subtitle="One bottle from glory"
                 items={oneAway.slice(0, SECTION_LIMIT)}
                 empty="Nothing teasing you tonight. Yet."
               />
               <SectionTruncation shown={SECTION_LIMIT} total={oneAway.length} />
 
               <CocktailSection
-                title="Two Ingredients Away"
+                title="Two away"
                 items={twoAway.slice(0, SECTION_LIMIT)}
-                empty="Keep stocking — these will show up as your bar grows."
+                empty="Keep stocking — these appear as your bar grows."
               />
               <SectionTruncation shown={SECTION_LIMIT} total={twoAway.length} />
 
               <CocktailSection
-                title="Three Ingredients Away"
+                title="Three away"
                 items={threeAway.slice(0, SECTION_LIMIT)}
                 empty="Ambitious pours for a well-stocked bar."
               />
@@ -152,15 +137,15 @@ export default function CocktailsPage() {
               {furtherAway.length > 0 && (
                 <>
                   <CocktailSection
-                    title="Still on the shopping list"
-                    subtitle={`${furtherAway.length} more to dream about`}
+                    title="Shopping list"
+                    subtitle={`${furtherAway.length} long shots`}
                     items={furtherAway.slice(0, 12)}
                     empty=""
                     compact
                   />
                   {furtherAway.length > 12 && (
                     <p className="mt-2 text-xs text-[var(--muted)]">
-                      Showing 12 of {furtherAway.length} long-shot cocktails.
+                      Showing 12 of {furtherAway.length}.
                     </p>
                   )}
                 </>

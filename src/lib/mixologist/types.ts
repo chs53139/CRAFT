@@ -26,6 +26,8 @@ export type MixologistInvention = {
   cocktailId?: string;
   basedOn?: string;
   notes?: string;
+  aiPowered?: boolean;
+  mock?: boolean;
 };
 
 export type InventDrinkRequest = {
@@ -33,6 +35,9 @@ export type InventDrinkRequest = {
 };
 
 export type InventDrinkResponse = {
-  invention: MixologistInvention | null;
+  invention?: MixologistInvention | null;
+  mock?: boolean;
+  aiPowered?: boolean;
   message?: string;
+  error?: string;
 };

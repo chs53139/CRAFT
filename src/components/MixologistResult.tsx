@@ -29,7 +29,9 @@ export function MixologistResult({ invention, onTryAgain }: Props) {
     <div className="mixologist-result animate-fade-in-up">
       <div className="mixologist-result-header">
         <div>
-          <p className="eyebrow">{sourceLabel}</p>
+          <p className="eyebrow">
+            {invention.aiPowered ? "AI original" : sourceLabel}
+          </p>
           <h3 className="mixologist-result-title">{invention.name}</h3>
           <p className="mixologist-result-tagline">{invention.tagline}</p>
         </div>

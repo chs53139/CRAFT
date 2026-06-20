@@ -3,18 +3,21 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { EmptyState } from "@/components/EmptyState";
+import { ErrorBanner } from "@/components/ErrorBanner";
 import { IngredientChip } from "@/components/IngredientChip";
 import { MixologistResult } from "@/components/MixologistResult";
 import { PageLoader } from "@/components/LoadingState";
 import { ScreenHeader } from "@/components/ScreenHeader";
-import { inventDrink } from "@/lib/mixologist";
+import { InventDrinkResponse, MixologistInvention } from "@/lib/mixologist/types";
 import { getIngredientsByIds } from "@/lib/cocktail-matching";
 import { useMyBar } from "@/hooks/use-my-bar";
 
 export default function MixologistPage() {
   const { barIds, loaded } = useMyBar();
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [result, setResult] = useState<ReturnType<typeof inventDrink>>(null);
+  const [result, setResult] = useState<MixologistInvention | null>(null);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [inventing, setInventing] = useState(false);
   const [initialized, setInitialized] = useState(false);
 
@@ -35,14 +38,40 @@ export default function MixologistPage() {
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
     setResult(null);
+    setStatusMessage(null);
+    setError(null);
   }
 
-  function handleInvent() {
+  async function handleInvent() {
     setInventing(true);
-    window.setTimeout(() => {
-      setResult(inventDrink(selectedIds));
+    setError(null);
+    setStatusMessage(null);
+    setResult(null);
+
+    try {
+      const response = await fetch("/api/invent-drink", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ingredientIds: selectedIds }),
+      });
+
+      const data = (await response.json()) as InventDrinkResponse;
+
+      if (!response.ok || !data.invention) {
+        throw new Error(data.error ?? "Could not invent a drink. Try different ingredients.");
+      }
+
+      setResult(data.invention);
+      setStatusMessage(data.message ?? null);
+    } catch (inventError) {
+      setError(
+        inventError instanceof Error
+          ? inventError.message
+          : "Could not invent a drink. Try again."
+      );
+    } finally {
       setInventing(false);
-    }, 450);
+    }
   }
 
   if (!loaded) {
@@ -67,6 +96,12 @@ export default function MixologistPage() {
         />
       ) : (
         <>
+          {error && (
+            <div className="app-section">
+              <ErrorBanner message={error} onDismiss={() => setError(null)} />
+            </div>
+          )}
+
           <div className="app-section">
             <button
               type="button"
@@ -90,12 +125,15 @@ export default function MixologistPage() {
 
           {inventing && (
             <div className="mixologist-thinking">
-              <p className="text-sm text-[var(--muted)]">Analyzing balance and structure…</p>
+              <p className="text-sm text-[var(--muted)]">
+                Checking the catalogue, then crafting something original…
+              </p>
             </div>
           )}
 
           {!inventing && result && (
             <div className="app-section">
+              {statusMessage && <p className="bar-scan-demo-note mb-4">{statusMessage}</p>}
               <MixologistResult invention={result} onTryAgain={handleInvent} />
             </div>
           )}
@@ -115,6 +153,8 @@ export default function MixologistPage() {
                   onClick={() => {
                     setSelectedIds(barIds);
                     setResult(null);
+                    setStatusMessage(null);
+                    setError(null);
                   }}
                 >
                   All
@@ -125,6 +165,8 @@ export default function MixologistPage() {
                   onClick={() => {
                     setSelectedIds([]);
                     setResult(null);
+                    setStatusMessage(null);
+                    setError(null);
                   }}
                 >
                   Clear

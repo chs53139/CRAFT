@@ -2,7 +2,12 @@ import { cocktails, cocktailCount, ingredients } from "@/lib/cocktail-data";
 import { getBuyLabel } from "@/lib/ingredient-brands";
 import { getIngredientCostUsd } from "@/lib/ingredient-costs";
 import { matchCocktailWithSubstitutions } from "@/lib/substitutions";
-import { CocktailMatch, Ingredient, IngredientRecommendation } from "@/lib/types";
+import {
+  CocktailMatch,
+  GroupedCocktailMatches,
+  Ingredient,
+  IngredientRecommendation,
+} from "@/lib/types";
 
 const ingredientMap = new Map(ingredients.map((i) => [i.id, i]));
 
@@ -45,10 +50,30 @@ export function matchSingleCocktail(
     missingCount: missing.length,
     canMake: result.canMake,
     canMakeWithSubstitutions: result.canMakeWithSubstitutions,
+    matchGroup: result.matchGroup,
     matchQuality: result.matchQuality,
     substitutions: result.substitutions,
     homemadeSuggestions: result.homemadeSuggestions,
   };
+}
+
+/** Split match results into exact, substitution, and still-missing groups */
+export function groupCocktailMatches(matches: CocktailMatch[]): GroupedCocktailMatches {
+  const exactMatches: CocktailMatch[] = [];
+  const availableWithSubstitutions: CocktailMatch[] = [];
+  const stillMissing: CocktailMatch[] = [];
+
+  for (const match of matches) {
+    if (match.matchGroup === "exact") {
+      exactMatches.push(match);
+    } else if (match.matchGroup === "substitution") {
+      availableWithSubstitutions.push(match);
+    } else {
+      stillMissing.push(match);
+    }
+  }
+
+  return { exactMatches, availableWithSubstitutions, stillMissing };
 }
 
 export function filterMatchesBySearch(
@@ -78,12 +103,14 @@ export function filterMatchesBySearch(
 }
 
 export function getBarSummary(barIds: string[]) {
-  const matches = matchCocktails(barIds);
+  const { exactMatches, availableWithSubstitutions, stillMissing } = groupCocktailMatches(
+    matchCocktails(barIds)
+  );
   return {
-    readyTonight: matches.filter((m) => m.canMake).length,
-    oneAway: matches.filter((m) => m.missingCount === 1).length,
-    substitutionAvailable: matches.filter((m) => m.matchQuality === "substitution").length,
-    experimental: matches.filter((m) => m.matchQuality === "experimental").length,
+    readyTonight: exactMatches.length,
+    withSubstitutions: availableWithSubstitutions.length,
+    stillMissing: stillMissing.length,
+    oneAway: stillMissing.filter((m) => m.missingCount === 1).length,
   };
 }
 

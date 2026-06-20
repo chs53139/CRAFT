@@ -14,9 +14,14 @@ export type {
   AppliedSubstitution,
   HomemadeAlternative,
   IngredientSubstitutionRule,
+  MatchGroup,
   MatchQuality,
 } from "./types";
-export { MATCH_QUALITY_LABELS } from "./types";
+export {
+  LOW_CONFIDENCE_THRESHOLD,
+  MATCH_GROUP_LABELS,
+  MATCH_QUALITY_LABELS,
+} from "./types";
 export {
   isBarSubstitution,
   isHomemadeSubstitution,

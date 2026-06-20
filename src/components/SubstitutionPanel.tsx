@@ -34,9 +34,18 @@ export function SubstitutionPanel({
                     <span className="substitution-arrow">→</span>
                     {sub.substituteName}
                   </p>
-                  <span className="substitution-confidence">{sub.confidence}%</span>
+                  <span
+                    className={`substitution-confidence ${sub.lowConfidence ? "substitution-confidence-low" : ""}`}
+                  >
+                    {sub.confidence}%
+                  </span>
                 </div>
                 <p className="substitution-impact">{sub.flavorImpact}</p>
+                {sub.lowConfidence && (
+                  <p className="substitution-warning">
+                    Low confidence swap — expect noticeable flavor changes.
+                  </p>
+                )}
                 <p className="substitution-notes">{sub.notes}</p>
                 {sub.isHomemade && sub.homemadeInstructions && (
                   <ol className="substitution-homemade-steps">
@@ -62,9 +71,18 @@ export function SubstitutionPanel({
               <li key={item.ingredientId} className="substitution-item">
                 <div className="substitution-item-header">
                   <p className="substitution-item-swap">{item.name}</p>
-                  <span className="substitution-confidence">{item.confidence}%</span>
+                  <span
+                    className={`substitution-confidence ${item.confidence < 70 ? "substitution-confidence-low" : ""}`}
+                  >
+                    {item.confidence}%
+                  </span>
                 </div>
                 <p className="substitution-impact">{item.flavorImpact}</p>
+                {item.confidence < 70 && (
+                  <p className="substitution-warning">
+                    Low confidence swap — expect noticeable flavor changes.
+                  </p>
+                )}
                 <p className="substitution-notes">{item.notes}</p>
                 <ol className="substitution-homemade-steps">
                   {item.instructions.map((step, index) => (

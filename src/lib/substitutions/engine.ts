@@ -6,11 +6,10 @@ import {
   AppliedSubstitution,
   HomemadeAlternative,
   IngredientSubstitutionRule,
+  LOW_CONFIDENCE_THRESHOLD,
+  MatchGroup,
   MatchQuality,
 } from "./types";
-
-const SUBSTITUTION_MIN_CONFIDENCE = 75;
-const SUBSTITUTION_AVG_CONFIDENCE = 82;
 
 export function findBestSubstitutionRule(
   requiredId: string,
@@ -52,41 +51,8 @@ function ruleToApplied(rule: IngredientSubstitutionRule): AppliedSubstitution {
     confidence: rule.confidence,
     notes: rule.notes,
     flavorImpact: rule.flavorImpact,
+    lowConfidence: rule.confidence < LOW_CONFIDENCE_THRESHOLD,
   };
-}
-
-function homemadeToApplied(item: HomemadeAlternative): AppliedSubstitution {
-  return {
-    requiredId: item.ingredientId,
-    requiredName: resolveName(item.ingredientId),
-    substituteId: item.ingredientId,
-    substituteName: `${item.name} (homemade)`,
-    confidence: item.confidence,
-    notes: item.notes,
-    flavorImpact: item.flavorImpact,
-    isHomemade: true,
-    homemadeInstructions: item.instructions,
-  };
-}
-
-function classifyMatchQuality(substitutions: AppliedSubstitution[]): MatchQuality {
-  if (substitutions.length === 0) return "exact";
-
-  const minConfidence = Math.min(...substitutions.map((sub) => sub.confidence));
-  const avgConfidence =
-    substitutions.reduce((sum, sub) => sum + sub.confidence, 0) / substitutions.length;
-
-  const hasHomemade = substitutions.some((sub) => sub.isHomemade);
-
-  if (
-    !hasHomemade &&
-    minConfidence >= SUBSTITUTION_MIN_CONFIDENCE &&
-    avgConfidence >= SUBSTITUTION_AVG_CONFIDENCE
-  ) {
-    return "substitution";
-  }
-
-  return "experimental";
 }
 
 export type SubstitutionMatchResult = {
@@ -95,9 +61,16 @@ export type SubstitutionMatchResult = {
   homemadeSuggestions: HomemadeAlternative[];
   canMake: boolean;
   canMakeWithSubstitutions: boolean;
+  matchGroup: MatchGroup;
   matchQuality: MatchQuality;
 };
 
+/**
+ * Match a cocktail against the user's bar:
+ * 1. Exact — ingredient is in the bar
+ * 2. Substitution — missing ingredient covered by an owned substitute
+ * 3. Missing — still lacks one or more ingredients after substitution checks
+ */
 export function matchCocktailWithSubstitutions(
   cocktail: Cocktail,
   barIds: string[]
@@ -125,28 +98,18 @@ export function matchCocktailWithSubstitutions(
   }
 
   const canMake = missingIds.length === 0 && substitutions.length === 0;
-  let canMakeWithSubstitutions = missingIds.length === 0 && substitutions.length > 0;
+  const canMakeWithSubstitutions = missingIds.length === 0 && substitutions.length > 0;
 
-  // Homemade-only path: all gaps are DIY-able pantry builds (always experimental)
-  if (
-    !canMake &&
-    !canMakeWithSubstitutions &&
-    missingIds.length > 0 &&
-    missingIds.every((id) => getHomemadeAlternative(id))
-  ) {
-    canMakeWithSubstitutions = true;
-    for (const id of missingIds) {
-      const homemade = getHomemadeAlternative(id);
-      if (homemade) substitutions.push(homemadeToApplied(homemade));
-    }
-    missingIds.length = 0;
+  let matchGroup: MatchGroup;
+  if (canMake) {
+    matchGroup = "exact";
+  } else if (canMakeWithSubstitutions) {
+    matchGroup = "substitution";
+  } else {
+    matchGroup = "missing";
   }
 
-  const matchQuality = canMake
-    ? "exact"
-    : canMakeWithSubstitutions
-      ? classifyMatchQuality(substitutions)
-      : "unavailable";
+  const matchQuality: MatchQuality = matchGroup === "missing" ? "unavailable" : matchGroup;
 
   return {
     missingIds,
@@ -154,6 +117,7 @@ export function matchCocktailWithSubstitutions(
     homemadeSuggestions,
     canMake,
     canMakeWithSubstitutions,
+    matchGroup,
     matchQuality,
   };
 }
@@ -161,8 +125,8 @@ export function matchCocktailWithSubstitutions(
 export function getMatchQualityLabel(quality: MatchQuality): string | null {
   if (quality === "exact") return "Exact Match";
   if (quality === "substitution") return "Substitution Available";
-  if (quality === "experimental") return "Experimental";
+  if (quality === "missing") return "Still Missing";
   return null;
 }
 
-export { SUBSTITUTION_MIN_CONFIDENCE, SUBSTITUTION_AVG_CONFIDENCE };
+export { LOW_CONFIDENCE_THRESHOLD };

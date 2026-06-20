@@ -16,6 +16,7 @@ import { getHiddenGems } from "@/lib/cocktail-discovery";
 import {
   filterMatchesBySearch,
   getBestNextIngredient,
+  groupCocktailMatches,
   matchCocktails,
 } from "@/lib/cocktail-matching";
 import { CocktailCollection } from "@/lib/types";
@@ -77,22 +78,16 @@ function CocktailsContent() {
     if (collection === "all") return searchedMatches;
     return searchedMatches.filter((m) => m.cocktail.collections.includes(collection));
   }, [searchedMatches, collection]);
+  const { exactMatches, availableWithSubstitutions, stillMissing } = useMemo(
+    () => groupCocktailMatches(filteredMatches),
+    [filteredMatches]
+  );
 
   if (!loaded) {
     return <MenuPageSkeleton />;
   }
 
-  const tonight = filteredMatches.filter((m) => m.canMake);
-  const substitutionMatches = filteredMatches.filter(
-    (m) => m.canMakeWithSubstitutions && m.matchQuality === "substitution"
-  );
-  const experimentalMatches = filteredMatches.filter(
-    (m) => m.canMakeWithSubstitutions && m.matchQuality === "experimental"
-  );
-  const oneAway = filteredMatches.filter((m) => m.missingCount === 1 && !m.canMakeWithSubstitutions);
-  const twoAway = filteredMatches.filter((m) => m.missingCount === 2);
-  const threeAway = filteredMatches.filter((m) => m.missingCount === 3);
-  const furtherAway = filteredMatches.filter((m) => m.missingCount >= 4);
+  const oneAway = stillMissing.filter((m) => m.missingCount === 1);
   const hiddenGems = getHiddenGems(barIds, 12).filter(
     (m) => collection === "all" || m.cocktail.collections.includes(collection)
   );
@@ -104,24 +99,22 @@ function CocktailsContent() {
 
   const hasVisibleResults =
     (showReady &&
-      (tonight.length > 0 ||
+      (exactMatches.length > 0 ||
         hiddenGems.length > 0 ||
-        substitutionMatches.length > 0 ||
-        experimentalMatches.length > 0)) ||
+        availableWithSubstitutions.length > 0)) ||
     (showOneAway && oneAway.length > 0) ||
-    (showAllSections &&
-      (twoAway.length > 0 || threeAway.length > 0 || furtherAway.length > 0));
+    (showAllSections && stillMissing.length > 0);
 
   const noSearchResults = searchActive && !hasVisibleResults;
 
   const headerSubtitle =
     view === "ready"
-      ? `${tonight.length} ready to make`
+      ? `${exactMatches.length} exact · ${availableWithSubstitutions.length} with subs`
       : view === "one-away"
         ? `${oneAway.length} one bottle away`
         : barIds.length === 0
           ? "Stock your bar first"
-          : `${tonight.length} ready · ${substitutionMatches.length} with subs · ${oneAway.length} one away`;
+          : `${exactMatches.length} exact · ${availableWithSubstitutions.length} with subs · ${stillMissing.length} missing`;
 
   return (
     <div className="app-screen animate-fade-in">
@@ -167,12 +160,12 @@ function CocktailsContent() {
               {showReady && (
                 <>
                   <CocktailSection
-                    title="Ready now"
-                    subtitle={`${tonight.length} cocktails`}
-                    items={tonight.slice(0, SECTION_LIMIT)}
+                    title="Exact matches"
+                    subtitle={`${exactMatches.length} cocktails — everything in your bar`}
+                    items={exactMatches.slice(0, SECTION_LIMIT)}
                     empty="Not quite there yet — check the recommendation below."
                   />
-                  <SectionTruncation shown={SECTION_LIMIT} total={tonight.length} />
+                  <SectionTruncation shown={SECTION_LIMIT} total={exactMatches.length} />
                 </>
               )}
 
@@ -192,35 +185,26 @@ function CocktailsContent() {
                 />
               )}
 
-              {showReady && substitutionMatches.length > 0 && (
+              {showReady && availableWithSubstitutions.length > 0 && (
                 <>
                   <CocktailSection
-                    title="Substitution available"
-                    subtitle="Close swaps from your bar — not identical, but in the ballpark"
-                    items={substitutionMatches.slice(0, SECTION_LIMIT)}
+                    title="Available with substitutions"
+                    subtitle="Owned substitutes fill the gaps — not identical, but in the ballpark"
+                    items={availableWithSubstitutions.slice(0, SECTION_LIMIT)}
                     empty=""
                   />
-                  <SectionTruncation shown={SECTION_LIMIT} total={substitutionMatches.length} />
+                  <SectionTruncation
+                    shown={SECTION_LIMIT}
+                    total={availableWithSubstitutions.length}
+                  />
                 </>
               )}
 
-              {showReady && experimentalMatches.length > 0 && (
-                <>
-                  <CocktailSection
-                    title="Experimental"
-                    subtitle="Bold swaps or homemade builds — expect a different drink"
-                    items={experimentalMatches.slice(0, SECTION_LIMIT)}
-                    empty=""
-                  />
-                  <SectionTruncation shown={SECTION_LIMIT} total={experimentalMatches.length} />
-                </>
-              )}
-
-              {showOneAway && (
+              {showOneAway && view === "one-away" && (
                 <>
                   <CocktailSection
                     title="One away"
-                    subtitle="One bottle from glory"
+                    subtitle="One bottle from an exact match"
                     items={oneAway.slice(0, SECTION_LIMIT)}
                     empty="Nothing teasing you tonight. Yet."
                   />
@@ -228,38 +212,16 @@ function CocktailsContent() {
                 </>
               )}
 
-              {showAllSections && (
+              {showAllSections && view === "all" && stillMissing.length > 0 && (
                 <>
                   <CocktailSection
-                    title="Two away"
-                    items={twoAway.slice(0, SECTION_LIMIT)}
-                    empty="Keep stocking — these appear as your bar grows."
+                    title="Still missing ingredients"
+                    subtitle={`${stillMissing.length} cocktails need bottles you don't have (or substitutes for)`}
+                    items={stillMissing.slice(0, SECTION_LIMIT)}
+                    empty=""
+                    compact
                   />
-                  <SectionTruncation shown={SECTION_LIMIT} total={twoAway.length} />
-
-                  <CocktailSection
-                    title="Three away"
-                    items={threeAway.slice(0, SECTION_LIMIT)}
-                    empty="Ambitious pours for a well-stocked bar."
-                  />
-                  <SectionTruncation shown={SECTION_LIMIT} total={threeAway.length} />
-
-                  {furtherAway.length > 0 && (
-                    <>
-                      <CocktailSection
-                        title="Shopping list"
-                        subtitle={`${furtherAway.length} long shots`}
-                        items={furtherAway.slice(0, 12)}
-                        empty=""
-                        compact
-                      />
-                      {furtherAway.length > 12 && (
-                        <p className="mt-2 text-xs text-[var(--muted)]">
-                          Showing 12 of {furtherAway.length}.
-                        </p>
-                      )}
-                    </>
-                  )}
+                  <SectionTruncation shown={SECTION_LIMIT} total={stillMissing.length} />
 
                   {collection === "all" && (
                     <div className="app-section">

@@ -163,32 +163,30 @@ export default function CocktailDetailPage() {
         {match && (
           <div
             className={`mt-5 rounded-2xl border px-4 py-3.5 ${
-              match.canMake
+              match.matchGroup === "exact"
                 ? "border-[var(--accent)]/30 bg-[var(--accent)]/10"
-                : match.canMakeWithSubstitutions
+                : match.matchGroup === "substitution"
                   ? "border-amber-500/25 bg-amber-500/8"
                   : "border-[var(--border)] bg-[var(--card)]"
             }`}
           >
             <div className="flex flex-wrap items-center gap-2">
-              {(match.canMake || match.canMakeWithSubstitutions) && (
-                <MatchQualityBadge quality={match.matchQuality} compact />
+              {match.matchGroup !== "missing" && (
+                <MatchQualityBadge quality={match.matchGroup} compact />
               )}
             </div>
             <p
               className={`mt-2 text-sm font-medium ${
-                match.canMake
+                match.matchGroup === "exact"
                   ? "text-[var(--accent)]"
-                  : match.canMakeWithSubstitutions
-                    ? "text-[var(--foreground)]"
-                    : "text-[var(--foreground)]"
+                  : "text-[var(--foreground)]"
               }`}
             >
-              {match.canMake
+              {match.matchGroup === "exact"
                 ? "Exact match — everything in your bar."
-                : match.canMakeWithSubstitutions
-                  ? "Makeable with substitutes — expect a different but related drink."
-                  : `You need ${match.missing.map((m) => m.name).join(", ")}.`}
+                : match.matchGroup === "substitution"
+                  ? "Available with substitutions — expect a different but related drink."
+                  : `Still missing: ${match.missing.map((m) => m.name).join(", ")}.`}
             </p>
           </div>
         )}
@@ -212,7 +210,7 @@ export default function CocktailDetailPage() {
               const statusLabel = haveIt
                 ? "In bar"
                 : substitution
-                  ? `Sub: ${substitution.substituteName}`
+                  ? `Sub: ${substitution.substituteName} (${substitution.confidence}%)`
                   : "Missing";
               return (
                 <li
@@ -242,6 +240,14 @@ export default function CocktailDetailPage() {
                         {ing?.name ?? ci.ingredientId}
                       </span>
                       <p className="text-[11px] text-[var(--muted)]">{statusLabel}</p>
+                      {substitution && (
+                        <>
+                          <p className="text-[11px] text-[var(--muted)]">{substitution.flavorImpact}</p>
+                          {substitution.lowConfidence && (
+                            <p className="substitution-warning text-[11px]">Low confidence swap</p>
+                          )}
+                        </>
+                      )}
                     </div>
                   </div>
                   <span className="shrink-0 text-sm text-[var(--muted)]">{ci.amount}</span>
@@ -270,7 +276,7 @@ export default function CocktailDetailPage() {
 
         <CocktailReviews cocktailId={cocktail.id} cocktailName={cocktail.name} />
 
-        {!match?.canMake && !match?.canMakeWithSubstitutions && (
+        {match?.matchGroup === "missing" && (
           <Link href="/bar" className="btn-secondary mt-2 inline-flex w-full justify-center">
             Update My Bar
           </Link>

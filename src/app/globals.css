@@ -1588,9 +1588,28 @@ button.star-rating-star:active {
   color: rgb(147, 197, 253);
 }
 
-.match-quality-experimental {
-  background: rgba(251, 191, 36, 0.12);
+.match-quality-missing {
+  background: rgba(148, 163, 184, 0.12);
+  color: rgb(148, 163, 184);
+}
+
+.substitution-warning {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: rgb(251, 191, 36);
+}
+
+.substitution-confidence-low {
+  background: rgba(251, 191, 36, 0.15);
+  color: rgb(251, 191, 36);
+}
+
+.substitution-card-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .substitution-panel {

@@ -15,6 +15,8 @@ export type HomemadeAlternative = {
   instructions: string[];
 };
 
+export const LOW_CONFIDENCE_THRESHOLD = 70;
+
 export type AppliedSubstitution = {
   requiredId: string;
   requiredName: string;
@@ -23,14 +25,24 @@ export type AppliedSubstitution = {
   confidence: number;
   notes: string;
   flavorImpact: string;
+  lowConfidence: boolean;
   isHomemade?: boolean;
   homemadeInstructions?: string[];
 };
 
-export type MatchQuality = "exact" | "substitution" | "experimental" | "unavailable";
+/** Primary grouping for cocktail match results */
+export type MatchGroup = "exact" | "substitution" | "missing";
+
+export type MatchQuality = MatchGroup | "unavailable";
+
+export const MATCH_GROUP_LABELS: Record<MatchGroup, string> = {
+  exact: "Exact Matches",
+  substitution: "Available With Substitutions",
+  missing: "Still Missing Ingredients",
+};
 
 export const MATCH_QUALITY_LABELS: Record<Exclude<MatchQuality, "unavailable">, string> = {
   exact: "Exact Match",
   substitution: "Substitution Available",
-  experimental: "Experimental",
+  missing: "Still Missing",
 };

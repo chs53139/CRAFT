@@ -24,13 +24,12 @@ export function CocktailCard({
   showObscurity = false,
   variant = "default",
 }: Props) {
-  const { cocktail, canMake, canMakeWithSubstitutions, missing, missingCount, matchQuality, substitutions } =
-    match;
+  const { cocktail, missing, missingCount, matchGroup, substitutions } = match;
   const { isFavorite, toggleFavorite, loaded } = useFavorites();
   const fav = loaded && isFavorite(cocktail.id);
   const isCarousel = variant === "carousel";
-  const isExact = matchQuality === "exact" && canMake;
-  const isSubMatch = canMakeWithSubstitutions && !canMake;
+  const isExact = matchGroup === "exact";
+  const isSubMatch = matchGroup === "substitution";
 
   return (
     <Link
@@ -64,7 +63,7 @@ export function CocktailCard({
           ) : isExact ? (
             <MatchQualityBadge quality="exact" compact />
           ) : isSubMatch ? (
-            <MatchQualityBadge quality={matchQuality} compact />
+            <MatchQualityBadge quality="substitution" compact />
           ) : (
             <span className="text-[10px] uppercase tracking-[0.12em] text-[var(--muted)]">
               {missingCount} missing
@@ -92,17 +91,28 @@ export function CocktailCard({
         )}
 
         {isSubMatch && substitutions.length > 0 && (
-          <p className="mt-2.5 line-clamp-3 text-xs leading-relaxed text-[var(--muted)]">
-            <span className="font-medium text-[var(--accent-dim)]">Using </span>
-            {substitutions
-              .slice(0, 2)
-              .map((sub) => `${sub.substituteName} for ${sub.requiredName} (${sub.confidence}%)`)
-              .join(" · ")}
-            {substitutions.length > 2 && ` · +${substitutions.length - 2} more`}
-          </p>
+          <ul className="substitution-card-list mt-2.5 space-y-2">
+            {substitutions.slice(0, 2).map((sub) => (
+              <li key={`${sub.requiredId}-${sub.substituteId}`} className="text-xs leading-relaxed">
+                <p className="text-[var(--foreground)]">
+                  <span className="text-[var(--muted)]">{sub.requiredName}</span>
+                  <span className="mx-1 text-[var(--accent-dim)]">→</span>
+                  <span className="font-medium">{sub.substituteName}</span>
+                  <span className="ml-1 text-[var(--muted)]">({sub.confidence}%)</span>
+                </p>
+                <p className="mt-0.5 text-[var(--muted)]">{sub.flavorImpact}</p>
+                {sub.lowConfidence && (
+                  <p className="substitution-warning mt-1">Low confidence swap</p>
+                )}
+              </li>
+            ))}
+            {substitutions.length > 2 && (
+              <li className="text-xs text-[var(--muted)]">+{substitutions.length - 2} more swaps</li>
+            )}
+          </ul>
         )}
 
-        {!canMake && !canMakeWithSubstitutions && missing.length > 0 && (
+        {matchGroup === "missing" && missing.length > 0 && (
           <p className="mt-2.5 line-clamp-2 text-xs leading-relaxed text-[var(--muted)]">
             <span className="font-medium text-[var(--accent-dim)]">Need </span>
             {missing.slice(0, 3).map((m) => m.name).join(" · ")}

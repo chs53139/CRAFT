@@ -2,7 +2,8 @@ import { MatchQuality } from "@/lib/substitutions/types";
 
 const LABELS: Record<Exclude<MatchQuality, "unavailable">, string> = {
   exact: "Exact Match",
-  substitution: "Substitution Available",
+  substitution: "Substitution",
+  experimental: "Experimental",
   missing: "Still Missing",
 };
 
@@ -12,7 +13,7 @@ type Props = {
 };
 
 export function MatchQualityBadge({ quality, compact }: Props) {
-  if (quality === "unavailable") return null;
+  if (quality === "unavailable" || quality === "missing") return null;
 
   const label = LABELS[quality];
 

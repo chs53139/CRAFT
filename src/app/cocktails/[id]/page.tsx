@@ -20,6 +20,7 @@ import {
   getIngredientById,
   matchCocktails,
 } from "@/lib/cocktail-matching";
+import { formatSubstitutionLine } from "@/lib/substitution-display";
 import { useFavorites, useMyBar, useRecentCocktails } from "@/hooks/use-my-bar";
 
 export default function CocktailDetailPage() {
@@ -165,7 +166,7 @@ export default function CocktailDetailPage() {
             className={`mt-5 rounded-2xl border px-4 py-3.5 ${
               match.matchGroup === "exact"
                 ? "border-[var(--accent)]/30 bg-[var(--accent)]/10"
-                : match.matchGroup === "substitution"
+                : match.matchGroup === "substitution" || match.matchGroup === "experimental"
                   ? "border-amber-500/25 bg-amber-500/8"
                   : "border-[var(--border)] bg-[var(--card)]"
             }`}
@@ -186,32 +187,33 @@ export default function CocktailDetailPage() {
                 ? "Exact match — everything in your bar."
                 : match.matchGroup === "substitution"
                   ? "Available with substitutions — expect a different but related drink."
-                  : `Still missing: ${match.missing.map((m) => m.name).join(", ")}.`}
+                  : match.matchGroup === "experimental"
+                    ? "Experimental substitutes — bold swaps or homemade builds."
+                    : `Still missing: ${match.missing.map((m) => m.name).join(", ")}.`}
             </p>
           </div>
         )}
 
-        {match && (match.substitutions.length > 0 || match.homemadeSuggestions.length > 0) && (
+        {match && match.homemadeSuggestions.length > 0 && match.matchGroup === "missing" && (
           <div className="mt-4">
-            <SubstitutionPanel
-              substitutions={match.substitutions}
-              homemadeSuggestions={match.homemadeSuggestions}
-            />
+            <SubstitutionPanel substitutions={[]} homemadeSuggestions={match.homemadeSuggestions} />
           </div>
         )}
 
         <section className="app-section">
           <h2 className="section-row-title">Ingredients</h2>
+          {match && match.substitutions.length > 0 && (
+            <p className="mt-2 text-xs italic text-[var(--muted)]">
+              This changes the flavor slightly.
+            </p>
+          )}
           <ul className="mt-4 space-y-2">
             {cocktail.ingredients.map((ci) => {
               const ing = getIngredientById(ci.ingredientId);
               const haveIt = ing ? barSet.has(ing.id) : false;
               const substitution = substitutionMap.get(ci.ingredientId);
-              const statusLabel = haveIt
-                ? "In bar"
-                : substitution
-                  ? `Sub: ${substitution.substituteName} (${substitution.confidence}%)`
-                  : "Missing";
+              const originalName = ing?.name ?? ci.ingredientId;
+
               return (
                 <li
                   key={ci.ingredientId}
@@ -236,16 +238,29 @@ export default function CocktailDetailPage() {
                       {haveIt ? "✓" : substitution ? "~" : "·"}
                     </span>
                     <div className="min-w-0">
-                      <span className={haveIt ? "text-[var(--foreground)]" : "text-[var(--muted)]"}>
-                        {ing?.name ?? ci.ingredientId}
-                      </span>
-                      <p className="text-[11px] text-[var(--muted)]">{statusLabel}</p>
-                      {substitution && (
+                      {substitution ? (
                         <>
-                          <p className="text-[11px] text-[var(--muted)]">{substitution.flavorImpact}</p>
+                          <p className="text-sm text-[var(--muted)]">{originalName}</p>
+                          <p className="text-sm font-semibold text-[var(--accent)]">
+                            {formatSubstitutionLine(substitution)}
+                          </p>
+                          <p className="mt-0.5 text-[11px] text-[var(--muted)]">
+                            {substitution.confidence}% confidence · {substitution.flavorImpact}
+                          </p>
                           {substitution.lowConfidence && (
-                            <p className="substitution-warning text-[11px]">Low confidence swap</p>
+                            <p className="substitution-warning mt-1 text-[11px]">
+                              Low confidence swap
+                            </p>
                           )}
+                        </>
+                      ) : (
+                        <>
+                          <span className={haveIt ? "text-[var(--foreground)]" : "text-[var(--muted)]"}>
+                            {originalName}
+                          </span>
+                          <p className="text-[11px] text-[var(--muted)]">
+                            {haveIt ? "In bar" : "Missing"}
+                          </p>
                         </>
                       )}
                     </div>

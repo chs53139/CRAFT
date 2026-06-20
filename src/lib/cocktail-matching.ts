@@ -57,10 +57,11 @@ export function matchSingleCocktail(
   };
 }
 
-/** Split match results into exact, substitution, and still-missing groups */
+/** Split match results into exact, substitution, experimental, and still-missing groups */
 export function groupCocktailMatches(matches: CocktailMatch[]): GroupedCocktailMatches {
   const exactMatches: CocktailMatch[] = [];
   const availableWithSubstitutions: CocktailMatch[] = [];
+  const experimentalMatches: CocktailMatch[] = [];
   const stillMissing: CocktailMatch[] = [];
 
   for (const match of matches) {
@@ -68,12 +69,14 @@ export function groupCocktailMatches(matches: CocktailMatch[]): GroupedCocktailM
       exactMatches.push(match);
     } else if (match.matchGroup === "substitution") {
       availableWithSubstitutions.push(match);
+    } else if (match.matchGroup === "experimental") {
+      experimentalMatches.push(match);
     } else {
       stillMissing.push(match);
     }
   }
 
-  return { exactMatches, availableWithSubstitutions, stillMissing };
+  return { exactMatches, availableWithSubstitutions, experimentalMatches, stillMissing };
 }
 
 export function filterMatchesBySearch(
@@ -103,12 +106,12 @@ export function filterMatchesBySearch(
 }
 
 export function getBarSummary(barIds: string[]) {
-  const { exactMatches, availableWithSubstitutions, stillMissing } = groupCocktailMatches(
-    matchCocktails(barIds)
-  );
+  const { exactMatches, availableWithSubstitutions, experimentalMatches, stillMissing } =
+    groupCocktailMatches(matchCocktails(barIds));
   return {
     readyTonight: exactMatches.length,
     withSubstitutions: availableWithSubstitutions.length,
+    experimental: experimentalMatches.length,
     stillMissing: stillMissing.length,
     oneAway: stillMissing.filter((m) => m.missingCount === 1).length,
   };

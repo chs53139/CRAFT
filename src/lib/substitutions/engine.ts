@@ -55,6 +55,27 @@ function ruleToApplied(rule: IngredientSubstitutionRule): AppliedSubstitution {
   };
 }
 
+function homemadeToApplied(item: HomemadeAlternative): AppliedSubstitution {
+  return {
+    requiredId: item.ingredientId,
+    requiredName: resolveName(item.ingredientId),
+    substituteId: item.ingredientId,
+    substituteName: `${item.name} (homemade)`,
+    confidence: item.confidence,
+    notes: item.notes,
+    flavorImpact: item.flavorImpact,
+    lowConfidence: item.confidence < LOW_CONFIDENCE_THRESHOLD,
+    isHomemade: true,
+    homemadeInstructions: item.instructions,
+  };
+}
+
+function classifySubstitutionGroup(substitutions: AppliedSubstitution[]): MatchGroup {
+  return substitutions.some((sub) => sub.lowConfidence || sub.isHomemade)
+    ? "experimental"
+    : "substitution";
+}
+
 export type SubstitutionMatchResult = {
   missingIds: string[];
   substitutions: AppliedSubstitution[];
@@ -68,8 +89,9 @@ export type SubstitutionMatchResult = {
 /**
  * Match a cocktail against the user's bar:
  * 1. Exact — ingredient is in the bar
- * 2. Substitution — missing ingredient covered by an owned substitute
- * 3. Missing — still lacks one or more ingredients after substitution checks
+ * 2. Substitution — missing ingredient covered by an owned substitute (confidence ≥ 70%)
+ * 3. Experimental — low-confidence swaps or homemade-only pantry builds
+ * 4. Missing — still lacks ingredients after substitution checks
  */
 export function matchCocktailWithSubstitutions(
   cocktail: Cocktail,
@@ -98,13 +120,24 @@ export function matchCocktailWithSubstitutions(
   }
 
   const canMake = missingIds.length === 0 && substitutions.length === 0;
-  const canMakeWithSubstitutions = missingIds.length === 0 && substitutions.length > 0;
-
+  let canMakeWithSubstitutions = missingIds.length === 0 && substitutions.length > 0;
   let matchGroup: MatchGroup;
+
   if (canMake) {
     matchGroup = "exact";
   } else if (canMakeWithSubstitutions) {
-    matchGroup = "substitution";
+    matchGroup = classifySubstitutionGroup(substitutions);
+  } else if (
+    missingIds.length > 0 &&
+    missingIds.every((id) => getHomemadeAlternative(id))
+  ) {
+    canMakeWithSubstitutions = true;
+    matchGroup = "experimental";
+    for (const id of missingIds) {
+      const homemade = getHomemadeAlternative(id);
+      if (homemade) substitutions.push(homemadeToApplied(homemade));
+    }
+    missingIds.length = 0;
   } else {
     matchGroup = "missing";
   }
@@ -124,7 +157,8 @@ export function matchCocktailWithSubstitutions(
 
 export function getMatchQualityLabel(quality: MatchQuality): string | null {
   if (quality === "exact") return "Exact Match";
-  if (quality === "substitution") return "Substitution Available";
+  if (quality === "substitution") return "Substitution";
+  if (quality === "experimental") return "Experimental";
   if (quality === "missing") return "Still Missing";
   return null;
 }

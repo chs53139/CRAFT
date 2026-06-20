@@ -88,6 +88,7 @@ export type CocktailMatch = {
 export type GroupedCocktailMatches = {
   exactMatches: CocktailMatch[];
   availableWithSubstitutions: CocktailMatch[];
+  experimentalMatches: CocktailMatch[];
   stillMissing: CocktailMatch[];
 };
 

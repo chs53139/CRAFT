@@ -2,6 +2,10 @@
 
 import Link from "next/link";
 import { CocktailMatch } from "@/lib/types";
+import {
+  formatSubstitutionLine,
+  getSubstitutionConfidence,
+} from "@/lib/substitution-display";
 import { CocktailImage } from "./CocktailImage";
 import { DifficultyBadge } from "./DifficultyBadge";
 import { FavoriteButton } from "./FavoriteButton";
@@ -29,7 +33,8 @@ export function CocktailCard({
   const fav = loaded && isFavorite(cocktail.id);
   const isCarousel = variant === "carousel";
   const isExact = matchGroup === "exact";
-  const isSubMatch = matchGroup === "substitution";
+  const isSubMatch = matchGroup === "substitution" || matchGroup === "experimental";
+  const confidence = getSubstitutionConfidence(match);
 
   return (
     <Link
@@ -63,7 +68,7 @@ export function CocktailCard({
           ) : isExact ? (
             <MatchQualityBadge quality="exact" compact />
           ) : isSubMatch ? (
-            <MatchQualityBadge quality="substitution" compact />
+            <MatchQualityBadge quality={matchGroup} compact />
           ) : (
             <span className="text-[10px] uppercase tracking-[0.12em] text-[var(--muted)]">
               {missingCount} missing
@@ -91,25 +96,28 @@ export function CocktailCard({
         )}
 
         {isSubMatch && substitutions.length > 0 && (
-          <ul className="substitution-card-list mt-2.5 space-y-2">
-            {substitutions.slice(0, 2).map((sub) => (
-              <li key={`${sub.requiredId}-${sub.substituteId}`} className="text-xs leading-relaxed">
-                <p className="text-[var(--foreground)]">
-                  <span className="text-[var(--muted)]">{sub.requiredName}</span>
-                  <span className="mx-1 text-[var(--accent-dim)]">→</span>
-                  <span className="font-medium">{sub.substituteName}</span>
-                  <span className="ml-1 text-[var(--muted)]">({sub.confidence}%)</span>
-                </p>
-                <p className="mt-0.5 text-[var(--muted)]">{sub.flavorImpact}</p>
-                {sub.lowConfidence && (
-                  <p className="substitution-warning mt-1">Low confidence swap</p>
-                )}
-              </li>
-            ))}
-            {substitutions.length > 2 && (
-              <li className="text-xs text-[var(--muted)]">+{substitutions.length - 2} more swaps</li>
+          <div className="mt-2.5 space-y-2">
+            {confidence !== null && (
+              <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--accent-dim)]">
+                {confidence}% confidence
+              </p>
             )}
-          </ul>
+            <ul className="substitution-card-list space-y-1.5">
+              {substitutions.slice(0, 2).map((sub) => (
+                <li key={`${sub.requiredId}-${sub.substituteId}`} className="text-xs leading-relaxed">
+                  <p className="text-[var(--foreground)]">{formatSubstitutionLine(sub)}</p>
+                  {sub.lowConfidence && (
+                    <p className="substitution-warning mt-0.5">Low confidence swap</p>
+                  )}
+                </li>
+              ))}
+              {substitutions.length > 2 && (
+                <li className="text-xs text-[var(--muted)]">
+                  +{substitutions.length - 2} more swaps
+                </li>
+              )}
+            </ul>
+          </div>
         )}
 
         {matchGroup === "missing" && missing.length > 0 && (

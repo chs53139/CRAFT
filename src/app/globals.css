@@ -1588,6 +1588,11 @@ button.star-rating-star:active {
   color: rgb(147, 197, 253);
 }
 
+.match-quality-experimental {
+  background: rgba(251, 191, 36, 0.12);
+  color: rgb(251, 191, 36);
+}
+
 .match-quality-missing {
   background: rgba(148, 163, 184, 0.12);
   color: rgb(148, 163, 184);
@@ -1610,6 +1615,39 @@ button.star-rating-star:active {
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+.substitution-mode-filter {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.substitution-mode-filter::-webkit-scrollbar {
+  display: none;
+}
+
+.substitution-mode-chip {
+  flex-shrink: 0;
+  border: 1px solid var(--border-subtle);
+  border-radius: 9999px;
+  background: var(--card);
+  padding: 0.5rem 0.875rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.substitution-mode-chip-active {
+  border-color: rgba(212, 181, 106, 0.35);
+  background: rgba(212, 181, 106, 0.1);
+  color: var(--accent);
 }
 
 .substitution-panel {

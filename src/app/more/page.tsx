@@ -17,31 +17,11 @@ export default function MorePage() {
       <ScreenHeader title="More" subtitle="Browse, account, and tools" large />
 
       <div className="app-section space-y-3">
-        <Link href="/bar/analysis" className="account-row">
-          <div>
-            <p className="text-sm font-semibold text-[var(--foreground)]">Full Bar Analysis</p>
-            <p className="mt-0.5 text-xs text-[var(--muted)]">
-              Health score, unlock graph, and discovery modes
-            </p>
-          </div>
-          <span className="text-[var(--accent)]">→</span>
-        </Link>
-
-        <Link href="/mocktails" className="account-row">
-          <div>
-            <p className="text-sm font-semibold text-[var(--foreground)]">Mocktails</p>
-            <p className="mt-0.5 text-xs text-[var(--muted)]">
-              Zero-proof classics, wellness, coffee, and tea
-            </p>
-          </div>
-          <span className="text-[var(--accent)]">→</span>
-        </Link>
-
         <Link href="/discover" className="account-row">
           <div>
-            <p className="text-sm font-semibold text-[var(--foreground)]">Discover</p>
+            <p className="text-sm font-semibold text-[var(--foreground)]">Library</p>
             <p className="mt-0.5 text-xs text-[var(--muted)]">
-              Browse cocktails by collection
+              Browse cocktails, mocktails, and collections
             </p>
           </div>
           <span className="text-[var(--accent)]">→</span>

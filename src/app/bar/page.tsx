@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { BarScan } from "@/components/BarScan";
 import { BarStarterKits } from "@/components/BarStarterKits";
@@ -134,6 +135,13 @@ export default function BarPage() {
 
       <div className="mt-8">
         <MyBarInventory ingredients={barIngredients} onRemove={toggleIngredient} />
+        {barIds.length > 0 && (
+          <Link href="/bar/analysis" className="bar-analysis-teaser">
+            <span>Full bar analysis</span>
+            <span className="bar-analysis-teaser-detail">Coverage, taste & discovery</span>
+            <span aria-hidden>→</span>
+          </Link>
+        )}
       </div>
 
       {advice && barIds.length > 0 && (

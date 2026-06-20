@@ -53,9 +53,21 @@ export default function MocktailsPageClient() {
     <div className="app-screen animate-fade-in">
       <ScreenHeader
         title="Mocktails"
-        subtitle={`${mocktailCount} zero-proof pours — classics, wellness, coffee, tea, and party-ready.`}
+        subtitle={`${mocktailCount} zero-proof pours in the CRAFT library — browse by style below.`}
         large
       />
+
+      <div className="app-section">
+        <Link href="/discover?type=mocktails" className="account-row">
+          <div>
+            <p className="text-sm font-semibold text-[var(--foreground)]">All mocktails in Library</p>
+            <p className="mt-0.5 text-xs text-[var(--muted)]">
+              Search and filter with the full catalogue
+            </p>
+          </div>
+          <span className="text-[var(--accent)]">→</span>
+        </Link>
+      </div>
 
       <div className="app-section space-y-4">
         <SearchField

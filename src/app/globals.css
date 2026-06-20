@@ -1494,6 +1494,46 @@ h3 {
   color: var(--muted);
 }
 
+.bar-analysis-teaser {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.625rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-subtle);
+  background: color-mix(in srgb, var(--card) 60%, transparent);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--foreground);
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.bar-analysis-teaser-detail {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.bar-analysis-teaser span:last-child {
+  flex-shrink: 0;
+  color: var(--accent);
+}
+
+@media (hover: hover) {
+  .bar-analysis-teaser:hover {
+    border-color: color-mix(in srgb, var(--accent) 35%, var(--border-subtle));
+  }
+
+  .bar-analysis-teaser:hover span:last-child {
+    color: var(--accent-dim, var(--accent));
+  }
+}
+
 .missing-by-tier {
   display: flex;
   flex-direction: column;

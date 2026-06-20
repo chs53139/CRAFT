@@ -106,10 +106,6 @@ export function MyBarAdvice({ advice }: Props) {
           </div>
         )}
       </div>
-
-      <Link href="/bar/analysis" className="my-bar-advice-more">
-        Full bar analysis →
-      </Link>
     </section>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { groupByInventoryTier, INVENTORY_TIERS } from "@/lib/inventory-tiers";
 import { Ingredient } from "@/lib/types";
 
@@ -15,7 +16,14 @@ export function MyBarInventory({
   onRemove,
   emptyMessage = "Nothing on the shelf yet. Time to fix that.",
 }: Props) {
-  const [expanded, setExpanded] = useState(true);
+  const pathname = usePathname();
+  const [expanded, setExpanded] = useState(false);
+
+  useEffect(() => {
+    if (pathname === "/bar") {
+      setExpanded(false);
+    }
+  }, [pathname]);
 
   if (ingredients.length === 0) {
     return (

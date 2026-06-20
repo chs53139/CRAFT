@@ -1,9 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { CocktailCard } from "@/components/CocktailCard";
+import { DrinkTypeFilter } from "@/components/DrinkTypeFilter";
 import { EmptyState } from "@/components/EmptyState";
 import { PageLoader } from "@/components/LoadingState";
 import { ScreenHeader } from "@/components/ScreenHeader";
@@ -19,35 +21,38 @@ import {
   searchCatalogue,
 } from "@/lib/cocktail-discovery";
 import {
-  alcoholicCount,
+  cocktailCount,
   isPourable,
   matchCocktails,
   matchSingleCocktail,
+  mocktailCount,
 } from "@/lib/cocktail-matching";
 import { CocktailCollection } from "@/lib/types";
 import { useMyBar } from "@/hooks/use-my-bar";
 
 const PAGE_SIZE = 24;
 
-const COCKTAIL_COLLECTIONS = DISCOVER_COLLECTIONS.filter(
-  (collection): collection is Exclude<CocktailCollection, "mocktail"> =>
-    collection !== "mocktail"
-);
-
-type DiscoverCollection = (typeof COCKTAIL_COLLECTIONS)[number];
-
-function isCollection(value: string | null): value is DiscoverCollection {
-  return !!value && (COCKTAIL_COLLECTIONS as readonly string[]).includes(value);
+function parseDrinkType(value: string | null): "both" | "cocktails" | "mocktails" {
+  if (value === "cocktails" || value === "mocktails") return value;
+  return "both";
 }
 
-function DiscoverContent() {
+function isCollection(value: string | null): value is CocktailCollection {
+  return !!value && DISCOVER_COLLECTIONS.includes(value as CocktailCollection);
+}
+
+function LibraryContent() {
   const searchParams = useSearchParams();
   const initialCollection = searchParams.get("collection");
-  const [collection, setCollection] = useState<DiscoverCollection | null>(
+  const initialType = searchParams.get("type");
+  const [collection, setCollection] = useState<CocktailCollection | null>(
     isCollection(initialCollection) ? initialCollection : null
   );
   const [search, setSearch] = useState("");
   const [showMakeable, setShowMakeable] = useState(false);
+  const [drinkTypeFilter, setDrinkTypeFilter] = useState<"both" | "cocktails" | "mocktails">(
+    () => parseDrinkType(initialType)
+  );
   const [limit, setLimit] = useState(PAGE_SIZE);
   const { barIds, loaded } = useMyBar();
 
@@ -56,8 +61,13 @@ function DiscoverContent() {
   const catalogue = useMemo(() => {
     const base = collection ? getCatalogueByCollection(collection) : searchCatalogue("");
     const searched = search.trim() ? searchCatalogue(search, collection ?? undefined) : base;
-    return searched.filter((cocktail) => cocktail.drinkType === "cocktail");
-  }, [collection, search]);
+    if (drinkTypeFilter === "both") return searched;
+    return searched.filter((cocktail) =>
+      drinkTypeFilter === "mocktails"
+        ? cocktail.drinkType === "mocktail"
+        : cocktail.drinkType === "cocktail"
+    );
+  }, [collection, search, drinkTypeFilter]);
 
   const matches = useMemo(() => {
     if (!loaded) return [];
@@ -81,13 +91,13 @@ function DiscoverContent() {
   return (
     <div className="app-screen animate-fade-in">
       <ScreenHeader
-        title="Discover"
-        subtitle={`${alcoholicCount} cocktails across CRAFT collections · zero-proof pours live in Mocktails.`}
+        title="Library"
+        subtitle={`${cocktailCount} drinks · ${mocktailCount} zero-proof mocktails included.`}
         large
       />
 
       <div className="discover-collection-grid">
-        {COCKTAIL_COLLECTIONS.map((id) => (
+        {DISCOVER_COLLECTIONS.map((id) => (
           <button
             key={id}
             type="button"
@@ -111,8 +121,10 @@ function DiscoverContent() {
             setSearch(value);
             setLimit(PAGE_SIZE);
           }}
-          placeholder="Search by name, region, era, or source…"
+          placeholder="Search cocktails, mocktails, eras, or collections…"
         />
+
+        <DrinkTypeFilter value={drinkTypeFilter} onChange={setDrinkTypeFilter} />
 
         <div className="flex gap-2">
           <button
@@ -132,6 +144,20 @@ function DiscoverContent() {
         </div>
       </div>
 
+      {drinkTypeFilter !== "cocktails" && (
+        <div className="app-section">
+          <Link href="/mocktails" className="account-row">
+            <div>
+              <p className="text-sm font-semibold text-[var(--foreground)]">Mocktails by style</p>
+              <p className="mt-0.5 text-xs text-[var(--muted)]">
+                Classic, wellness, coffee, tea, and party-ready pours
+              </p>
+            </div>
+            <span className="text-[var(--accent)]">→</span>
+          </Link>
+        </div>
+      )}
+
       {collection && (
         <p className="mb-4 text-sm text-[var(--muted)]">
           Showing <span className="text-[var(--foreground)]">{COLLECTION_LABELS[collection]}</span>
@@ -143,7 +169,7 @@ function DiscoverContent() {
       {visible.length === 0 ? (
         <EmptyState
           title="Nothing matched"
-          description="Try another collection or clear your search."
+          description="Try another collection, drink type, or clear your search."
           icon="🔍"
         />
       ) : (
@@ -169,8 +195,8 @@ function DiscoverContent() {
 
 export default function DiscoverPageClient() {
   return (
-    <Suspense fallback={<PageLoader message="Loading discover…" />}>
-      <DiscoverContent />
+    <Suspense fallback={<PageLoader message="Loading library…" />}>
+      <LibraryContent />
     </Suspense>
   );
 }

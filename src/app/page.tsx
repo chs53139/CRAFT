@@ -5,7 +5,7 @@ import { HorizontalCocktailRow } from "@/components/HorizontalCocktailRow";
 import { RecentCocktails } from "@/components/RecentCocktails";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { SkeletonGrid } from "@/components/LoadingState";
-import { StatPills } from "@/components/StatPills";
+import { StatPillAction, StatPills } from "@/components/StatPills";
 import { EmptyState } from "@/components/EmptyState";
 import {
   cocktailCount,
@@ -77,9 +77,10 @@ export default function HomePage() {
         ]}
         bottomRow={[
           { value: summary.oneAway, label: "One away", href: "/cocktails?view=one-away" },
-          { value: cocktailCount - mocktailCount, label: "Catalogue", href: "/discover" },
-          { value: mocktailCount, label: "Mocktails", href: "/mocktails" },
+          { value: cocktailCount, label: "Library", href: "/discover" },
+          { value: mocktailCount, label: "Mocktails", href: "/discover?type=mocktails" },
         ]}
+        centerAction={<StatPillAction href="/mixologist" label="Mixologist" />}
       />
 
       <HorizontalCocktailRow

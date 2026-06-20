@@ -7,27 +7,44 @@ type Stat = {
 };
 
 type Props = {
-  stats: Stat[];
-  trailingAction?: React.ReactNode;
+  /** Left and right stats on the top row (Mixologist sits between them). */
+  topRow: [Stat, Stat];
+  /** Three stats on the bottom row. */
+  bottomRow: [Stat, Stat, Stat];
+  centerAction?: React.ReactNode;
 };
 
-export function StatPills({ stats, trailingAction }: Props) {
+function StatPill({ stat }: { stat: Stat }) {
+  if (stat.href) {
+    return (
+      <Link href={stat.href} className="stat-pill stat-pill-link">
+        <p className="stat-pill-value">{stat.value}</p>
+        <p className="stat-pill-label">{stat.label}</p>
+      </Link>
+    );
+  }
+
+  return (
+    <div className="stat-pill">
+      <p className="stat-pill-value">{stat.value}</p>
+      <p className="stat-pill-label">{stat.label}</p>
+    </div>
+  );
+}
+
+export function StatPills({ topRow, bottomRow, centerAction }: Props) {
   return (
     <div className="stat-pills">
-      {stats.map((stat) =>
-        stat.href ? (
-          <Link key={stat.label} href={stat.href} className="stat-pill stat-pill-link">
-            <p className="stat-pill-value">{stat.value}</p>
-            <p className="stat-pill-label">{stat.label}</p>
-          </Link>
-        ) : (
-          <div key={stat.label} className="stat-pill">
-            <p className="stat-pill-value">{stat.value}</p>
-            <p className="stat-pill-label">{stat.label}</p>
-          </div>
-        )
-      )}
-      {trailingAction}
+      <div className="stat-pills-row">
+        <StatPill stat={topRow[0]} />
+        {centerAction ?? <div className="stat-pill-spacer" aria-hidden />}
+        <StatPill stat={topRow[1]} />
+      </div>
+      <div className="stat-pills-row">
+        {bottomRow.map((stat) => (
+          <StatPill key={stat.label} stat={stat} />
+        ))}
+      </div>
     </div>
   );
 }

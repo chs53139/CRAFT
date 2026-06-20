@@ -37,9 +37,8 @@ const OVERRIDES: Record<string, number> = {
   "club-soda": 2,
 };
 
-const CATEGORY_RANGE: Record<
-  Ingredient["category"],
-  { min: number; max: number }
+const CATEGORY_RANGE: Partial<
+  Record<Ingredient["category"], { min: number; max: number }>
 > = {
   spirit: { min: 24, max: 48 },
   liqueur: { min: 18, max: 42 },
@@ -65,7 +64,7 @@ export function getIngredientCostUsd(ingredient: Ingredient): number {
     if (key.includes(pattern)) return price;
   }
 
-  const { min, max } = CATEGORY_RANGE[ingredient.category];
+  const { min, max } = CATEGORY_RANGE[ingredient.category] ?? CATEGORY_RANGE.other!;
   const span = max - min;
   const offset = hashId(ingredient.id) % (span + 1);
   return min + offset;

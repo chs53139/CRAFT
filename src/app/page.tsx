@@ -82,20 +82,20 @@ export default function HomePage() {
       </p>
 
       <StatPills
-        stats={[
+        topRow={[
           { value: summary.readyTonight, label: "Ready", href: "/cocktails?view=ready" },
           {
             value: summary.withSubstitutions,
             label: "With swaps",
             href: "/cocktails",
           },
+        ]}
+        bottomRow={[
           { value: summary.oneAway, label: "One away", href: "/cocktails?view=one-away" },
           { value: cocktailCount - mocktailCount, label: "Catalogue", href: "/discover" },
           { value: mocktailCount, label: "Mocktails", href: "/mocktails" },
         ]}
-        trailingAction={
-          <StatPillAction href="/mixologist" label="Mixologist" />
-        }
+        centerAction={<StatPillAction href="/mixologist" label="Mixologist" />}
       />
 
       {intelligence.health && (

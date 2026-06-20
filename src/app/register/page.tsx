@@ -3,8 +3,6 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
-import { getSupabaseConfigError, humanizeAuthError } from "@/lib/supabase/config";
-import { createClient } from "@/lib/supabase/client";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -14,50 +12,64 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [checking, setChecking] = useState(true);
+  const [configError, setConfigError] = useState("");
 
   useEffect(() => {
-    const configError = getSupabaseConfigError();
-    if (configError) setError(configError);
+    fetch("/api/auth/status")
+      .then((res) => res.json())
+      .then((data: { ok: boolean; message?: string }) => {
+        if (!data.ok && data.message) setConfigError(data.message);
+      })
+      .catch(() => {
+        setConfigError("Could not check Supabase connection.");
+      })
+      .finally(() => setChecking(false));
   }, []);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
     setMessage("");
-
-    const configError = getSupabaseConfigError();
-    if (configError) {
-      setError(configError);
-      return;
-    }
-
     setLoading(true);
 
-    const supabase = createClient();
-    const { data, error: signUpError } = await supabase.auth.signUp({
-      email: email.trim().toLowerCase(),
-      password,
-      options: {
-        data: { display_name: name.trim() || null },
-      },
-    });
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, name }),
+      });
 
-    setLoading(false);
+      const data = (await res.json()) as {
+        error?: string;
+        session?: boolean;
+        needsEmailConfirmation?: boolean;
+      };
 
-    if (signUpError) {
-      setError(humanizeAuthError(signUpError.message));
-      return;
+      if (!res.ok || data.error) {
+        setError(data.error ?? "Could not create account.");
+        return;
+      }
+
+      if (data.session) {
+        router.push("/bar");
+        router.refresh();
+        return;
+      }
+
+      if (data.needsEmailConfirmation) {
+        setMessage(
+          "Account created — check your email and click the confirmation link, then sign in. For instant access, turn off Confirm email in Supabase → Authentication → Email."
+        );
+        return;
+      }
+
+      setMessage("Account created. You can sign in now.");
+    } catch {
+      setError("Network error. Try again.");
+    } finally {
+      setLoading(false);
     }
-
-    if (data.session) {
-      router.push("/bar");
-      router.refresh();
-      return;
-    }
-
-    setMessage(
-      "Check your email to confirm your account, then sign in. (In Supabase → Authentication → Email, turn off Confirm email for instant access.)"
-    );
   }
 
   return (
@@ -71,6 +83,17 @@ export default function RegisterPage() {
       </p>
 
       <form onSubmit={handleSubmit} className="mt-10 space-y-4">
+        {checking && (
+          <p className="text-sm text-[var(--muted)]">Checking connection…</p>
+        )}
+        {configError && (
+          <p
+            role="alert"
+            className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"
+          >
+            {configError}
+          </p>
+        )}
         {error && (
           <p
             role="alert"
@@ -129,7 +152,7 @@ export default function RegisterPage() {
         </div>
         <button
           type="submit"
-          disabled={loading}
+          disabled={loading || checking || !!configError}
           className="w-full rounded-full bg-[var(--accent)] py-3.5 text-sm font-semibold text-[#070708] transition hover:brightness-110 disabled:opacity-60"
         >
           {loading ? "Creating account…" : "Create account"}

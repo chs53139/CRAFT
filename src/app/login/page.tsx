@@ -3,8 +3,6 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, Suspense, useState } from "react";
-import { getSupabaseConfigError, humanizeAuthError } from "@/lib/supabase/config";
-import { createClient } from "@/lib/supabase/client";
 
 function LoginForm() {
   const router = useRouter();
@@ -24,29 +22,29 @@ function LoginForm() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
-    const configError = getSupabaseConfigError();
-    if (configError) {
-      setError(configError);
-      return;
-    }
-
     setLoading(true);
 
-    const supabase = createClient();
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: email.trim().toLowerCase(),
-      password,
-    });
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    setLoading(false);
+      const data = (await res.json()) as { error?: string };
 
-    if (signInError) {
-      setError(humanizeAuthError(signInError.message));
-      return;
+      if (!res.ok || data.error) {
+        setError(data.error ?? "Could not sign in.");
+        return;
+      }
+
+      router.push(next);
+      router.refresh();
+    } catch {
+      setError("Network error. Try again.");
+    } finally {
+      setLoading(false);
     }
-
-    router.push(next);
-    router.refresh();
   }
 
   return (

@@ -7,7 +7,7 @@ export type SurpriseFilters = {
   rarity?: string;
   spiritId?: string;
   complexity?: Difficulty | "any";
-  /** Prefer makeable cocktails; fall back to one-away when true */
+  /** @deprecated only makeable cocktails are returned */
   preferMakeable?: boolean;
 };
 
@@ -69,37 +69,45 @@ function pickRandom<T>(items: T[]): T | null {
   return items[Math.floor(Math.random() * items.length)];
 }
 
+/** Relax filters step-by-step while staying within the makeable pool. */
+function buildFilterAttempts(filters: SurpriseFilters): SurpriseFilters[] {
+  return [
+    filters,
+    { ...filters, mood: undefined },
+    { ...filters, mood: undefined, rarity: undefined },
+    { ...filters, mood: undefined, rarity: undefined, complexity: "any" },
+    {
+      mood: undefined,
+      rarity: undefined,
+      complexity: "any",
+      spiritId: undefined,
+    },
+  ];
+}
+
 export function surpriseCocktail(
   barIds: string[],
   filters: SurpriseFilters,
   excludeIds: string[] = []
 ): CocktailMatch | null {
   const exclude = new Set(excludeIds);
-  const all = matchCocktails(barIds).filter((m) => !exclude.has(m.cocktail.id));
+  const allMakeable = matchCocktails(barIds).filter((m) => m.canMake);
 
-  const makeable = filterSurprisePool(
-    all.filter((m) => m.canMake),
-    filters
-  );
-  const oneAway = filterSurprisePool(
-    all.filter((m) => m.missingCount === 1),
-    filters
-  );
+  if (allMakeable.length === 0) return null;
 
-  const preferMakeable = filters.preferMakeable !== false;
-
-  if (preferMakeable && makeable.length > 0) {
-    return pickRandom(makeable);
-  }
-  if (oneAway.length > 0) {
-    return pickRandom(oneAway);
-  }
-  if (makeable.length > 0) {
-    return pickRandom(makeable);
+  let makeable = allMakeable.filter((m) => !exclude.has(m.cocktail.id));
+  if (makeable.length === 0) {
+    makeable = allMakeable;
   }
 
-  const relaxed = filterSurprisePool(all, { ...filters, mood: undefined, rarity: "any" });
-  return pickRandom(relaxed);
+  for (const attempt of buildFilterAttempts(filters)) {
+    const pool = filterSurprisePool(makeable, attempt);
+    if (pool.length > 0) {
+      return pickRandom(pool);
+    }
+  }
+
+  return pickRandom(makeable);
 }
 
 export function getCollectionMatches(

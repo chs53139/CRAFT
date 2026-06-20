@@ -25,6 +25,7 @@ export function SurpriseMe({ barIds }: Props) {
   const [spiritId, setSpiritId] = useState("any");
   const [complexity, setComplexity] = useState<Difficulty | "any">("any");
   const [result, setResult] = useState<CocktailMatch | null>(null);
+  const [emptyMessage, setEmptyMessage] = useState("");
   const [history, setHistory] = useState<string[]>([]);
 
   const spirits = useMemo(() => {
@@ -42,9 +43,15 @@ export function SurpriseMe({ barIds }: Props) {
     const pick = surpriseCocktail(barIds, filters, history);
     if (pick) {
       setResult(pick);
+      setEmptyMessage("");
       setHistory((prev) => [...prev.slice(-8), pick.cocktail.id]);
     } else {
       setResult(null);
+      setEmptyMessage(
+        barIds.length === 0
+          ? "Stock your bar first, then come back for a surprise."
+          : "No ready cocktails match those filters. Try a broader mood or rarity."
+      );
     }
   }
 
@@ -54,7 +61,7 @@ export function SurpriseMe({ barIds }: Props) {
         <p className="eyebrow">Surprise me</p>
         <h2 className="section-row-title mt-2">Pick my next pour</h2>
         <p className="section-row-subtitle">
-          Mood, rarity, spirit, or complexity — CRAFT chooses from your bar.
+          Only picks cocktails you can make right now with what&apos;s on your shelf.
         </p>
       </div>
 
@@ -154,11 +161,9 @@ export function SurpriseMe({ barIds }: Props) {
             <div className="flex flex-wrap items-center gap-2">
               <DifficultyBadge difficulty={result.cocktail.difficulty} />
               <ObscurityBadge score={result.cocktail.obscurityScore} compact />
-              {!result.canMake && (
-                <span className="rounded-full border border-[var(--border)] px-2.5 py-0.5 text-[10px] uppercase tracking-wide text-[var(--muted)]">
-                  1 away
-                </span>
-              )}
+              <span className="rounded-full bg-[var(--accent)]/15 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[var(--accent)]">
+                Ready now
+              </span>
             </div>
             <h3 className="mt-3 font-[family-name:var(--font-display)] text-xl text-[var(--foreground)]">
               {result.cocktail.name}
@@ -167,8 +172,10 @@ export function SurpriseMe({ barIds }: Props) {
             <p className="mt-3 line-clamp-2 text-sm text-[var(--muted)]">{result.cocktail.funFact}</p>
           </div>
         </Link>
+      ) : emptyMessage ? (
+        <p className="surprise-empty">{emptyMessage}</p>
       ) : (
-        <p className="surprise-empty">Tap Surprise me to draw a cocktail from your bar.</p>
+        <p className="surprise-empty">Tap Surprise me to draw a cocktail you can pour tonight.</p>
       )}
     </section>
   );

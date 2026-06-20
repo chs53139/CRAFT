@@ -55,7 +55,21 @@ export function MixologistResult({ invention, onTryAgain }: Props) {
       )}
 
       <section className="mt-6">
-        <h4 className="section-row-title">Recipe</h4>
+        <h4 className="section-row-title">How to make it</h4>
+        <ol className="mt-3 space-y-3">
+          {invention.instructions.map((step, index) => (
+            <li key={index} className="flex gap-3 text-sm leading-relaxed text-[var(--foreground)]">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[var(--accent)]/30 text-xs text-[var(--accent)]">
+                {index + 1}
+              </span>
+              <span>{step}</span>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section className="mt-6">
+        <h4 className="section-row-title">Ingredients</h4>
         <ul className="mt-3 space-y-2">
           {invention.ingredients.map((item) => (
             <li key={`${item.ingredientId}-${item.amount}`} className="mixologist-recipe-row">
@@ -69,20 +83,6 @@ export function MixologistResult({ invention, onTryAgain }: Props) {
             </li>
           ))}
         </ul>
-      </section>
-
-      <section className="mt-6">
-        <h4 className="section-row-title">Instructions</h4>
-        <ol className="mt-3 space-y-3">
-          {invention.instructions.map((step, index) => (
-            <li key={index} className="flex gap-3 text-sm leading-relaxed text-[var(--foreground)]">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[var(--accent)]/30 text-xs text-[var(--accent)]">
-                {index + 1}
-              </span>
-              <span>{step}</span>
-            </li>
-          ))}
-        </ol>
       </section>
 
       <div className="mt-6 flex flex-col gap-3">

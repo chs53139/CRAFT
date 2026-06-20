@@ -53,7 +53,7 @@ export default function MixologistPage() {
     <div className="app-screen animate-fade-in">
       <ScreenHeader
         title="AI Mixologist"
-        subtitle="Select what’s on your shelf, then invent a balanced pour."
+        subtitle="Invent a drink first — adjust your shelf below if you want to remix."
         large
       />
 
@@ -67,12 +67,45 @@ export default function MixologistPage() {
         />
       ) : (
         <>
+          <div className="app-section">
+            <button
+              type="button"
+              className="btn-primary w-full"
+              disabled={selectedIds.length < 2 || inventing}
+              onClick={handleInvent}
+            >
+              {inventing ? "Mixing…" : "Invent a Drink"}
+            </button>
+            {!result && !inventing && selectedIds.length >= 2 && (
+              <p className="mt-3 text-center text-xs leading-relaxed text-[var(--muted)]">
+                Using {selectedIngredients.length} bottles from your shelf.
+              </p>
+            )}
+            {!result && !inventing && selectedIds.length < 2 && (
+              <p className="mt-3 text-center text-xs text-[var(--muted)]">
+                Select at least two ingredients below to invent a drink.
+              </p>
+            )}
+          </div>
+
+          {inventing && (
+            <div className="mixologist-thinking">
+              <p className="text-sm text-[var(--muted)]">Analyzing balance and structure…</p>
+            </div>
+          )}
+
+          {!inventing && result && (
+            <div className="app-section">
+              <MixologistResult invention={result} onTryAgain={handleInvent} />
+            </div>
+          )}
+
           <div className="premium-card p-4">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-sm font-semibold text-[var(--foreground)]">Selected ingredients</p>
+                <p className="text-sm font-semibold text-[var(--foreground)]">Your ingredients</p>
                 <p className="mt-0.5 text-xs text-[var(--muted)]">
-                  {selectedIds.length} of {barIds.length} from your bar
+                  {selectedIds.length} of {barIds.length} selected · tweak, then invent again
                 </p>
               </div>
               <div className="flex gap-2">
@@ -110,40 +143,6 @@ export default function MixologistPage() {
               ))}
             </div>
           </div>
-
-          <div className="app-section">
-            <button
-              type="button"
-              className="btn-primary w-full"
-              disabled={selectedIds.length < 2 || inventing}
-              onClick={handleInvent}
-            >
-              {inventing ? "Mixing…" : "Invent a Drink"}
-            </button>
-            <p className="mt-3 text-center text-xs leading-relaxed text-[var(--muted)]">
-              Checks catalogue matches first, then classic variations, then composes an original using cocktail ratios.
-            </p>
-          </div>
-
-          {inventing && (
-            <div className="mixologist-thinking">
-              <p className="text-sm text-[var(--muted)]">Analyzing balance and structure…</p>
-            </div>
-          )}
-
-          {!inventing && result && <MixologistResult invention={result} onTryAgain={handleInvent} />}
-
-          {!inventing && !result && selectedIds.length >= 2 && (
-            <p className="text-center text-sm italic text-[var(--muted)]">
-              Ready when you are — {selectedIngredients.length} bottles selected.
-            </p>
-          )}
-
-          {!inventing && !result && selectedIds.length < 2 && (
-            <p className="text-center text-sm text-[var(--muted)]">
-              Select at least two ingredients to invent a drink.
-            </p>
-          )}
 
           <div className="app-section">
             <Link href="/bar" className="account-row">

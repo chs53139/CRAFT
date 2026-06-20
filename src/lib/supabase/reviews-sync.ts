@@ -64,17 +64,38 @@ export async function upsertCocktailReview(
 ): Promise<void> {
   const rating = Math.min(5, Math.max(1, Math.round(input.rating)));
   const review_text = input.text.trim().slice(0, 280);
+  const payload = {
+    cocktail_id: cocktailId,
+    user_id: userId,
+    rating,
+    review_text,
+    would_make_again: input.wouldMakeAgain,
+  };
 
-  const { error } = await supabase.from("reviews").upsert(
-    {
-      cocktail_id: cocktailId,
-      user_id: userId,
-      rating,
-      review_text,
-      would_make_again: input.wouldMakeAgain,
-    },
-    { onConflict: "user_id,cocktail_id" }
-  );
+  const { data: existing, error: lookupError } = await supabase
+    .from("reviews")
+    .select("id")
+    .eq("user_id", userId)
+    .eq("cocktail_id", cocktailId)
+    .maybeSingle();
 
+  if (lookupError) throw lookupError;
+
+  if (existing?.id) {
+    const { error } = await supabase
+      .from("reviews")
+      .update({
+        rating,
+        review_text,
+        would_make_again: input.wouldMakeAgain,
+      })
+      .eq("id", existing.id)
+      .eq("user_id", userId);
+
+    if (error) throw error;
+    return;
+  }
+
+  const { error } = await supabase.from("reviews").insert(payload);
   if (error) throw error;
 }

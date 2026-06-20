@@ -2,18 +2,18 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { summarizeReviews } from "@/lib/cocktail-reviews";
-import {
-  fetchReviewsForCocktail,
-  isReviewsTableMissing,
-  upsertCocktailReview,
-} from "@/lib/supabase/reviews-sync";
-import { createClient } from "@/lib/supabase/client";
+import { humanizeReviewError } from "@/lib/review-errors";
 import { CocktailReview, CocktailReviewInput } from "@/lib/types";
 import { useUserData } from "@/hooks/use-my-bar";
 
+type ReviewsResponse = {
+  reviews?: CocktailReview[];
+  reviewsUnavailable?: boolean;
+  error?: string;
+};
+
 export function useCocktailReviews(cocktailId: string) {
-  const { user, isAuthenticated } = useUserData();
-  const supabase = useMemo(() => createClient(), []);
+  const { isAuthenticated } = useUserData();
   const [reviews, setReviews] = useState<CocktailReview[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -25,20 +25,31 @@ export function useCocktailReviews(cocktailId: string) {
     setReviewsUnavailable(false);
 
     try {
-      const data = await fetchReviewsForCocktail(supabase, cocktailId, user?.id);
-      setReviews(data);
-    } catch (loadError) {
-      if (isReviewsTableMissing(loadError)) {
+      const response = await fetch(
+        `/api/reviews?cocktailId=${encodeURIComponent(cocktailId)}`
+      );
+      const data = (await response.json()) as ReviewsResponse;
+
+      if (data.reviewsUnavailable) {
         setReviewsUnavailable(true);
         setReviews([]);
-      } else {
-        setError("Could not load reviews right now.");
-        setReviews([]);
+        return;
       }
+
+      if (!response.ok) {
+        throw new Error(data.error ?? "Could not load reviews right now.");
+      }
+
+      setReviews(data.reviews ?? []);
+    } catch (loadError) {
+      setError(
+        loadError instanceof Error ? loadError.message : "Could not load reviews right now."
+      );
+      setReviews([]);
     } finally {
       setLoaded(true);
     }
-  }, [supabase, cocktailId, user?.id]);
+  }, [cocktailId]);
 
   useEffect(() => {
     setLoaded(false);
@@ -53,7 +64,7 @@ export function useCocktailReviews(cocktailId: string) {
 
   const submitReview = useCallback(
     async (input: CocktailReviewInput) => {
-      if (!user) {
+      if (!isAuthenticated) {
         throw new Error("Sign in to review.");
       }
 
@@ -61,20 +72,41 @@ export function useCocktailReviews(cocktailId: string) {
       setError(null);
 
       try {
-        await upsertCocktailReview(supabase, user.id, cocktailId, input);
-        await loadReviews();
-      } catch (submitError) {
-        if (isReviewsTableMissing(submitError)) {
+        const response = await fetch("/api/reviews", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            cocktailId,
+            rating: input.rating,
+            text: input.text,
+            wouldMakeAgain: input.wouldMakeAgain,
+          }),
+        });
+
+        const data = (await response.json()) as ReviewsResponse;
+
+        if (data.reviewsUnavailable) {
           setReviewsUnavailable(true);
           throw new Error("Reviews are not enabled on this server yet.");
         }
-        setError("Could not save your review. Try again.");
-        throw new Error("Could not save your review. Try again.");
+
+        if (!response.ok) {
+          throw new Error(data.error ?? humanizeReviewError(null));
+        }
+
+        setReviews(data.reviews ?? []);
+      } catch (submitError) {
+        const message =
+          submitError instanceof Error
+            ? submitError.message
+            : humanizeReviewError(submitError);
+        setError(message);
+        throw new Error(message);
       } finally {
         setSubmitting(false);
       }
     },
-    [supabase, user, cocktailId, loadReviews]
+    [cocktailId, isAuthenticated]
   );
 
   return {

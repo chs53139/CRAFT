@@ -44,6 +44,8 @@ If you want cocktail ratings on detail pages:
 
 Without this migration, CRAFT still works — the reviews section shows a friendly “not enabled” message.
 
+If review submit fails after creating the table, also run [`003_reviews_grants.sql`](../supabase/migrations/003_reviews_grants.sql).
+
 ### Verify tables
 
 Open **Table Editor** — you should see:

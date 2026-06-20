@@ -26,8 +26,12 @@ create policy "Users insert own reviews"
 
 create policy "Users update own reviews"
   on public.reviews for update
-  using (auth.uid() = user_id);
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);
 
 create policy "Users delete own reviews"
   on public.reviews for delete
   using (auth.uid() = user_id);
+
+grant select on public.reviews to anon, authenticated;
+grant insert, update, delete on public.reviews to authenticated;

@@ -67,12 +67,6 @@ export default function HomePage() {
         ]}
       />
 
-      {recommendation && (
-        <div className="app-section">
-          <BestNextBuy recommendation={recommendation} />
-        </div>
-      )}
-
       <HorizontalCocktailRow
         title="Pour tonight"
         subtitle={
@@ -84,6 +78,12 @@ export default function HomePage() {
         seeAllHref="/cocktails"
         empty="Stock a few more bottles and the magic happens."
       />
+
+      {recommendation && (
+        <div className="app-section">
+          <BestNextBuy recommendation={recommendation} />
+        </div>
+      )}
 
       <HorizontalCocktailRow
         title="Almost there"

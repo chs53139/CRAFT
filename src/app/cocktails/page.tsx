@@ -88,12 +88,6 @@ export default function CocktailsPage() {
             placeholder="Search cocktails or ingredients…"
           />
 
-          {recommendation && (
-            <div className="app-section">
-              <BestNextBuy recommendation={recommendation} />
-            </div>
-          )}
-
           {noSearchResults ? (
             <div className="app-section">
               <EmptyState
@@ -108,9 +102,15 @@ export default function CocktailsPage() {
                 title="Ready now"
                 subtitle={`${tonight.length} cocktails`}
                 items={tonight.slice(0, SECTION_LIMIT)}
-                empty="Not quite there yet — check the recommendation above."
+                empty="Not quite there yet — check the recommendation below."
               />
               <SectionTruncation shown={SECTION_LIMIT} total={tonight.length} />
+
+              {recommendation && (
+                <div className="app-section">
+                  <BestNextBuy recommendation={recommendation} />
+                </div>
+              )}
 
               <CocktailSection
                 title="One away"

@@ -4,7 +4,6 @@ import { ScanBottlesResponse } from "./types";
 export function getMockScanResults(): ScanBottlesResponse {
   return {
     mock: true,
-    message: "Demo scan — add OPENAI_API_KEY to enable live bottle recognition.",
     detections: finalizeDetections([
       {
         detectedBottleName: "Buffalo Trace Kentucky Straight Bourbon",

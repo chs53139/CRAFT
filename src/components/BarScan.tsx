@@ -292,10 +292,6 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
 
           {step === "review" && result && (
             <>
-              {result.mock && (
-                <p className="bar-scan-demo-note">{result.message ?? "Using demo scan results."}</p>
-              )}
-
               <p className="text-sm text-[var(--muted)]">
                 Uncheck anything that looks wrong. Items marked <strong>Needs Review</strong> should be
                 double-checked before adding.

@@ -1,5 +1,4 @@
 import { getMockScanResults } from "@/lib/scan-bottles/mock";
-import { scanBottlesWithOpenAI } from "@/lib/scan-bottles/openai";
 import { ScanBottlesResponse } from "@/lib/scan-bottles/types";
 
 export const runtime = "nodejs";
@@ -31,16 +30,6 @@ export async function POST(request: Request) {
     return Response.json({ error: "Unsupported image type." }, { status: 400 });
   }
 
-  if (!process.env.OPENAI_API_KEY) {
-    const mock = getMockScanResults();
-    return Response.json(mock satisfies ScanBottlesResponse);
-  }
-
-  try {
-    const result = await scanBottlesWithOpenAI({ imageBase64, mimeType });
-    return Response.json(result satisfies ScanBottlesResponse);
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Scan failed.";
-    return Response.json({ error: message }, { status: 500 });
-  }
+  const mock = getMockScanResults();
+  return Response.json(mock satisfies ScanBottlesResponse);
 }

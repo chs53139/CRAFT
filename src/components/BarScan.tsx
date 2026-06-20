@@ -31,6 +31,7 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [step, setStep] = useState<Step>("capture");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ScanBottlesResponse | null>(null);
@@ -43,7 +44,9 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
 
   function reset() {
     setStep("capture");
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
     setPreviewUrl(null);
+    setSelectedFile(null);
     setFileName(null);
     setError(null);
     setResult(null);
@@ -72,11 +75,17 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
     }
 
     setFileName(file.name);
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
     setPreviewUrl(URL.createObjectURL(file));
+    setSelectedFile(file);
+  }
+
+  function openFilePicker() {
+    inputRef.current?.click();
   }
 
   async function handleScan() {
-    const file = inputRef.current?.files?.[0];
+    const file = selectedFile ?? inputRef.current?.files?.[0];
     if (!file) {
       setError("Add a photo of your bar shelf first.");
       return;
@@ -150,6 +159,15 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
   return (
     <div className="bar-scan-overlay" role="dialog" aria-modal="true" aria-labelledby="bar-scan-title">
       <div className="bar-scan-panel animate-fade-in">
+        <input
+          ref={inputRef}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          className="sr-only"
+          onChange={(event) => handleFileChange(event.target.files?.[0] ?? null)}
+        />
+
         <div className="bar-scan-header">
           <div>
             <p className="eyebrow text-[var(--accent-dim)]">Scan My Bar</p>
@@ -172,43 +190,48 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
         )}
 
         {step === "capture" && (
-          <div className="bar-scan-body">
-            <p className="text-sm leading-relaxed text-[var(--muted)]">
-              Take or upload a photo of your bottles. CRAFT will suggest matches — nothing is added until
-              you confirm.
-            </p>
+          <>
+            <div className="bar-scan-scroll">
+              <p className="text-sm leading-relaxed text-[var(--muted)]">
+                Take or upload a photo of your bottles. CRAFT will suggest matches — nothing is added until
+                you confirm.
+              </p>
 
-            <label className="bar-scan-upload">
-              <input
-                ref={inputRef}
-                type="file"
-                accept="image/*"
-                capture="environment"
-                className="sr-only"
-                onChange={(event) => handleFileChange(event.target.files?.[0] ?? null)}
-              />
-              {previewUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={previewUrl} alt="Bar preview" className="bar-scan-preview" />
-              ) : (
-                <div className="bar-scan-upload-placeholder">
-                  <span className="text-3xl" aria-hidden>
-                    📷
-                  </span>
-                  <p className="mt-3 text-sm font-medium text-[var(--foreground)]">
-                    Tap to take a photo or choose one
-                  </p>
-                  <p className="mt-1 text-xs text-[var(--muted)]">JPG, PNG, or WebP · up to 8 MB</p>
-                </div>
-              )}
-            </label>
+              <div className="bar-scan-upload">
+                {previewUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={previewUrl} alt="Bar preview" className="bar-scan-preview" />
+                ) : (
+                  <div className="bar-scan-upload-placeholder">
+                    <span className="text-3xl" aria-hidden>
+                      📷
+                    </span>
+                    <p className="mt-3 text-sm font-medium text-[var(--foreground)]">
+                      Add a photo of your shelf
+                    </p>
+                    <p className="mt-1 text-xs text-[var(--muted)]">JPG, PNG, or WebP · up to 8 MB</p>
+                  </div>
+                )}
+              </div>
 
-            {fileName && <p className="bar-scan-filename">{fileName}</p>}
+              {fileName && <p className="bar-scan-filename">{fileName}</p>}
 
-            <button type="button" className="btn-primary mt-4 w-full" onClick={handleScan}>
-              Scan bottles
-            </button>
-          </div>
+              <button type="button" className="btn-secondary mt-3 w-full" onClick={openFilePicker}>
+                {previewUrl ? "Choose a different photo" : "Take or upload photo"}
+              </button>
+            </div>
+
+            <div className="bar-scan-footer">
+              <button
+                type="button"
+                className="btn-primary w-full"
+                disabled={!selectedFile}
+                onClick={handleScan}
+              >
+                Scan bottles
+              </button>
+            </div>
+          </>
         )}
 
         {step === "scanning" && (
@@ -219,66 +242,75 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
         )}
 
         {step === "review" && result && (
-          <div className="bar-scan-body">
-            {result.mock && (
-              <p className="bar-scan-demo-note">{result.message ?? "Using demo scan results."}</p>
-            )}
+          <>
+            <div className="bar-scan-scroll">
+              {result.mock && (
+                <p className="bar-scan-demo-note">{result.message ?? "Using demo scan results."}</p>
+              )}
 
-            <p className="text-sm text-[var(--muted)]">
-              Uncheck anything that looks wrong. Items marked <strong>Needs Review</strong> should be
-              double-checked before adding.
-            </p>
+              <p className="text-sm text-[var(--muted)]">
+                Uncheck anything that looks wrong. Items marked <strong>Needs Review</strong> should be
+                double-checked before adding.
+              </p>
 
-            <ul className="bar-scan-results">
-              {reviewItems.map((item, index) => {
-                const alreadyInBar =
-                  !!item.mappedIngredientId && barIds.includes(item.mappedIngredientId);
-                const disabled = !item.mappedIngredientId || alreadyInBar;
-                const checked = selected.has(index);
+              <ul className="bar-scan-results">
+                {reviewItems.map((item, index) => {
+                  const alreadyInBar =
+                    !!item.mappedIngredientId && barIds.includes(item.mappedIngredientId);
+                  const disabled = !item.mappedIngredientId || alreadyInBar;
+                  const checked = selected.has(index);
 
-                return (
-                  <li key={`${item.detectedBottleName}-${index}`} className="bar-scan-result-item">
-                    <label className={`bar-scan-result-label ${disabled ? "bar-scan-result-disabled" : ""}`}>
-                      <input
-                        type="checkbox"
-                        className="bar-scan-checkbox"
-                        checked={checked}
-                        disabled={disabled}
-                        onChange={() => toggleItem(index)}
-                      />
-                      <div className="min-w-0 flex-1">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <p className="text-sm font-semibold text-[var(--foreground)]">
-                            {item.detectedBottleName}
+                  return (
+                    <li key={`${item.detectedBottleName}-${index}`} className="bar-scan-result-item">
+                      <label className={`bar-scan-result-label ${disabled ? "bar-scan-result-disabled" : ""}`}>
+                        <input
+                          type="checkbox"
+                          className="bar-scan-checkbox"
+                          checked={checked}
+                          disabled={disabled}
+                          onChange={() => toggleItem(index)}
+                        />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <p className="text-sm font-semibold text-[var(--foreground)]">
+                              {item.detectedBottleName}
+                            </p>
+                            {item.needsReview && (
+                              <span className="bar-scan-review-badge">Needs Review</span>
+                            )}
+                            {alreadyInBar && (
+                              <span className="bar-scan-owned-badge">In bar</span>
+                            )}
+                          </div>
+                          <p className="mt-1 text-xs text-[var(--muted)]">
+                            {item.mappedIngredientName
+                              ? `CRAFT: ${item.mappedIngredientName}`
+                              : "No CRAFT match found"}
+                            {" · "}
+                            {item.likelyCategory}
+                            {" · "}
+                            {Math.round(item.confidence * 100)}% confidence
                           </p>
-                          {item.needsReview && (
-                            <span className="bar-scan-review-badge">Needs Review</span>
-                          )}
-                          {alreadyInBar && (
-                            <span className="bar-scan-owned-badge">In bar</span>
+                          {item.notes && (
+                            <p className="mt-1 text-xs italic text-[var(--accent-dim)]">{item.notes}</p>
                           )}
                         </div>
-                        <p className="mt-1 text-xs text-[var(--muted)]">
-                          {item.mappedIngredientName
-                            ? `CRAFT: ${item.mappedIngredientName}`
-                            : "No CRAFT match found"}
-                          {" · "}
-                          {item.likelyCategory}
-                          {" · "}
-                          {Math.round(item.confidence * 100)}% confidence
-                        </p>
-                        {item.notes && (
-                          <p className="mt-1 text-xs italic text-[var(--accent-dim)]">{item.notes}</p>
-                        )}
-                      </div>
-                    </label>
-                  </li>
-                );
-              })}
-            </ul>
+                      </label>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
 
-            <div className="bar-scan-actions">
-              <button type="button" className="btn-secondary flex-1" onClick={() => setStep("capture")}>
+            <div className="bar-scan-footer bar-scan-actions">
+              <button
+                type="button"
+                className="btn-secondary flex-1"
+                onClick={() => {
+                  setStep("capture");
+                  setResult(null);
+                }}
+              >
                 Retake
               </button>
               <button
@@ -290,7 +322,7 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
                 Add {selectedCount} ingredient{selectedCount === 1 ? "" : "s"}
               </button>
             </div>
-          </div>
+          </>
         )}
 
         {step === "done" && (

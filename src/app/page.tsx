@@ -5,7 +5,7 @@ import { BestNextBuy } from "@/components/BestNextBuy";
 import { EmptyState } from "@/components/EmptyState";
 import { HorizontalCocktailRow } from "@/components/HorizontalCocktailRow";
 import { SkeletonGrid } from "@/components/LoadingState";
-import { StatPills } from "@/components/StatPills";
+import { StatPillAction, StatPills } from "@/components/StatPills";
 import { SurpriseMe } from "@/components/SurpriseMe";
 import { getHiddenGems } from "@/lib/cocktail-discovery";
 import {
@@ -68,6 +68,9 @@ export default function HomePage() {
           { value: summary.oneAway, label: "One away" },
           { value: cocktailCount, label: "In catalogue" },
         ]}
+        trailingAction={
+          <StatPillAction href="/mixologist" label="AI Mixologist" subtitle="Invent" />
+        }
       />
 
       <HorizontalCocktailRow
@@ -101,18 +104,6 @@ export default function HomePage() {
 
       <div className="app-section">
         <SurpriseMe barIds={barIds} />
-      </div>
-
-      <div className="app-section">
-        <Link href="/mixologist" className="account-row">
-          <div>
-            <p className="text-sm font-semibold text-[var(--foreground)]">AI Mixologist</p>
-            <p className="mt-0.5 text-xs text-[var(--muted)]">
-              Select ingredients and invent a balanced pour
-            </p>
-          </div>
-          <span className="text-[var(--accent)]">→</span>
-        </Link>
       </div>
 
       <HorizontalCocktailRow

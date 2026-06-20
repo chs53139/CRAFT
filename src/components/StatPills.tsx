@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 type Stat = {
   value: string | number;
   label: string;
@@ -5,9 +7,10 @@ type Stat = {
 
 type Props = {
   stats: Stat[];
+  trailingAction?: React.ReactNode;
 };
 
-export function StatPills({ stats }: Props) {
+export function StatPills({ stats, trailingAction }: Props) {
   return (
     <div className="stat-pills">
       {stats.map((stat) => (
@@ -16,6 +19,27 @@ export function StatPills({ stats }: Props) {
           <p className="stat-pill-label">{stat.label}</p>
         </div>
       ))}
+      {trailingAction}
     </div>
+  );
+}
+
+export function StatPillAction({
+  href,
+  label,
+  subtitle,
+}: {
+  href: string;
+  label: string;
+  subtitle?: string;
+}) {
+  return (
+    <Link href={href} className="stat-pill-action">
+      <span className="stat-pill-action-icon" aria-hidden>
+        ✦
+      </span>
+      <span className="stat-pill-action-label">{label}</span>
+      {subtitle && <span className="stat-pill-action-subtitle">{subtitle}</span>}
+    </Link>
   );
 }

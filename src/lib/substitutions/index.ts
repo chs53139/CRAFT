@@ -17,3 +17,9 @@ export type {
   MatchQuality,
 } from "./types";
 export { MATCH_QUALITY_LABELS } from "./types";
+export {
+  isBarSubstitution,
+  isHomemadeSubstitution,
+  substitutions,
+  type IngredientSubstitution,
+} from "@/data/substitutions";

@@ -20,14 +20,12 @@ export function RecentCocktails() {
   if (!loaded || matches.length === 0) return null;
 
   return (
-    <section className="mt-14">
-      <div className="mb-6 border-b border-[var(--border)] pb-4">
-        <h2 className="font-[family-name:var(--font-display)] text-2xl font-medium text-[var(--foreground)]">
-          Recently viewed
-        </h2>
-        <p className="mt-1 text-sm text-[var(--muted)]">Pick up where you left off</p>
+    <section className="mt-16 sm:mt-20">
+      <div className="section-header">
+        <h2 className="section-title">Recently viewed</h2>
+        <p className="mt-2 text-sm text-[var(--muted)]">Pick up where you left off</p>
       </div>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="stagger-grid grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {matches.slice(0, 6).map((match) => (
           <CocktailCard key={match.cocktail.id} match={match} compact />
         ))}

@@ -23,17 +23,18 @@ export function CocktailImage({
   const src = failed ? COCKTAIL_PLACEHOLDER : getCocktailImageUrl(slug);
 
   return (
-    <div className={`relative overflow-hidden bg-[var(--card)] ${className}`}>
+    <div className={`relative overflow-hidden bg-[var(--background-elevated)] ${className}`}>
       <Image
         src={src}
         alt={`${name} cocktail`}
         fill
         priority={priority}
         sizes={sizes}
-        className="object-cover transition duration-500 group-hover:scale-105"
+        className="object-cover transition duration-700 ease-out motion-safe:group-hover:scale-[1.03]"
         onError={() => setFailed(true)}
       />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#070708]/80 via-[#070708]/10 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#050506]/90 via-[#050506]/20 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-[#050506]/30" />
     </div>
   );
 }

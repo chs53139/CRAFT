@@ -17,13 +17,23 @@ export function getIngredientsByIds(ids: string[]): Ingredient[] {
     .filter((ing): ing is Ingredient => !!ing);
 }
 
+function resolveIngredient(id: string): Ingredient {
+  return (
+    ingredientMap.get(id) ?? {
+      id,
+      name: id.replace(/-/g, " "),
+      category: "other",
+    }
+  );
+}
+
 export function matchCocktails(myBarIds: string[]): CocktailMatch[] {
   const barSet = new Set(myBarIds);
 
   return cocktails.map((cocktail) => {
     const missing = cocktail.ingredients
-      .map((ci) => ingredientMap.get(ci.ingredientId))
-      .filter((ing): ing is Ingredient => !!ing && !barSet.has(ing.id));
+      .filter((ci) => !barSet.has(ci.ingredientId))
+      .map((ci) => resolveIngredient(ci.ingredientId));
 
     const missingCount = missing.length;
 
@@ -36,19 +46,32 @@ export function matchCocktails(myBarIds: string[]): CocktailMatch[] {
   });
 }
 
-export function getCocktailById(id: string) {
-  return cocktails.find((c) => c.id === id);
+export function filterMatchesBySearch(
+  matches: CocktailMatch[],
+  query: string
+): CocktailMatch[] {
+  const q = query.trim().toLowerCase();
+  if (!q) return matches;
+
+  return matches.filter(
+    (m) =>
+      m.cocktail.name.toLowerCase().includes(q) ||
+      m.cocktail.category.toLowerCase().includes(q) ||
+      m.cocktail.flavorProfile.some((f) => f.includes(q)) ||
+      m.missing.some((ing) => ing.name.toLowerCase().includes(q))
+  );
 }
 
-export function searchCocktails(query: string) {
-  const q = query.trim().toLowerCase();
-  if (!q) return cocktails;
-  return cocktails.filter(
-    (c) =>
-      c.name.toLowerCase().includes(q) ||
-      c.category.toLowerCase().includes(q) ||
-      c.flavorProfile.some((f) => f.includes(q))
-  );
+export function getBarSummary(barIds: string[]) {
+  const matches = matchCocktails(barIds);
+  return {
+    readyTonight: matches.filter((m) => m.canMake).length,
+    oneAway: matches.filter((m) => m.missingCount === 1).length,
+  };
+}
+
+export function getCocktailById(id: string) {
+  return cocktails.find((c) => c.id === id);
 }
 
 const EXAMPLE_LIMIT = 6;
@@ -60,6 +83,8 @@ const EXAMPLE_LIMIT = 6;
 export function getBestNextIngredient(
   barIds: string[]
 ): IngredientRecommendation | null {
+  if (barIds.length === 0) return null;
+
   const barSet = new Set(barIds);
   const before = matchCocktails(barIds);
   const candidates = ingredients.filter((ing) => !barSet.has(ing.id));

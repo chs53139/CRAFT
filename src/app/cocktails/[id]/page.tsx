@@ -51,11 +51,11 @@ export default function CocktailDetailPage() {
   const fav = favLoaded && isFavorite(cocktail.id);
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-12">
+    <div className="page-shell-narrow animate-fade-in">
       <div className="flex items-center justify-between gap-4">
         <Link
           href="/cocktails"
-          className="text-sm text-[var(--muted)] transition hover:text-[var(--accent)]"
+          className="text-sm tracking-wide text-[var(--muted)] transition hover:text-[var(--accent)]"
         >
           ← Back to menu
         </Link>
@@ -68,7 +68,7 @@ export default function CocktailDetailPage() {
         )}
       </div>
 
-      <div className="mt-6 overflow-hidden rounded-2xl border border-[var(--border)]">
+      <div className="premium-card mt-8 overflow-hidden">
         <CocktailImage
           slug={cocktail.id}
           name={cocktail.name}
@@ -86,20 +86,18 @@ export default function CocktailDetailPage() {
         <FlavorTags flavors={cocktail.flavorProfile} />
       </div>
 
-      <h1 className="mt-6 font-[family-name:var(--font-display)] text-4xl font-light text-[var(--foreground)] sm:text-5xl">
-        {cocktail.name}
-      </h1>
-      <p className="mt-3 text-base text-[var(--muted)] sm:text-lg">{cocktail.description}</p>
+      <h1 className="display-lg mt-8">{cocktail.name}</h1>
+      <p className="lead mt-4">{cocktail.description}</p>
       <p className="mt-2 text-sm italic text-[var(--accent-dim)]">{cocktail.cheekyLine}</p>
 
-      <div className="mt-6 grid gap-3 sm:grid-cols-2">
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] px-4 py-3">
-          <p className="text-[10px] uppercase tracking-wider text-[var(--accent)]">Glassware</p>
-          <p className="mt-1 text-sm text-[var(--foreground)]">{cocktail.glassware}</p>
+      <div className="mt-8 grid gap-4 sm:grid-cols-2">
+        <div className="glass-panel rounded-xl px-5 py-4">
+          <p className="eyebrow text-[var(--accent-dim)]">Glassware</p>
+          <p className="mt-2 text-sm text-[var(--foreground)]">{cocktail.glassware}</p>
         </div>
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] px-4 py-3">
-          <p className="text-[10px] uppercase tracking-wider text-[var(--accent)]">Garnish</p>
-          <p className="mt-1 text-sm text-[var(--foreground)]">{cocktail.garnish}</p>
+        <div className="glass-panel rounded-xl px-5 py-4">
+          <p className="eyebrow text-[var(--accent-dim)]">Garnish</p>
+          <p className="mt-2 text-sm text-[var(--foreground)]">{cocktail.garnish}</p>
         </div>
       </div>
 
@@ -123,8 +121,8 @@ export default function CocktailDetailPage() {
         </div>
       )}
 
-      <section className="mt-12">
-        <h2 className="text-xs uppercase tracking-[0.3em] text-[var(--accent)]">Ingredients</h2>
+      <section className="mt-14">
+        <h2 className="eyebrow">Ingredients</h2>
         <ul className="mt-5 space-y-2">
           {cocktail.ingredients.map((ci) => {
             const ing = getIngredientById(ci.ingredientId);
@@ -159,8 +157,8 @@ export default function CocktailDetailPage() {
         </ul>
       </section>
 
-      <section className="mt-12">
-        <h2 className="text-xs uppercase tracking-[0.3em] text-[var(--accent)]">Instructions</h2>
+      <section className="mt-14">
+        <h2 className="eyebrow">Instructions</h2>
         <ol className="mt-6 space-y-0">
           {cocktail.instructions.map((step, i) => (
             <li key={`${i}-${step.slice(0, 20)}`} className="relative flex gap-4 pb-8 last:pb-0 sm:gap-5">

@@ -16,21 +16,18 @@ export function EmptyState({
   icon = "🥃",
 }: Props) {
   return (
-    <div className="rounded-2xl border border-dashed border-[var(--border)] bg-[var(--card)]/50 px-6 py-14 text-center">
-      <p className="text-3xl" aria-hidden>
-        {icon}
-      </p>
-      <h3 className="mt-4 font-[family-name:var(--font-display)] text-xl text-[var(--foreground)]">
+    <div className="premium-card animate-fade-in-up border-dashed px-6 py-16 text-center sm:px-10 sm:py-20">
+      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--background-elevated)] text-2xl">
+        <span aria-hidden>{icon}</span>
+      </div>
+      <h3 className="mt-6 font-[family-name:var(--font-display)] text-2xl font-medium text-[var(--foreground)]">
         {title}
       </h3>
-      <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-[var(--muted)]">
+      <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-[var(--muted)]">
         {description}
       </p>
       {actionLabel && actionHref && (
-        <Link
-          href={actionHref}
-          className="mt-6 inline-block rounded-full bg-[var(--accent)] px-6 py-3 text-sm font-semibold text-[#070708] transition hover:brightness-110"
-        >
+        <Link href={actionHref} className="btn-primary mt-8">
           {actionLabel}
         </Link>
       )}

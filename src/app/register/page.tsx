@@ -59,7 +59,7 @@ export default function RegisterPage() {
 
       if (data.needsEmailConfirmation) {
         setMessage(
-          "Account created — check your email and click the confirmation link, then sign in. For instant access, turn off Confirm email in Supabase → Authentication → Email."
+          "Account created — check your email and click the confirmation link, then sign in."
         );
         return;
       }
@@ -79,7 +79,7 @@ export default function RegisterPage() {
         Create account
       </h1>
       <p className="mt-2 text-sm text-[var(--muted)]">
-        Save your bar to Supabase and pour the same drinks on any device.
+        Save your bar and favorites — pour the same drinks on any device.
       </p>
 
       <form onSubmit={handleSubmit} className="mt-10 space-y-4">

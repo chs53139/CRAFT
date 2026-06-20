@@ -54,7 +54,7 @@ function LoginForm() {
         Sign in
       </h1>
       <p className="mt-2 text-sm text-[var(--muted)]">
-        Your bar inventory syncs to Supabase — pick up exactly where you left off.
+        Pick up where you left off — your bar saves when you sign in.
       </p>
 
       <form onSubmit={handleSubmit} className="mt-10 space-y-4">

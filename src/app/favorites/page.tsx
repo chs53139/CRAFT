@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { CocktailCard } from "@/components/CocktailCard";
 import { EmptyState } from "@/components/EmptyState";
 import { ErrorBanner } from "@/components/ErrorBanner";
-import { PageLoader } from "@/components/LoadingState";
+import { SkeletonGrid } from "@/components/LoadingState";
 import { useFavorites, useMyBar } from "@/hooks/use-my-bar";
 import { matchCocktails } from "@/lib/cocktail-matching";
 
@@ -21,17 +21,23 @@ export default function FavoritesPage() {
   }, [favoriteIds, barIds, loaded]);
 
   if (!loaded) {
-    return <PageLoader message="Loading favorites…" />;
+    return (
+      <div className="page-shell space-y-8">
+        <div className="space-y-3">
+          <div className="h-3 w-16 rounded-full shimmer" />
+          <div className="h-10 w-40 rounded-lg shimmer" />
+        </div>
+        <SkeletonGrid count={3} />
+      </div>
+    );
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
-      <p className="text-xs uppercase tracking-[0.3em] text-[var(--accent)]">Saved</p>
-      <h1 className="mt-2 font-[family-name:var(--font-display)] text-4xl font-light text-[var(--foreground)]">
-        Favorites
-      </h1>
-      <p className="mt-2 text-[var(--muted)]">
-        Cocktails you love — synced when signed in.
+    <div className="page-shell">
+      <p className="eyebrow">Saved</p>
+      <h1 className="display-lg mt-3">Favorites</h1>
+      <p className="lead mt-3">
+        Cocktails you love — saved on this device, synced when you sign in.
       </p>
 
       {error && (
@@ -41,16 +47,24 @@ export default function FavoritesPage() {
       )}
 
       <div className="mt-10">
-        {matches.length === 0 ? (
+        {favoriteIds.length === 0 ? (
           <EmptyState
             title="No favorites yet"
             description="Tap the star on any cocktail to save it here. Your taste is impeccable — prove it."
-            actionLabel="Browse cocktails"
+            actionLabel="Browse Tonight's menu"
+            actionHref="/cocktails"
+            icon="★"
+          />
+        ) : matches.length === 0 ? (
+          <EmptyState
+            title="Saved cocktails unavailable"
+            description="Some starred drinks aren't in the catalogue anymore. Browse Tonight and star a fresh round."
+            actionLabel="Browse Tonight's menu"
             actionHref="/cocktails"
             icon="★"
           />
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="stagger-grid grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {matches.map((match) => (
               <CocktailCard key={match.cocktail.id} match={match} />
             ))}
@@ -63,7 +77,7 @@ export default function FavoritesPage() {
           <Link href="/login" className="text-[var(--accent)] hover:underline">
             Sign in
           </Link>{" "}
-          to sync favorites across devices.
+          to keep favorites across devices.
         </p>
       )}
     </div>

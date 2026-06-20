@@ -6,8 +6,9 @@ import { BestNextBuy } from "@/components/BestNextBuy";
 import { EmptyState } from "@/components/EmptyState";
 import { ErrorBanner } from "@/components/ErrorBanner";
 import { IngredientChip } from "@/components/IngredientChip";
-import { PageLoader } from "@/components/LoadingState";
+import { BarPageSkeleton } from "@/components/LoadingState";
 import { MyBarInventory } from "@/components/MyBarInventory";
+import { SearchField } from "@/components/SearchField";
 import {
   getBestNextIngredient,
   getIngredientsByIds,
@@ -25,17 +26,23 @@ export default function BarPage() {
 
   const filteredIngredients = useMemo(() => {
     const q = search.trim().toLowerCase();
-    return ingredients.filter((ing) => {
-      const matchesSearch =
-        !q || ing.name.toLowerCase().includes(q) || ing.id.toLowerCase().includes(q);
-      const cat = getShopCategory(ing.id, ing.name);
-      const matchesCategory = activeCategory === "all" || cat === activeCategory;
-      return matchesSearch && matchesCategory;
-    });
-  }, [search, activeCategory]);
+    return ingredients
+      .filter((ing) => {
+        const matchesSearch = !q || ing.name.toLowerCase().includes(q);
+        const cat = getShopCategory(ing.id, ing.name);
+        const matchesCategory = activeCategory === "all" || cat === activeCategory;
+        return matchesSearch && matchesCategory;
+      })
+      .sort((a, b) => {
+        const aSelected = barIds.includes(a.id);
+        const bSelected = barIds.includes(b.id);
+        if (aSelected !== bSelected) return aSelected ? 1 : -1;
+        return a.name.localeCompare(b.name);
+      });
+  }, [search, activeCategory, barIds]);
 
   if (!loaded) {
-    return <PageLoader message="Loading your bar…" />;
+    return <BarPageSkeleton />;
   }
 
   const barIngredients = getIngredientsByIds(barIds);
@@ -43,30 +50,43 @@ export default function BarPage() {
   const tonightCount = matches.filter((m) => m.canMake).length;
   const recommendation = getBestNextIngredient(barIds);
 
+  function handleClearBar() {
+    if (
+      window.confirm(
+        "Clear your entire bar? This removes all saved ingredients from your shelf."
+      )
+    ) {
+      clearBar();
+    }
+  }
+
+  const emptySearchTitle = search.trim()
+    ? "No ingredients found"
+    : "Nothing in this category";
+  const emptySearchDescription = search.trim()
+    ? "Try a different search or switch categories."
+    : "Pick another category above — your bottle is probably hiding in Spirits or Mixers.";
+
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
+    <div className="page-shell">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-[var(--accent)]">
-            Inventory
-          </p>
-          <h1 className="mt-2 font-[family-name:var(--font-display)] text-3xl font-light text-[var(--foreground)] sm:text-4xl">
-            My Bar
-          </h1>
+          <p className="eyebrow">Inventory</p>
+          <h1 className="display-lg mt-3">My Bar</h1>
           <p className="mt-2 max-w-lg text-sm text-[var(--muted)] sm:text-base">
             {ingredients.length} ingredients ·{" "}
             {isAuthenticated
               ? syncing
-                ? "syncing to Supabase…"
-                : "saved to your account"
-              : "local only — sign in to sync"}
+                ? "Saving…"
+                : "Saved to your account"
+              : "On this device — sign in to sync"}
           </p>
         </div>
         {barIds.length > 0 && (
           <button
             type="button"
-            onClick={clearBar}
-            className="text-sm text-[var(--muted)] transition hover:text-[var(--accent)]"
+            onClick={handleClearBar}
+            className="min-h-11 text-sm text-[var(--muted)] transition hover:text-[var(--accent)]"
           >
             Clear bar
           </button>
@@ -92,22 +112,21 @@ export default function BarPage() {
           />
         </div>
       ) : (
-        <div className="mt-6 flex flex-wrap items-center gap-4 rounded-xl border border-[var(--border)] bg-[var(--card)] px-4 py-4 sm:px-5">
+        <div className="mt-6 flex flex-wrap items-center gap-3 rounded-2xl border border-[var(--border-subtle)] bg-[var(--card)]/60 px-4 py-4 sm:gap-4 sm:px-5">
           <p className="text-sm text-[var(--muted)]">
             <span className="font-semibold text-[var(--accent)]">{tonightCount}</span>{" "}
-            cocktails ready tonight
+            cocktail{tonightCount !== 1 ? "s" : ""} ready tonight
           </p>
-          <span className="hidden text-[var(--border)] sm:inline">|</span>
           <Link
             href="/cocktails"
             className="text-sm font-medium text-[var(--accent)] hover:underline"
           >
-            See recommendations →
+            See Tonight&apos;s menu →
           </Link>
         </div>
       )}
 
-      {recommendation && (
+      {recommendation && barIds.length > 0 && (
         <div className="mt-10">
           <BestNextBuy recommendation={recommendation} />
         </div>
@@ -116,43 +135,43 @@ export default function BarPage() {
       <div className="mt-14">
         <div className="mb-6 space-y-4">
           <div>
-            <h2 className="font-[family-name:var(--font-display)] text-2xl text-[var(--foreground)]">
-              Add ingredients
-            </h2>
+            <h2 className="section-title">Add ingredients</h2>
             <p className="mt-1 text-sm text-[var(--muted)]">
-              Search or filter by category
+              Tap to add or remove · already on your shelf sink to the bottom
             </p>
           </div>
 
-          <input
-            type="search"
+          <SearchField
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search ingredients…"
-            className="w-full rounded-xl border border-[var(--border)] bg-[var(--card)] px-4 py-3 text-sm text-[var(--foreground)] outline-none transition focus:border-[var(--accent)]/50 sm:max-w-md"
+            onChange={setSearch}
+            placeholder="Search by name…"
+            className="sm:max-w-md"
           />
 
-          <div className="flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <CategoryPill
-              label="All"
-              active={activeCategory === "all"}
-              onClick={() => setActiveCategory("all")}
-            />
-            {SHOP_CATEGORIES.map((cat) => (
+          <div className="relative">
+            <div className="flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               <CategoryPill
-                key={cat.id}
-                label={cat.label}
-                active={activeCategory === cat.id}
-                onClick={() => setActiveCategory(cat.id)}
+                label="All"
+                active={activeCategory === "all"}
+                onClick={() => setActiveCategory("all")}
               />
-            ))}
+              {SHOP_CATEGORIES.map((cat) => (
+                <CategoryPill
+                  key={cat.id}
+                  label={cat.label}
+                  active={activeCategory === cat.id}
+                  onClick={() => setActiveCategory(cat.id)}
+                />
+              ))}
+            </div>
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-[var(--background)] to-transparent md:hidden" />
           </div>
         </div>
 
         {filteredIngredients.length === 0 ? (
           <EmptyState
-            title="No ingredients found"
-            description="Try a different search or category. Your perfect bottle is in here somewhere."
+            title={emptySearchTitle}
+            description={emptySearchDescription}
             icon="🔍"
           />
         ) : (
@@ -169,12 +188,14 @@ export default function BarPage() {
         )}
       </div>
 
-      <Link
-        href="/cocktails"
-        className="mt-14 inline-block rounded-full bg-[var(--accent)] px-6 py-3.5 text-sm font-semibold text-[#070708] transition hover:brightness-110 sm:px-8"
-      >
-        What can I make tonight? →
-      </Link>
+      {barIds.length === 0 && (
+        <Link
+          href="/cocktails"
+          className="btn-primary mt-14"
+        >
+          Browse cocktails anyway →
+        </Link>
+      )}
     </div>
   );
 }
@@ -192,7 +213,7 @@ function CategoryPill({
     <button
       type="button"
       onClick={onClick}
-      className={`shrink-0 rounded-full border px-4 py-2 text-sm transition ${
+      className={`shrink-0 rounded-full border px-4 py-2.5 text-sm transition ${
         active
           ? "border-[var(--accent)] bg-[var(--accent)]/15 text-[var(--accent)]"
           : "border-[var(--border)] text-[var(--muted)] hover:border-[var(--accent)]/40 hover:text-[var(--foreground)]"

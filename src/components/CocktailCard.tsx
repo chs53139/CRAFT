@@ -22,7 +22,7 @@ export function CocktailCard({ match, compact, showFavorite = true }: Props) {
   return (
     <Link
       href={`/cocktails/${cocktail.id}`}
-      className="group relative block overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card)] transition hover:border-[var(--accent)]/40 hover:bg-[var(--card-hover)]"
+      className="premium-card premium-card-interactive group relative block"
     >
       {showFavorite && loaded && (
         <div className="absolute right-3 top-3 z-10">
@@ -40,36 +40,38 @@ export function CocktailCard({ match, compact, showFavorite = true }: Props) {
         sizes="(max-width: 768px) 100vw, 33vw"
       />
 
-      <div className="card-shine border-b border-[var(--border)] px-5 py-3">
+      <div className="card-shine border-b border-[var(--border-subtle)] px-5 py-3.5">
         <div className="flex items-center justify-between gap-3">
           <DifficultyBadge difficulty={cocktail.difficulty} />
           {canMake ? (
-            <span className="rounded-full bg-[var(--accent)]/20 px-3 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--accent)]">
+            <span className="rounded-full bg-[var(--accent)]/15 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--accent)] ring-1 ring-[var(--accent)]/20">
               Ready
             </span>
           ) : (
-            <span className="text-[10px] uppercase tracking-wider text-[var(--muted)]">
+            <span className="text-[10px] uppercase tracking-[0.14em] text-[var(--muted)]">
               {missingCount} missing
             </span>
           )}
         </div>
       </div>
 
-      <div className="p-5">
-        <p className="text-[10px] uppercase tracking-wider text-[var(--accent-dim)]">
-          {cocktail.category}
-        </p>
-        <h3 className="mt-1 font-[family-name:var(--font-display)] text-xl font-medium text-[var(--foreground)] transition group-hover:text-[var(--accent)]">
+      <div className="p-5 sm:p-6">
+        <p className="eyebrow text-[var(--accent-dim)]">{cocktail.category}</p>
+        <h3 className="mt-2 font-[family-name:var(--font-display)] text-xl font-medium leading-tight text-[var(--foreground)] transition-colors duration-300 group-hover:text-[var(--accent)] sm:text-[1.35rem]">
           {cocktail.name}
         </h3>
-        <p className="mt-1 text-sm text-[var(--muted)]">{cocktail.description}</p>
+        {!compact && (
+          <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-[var(--muted)]">
+            {cocktail.description}
+          </p>
+        )}
 
         {!compact && (
           <>
-            <div className="mt-3">
+            <div className="mt-4">
               <FlavorTags flavors={cocktail.flavorProfile} />
             </div>
-            <p className="mt-3 text-[11px] text-[var(--muted)]">
+            <p className="mt-3 text-[11px] tracking-wide text-[var(--muted)]">
               {cocktail.glassware}
               {cocktail.garnish !== "None" && ` · ${cocktail.garnish}`}
             </p>
@@ -78,14 +80,14 @@ export function CocktailCard({ match, compact, showFavorite = true }: Props) {
 
         {!canMake && missing.length > 0 && (
           <p className="mt-4 text-xs leading-relaxed text-[var(--muted)]">
-            <span className="text-[var(--accent-dim)]">Need: </span>
+            <span className="font-medium text-[var(--accent-dim)]">Need </span>
             {missing.slice(0, 4).map((m) => m.name).join(" · ")}
             {missing.length > 4 && ` · +${missing.length - 4} more`}
           </p>
         )}
 
         {canMake && (
-          <p className="mt-4 text-xs italic text-[var(--accent-dim)]">
+          <p className="mt-4 text-xs italic leading-relaxed text-[var(--accent-dim)]">
             {cocktail.cheekyLine}
           </p>
         )}

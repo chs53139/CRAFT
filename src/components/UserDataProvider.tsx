@@ -125,7 +125,11 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
         ]);
 
         const mergedBar =
-          serverBar.length > 0 ? serverBar : localBar.length > 0 ? localBar : [];
+          serverBar.length > 0 && localBar.length > 0
+            ? [...new Set([...serverBar, ...localBar])]
+            : serverBar.length > 0
+              ? serverBar
+              : localBar;
         const mergedFavorites =
           serverFavorites.length > 0 ? serverFavorites : localFavorites;
         const mergedRecent =
@@ -147,7 +151,7 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
         hydratedForUser.current = user!.id;
       } catch {
         if (!cancelled) {
-          setError("Could not sync from Supabase. Using local data.");
+          setError("Could not load your saved bar. Showing what is on this device.");
           setBarIdsState(localBar);
           setFavoriteIds(localFavorites);
           setRecentIds(localRecent);
@@ -176,7 +180,7 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
         try {
           await saveBarItems(supabase, user.id, ids);
         } catch {
-          setError("Could not save bar to Supabase.");
+          setError("Could not save your bar. Changes are saved on this device for now.");
         }
       }, 400);
     },

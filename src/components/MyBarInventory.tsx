@@ -3,8 +3,6 @@
 import { useState } from "react";
 import { Ingredient } from "@/lib/types";
 
-const AUTO_COLLAPSE_THRESHOLD = 16;
-
 type Props = {
   ingredients: Ingredient[];
   onRemove: (id: string) => void;
@@ -16,9 +14,7 @@ export function MyBarInventory({
   onRemove,
   emptyMessage = "Nothing on the shelf yet. Time to fix that.",
 }: Props) {
-  const [expanded, setExpanded] = useState(
-    () => ingredients.length <= AUTO_COLLAPSE_THRESHOLD
-  );
+  const [expanded, setExpanded] = useState(true);
 
   if (ingredients.length === 0) {
     return (
@@ -44,7 +40,7 @@ export function MyBarInventory({
           {!expanded && (
             <p className="mt-1 text-xs text-[var(--muted)]">
               {ingredients.length} bottle{ingredients.length !== 1 ? "s" : ""} saved — tap to
-              expand
+              show
             </p>
           )}
         </div>

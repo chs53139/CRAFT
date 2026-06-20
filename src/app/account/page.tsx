@@ -74,7 +74,7 @@ export default function AccountPage() {
       </div>
 
       <p className="app-section text-center text-[11px] tracking-wide text-[var(--muted)]">
-        CRAFT · Your bar knows more than you think.
+        CRAFT · Cocktails, perfected.
       </p>
     </div>
   );

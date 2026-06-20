@@ -3,6 +3,7 @@ import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import { AppShell } from "@/components/AppShell";
 import { Providers } from "@/components/Providers";
 import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
+import { CRAFT_DESCRIPTION } from "@/lib/brand";
 import "./globals.css";
 
 const display = Cormorant_Garamond({
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
     default: "CRAFT",
     template: "%s · CRAFT",
   },
-  description: "Your bar knows more than you think.",
+  description: CRAFT_DESCRIPTION,
   manifest: "/manifest.json",
   icons: {
     icon: [

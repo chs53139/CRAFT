@@ -1,32 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 640" role="img" aria-label="CRAFT">
   <rect width="512" height="640" fill="#050506"/>
-  <rect x="96" y="120" width="320" height="320" rx="72" fill="#0b0b0e"/>
+  <rect x="156" y="96" width="200" height="200" rx="48" fill="#08080a" stroke="#17171c" stroke-width="2"/>
+  <g transform="translate(206 128)" fill="none" stroke="#c9a86a" stroke-linecap="round" stroke-linejoin="round">
+    <path
+      d="M52 44 C52 44 100 28 148 44 L136 196 C136 204 128 210 100 210 C72 210 64 204 64 196 L52 44Z"
+      stroke-width="10"
+    />
+    <path d="M64 196 H136" stroke-width="10"/>
+    <path d="M58 118 H142" stroke-width="6" opacity="0.35"/>
+  </g>
   <text
     x="256"
-    y="332"
+    y="390"
     fill="#f4efe6"
     font-family="Cormorant Garamond, Georgia, 'Times New Roman', serif"
-    font-size="220"
+    font-size="52"
     font-weight="600"
-    text-anchor="middle"
-  >C</text>
-  <text
-    x="256"
-    y="520"
-    fill="#f4efe6"
-    font-family="Cormorant Garamond, Georgia, 'Times New Roman', serif"
-    font-size="56"
-    font-weight="600"
-    letter-spacing="0.32em"
+    letter-spacing="0.34em"
     text-anchor="middle"
   >CRAFT</text>
   <text
     x="256"
-    y="560"
+    y="432"
     fill="#78736e"
-    font-family="system-ui, sans-serif"
-    font-size="16"
-    letter-spacing="0.18em"
+    font-family="system-ui, -apple-system, sans-serif"
+    font-size="14"
+    font-weight="500"
+    letter-spacing="0.22em"
     text-anchor="middle"
-  >YOUR BAR KNOWS MORE</text>
+  >COCKTAILS, PERFECTED.</text>
 </svg>

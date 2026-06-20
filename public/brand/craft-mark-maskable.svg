@@ -1,12 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="CRAFT">
   <rect width="512" height="512" fill="#050506"/>
-  <text
-    x="256"
-    y="310"
-    fill="#f4efe6"
-    font-family="Cormorant Garamond, Georgia, 'Times New Roman', serif"
-    font-size="272"
-    font-weight="600"
-    text-anchor="middle"
-  >C</text>
+  <g transform="translate(156 118)" fill="none" stroke="#c9a86a" stroke-linecap="round" stroke-linejoin="round">
+    <path
+      d="M52 44 C52 44 100 28 148 44 L136 196 C136 204 128 210 100 210 C72 210 64 204 64 196 L52 44Z"
+      stroke-width="10"
+    />
+    <path d="M64 196 H136" stroke-width="10"/>
+    <path d="M58 118 H142" stroke-width="6" opacity="0.35"/>
+  </g>
 </svg>

@@ -1,4 +1,4 @@
-CRAFT — Your bar knows more than you think.
+CRAFT — Cocktails, perfected.
 
 ## Quick start
 

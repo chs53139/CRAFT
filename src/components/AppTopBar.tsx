@@ -1,9 +1,11 @@
-import { CraftLogo } from "./CraftLogo";
+import Link from "next/link";
 
 export function AppTopBar() {
   return (
     <header className="app-topbar">
-      <CraftLogo variant="full" />
+      <Link href="/" className="app-header-wordmark">
+        CRAFT
+      </Link>
     </header>
   );
 }

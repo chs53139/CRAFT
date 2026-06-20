@@ -77,7 +77,7 @@ export default function RegisterPage() {
     <div className="auth-screen">
       <div className="auth-card animate-fade-in-up">
         <div className="flex justify-center">
-          <CraftLogo variant="mark" href={null} />
+          <CraftLogo variant="stacked" href={null} showTagline={false} />
         </div>
         <h1 className="screen-title-large mt-5 text-center">Create account</h1>
         <p className="screen-subtitle">Save your bar and favorites across devices.</p>

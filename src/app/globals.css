@@ -171,6 +171,26 @@ h3 {
   backdrop-filter: blur(16px);
 }
 
+.app-header-wordmark {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  margin-right: -0.34em;
+  line-height: 1;
+  color: var(--foreground);
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .app-header-wordmark:hover,
+  .app-header-wordmark:focus-visible {
+    color: var(--accent);
+  }
+}
+
 .app-logo {
   display: block;
   min-width: 0;
@@ -191,7 +211,9 @@ h3 {
   flex-shrink: 0;
   border: 1px solid var(--border-subtle);
   border-radius: 0.85rem;
-  background: #050506;
+  background: #08080a;
+  color: var(--accent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .craft-mark-sm {
@@ -209,21 +231,38 @@ h3 {
   height: 3.25rem;
 }
 
-.craft-mark-letter {
-  font-family: var(--font-display), Georgia, "Times New Roman", serif;
-  font-size: 1.45rem;
-  font-weight: 600;
-  line-height: 1;
-  color: var(--foreground);
-  transform: translateX(0.04em);
+.craft-mark-letter,
+.craft-mark-svg {
+  display: block;
+  width: 62%;
+  height: auto;
 }
 
-.craft-mark-sm .craft-mark-letter {
-  font-size: 1.3rem;
+.craft-logo-wordmark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
-.craft-mark-lg .craft-mark-letter {
-  font-size: 1.85rem;
+.craft-logo-stacked {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.625rem;
+}
+
+.craft-logo-name-stacked {
+  font-size: 1.5rem;
+  letter-spacing: 0.34em;
+  margin-right: -0.34em;
+}
+
+.craft-logo-tagline-stacked {
+  margin-top: -0.25rem;
+  white-space: normal;
+  text-align: center;
 }
 
 .craft-logo-mark-only {
@@ -245,20 +284,24 @@ h3 {
 
 .craft-logo-name {
   font-family: var(--font-display), Georgia, serif;
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 600;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.34em;
   color: var(--foreground);
   line-height: 1;
+  text-transform: uppercase;
 }
 
 .craft-logo-tagline {
-  margin-top: 0.2rem;
+  margin-top: 0.25rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 0.625rem;
-  letter-spacing: 0.1em;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 0.5625rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   color: var(--muted);
   transition: color 0.2s ease;
 }

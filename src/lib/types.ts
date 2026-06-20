@@ -1,3 +1,9 @@
+import type {
+  AppliedSubstitution,
+  HomemadeAlternative,
+  MatchQuality,
+} from "@/lib/substitutions/types";
+
 export type Ingredient = {
   id: string;
   name: string;
@@ -71,6 +77,10 @@ export type CocktailMatch = {
   missing: Ingredient[];
   missingCount: number;
   canMake: boolean;
+  canMakeWithSubstitutions: boolean;
+  matchQuality: MatchQuality;
+  substitutions: AppliedSubstitution[];
+  homemadeSuggestions: HomemadeAlternative[];
 };
 
 export type IngredientRecommendation = {

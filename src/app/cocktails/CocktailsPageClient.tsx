@@ -83,7 +83,13 @@ function CocktailsContent() {
   }
 
   const tonight = filteredMatches.filter((m) => m.canMake);
-  const oneAway = filteredMatches.filter((m) => m.missingCount === 1);
+  const substitutionMatches = filteredMatches.filter(
+    (m) => m.canMakeWithSubstitutions && m.matchQuality === "substitution"
+  );
+  const experimentalMatches = filteredMatches.filter(
+    (m) => m.canMakeWithSubstitutions && m.matchQuality === "experimental"
+  );
+  const oneAway = filteredMatches.filter((m) => m.missingCount === 1 && !m.canMakeWithSubstitutions);
   const twoAway = filteredMatches.filter((m) => m.missingCount === 2);
   const threeAway = filteredMatches.filter((m) => m.missingCount === 3);
   const furtherAway = filteredMatches.filter((m) => m.missingCount >= 4);
@@ -97,7 +103,11 @@ function CocktailsContent() {
   const showOneAway = view === "all" || view === "one-away";
 
   const hasVisibleResults =
-    (showReady && (tonight.length > 0 || hiddenGems.length > 0)) ||
+    (showReady &&
+      (tonight.length > 0 ||
+        hiddenGems.length > 0 ||
+        substitutionMatches.length > 0 ||
+        experimentalMatches.length > 0)) ||
     (showOneAway && oneAway.length > 0) ||
     (showAllSections &&
       (twoAway.length > 0 || threeAway.length > 0 || furtherAway.length > 0));
@@ -111,7 +121,7 @@ function CocktailsContent() {
         ? `${oneAway.length} one bottle away`
         : barIds.length === 0
           ? "Stock your bar first"
-          : `${tonight.length} ready · ${oneAway.length} one away`;
+          : `${tonight.length} ready · ${substitutionMatches.length} with subs · ${oneAway.length} one away`;
 
   return (
     <div className="app-screen animate-fade-in">
@@ -180,6 +190,30 @@ function CocktailsContent() {
                   showObscurity
                   empty=""
                 />
+              )}
+
+              {showReady && substitutionMatches.length > 0 && (
+                <>
+                  <CocktailSection
+                    title="Substitution available"
+                    subtitle="Close swaps from your bar — not identical, but in the ballpark"
+                    items={substitutionMatches.slice(0, SECTION_LIMIT)}
+                    empty=""
+                  />
+                  <SectionTruncation shown={SECTION_LIMIT} total={substitutionMatches.length} />
+                </>
+              )}
+
+              {showReady && experimentalMatches.length > 0 && (
+                <>
+                  <CocktailSection
+                    title="Experimental"
+                    subtitle="Bold swaps or homemade builds — expect a different drink"
+                    items={experimentalMatches.slice(0, SECTION_LIMIT)}
+                    empty=""
+                  />
+                  <SectionTruncation shown={SECTION_LIMIT} total={experimentalMatches.length} />
+                </>
               )}
 
               {showOneAway && (

@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { CocktailReviews } from "@/components/CocktailReviews";
+import { MatchQualityBadge } from "@/components/MatchQualityBadge";
+import { SubstitutionPanel } from "@/components/SubstitutionPanel";
 import { CocktailImage } from "@/components/CocktailImage";
 import { CollectionTags } from "@/components/CollectionTags";
 import { DifficultyBadge } from "@/components/DifficultyBadge";
@@ -58,6 +60,9 @@ export default function CocktailDetailPage() {
 
   const match = matchCocktails(barIds).find((m) => m.cocktail.id === id);
   const barSet = new Set(barIds);
+  const substitutionMap = new Map(
+    match?.substitutions.map((sub) => [sub.requiredId, sub]) ?? []
+  );
   const fav = favLoaded && isFavorite(cocktail.id);
 
   return (
@@ -160,18 +165,40 @@ export default function CocktailDetailPage() {
             className={`mt-5 rounded-2xl border px-4 py-3.5 ${
               match.canMake
                 ? "border-[var(--accent)]/30 bg-[var(--accent)]/10"
-                : "border-[var(--border)] bg-[var(--card)]"
+                : match.canMakeWithSubstitutions
+                  ? "border-amber-500/25 bg-amber-500/8"
+                  : "border-[var(--border)] bg-[var(--card)]"
             }`}
           >
+            <div className="flex flex-wrap items-center gap-2">
+              {(match.canMake || match.canMakeWithSubstitutions) && (
+                <MatchQualityBadge quality={match.matchQuality} compact />
+              )}
+            </div>
             <p
-              className={`text-sm font-medium ${
-                match.canMake ? "text-[var(--accent)]" : "text-[var(--foreground)]"
+              className={`mt-2 text-sm font-medium ${
+                match.canMake
+                  ? "text-[var(--accent)]"
+                  : match.canMakeWithSubstitutions
+                    ? "text-[var(--foreground)]"
+                    : "text-[var(--foreground)]"
               }`}
             >
               {match.canMake
-                ? "You're good to go. Everything's in your bar."
-                : `You need ${match.missing.map((m) => m.name).join(", ")}.`}
+                ? "Exact match — everything in your bar."
+                : match.canMakeWithSubstitutions
+                  ? "Makeable with substitutes — expect a different but related drink."
+                  : `You need ${match.missing.map((m) => m.name).join(", ")}.`}
             </p>
+          </div>
+        )}
+
+        {match && (match.substitutions.length > 0 || match.homemadeSuggestions.length > 0) && (
+          <div className="mt-4">
+            <SubstitutionPanel
+              substitutions={match.substitutions}
+              homemadeSuggestions={match.homemadeSuggestions}
+            />
           </div>
         )}
 
@@ -181,30 +208,43 @@ export default function CocktailDetailPage() {
             {cocktail.ingredients.map((ci) => {
               const ing = getIngredientById(ci.ingredientId);
               const haveIt = ing ? barSet.has(ing.id) : false;
+              const substitution = substitutionMap.get(ci.ingredientId);
+              const statusLabel = haveIt
+                ? "In bar"
+                : substitution
+                  ? `Sub: ${substitution.substituteName}`
+                  : "Missing";
               return (
                 <li
                   key={ci.ingredientId}
                   className={`flex min-h-[3.25rem] items-center justify-between rounded-2xl border px-4 py-3 ${
                     haveIt
                       ? "border-[var(--accent)]/20 bg-[var(--accent)]/5"
-                      : "border-[var(--border)] bg-[var(--card)]"
+                      : substitution
+                        ? "border-amber-500/20 bg-amber-500/5"
+                        : "border-[var(--border)] bg-[var(--card)]"
                   }`}
                 >
-                  <div className="flex items-center gap-3">
+                  <div className="flex min-w-0 items-center gap-3">
                     <span
-                      className={`flex h-6 w-6 items-center justify-center rounded-full text-[11px] ${
+                      className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] ${
                         haveIt
                           ? "bg-[var(--accent)]/20 text-[var(--accent)]"
-                          : "bg-[var(--border)] text-[var(--muted)]"
+                          : substitution
+                            ? "bg-amber-500/15 text-amber-300"
+                            : "bg-[var(--border)] text-[var(--muted)]"
                       }`}
                     >
-                      {haveIt ? "✓" : "·"}
+                      {haveIt ? "✓" : substitution ? "~" : "·"}
                     </span>
-                    <span className={haveIt ? "text-[var(--foreground)]" : "text-[var(--muted)]"}>
-                      {ing?.name ?? ci.ingredientId}
-                    </span>
+                    <div className="min-w-0">
+                      <span className={haveIt ? "text-[var(--foreground)]" : "text-[var(--muted)]"}>
+                        {ing?.name ?? ci.ingredientId}
+                      </span>
+                      <p className="text-[11px] text-[var(--muted)]">{statusLabel}</p>
+                    </div>
                   </div>
-                  <span className="text-sm text-[var(--muted)]">{ci.amount}</span>
+                  <span className="shrink-0 text-sm text-[var(--muted)]">{ci.amount}</span>
                 </li>
               );
             })}
@@ -230,7 +270,7 @@ export default function CocktailDetailPage() {
 
         <CocktailReviews cocktailId={cocktail.id} cocktailName={cocktail.name} />
 
-        {!match?.canMake && (
+        {!match?.canMake && !match?.canMakeWithSubstitutions && (
           <Link href="/bar" className="btn-secondary mt-2 inline-flex w-full justify-center">
             Update My Bar
           </Link>

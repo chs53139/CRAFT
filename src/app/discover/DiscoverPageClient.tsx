@@ -19,7 +19,7 @@ import {
   getCollectionCounts,
   searchCatalogue,
 } from "@/lib/cocktail-discovery";
-import { cocktailCount, matchCocktails } from "@/lib/cocktail-matching";
+import { cocktailCount, matchCocktails, matchSingleCocktail } from "@/lib/cocktail-matching";
 import { CocktailCollection } from "@/lib/types";
 import { useMyBar } from "@/hooks/use-my-bar";
 
@@ -63,14 +63,7 @@ function DiscoverContent() {
     ? makeable.slice(0, limit)
     : catalogue.slice(0, limit).map((cocktail) => {
         const match = matches.find((m) => m.cocktail.id === cocktail.id);
-        return (
-          match ?? {
-            cocktail,
-            missing: [],
-            missingCount: cocktail.ingredients.length,
-            canMake: false,
-          }
-        );
+        return match ?? matchSingleCocktail(cocktail, barIds);
       });
 
   return (

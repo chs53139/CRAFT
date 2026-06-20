@@ -1,6 +1,7 @@
 import { cocktails, cocktailCount, ingredients } from "@/lib/cocktail-data";
 import { getBuyLabel } from "@/lib/ingredient-brands";
 import { getIngredientCostUsd } from "@/lib/ingredient-costs";
+import { matchCocktailWithSubstitutions } from "@/lib/substitutions";
 import { CocktailMatch, Ingredient, IngredientRecommendation } from "@/lib/types";
 
 const ingredientMap = new Map(ingredients.map((i) => [i.id, i]));
@@ -28,22 +29,26 @@ function resolveIngredient(id: string): Ingredient {
 }
 
 export function matchCocktails(myBarIds: string[]): CocktailMatch[] {
-  const barSet = new Set(myBarIds);
+  return cocktails.map((cocktail) => matchSingleCocktail(cocktail, myBarIds));
+}
 
-  return cocktails.map((cocktail) => {
-    const missing = cocktail.ingredients
-      .filter((ci) => !barSet.has(ci.ingredientId))
-      .map((ci) => resolveIngredient(ci.ingredientId));
+export function matchSingleCocktail(
+  cocktail: (typeof cocktails)[number],
+  myBarIds: string[]
+): CocktailMatch {
+  const result = matchCocktailWithSubstitutions(cocktail, myBarIds);
+  const missing = result.missingIds.map((id) => resolveIngredient(id));
 
-    const missingCount = missing.length;
-
-    return {
-      cocktail,
-      missing,
-      missingCount,
-      canMake: missingCount === 0,
-    };
-  });
+  return {
+    cocktail,
+    missing,
+    missingCount: missing.length,
+    canMake: result.canMake,
+    canMakeWithSubstitutions: result.canMakeWithSubstitutions,
+    matchQuality: result.matchQuality,
+    substitutions: result.substitutions,
+    homemadeSuggestions: result.homemadeSuggestions,
+  };
 }
 
 export function filterMatchesBySearch(
@@ -63,7 +68,12 @@ export function filterMatchesBySearch(
       m.cocktail.sourceAttribution.toLowerCase().includes(q) ||
       String(m.cocktail.yearInvented).includes(q) ||
       m.cocktail.funFact.toLowerCase().includes(q) ||
-      m.missing.some((ing) => ing.name.toLowerCase().includes(q))
+      m.missing.some((ing) => ing.name.toLowerCase().includes(q)) ||
+      m.substitutions.some(
+        (sub) =>
+          sub.requiredName.toLowerCase().includes(q) ||
+          sub.substituteName.toLowerCase().includes(q)
+      )
   );
 }
 
@@ -72,6 +82,8 @@ export function getBarSummary(barIds: string[]) {
   return {
     readyTonight: matches.filter((m) => m.canMake).length,
     oneAway: matches.filter((m) => m.missingCount === 1).length,
+    substitutionAvailable: matches.filter((m) => m.matchQuality === "substitution").length,
+    experimental: matches.filter((m) => m.matchQuality === "experimental").length,
   };
 }
 
@@ -83,7 +95,7 @@ const EXAMPLE_LIMIT = 6;
 
 /**
  * Finds the missing ingredient that unlocks the greatest number of
- * additional cocktails you can fully make with your current bar.
+ * additional exact matches with your current bar.
  */
 export function getBestNextIngredient(
   barIds: string[]

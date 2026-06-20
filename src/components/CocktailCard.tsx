@@ -5,6 +5,7 @@ import { CocktailMatch } from "@/lib/types";
 import { CocktailImage } from "./CocktailImage";
 import { DifficultyBadge } from "./DifficultyBadge";
 import { FavoriteButton } from "./FavoriteButton";
+import { MatchQualityBadge } from "./MatchQualityBadge";
 import { ObscurityBadge } from "./ObscurityBadge";
 import { useFavorites } from "@/hooks/use-my-bar";
 
@@ -23,10 +24,13 @@ export function CocktailCard({
   showObscurity = false,
   variant = "default",
 }: Props) {
-  const { cocktail, canMake, missing, missingCount } = match;
+  const { cocktail, canMake, canMakeWithSubstitutions, missing, missingCount, matchQuality, substitutions } =
+    match;
   const { isFavorite, toggleFavorite, loaded } = useFavorites();
   const fav = loaded && isFavorite(cocktail.id);
   const isCarousel = variant === "carousel";
+  const isExact = matchQuality === "exact" && canMake;
+  const isSubMatch = canMakeWithSubstitutions && !canMake;
 
   return (
     <Link
@@ -53,14 +57,14 @@ export function CocktailCard({
       />
 
       <div className={`card-shine border-b border-[var(--border-subtle)] ${isCarousel ? "px-3.5 py-2.5" : "px-4 py-3"}`}>
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <DifficultyBadge difficulty={cocktail.difficulty} />
           {showObscurity ? (
             <ObscurityBadge score={cocktail.obscurityScore} compact />
-          ) : canMake ? (
-            <span className="rounded-full bg-[var(--accent)]/15 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--accent)]">
-              Ready
-            </span>
+          ) : isExact ? (
+            <MatchQualityBadge quality="exact" compact />
+          ) : isSubMatch ? (
+            <MatchQualityBadge quality={matchQuality} compact />
           ) : (
             <span className="text-[10px] uppercase tracking-[0.12em] text-[var(--muted)]">
               {missingCount} missing
@@ -87,7 +91,18 @@ export function CocktailCard({
           </p>
         )}
 
-        {!canMake && missing.length > 0 && (
+        {isSubMatch && substitutions.length > 0 && (
+          <p className="mt-2.5 line-clamp-3 text-xs leading-relaxed text-[var(--muted)]">
+            <span className="font-medium text-[var(--accent-dim)]">Using </span>
+            {substitutions
+              .slice(0, 2)
+              .map((sub) => `${sub.substituteName} for ${sub.requiredName} (${sub.confidence}%)`)
+              .join(" · ")}
+            {substitutions.length > 2 && ` · +${substitutions.length - 2} more`}
+          </p>
+        )}
+
+        {!canMake && !canMakeWithSubstitutions && missing.length > 0 && (
           <p className="mt-2.5 line-clamp-2 text-xs leading-relaxed text-[var(--muted)]">
             <span className="font-medium text-[var(--accent-dim)]">Need </span>
             {missing.slice(0, 3).map((m) => m.name).join(" · ")}
@@ -95,7 +110,7 @@ export function CocktailCard({
           </p>
         )}
 
-        {canMake && isCarousel && (
+        {isExact && isCarousel && (
           <p className="mt-2 line-clamp-1 text-xs italic text-[var(--accent-dim)]">
             {cocktail.cheekyLine}
           </p>

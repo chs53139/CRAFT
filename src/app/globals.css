@@ -1901,6 +1901,35 @@ button.star-rating-star:active {
   margin-top: 0.375rem;
 }
 
+.alcohol-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  border: 1px solid var(--border-subtle);
+  padding: 0.2rem 0.55rem;
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.alcohol-badge-compact {
+  padding: 0.15rem 0.45rem;
+  font-size: 0.5rem;
+}
+
+.alcohol-badge-abv {
+  color: var(--accent-dim);
+  border-color: rgba(212, 181, 106, 0.22);
+  background: rgba(212, 181, 106, 0.06);
+}
+
+.alcohol-badge-na {
+  color: #8fd4b8;
+  border-color: rgba(143, 212, 184, 0.25);
+  background: rgba(143, 212, 184, 0.08);
+}
+
 .offline-banner {
   position: sticky;
   top: 0;

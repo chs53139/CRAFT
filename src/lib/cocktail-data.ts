@@ -1,7 +1,9 @@
 import rawCocktails from "@/data/cocktails.json";
 import craftOriginals from "@/data/craft-originals.json";
+import mocktails from "@/data/mocktails.json";
 import { enrichCocktail } from "@/lib/cocktail-enrichment";
 import { getCocktailImageUrl } from "@/lib/cocktail-images";
+import { inferDrinkType, inferMocktailSubcategory } from "@/lib/drink-type";
 import {
   Cocktail,
   CocktailCategory,
@@ -10,7 +12,11 @@ import {
   RawCocktail,
 } from "@/lib/types";
 
-const SOURCE = [...(rawCocktails as RawCocktail[]), ...(craftOriginals as RawCocktail[])];
+const SOURCE = [
+  ...(rawCocktails as RawCocktail[]),
+  ...(craftOriginals as RawCocktail[]),
+  ...(mocktails as RawCocktail[]),
+];
 
 const familyFlavors: Record<string, string[]> = {
   Sour: ["citrus", "bright", "balanced"],
@@ -54,6 +60,8 @@ function mapIngredientType(type: string): Ingredient["category"] {
   switch (type) {
     case "spirit":
       return "spirit";
+    case "na-spirit":
+      return "na-spirit";
     case "liqueur":
     case "fortified-wine":
     case "wine":
@@ -131,6 +139,9 @@ function inferFlavorProfile(cocktail: RawCocktail): string[] {
 }
 
 function inferCheekyLine(cocktail: RawCocktail, index: number): string {
+  if (cocktail.tags.includes("mocktail")) {
+    return "All flavor. Zero proof. Full send.";
+  }
   if (cocktail.tags.includes("tiki")) return "Vacation mode: activated.";
   if (cocktail.family === "Shot") return "Bottoms up. Top off your dignity later.";
   if (cocktail.method.toLowerCase().includes("stir")) {
@@ -159,11 +170,16 @@ export function buildIngredientsFromCocktails(cocktails: RawCocktail[]): Ingredi
 
 export function transformCocktail(raw: RawCocktail, index: number): Cocktail {
   const enriched = enrichCocktail(raw, SOURCE);
+  const drinkType = inferDrinkType(raw);
+  const mocktailSubcategory = inferMocktailSubcategory(raw);
 
   return {
     id: raw.slug,
     name: raw.name,
-    description: familyDescriptions[raw.family] ?? familyDescriptions.Other,
+    description:
+      drinkType === "mocktail"
+        ? "Zero-proof pour — full flavor without the alcohol."
+        : (familyDescriptions[raw.family] ?? familyDescriptions.Other),
     cheekyLine: inferCheekyLine(raw, index),
     difficulty: inferDifficulty(raw),
     flavorProfile: inferFlavorProfile(raw),
@@ -178,6 +194,8 @@ export function transformCocktail(raw: RawCocktail, index: number): Cocktail {
     funFact: enriched.funFact,
     method: enriched.method,
     tags: enriched.tags,
+    drinkType,
+    mocktailSubcategory,
     glassware: raw.glass,
     garnish: raw.garnish.length > 0 ? raw.garnish.join(", ") : "None",
     imageUrl: getCocktailImageUrl(raw.slug),
@@ -193,3 +211,5 @@ export const cocktails: Cocktail[] = SOURCE.map(transformCocktail);
 export const ingredients: Ingredient[] = buildIngredientsFromCocktails(SOURCE);
 
 export const cocktailCount = cocktails.length;
+export const mocktailCount = cocktails.filter((c) => c.drinkType === "mocktail").length;
+export const alcoholicCount = cocktailCount - mocktailCount;

@@ -15,6 +15,7 @@ import {
   getBarSummaryFromMatches,
   getBestNextIngredient,
   getIngredientsByIds,
+  mocktailCount,
 } from "@/lib/cocktail-matching";
 import { useCocktailMatches } from "@/hooks/use-cocktail-matches";
 import { useMyBar } from "@/hooks/use-my-bar";
@@ -79,7 +80,8 @@ export default function HomePage() {
             href: "/cocktails",
           },
           { value: summary.oneAway, label: "One away", href: "/cocktails?view=one-away" },
-          { value: cocktailCount, label: "Catalogue", href: "/discover" },
+          { value: cocktailCount - mocktailCount, label: "Catalogue", href: "/discover" },
+          { value: mocktailCount, label: "Mocktails", href: "/mocktails" },
         ]}
         trailingAction={
           <StatPillAction href="/mixologist" label="Mixologist" />

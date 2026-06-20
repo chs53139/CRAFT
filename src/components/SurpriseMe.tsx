@@ -6,13 +6,16 @@ import { CocktailImage } from "@/components/CocktailImage";
 import { CollectionTags } from "@/components/CollectionTags";
 import { DifficultyBadge } from "@/components/DifficultyBadge";
 import { ObscurityBadge } from "@/components/ObscurityBadge";
+import { AlcoholBadge } from "./AlcoholBadge";
 import {
   COMPLEXITY_OPTIONS,
   MOOD_OPTIONS,
   RARITY_OPTIONS,
 } from "@/lib/cocktail-curation";
 import { surpriseCocktail, SurpriseFilters } from "@/lib/cocktail-discovery";
+import { DrinkTypeFilter } from "@/components/DrinkTypeFilter";
 import { getIngredientsByIds } from "@/lib/cocktail-matching";
+import { DrinkTypeFilter as DrinkTypeFilterValue } from "@/lib/drink-type";
 import { CocktailMatch, Difficulty } from "@/lib/types";
 
 type Props = {
@@ -24,6 +27,7 @@ export function SurpriseMe({ barIds }: Props) {
   const [rarity, setRarity] = useState("any");
   const [spiritId, setSpiritId] = useState("any");
   const [complexity, setComplexity] = useState<Difficulty | "any">("any");
+  const [drinkTypeFilter, setDrinkTypeFilter] = useState<DrinkTypeFilterValue>("both");
   const [result, setResult] = useState<CocktailMatch | null>(null);
   const [emptyMessage, setEmptyMessage] = useState("");
   const [history, setHistory] = useState<string[]>([]);
@@ -38,6 +42,7 @@ export function SurpriseMe({ barIds }: Props) {
       rarity: rarity === "any" ? undefined : rarity,
       spiritId: spiritId === "any" ? undefined : spiritId,
       complexity,
+      drinkType: drinkTypeFilter,
     };
 
     const pick = surpriseCocktail(barIds, filters, history);
@@ -50,7 +55,7 @@ export function SurpriseMe({ barIds }: Props) {
       setEmptyMessage(
         barIds.length === 0
           ? "Stock your bar first, then come back for a surprise."
-          : "No ready cocktails match those filters. Try a broader mood or rarity."
+          : "No ready drinks match those filters. Try a broader mood, rarity, or drink type."
       );
     }
   }
@@ -61,9 +66,11 @@ export function SurpriseMe({ barIds }: Props) {
         <p className="eyebrow">Surprise me</p>
         <h2 className="section-row-title mt-2">Pick my next pour</h2>
         <p className="section-row-subtitle">
-          Only picks cocktails you can make right now with what&apos;s on your shelf.
+          Only picks drinks you can make right now with what&apos;s on your shelf.
         </p>
       </div>
+
+      <DrinkTypeFilter value={drinkTypeFilter} onChange={setDrinkTypeFilter} />
 
       <div className="surprise-filters">
         <div>
@@ -160,6 +167,7 @@ export function SurpriseMe({ barIds }: Props) {
           <div className="p-4">
             <div className="flex flex-wrap items-center gap-2">
               <DifficultyBadge difficulty={result.cocktail.difficulty} />
+              <AlcoholBadge cocktail={result.cocktail} compact />
               <ObscurityBadge score={result.cocktail.obscurityScore} compact />
               <span className="rounded-full bg-[var(--accent)]/15 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[var(--accent)]">
                 Ready now
@@ -175,7 +183,7 @@ export function SurpriseMe({ barIds }: Props) {
       ) : emptyMessage ? (
         <p className="surprise-empty">{emptyMessage}</p>
       ) : (
-        <p className="surprise-empty">Tap Surprise me to draw a cocktail you can pour tonight.</p>
+        <p className="surprise-empty">Tap Surprise me to draw a drink you can pour tonight.</p>
       )}
     </section>
   );

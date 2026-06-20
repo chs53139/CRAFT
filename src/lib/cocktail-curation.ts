@@ -148,6 +148,7 @@ export const COLLECTION_LABELS: Record<CocktailCollection, string> = {
   tiki: "Tiki",
   experimental: "Experimental",
   "craft-original": "CRAFT Original",
+  mocktail: "Mocktails",
 };
 
 export const COLLECTION_DESCRIPTIONS: Record<CocktailCollection, string> = {
@@ -157,6 +158,7 @@ export const COLLECTION_DESCRIPTIONS: Record<CocktailCollection, string> = {
   tiki: "Tropical escapism, rum, and elaborate builds.",
   experimental: "Unusual ratios, rare bottles, bold ideas.",
   "craft-original": "Recipes created exclusively for CRAFT.",
+  mocktail: "Zero-proof pours with full flavor and craft.",
 };
 
 export const DISCOVER_COLLECTIONS: CocktailCollection[] = [
@@ -166,6 +168,7 @@ export const DISCOVER_COLLECTIONS: CocktailCollection[] = [
   "tiki",
   "experimental",
   "craft-original",
+  "mocktail",
 ];
 
 export const ERA_LABELS: Record<string, string> = {

@@ -1,0 +1,466 @@
+[
+  {
+    "name": "Shirley Temple",
+    "slug": "shirley-temple",
+    "glass": "Highball",
+    "family": "Highball",
+    "method": "Built",
+    "tags": ["mocktail", "classic-mocktail", "party"],
+    "ingredients": [
+      { "ref": "ginger-ale", "name": "Ginger ale", "type": "mixer", "amount": 120, "unit": "ml" },
+      { "ref": "grenadine", "name": "Grenadine", "type": "syrup", "amount": 15, "unit": "ml" },
+      { "ref": "lime-juice", "name": "Lime juice", "type": "juice", "amount": 15, "unit": "ml" }
+    ],
+    "garnish": ["Maraschino cherry", "Orange slice"],
+    "preparation": [
+      "Fill a highball glass with ice.",
+      "Add grenadine and lime juice, then top with ginger ale.",
+      "Stir gently once and garnish."
+    ]
+  },
+  {
+    "name": "Virgin Mojito",
+    "slug": "virgin-mojito",
+    "glass": "Highball",
+    "family": "Highball",
+    "method": "Muddled",
+    "tags": ["mocktail", "classic-mocktail"],
+    "ingredients": [
+      { "ref": "mint", "name": "Fresh mint", "type": "produce", "amount": 10, "unit": "leaves" },
+      { "ref": "lime-juice", "name": "Lime juice", "type": "juice", "amount": 30, "unit": "ml" },
+      { "ref": "simple-syrup", "name": "Simple syrup", "type": "syrup", "amount": 22.5, "unit": "ml" },
+      { "ref": "club-soda", "name": "Club soda", "type": "mixer", "amount": 90, "unit": "ml" }
+    ],
+    "garnish": ["Mint sprig", "Lime wheel"],
+    "preparation": [
+      "Gently muddle mint with simple syrup in a highball glass.",
+      "Add lime juice and ice, then top with club soda.",
+      "Stir gently and garnish with mint and lime."
+    ]
+  },
+  {
+    "name": "Virgin Piña Colada",
+    "slug": "virgin-pina-colada",
+    "glass": "Hurricane",
+    "family": "Tiki",
+    "method": "Blended",
+    "tags": ["mocktail", "classic-mocktail", "tropical"],
+    "ingredients": [
+      { "ref": "pineapple-juice", "name": "Pineapple juice", "type": "juice", "amount": 120, "unit": "ml" },
+      { "ref": "coconut-cream", "name": "Coconut cream", "type": "mixer", "amount": 60, "unit": "ml" },
+      { "ref": "lime-juice", "name": "Lime juice", "type": "juice", "amount": 15, "unit": "ml" }
+    ],
+    "garnish": ["Pineapple wedge", "Cherry"],
+    "preparation": [
+      "Blend all ingredients with crushed ice until smooth.",
+      "Pour into a chilled hurricane glass.",
+      "Garnish with pineapple and a cherry."
+    ]
+  },
+  {
+    "name": "Roy Rogers",
+    "slug": "roy-rogers",
+    "glass": "Highball",
+    "family": "Highball",
+    "method": "Built",
+    "tags": ["mocktail", "classic-mocktail"],
+    "ingredients": [
+      { "ref": "cola", "name": "Cola", "type": "mixer", "amount": 120, "unit": "ml" },
+      { "ref": "grenadine", "name": "Grenadine", "type": "syrup", "amount": 15, "unit": "ml" },
+      { "ref": "lime-juice", "name": "Lime juice", "type": "juice", "amount": 10, "unit": "ml" }
+    ],
+    "garnish": ["Maraschino cherry"],
+    "preparation": [
+      "Fill a highball glass with ice.",
+      "Add grenadine and lime, then top with cola.",
+      "Stir once and garnish with a cherry."
+    ]
+  },
+  {
+    "name": "Cucumber Garden Cooler",
+    "slug": "cucumber-garden-cooler",
+    "glass": "Highball",
+    "family": "Highball",
+    "method": "Shaken",
+    "tags": ["mocktail", "modern-mocktail", "wellness"],
+    "ingredients": [
+      { "ref": "cucumber", "name": "Cucumber", "type": "produce", "amount": 6, "unit": "slices" },
+      { "ref": "lime-juice", "name": "Lime juice", "type": "juice", "amount": 30, "unit": "ml" },
+      { "ref": "simple-syrup", "name": "Simple syrup", "type": "syrup", "amount": 15, "unit": "ml" },
+      { "ref": "club-soda", "name": "Club soda", "type": "mixer", "amount": 90, "unit": "ml" }
+    ],
+    "garnish": ["Cucumber ribbon"],
+    "preparation": [
+      "Muddle cucumber with simple syrup in a shaker.",
+      "Add lime juice and ice, shake briefly, and strain into an ice-filled highball.",
+      "Top with club soda and garnish."
+    ]
+  },
+  {
+    "name": "Hibiscus Ginger Fizz",
+    "slug": "hibiscus-ginger-fizz",
+    "glass": "Coupe",
+    "family": "Fizz & Collins",
+    "method": "Shaken",
+    "tags": ["mocktail", "modern-mocktail"],
+    "ingredients": [
+      { "ref": "hibiscus-tea", "name": "Hibiscus tea", "type": "mixer", "amount": 60, "unit": "ml" },
+      { "ref": "lime-juice", "name": "Lime juice", "type": "juice", "amount": 22.5, "unit": "ml" },
+      { "ref": "ginger-syrup", "name": "Ginger syrup", "type": "syrup", "amount": 15, "unit": "ml" },
+      { "ref": "club-soda", "name": "Club soda", "type": "mixer", "amount": 45, "unit": "ml" }
+    ],
+    "garnish": ["Lime wheel"],
+    "preparation": [
+      "Shake hibiscus tea, lime, and ginger syrup with ice.",
+      "Strain into a coupe and top with club soda.",
+      "Garnish with lime."
+    ]
+  },
+  {
+    "name": "Sparkling Rosemary Grapefruit",
+    "slug": "sparkling-rosemary-grapefruit",
+    "glass": "Wine",
+    "family": "Spritz",
+    "method": "Built",
+    "tags": ["mocktail", "modern-mocktail"],
+    "ingredients": [
+      { "ref": "grapefruit-juice", "name": "Grapefruit juice", "type": "juice", "amount": 60, "unit": "ml" },
+      { "ref": "simple-syrup", "name": "Simple syrup", "type": "syrup", "amount": 10, "unit": "ml" },
+      { "ref": "sparkling-water", "name": "Sparkling water", "type": "mixer", "amount": 90, "unit": "ml" },
+      { "ref": "rosemary", "name": "Rosemary", "type": "produce", "amount": 1, "unit": "sprig" }
+    ],
+    "garnish": ["Rosemary sprig", "Grapefruit slice"],
+    "preparation": [
+      "Add grapefruit juice and syrup to a wine glass with ice.",
+      "Top with sparkling water and stir gently.",
+      "Slap rosemary to release oils and garnish."
+    ]
+  },
+  {
+    "name": "Salted Vanilla Cola Highball",
+    "slug": "salted-vanilla-cola-highball",
+    "glass": "Highball",
+    "family": "Highball",
+    "method": "Built",
+    "tags": ["mocktail", "modern-mocktail"],
+    "ingredients": [
+      { "ref": "cola", "name": "Cola", "type": "mixer", "amount": 120, "unit": "ml" },
+      { "ref": "vanilla-syrup", "name": "Vanilla syrup", "type": "syrup", "amount": 15, "unit": "ml" },
+      { "ref": "lime-juice", "name": "Lime juice", "type": "juice", "amount": 15, "unit": "ml" }
+    ],
+    "garnish": ["Lime wheel"],
+    "preparation": [
+      "Build over ice in a highball glass.",
+      "Add vanilla syrup and lime, then top with cola.",
+      "Finish with a pinch of flaky salt on the rim if desired."
+    ]
+  },
+  {
+    "name": "Green Detox Refresher",
+    "slug": "green-detox-refresher",
+    "glass": "Highball",
+    "family": "Highball",
+    "method": "Shaken",
+    "tags": ["mocktail", "wellness"],
+    "ingredients": [
+      { "ref": "cucumber", "name": "Cucumber", "type": "produce", "amount": 4, "unit": "slices" },
+      { "ref": "green-tea", "name": "Green tea", "type": "mixer", "amount": 60, "unit": "ml" },
+      { "ref": "lemon-juice", "name": "Lemon juice", "type": "juice", "amount": 22.5, "unit": "ml" },
+      { "ref": "honey", "name": "Honey", "type": "syrup", "amount": 10, "unit": "ml" }
+    ],
+    "garnish": ["Mint sprig"],
+    "preparation": [
+      "Shake all ingredients with ice.",
+      "Strain into a highball over fresh ice.",
+      "Garnish with mint."
+    ]
+  },
+  {
+    "name": "Ginger Turmeric Spritzer",
+    "slug": "ginger-turmeric-spritzer",
+    "glass": "Wine",
+    "family": "Spritz",
+    "method": "Built",
+    "tags": ["mocktail", "wellness"],
+    "ingredients": [
+      { "ref": "ginger-beer", "name": "Ginger beer", "type": "mixer", "amount": 90, "unit": "ml" },
+      { "ref": "lemon-juice", "name": "Lemon juice", "type": "juice", "amount": 15, "unit": "ml" },
+      { "ref": "turmeric-syrup", "name": "Turmeric syrup", "type": "syrup", "amount": 15, "unit": "ml" },
+      { "ref": "club-soda", "name": "Club soda", "type": "mixer", "amount": 45, "unit": "ml" }
+    ],
+    "garnish": ["Lemon wheel"],
+    "preparation": [
+      "Build over ice in a wine glass.",
+      "Add turmeric syrup and lemon, then ginger beer and soda.",
+      "Stir gently and garnish."
+    ]
+  },
+  {
+    "name": "Lavender Honey Lemonade",
+    "slug": "lavender-honey-lemonade",
+    "glass": "Highball",
+    "family": "Highball",
+    "method": "Shaken",
+    "tags": ["mocktail", "wellness"],
+    "ingredients": [
+      { "ref": "lemon-juice", "name": "Lemon juice", "type": "juice", "amount": 30, "unit": "ml" },
+      { "ref": "honey", "name": "Honey", "type": "syrup", "amount": 15, "unit": "ml" },
+      { "ref": "lavender-syrup", "name": "Lavender syrup", "type": "syrup", "amount": 10, "unit": "ml" },
+      { "ref": "club-soda", "name": "Club soda", "type": "mixer", "amount": 90, "unit": "ml" }
+    ],
+    "garnish": ["Lemon wheel"],
+    "preparation": [
+      "Shake lemon, honey, and lavender syrup with ice.",
+      "Strain into a highball with fresh ice and top with soda."
+    ]
+  },
+  {
+    "name": "Coconut Mint Hydration Cooler",
+    "slug": "coconut-mint-hydration-cooler",
+    "glass": "Highball",
+    "family": "Highball",
+    "method": "Built",
+    "tags": ["mocktail", "wellness"],
+    "ingredients": [
+      { "ref": "coconut-water", "name": "Coconut water", "type": "mixer", "amount": 120, "unit": "ml" },
+      { "ref": "lime-juice", "name": "Lime juice", "type": "juice", "amount": 15, "unit": "ml" },
+      { "ref": "mint", "name": "Fresh mint", "type": "produce", "amount": 8, "unit": "leaves" }
+    ],
+    "garnish": ["Mint sprig"],
+    "preparation": [
+      "Muddle mint lightly in a highball glass.",
+      "Add coconut water and lime over ice.",
+      "Stir and garnish."
+    ]
+  },
+  {
+    "name": "Virgin Sunrise Punch",
+    "slug": "virgin-sunrise-punch",
+    "glass": "Hurricane",
+    "family": "Punch",
+    "method": "Built",
+    "tags": ["mocktail", "party"],
+    "ingredients": [
+      { "ref": "orange-juice", "name": "Orange juice", "type": "juice", "amount": 120, "unit": "ml" },
+      { "ref": "pineapple-juice", "name": "Pineapple juice", "type": "juice", "amount": 60, "unit": "ml" },
+      { "ref": "grenadine", "name": "Grenadine", "type": "syrup", "amount": 15, "unit": "ml" },
+      { "ref": "club-soda", "name": "Club soda", "type": "mixer", "amount": 45, "unit": "ml" }
+    ],
+    "garnish": ["Orange slice", "Cherry"],
+    "preparation": [
+      "Fill a hurricane glass with ice.",
+      "Add juices and soda, then float grenadine for a sunrise effect.",
+      "Garnish generously."
+    ]
+  },
+  {
+    "name": "Sparkling Berry Party Cup",
+    "slug": "sparkling-berry-party-cup",
+    "glass": "Wine",
+    "family": "Punch",
+    "method": "Built",
+    "tags": ["mocktail", "party"],
+    "ingredients": [
+      { "ref": "cranberry-juice", "name": "Cranberry juice", "type": "juice", "amount": 60, "unit": "ml" },
+      { "ref": "lemon-juice", "name": "Lemon juice", "type": "juice", "amount": 15, "unit": "ml" },
+      { "ref": "simple-syrup", "name": "Simple syrup", "type": "syrup", "amount": 10, "unit": "ml" },
+      { "ref": "sparkling-water", "name": "Sparkling water", "type": "mixer", "amount": 120, "unit": "ml" }
+    ],
+    "garnish": ["Berries"],
+    "preparation": [
+      "Build over ice in a large wine glass.",
+      "Add cranberry, lemon, and syrup, then top with sparkling water.",
+      "Drop in fresh berries."
+    ]
+  },
+  {
+    "name": "Tropical Sunset Spritz",
+    "slug": "tropical-sunset-spritz",
+    "glass": "Wine",
+    "family": "Spritz",
+    "method": "Built",
+    "tags": ["mocktail", "party", "tropical"],
+    "ingredients": [
+      { "ref": "pineapple-juice", "name": "Pineapple juice", "type": "juice", "amount": 60, "unit": "ml" },
+      { "ref": "orange-juice", "name": "Orange juice", "type": "juice", "amount": 45, "unit": "ml" },
+      { "ref": "grenadine", "name": "Grenadine", "type": "syrup", "amount": 10, "unit": "ml" },
+      { "ref": "ginger-ale", "name": "Ginger ale", "type": "mixer", "amount": 90, "unit": "ml" }
+    ],
+    "garnish": ["Orange wheel"],
+    "preparation": [
+      "Add juices to a wine glass with ice.",
+      "Top with ginger ale and float grenadine.",
+      "Garnish with orange."
+    ]
+  },
+  {
+    "name": "Citrus Celebration Punch",
+    "slug": "citrus-celebration-punch",
+    "glass": "Punch",
+    "family": "Punch",
+    "method": "Built",
+    "tags": ["mocktail", "party"],
+    "ingredients": [
+      { "ref": "orange-juice", "name": "Orange juice", "type": "juice", "amount": 120, "unit": "ml" },
+      { "ref": "lemon-juice", "name": "Lemon juice", "type": "juice", "amount": 30, "unit": "ml" },
+      { "ref": "simple-syrup", "name": "Simple syrup", "type": "syrup", "amount": 15, "unit": "ml" },
+      { "ref": "club-soda", "name": "Club soda", "type": "mixer", "amount": 120, "unit": "ml" }
+    ],
+    "garnish": ["Citrus wheels"],
+    "preparation": [
+      "Combine juices and syrup in a punch cup with ice.",
+      "Top with club soda and garnish with citrus wheels."
+    ]
+  },
+  {
+    "name": "Iced Vanilla Coffee Shakerato",
+    "slug": "iced-vanilla-coffee-shakerato",
+    "glass": "Coupe",
+    "family": "Other",
+    "method": "Shaken",
+    "tags": ["mocktail", "coffee"],
+    "ingredients": [
+      { "ref": "cold-brew-coffee", "name": "Cold brew coffee", "type": "mixer", "amount": 60, "unit": "ml" },
+      { "ref": "vanilla-syrup", "name": "Vanilla syrup", "type": "syrup", "amount": 15, "unit": "ml" },
+      { "ref": "simple-syrup", "name": "Simple syrup", "type": "syrup", "amount": 7.5, "unit": "ml" }
+    ],
+    "garnish": ["Coffee beans"],
+    "preparation": [
+      "Shake cold brew and syrups hard with ice.",
+      "Fine-strain into a chilled coupe.",
+      "Garnish with coffee beans."
+    ]
+  },
+  {
+    "name": "Cold Brew Tonic",
+    "slug": "cold-brew-tonic",
+    "glass": "Highball",
+    "family": "Highball",
+    "method": "Built",
+    "tags": ["mocktail", "coffee", "modern-mocktail"],
+    "ingredients": [
+      { "ref": "cold-brew-coffee", "name": "Cold brew coffee", "type": "mixer", "amount": 60, "unit": "ml" },
+      { "ref": "tonic-water", "name": "Tonic water", "type": "mixer", "amount": 120, "unit": "ml" },
+      { "ref": "orange-juice", "name": "Orange juice", "type": "juice", "amount": 15, "unit": "ml" }
+    ],
+    "garnish": ["Orange peel"],
+    "preparation": [
+      "Build over ice in a highball glass.",
+      "Add cold brew and a splash of orange, then top with tonic.",
+      "Express orange peel over the top."
+    ]
+  },
+  {
+    "name": "Maple Mocha Cooler",
+    "slug": "maple-mocha-cooler",
+    "glass": "Rocks",
+    "family": "Other",
+    "method": "Shaken",
+    "tags": ["mocktail", "coffee"],
+    "ingredients": [
+      { "ref": "cold-brew-coffee", "name": "Cold brew coffee", "type": "mixer", "amount": 45, "unit": "ml" },
+      { "ref": "chocolate-syrup", "name": "Chocolate syrup", "type": "syrup", "amount": 15, "unit": "ml" },
+      { "ref": "maple-syrup", "name": "Maple syrup", "type": "syrup", "amount": 10, "unit": "ml" },
+      { "ref": "oat-milk", "name": "Oat milk", "type": "mixer", "amount": 45, "unit": "ml" }
+    ],
+    "garnish": ["Cocoa dust"],
+    "preparation": [
+      "Shake all ingredients with ice.",
+      "Strain over fresh ice in a rocks glass.",
+      "Dust lightly with cocoa."
+    ]
+  },
+  {
+    "name": "Espresso Sparkler",
+    "slug": "espresso-sparkler",
+    "glass": "Coupe",
+    "family": "Other",
+    "method": "Shaken",
+    "tags": ["mocktail", "coffee", "modern-mocktail"],
+    "ingredients": [
+      { "ref": "espresso", "name": "Espresso", "type": "mixer", "amount": 30, "unit": "ml" },
+      { "ref": "simple-syrup", "name": "Simple syrup", "type": "syrup", "amount": 10, "unit": "ml" },
+      { "ref": "sparkling-water", "name": "Sparkling water", "type": "mixer", "amount": 60, "unit": "ml" }
+    ],
+    "garnish": ["Coffee bean"],
+    "preparation": [
+      "Shake espresso and syrup with ice.",
+      "Strain into a coupe and top with sparkling water.",
+      "Serve immediately."
+    ]
+  },
+  {
+    "name": "Iced London Fog",
+    "slug": "iced-london-fog",
+    "glass": "Highball",
+    "family": "Hot Drink",
+    "method": "Built",
+    "tags": ["mocktail", "tea"],
+    "ingredients": [
+      { "ref": "earl-grey-tea", "name": "Earl Grey tea", "type": "mixer", "amount": 120, "unit": "ml" },
+      { "ref": "vanilla-syrup", "name": "Vanilla syrup", "type": "syrup", "amount": 15, "unit": "ml" },
+      { "ref": "oat-milk", "name": "Oat milk", "type": "mixer", "amount": 45, "unit": "ml" }
+    ],
+    "garnish": ["Lemon twist"],
+    "preparation": [
+      "Fill a highball with ice.",
+      "Add chilled Earl Grey, vanilla syrup, and oat milk.",
+      "Stir gently and garnish with lemon."
+    ]
+  },
+  {
+    "name": "Green Tea Ginger Refresher",
+    "slug": "green-tea-ginger-refresher",
+    "glass": "Highball",
+    "family": "Highball",
+    "method": "Shaken",
+    "tags": ["mocktail", "tea", "wellness"],
+    "ingredients": [
+      { "ref": "green-tea", "name": "Green tea", "type": "mixer", "amount": 90, "unit": "ml" },
+      { "ref": "lime-juice", "name": "Lime juice", "type": "juice", "amount": 22.5, "unit": "ml" },
+      { "ref": "ginger-syrup", "name": "Ginger syrup", "type": "syrup", "amount": 15, "unit": "ml" },
+      { "ref": "club-soda", "name": "Club soda", "type": "mixer", "amount": 45, "unit": "ml" }
+    ],
+    "garnish": ["Lime wheel"],
+    "preparation": [
+      "Shake green tea, lime, and ginger syrup with ice.",
+      "Strain into a highball and top with soda."
+    ]
+  },
+  {
+    "name": "Chai Spiced Sparkler",
+    "slug": "chai-spiced-sparkler",
+    "glass": "Wine",
+    "family": "Spritz",
+    "method": "Built",
+    "tags": ["mocktail", "tea", "cozy"],
+    "ingredients": [
+      { "ref": "chai-concentrate", "name": "Chai concentrate", "type": "mixer", "amount": 45, "unit": "ml" },
+      { "ref": "simple-syrup", "name": "Simple syrup", "type": "syrup", "amount": 10, "unit": "ml" },
+      { "ref": "sparkling-water", "name": "Sparkling water", "type": "mixer", "amount": 120, "unit": "ml" }
+    ],
+    "garnish": ["Cinnamon stick"],
+    "preparation": [
+      "Build chai and syrup over ice in a wine glass.",
+      "Top with sparkling water and garnish with cinnamon."
+    ]
+  },
+  {
+    "name": "Hibiscus Iced Tea Lemonade",
+    "slug": "hibiscus-iced-tea-lemonade",
+    "glass": "Highball",
+    "family": "Highball",
+    "method": "Built",
+    "tags": ["mocktail", "tea"],
+    "ingredients": [
+      { "ref": "hibiscus-tea", "name": "Hibiscus tea", "type": "mixer", "amount": 90, "unit": "ml" },
+      { "ref": "lemon-juice", "name": "Lemon juice", "type": "juice", "amount": 22.5, "unit": "ml" },
+      { "ref": "simple-syrup", "name": "Simple syrup", "type": "syrup", "amount": 10, "unit": "ml" }
+    ],
+    "garnish": ["Lemon wheel"],
+    "preparation": [
+      "Combine hibiscus tea, lemon, and syrup over ice.",
+      "Stir and garnish."
+    ]
+  }
+]

@@ -28,6 +28,21 @@ export const BAR_STARTER_KITS: BarStarterKit[] = [
     ingredientIds: ["tequila-blanco", "lime-juice", "triple-sec", "grapefruit-soda"],
   },
   {
+    id: "zero-proof-bar",
+    label: "Zero-proof bar",
+    description: "Mixers, juices, and syrups for mocktails at home.",
+    ingredientIds: [
+      "club-soda",
+      "ginger-beer",
+      "lime-juice",
+      "lemon-juice",
+      "simple-syrup",
+      "grenadine",
+      "mint",
+      "cold-brew-coffee",
+    ],
+  },
+  {
     id: "bitter-stirred",
     label: "Bitter & stirred",
     description: "Negronis, Boulevards, and aperitivo hour.",

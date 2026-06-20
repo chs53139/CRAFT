@@ -1,4 +1,4 @@
-import { cocktails, cocktailCount, ingredients } from "@/lib/cocktail-data";
+import { cocktails, cocktailCount, mocktailCount, alcoholicCount, ingredients } from "@/lib/cocktail-data";
 import { getBuyLabel } from "@/lib/ingredient-brands";
 import { getIngredientCostUsd } from "@/lib/ingredient-costs";
 import { matchCocktailWithSubstitutions } from "@/lib/substitutions";
@@ -11,7 +11,7 @@ import {
 
 const ingredientMap = new Map(ingredients.map((i) => [i.id, i]));
 
-export { cocktails, cocktailCount, ingredients };
+export { cocktails, cocktailCount, mocktailCount, alcoholicCount, ingredients };
 
 export function getIngredientById(id: string): Ingredient | undefined {
   return ingredientMap.get(id);

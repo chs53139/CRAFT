@@ -8,6 +8,7 @@ import {
 } from "@/lib/substitution-display";
 import { CocktailImage } from "./CocktailImage";
 import { DifficultyBadge } from "./DifficultyBadge";
+import { AlcoholBadge } from "./AlcoholBadge";
 import { FavoriteButton } from "./FavoriteButton";
 import { MatchQualityBadge } from "./MatchQualityBadge";
 import { ObscurityBadge } from "./ObscurityBadge";
@@ -62,7 +63,10 @@ export function CocktailCard({
 
       <div className={`card-shine border-b border-[var(--border-subtle)] ${isCarousel ? "px-3.5 py-2.5" : "px-4 py-3"}`}>
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <DifficultyBadge difficulty={cocktail.difficulty} />
+          <div className="flex flex-wrap items-center gap-2">
+            <DifficultyBadge difficulty={cocktail.difficulty} />
+            <AlcoholBadge cocktail={cocktail} compact />
+          </div>
           {showObscurity ? (
             <ObscurityBadge score={cocktail.obscurityScore} compact />
           ) : isExact ? (

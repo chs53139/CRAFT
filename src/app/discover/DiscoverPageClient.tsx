@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { CocktailCard } from "@/components/CocktailCard";
+import { DrinkTypeFilter } from "@/components/DrinkTypeFilter";
 import { EmptyState } from "@/components/EmptyState";
 import { PageLoader } from "@/components/LoadingState";
 import { ScreenHeader } from "@/components/ScreenHeader";
@@ -19,7 +20,8 @@ import {
   getCollectionCounts,
   searchCatalogue,
 } from "@/lib/cocktail-discovery";
-import { cocktailCount, isPourable, matchCocktails, matchSingleCocktail } from "@/lib/cocktail-matching";
+import { cocktailCount, isPourable, matchCocktails, matchSingleCocktail, mocktailCount } from "@/lib/cocktail-matching";
+import { filterMatchesByDrinkType } from "@/lib/drink-type";
 import { CocktailCollection } from "@/lib/types";
 import { useMyBar } from "@/hooks/use-my-bar";
 
@@ -37,6 +39,8 @@ function DiscoverContent() {
   );
   const [search, setSearch] = useState("");
   const [showMakeable, setShowMakeable] = useState(false);
+  const [drinkTypeFilter, setDrinkTypeFilter] =
+    useState<"both" | "cocktails" | "mocktails">("both");
   const [limit, setLimit] = useState(PAGE_SIZE);
   const { barIds, loaded } = useMyBar();
 
@@ -44,8 +48,14 @@ function DiscoverContent() {
 
   const catalogue = useMemo(() => {
     const base = collection ? getCatalogueByCollection(collection) : searchCatalogue("");
-    return search.trim() ? searchCatalogue(search, collection ?? undefined) : base;
-  }, [collection, search]);
+    const searched = search.trim() ? searchCatalogue(search, collection ?? undefined) : base;
+    if (drinkTypeFilter === "both") return searched;
+    return searched.filter((cocktail) =>
+      drinkTypeFilter === "mocktails"
+        ? cocktail.drinkType === "mocktail"
+        : cocktail.drinkType === "cocktail"
+    );
+  }, [collection, search, drinkTypeFilter]);
 
   const matches = useMemo(() => {
     if (!loaded) return [];
@@ -70,7 +80,7 @@ function DiscoverContent() {
     <div className="app-screen animate-fade-in">
       <ScreenHeader
         title="Discover"
-        subtitle={`${cocktailCount} cocktails across CRAFT collections — beyond the usual suspects.`}
+        subtitle={`${cocktailCount} drinks · ${mocktailCount} mocktails across CRAFT collections.`}
         large
       />
 
@@ -102,6 +112,8 @@ function DiscoverContent() {
           placeholder="Search by name, region, era, or source…"
         />
 
+        <DrinkTypeFilter value={drinkTypeFilter} onChange={setDrinkTypeFilter} />
+
         <div className="flex gap-2">
           <button
             type="button"
@@ -124,7 +136,7 @@ function DiscoverContent() {
         <p className="mb-4 text-sm text-[var(--muted)]">
           Showing <span className="text-[var(--foreground)]">{COLLECTION_LABELS[collection]}</span>
           {" · "}
-          {catalogue.length} cocktails
+          {catalogue.length} drinks
         </p>
       )}
 

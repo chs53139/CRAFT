@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { BestNextBuy } from "@/components/BestNextBuy";
 import { CocktailSection } from "@/components/CocktailSection";
 import { CollectionFilter } from "@/components/CollectionFilter";
+import { DrinkTypeFilter } from "@/components/DrinkTypeFilter";
 import { EmptyState } from "@/components/EmptyState";
 import { ErrorBanner } from "@/components/ErrorBanner";
 import { MenuPageSkeleton, PageLoader } from "@/components/LoadingState";
@@ -24,6 +25,7 @@ import {
   matchPassesSubstitutionMode,
   SubstitutionMode,
 } from "@/lib/substitution-display";
+import { filterMatchesByDrinkType } from "@/lib/drink-type";
 import { CocktailCollection } from "@/lib/types";
 import { useMyBar } from "@/hooks/use-my-bar";
 
@@ -75,11 +77,17 @@ function CocktailsContent() {
   const [collection, setCollection] = useState<"all" | CocktailCollection>("all");
   const [substitutionMode, setSubstitutionMode] =
     useState<SubstitutionMode>("include-substitutions");
+  const [drinkTypeFilter, setDrinkTypeFilter] =
+    useState<"both" | "cocktails" | "mocktails">("both");
 
   const allMatches = useMemo(() => matchCocktails(barIds), [barIds]);
+  const drinkFilteredMatches = useMemo(
+    () => filterMatchesByDrinkType(allMatches, drinkTypeFilter),
+    [allMatches, drinkTypeFilter]
+  );
   const searchedMatches = useMemo(
-    () => filterMatchesBySearch(allMatches, search),
-    [allMatches, search]
+    () => filterMatchesBySearch(drinkFilteredMatches, search),
+    [drinkFilteredMatches, search]
   );
   const filteredMatches = useMemo(() => {
     if (collection === "all") return searchedMatches;
@@ -117,7 +125,10 @@ function CocktailsContent() {
   const hiddenGems = getHiddenGems(barIds, 12).filter(
     (m) =>
       (collection === "all" || m.cocktail.collections.includes(collection)) &&
-      matchPassesSubstitutionMode(m, substitutionMode)
+      matchPassesSubstitutionMode(m, substitutionMode) &&
+      (drinkTypeFilter === "both" ||
+        (drinkTypeFilter === "mocktails" && m.cocktail.drinkType === "mocktail") ||
+        (drinkTypeFilter === "cocktails" && m.cocktail.drinkType === "cocktail"))
   );
   const recommendation = getBestNextIngredient(barIds);
   const searchActive = search.trim().length > 0;
@@ -173,6 +184,7 @@ function CocktailsContent() {
           />
 
           <div className="app-section space-y-4">
+            <DrinkTypeFilter value={drinkTypeFilter} onChange={setDrinkTypeFilter} />
             <SubstitutionModeFilter value={substitutionMode} onChange={setSubstitutionMode} />
             <CollectionFilter value={collection} onChange={setCollection} />
           </div>

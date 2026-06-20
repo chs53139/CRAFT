@@ -17,6 +17,16 @@ export default function MorePage() {
       <ScreenHeader title="More" subtitle="Explore CRAFT" large />
 
       <div className="app-section space-y-3">
+        <Link href="/mocktails" className="account-row">
+          <div>
+            <p className="text-sm font-semibold text-[var(--foreground)]">Mocktails</p>
+            <p className="mt-0.5 text-xs text-[var(--muted)]">
+              Zero-proof classics, wellness, coffee, and tea
+            </p>
+          </div>
+          <span className="text-[var(--accent)]">→</span>
+        </Link>
+
         <Link href="/discover" className="account-row">
           <div>
             <p className="text-sm font-semibold text-[var(--foreground)]">Discover</p>

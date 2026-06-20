@@ -72,8 +72,10 @@ function inferCollections(raw: RawCocktail, obscurityScore: number, usage: Map<s
   const collections = new Set<CocktailCollection>();
   const isCraftOriginal = raw.tags.includes("craft-original") || raw.slug.startsWith("craft-");
   const isWellKnown = WELL_KNOWN_SLUGS.has(raw.slug);
+  const isMocktail = raw.tags.includes("mocktail");
 
   if (isCraftOriginal) collections.add("craft-original");
+  if (isMocktail) collections.add("mocktail");
 
   if (
     raw.tags.includes("classic") ||
@@ -146,6 +148,10 @@ function inferFunFact(
 ): string {
   if (FUN_FACTS[raw.slug]) return FUN_FACTS[raw.slug];
 
+  if (raw.tags.includes("mocktail")) {
+    return `${raw.name} proves you do not need alcohol for a serious pour — just balance, texture, and intent.`;
+  }
+
   const fromMovie = movieFact(raw);
   if (fromMovie) return fromMovie;
 
@@ -206,6 +212,7 @@ export function matchesMood(
     collections: CocktailCollection[];
     obscurityScore: number;
     difficulty: Difficulty;
+    drinkType?: "cocktail" | "mocktail";
   },
   mood: string
 ): boolean {
@@ -243,7 +250,8 @@ export function matchesMood(
         flavors.includes("rich") ||
         flavors.includes("creamy") ||
         category.includes("hot") ||
-        category.includes("flip")
+        category.includes("flip") ||
+        cocktail.drinkType === "mocktail" && flavors.includes("spiced")
       );
     case "elegant":
       return (

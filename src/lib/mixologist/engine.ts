@@ -394,13 +394,195 @@ export function generateOriginalCocktail(selectedIds: string[]): MixologistInven
   };
 }
 
+export function generateMocktailOriginal(selectedIds: string[]): MixologistInvention | null {
+  if (selectedIds.length < 2) return null;
+
+  const available = selectedIds
+    .map((id) => getIngredientById(id))
+    .filter((ing): ing is Ingredient => !!ing);
+
+  const spirits = available.filter((i) => i.category === "spirit");
+  if (spirits.length > 0) return null;
+
+  const citrus = available.find((i) => /lime-juice|lemon-juice|grapefruit-juice|orange-juice/.test(i.id));
+  const sweet = available.find((i) =>
+    /simple-syrup|rich-simple|demerara|agave|honey|grenadine|orgeat|maple|vanilla/.test(i.id)
+  );
+  const mixer = available.find(
+    (i) =>
+      i.category === "mixer" ||
+      /soda|tonic|ginger-beer|sparkling|prosecco|champagne|cola|root-beer/.test(i.id)
+  );
+  const herb = available.find((i) => /mint|basil|rosemary|ginger|thyme|cucumber/.test(i.id));
+  const coffee = available.find((i) => /coffee|espresso|cold-brew/.test(i.id));
+  const tea = available.find((i) => /tea|matcha|chai/.test(i.id));
+  const naSpirit = available.find((i) => i.category === "na-spirit" || /seedlip|spirit-free|zero-proof/.test(i.id));
+
+  type Build = {
+    score: number;
+    style: string;
+    method: string;
+    glass: string;
+    flavorProfile: string[];
+    items: Array<{ ingredientId: string; amount: string }>;
+    instructions: string[];
+    tagline: string;
+  };
+
+  const builds: Build[] = [];
+
+  if (coffee && sweet) {
+    builds.push({
+      score: 90,
+      style: "Coffee Cooler",
+      method: "Shaken",
+      glass: "Rocks",
+      flavorProfile: ["coffee", "balanced", "refreshing"],
+      items: [
+        { ingredientId: coffee.id, amount: "2 oz" },
+        { ingredientId: sweet.id, amount: "0.5 oz" },
+        ...(mixer ? [{ ingredientId: mixer.id, amount: "2 oz" }] : []),
+      ],
+      instructions: [
+        `Add ${coffee.name.toLowerCase()} and ${sweet.name.toLowerCase()} to a shaker with ice.`,
+        "Shake hard until chilled.",
+        "Strain over fresh ice in a rocks glass.",
+      ],
+      tagline: "Cold coffee lengthened with sweetness — zero-proof and full-bodied.",
+    });
+  }
+
+  if (tea && citrus) {
+    builds.push({
+      score: 88,
+      style: "Iced Tea Sparkler",
+      method: "Built",
+      glass: "Highball",
+      flavorProfile: ["tea", "citrus", "refreshing"],
+      items: [
+        { ingredientId: tea.id, amount: "3 oz" },
+        { ingredientId: citrus.id, amount: "0.75 oz" },
+        ...(sweet ? [{ ingredientId: sweet.id, amount: "0.25 oz" }] : []),
+        ...(mixer ? [{ ingredientId: mixer.id, amount: "2 oz" }] : []),
+      ],
+      instructions: [
+        "Fill a highball glass with ice.",
+        `Add ${tea.name.toLowerCase()} and ${citrus.name.toLowerCase()}.`,
+        mixer
+          ? `Top with ${mixer.name.toLowerCase()} and stir gently once.`
+          : "Stir gently to combine.",
+      ],
+      tagline: "Bright citrus over tea — tall, easy, and alcohol-free.",
+    });
+  }
+
+  if (citrus && sweet && mixer) {
+    builds.push({
+      score: herb ? 92 : 86,
+      style: herb ? "Herbal Sparkler" : "Sparkling Sour",
+      method: herb ? "Muddled" : "Built",
+      glass: "Collins",
+      flavorProfile: herb
+        ? ["citrus", "herbal", "refreshing"]
+        : ["citrus", "balanced", "sparkling"],
+      items: [
+        ...(herb ? [{ ingredientId: herb.id, amount: herb.id.includes("mint") ? "8 leaves" : "3 leaves" }] : []),
+        { ingredientId: citrus.id, amount: "1 oz" },
+        { ingredientId: sweet.id, amount: "0.5 oz" },
+        { ingredientId: mixer.id, amount: "4 oz" },
+      ],
+      instructions: herb
+        ? [
+            `Gently muddle ${herb.name.toLowerCase()} with ${sweet.name.toLowerCase()} in a glass.`,
+            `Add ${citrus.name.toLowerCase()} and ice, then top with ${mixer.name.toLowerCase()}.`,
+            "Stir once and garnish.",
+          ]
+        : [
+            "Fill a collins glass with ice.",
+            `Add ${citrus.name.toLowerCase()} and ${sweet.name.toLowerCase()}.`,
+            `Top with ${mixer.name.toLowerCase()} and stir gently.`,
+          ],
+      tagline: "Classic sour ratio without the spirit — bright and sessionable.",
+    });
+  }
+
+  if (naSpirit && citrus) {
+    builds.push({
+      score: 84,
+      style: "Zero-Proof Sour",
+      method: "Shaken",
+      glass: "Coupe",
+      flavorProfile: ["citrus", "balanced", "spirit-free"],
+      items: [
+        { ingredientId: naSpirit.id, amount: "2 oz" },
+        { ingredientId: citrus.id, amount: "1 oz" },
+        ...(sweet ? [{ ingredientId: sweet.id, amount: "0.5 oz" }] : []),
+      ],
+      instructions: [
+        `Add ${naSpirit.name.toLowerCase()}, ${citrus.name.toLowerCase()}${sweet ? `, and ${sweet.name.toLowerCase()}` : ""} to a shaker with ice.`,
+        "Shake hard until well chilled.",
+        "Strain into a chilled coupe.",
+      ],
+      tagline: "Spirit-free base shaken sour-style — all the ritual, none of the ABV.",
+    });
+  }
+
+  if (mixer && sweet && !citrus) {
+    builds.push({
+      score: 78,
+      style: "Party Punch",
+      method: "Built",
+      glass: "Highball",
+      flavorProfile: ["sweet", "refreshing", "party"],
+      items: [
+        { ingredientId: sweet.id, amount: "0.75 oz" },
+        { ingredientId: mixer.id, amount: "5 oz" },
+        ...(herb ? [{ ingredientId: herb.id, amount: "4 leaves" }] : []),
+      ],
+      instructions: [
+        "Fill a highball glass with ice.",
+        `Add ${sweet.name.toLowerCase()}${herb ? ` and muddle ${herb.name.toLowerCase()} lightly` : ""}.`,
+        `Top with ${mixer.name.toLowerCase()} and stir once.`,
+      ],
+      tagline: "Crowd-pleasing and alcohol-free — built for refills.",
+    });
+  }
+
+  if (builds.length === 0) return null;
+
+  builds.sort((a, b) => b.score - a.score);
+  const best = builds[0];
+  const name = best.style;
+  const ingredients = toMixologistIngredients(best.items);
+  const ids = ingredients.map((i) => i.ingredientId);
+  const amounts = ingredients.map((i) => i.amount);
+  const confidence = Math.min(86, 55 + Math.round(best.score * 0.32));
+
+  return {
+    source: "original",
+    confidence,
+    name,
+    tagline: best.tagline,
+    ingredients,
+    instructions: best.instructions,
+    flavorProfile: best.flavorProfile,
+    sweetness: estimateSweetness(ids),
+    strength: "low",
+    method: best.method,
+    glassware: best.glass,
+    notes: "Original zero-proof recipe built from your shelf — no spirits required.",
+  };
+}
+
 export function inventDrink(selectedIds: string[]): MixologistInvention | null {
   const uniqueIds = [...new Set(selectedIds.filter(Boolean))];
   if (uniqueIds.length < 2) return null;
 
+  const hasSpirits = uniqueIds.some((id) => getIngredientById(id)?.category === "spirit");
+
   return (
     findExistingCocktail(uniqueIds) ??
     findCocktailVariation(uniqueIds) ??
-    generateOriginalCocktail(uniqueIds)
+    (hasSpirits ? generateOriginalCocktail(uniqueIds) : generateMocktailOriginal(uniqueIds))
   );
 }

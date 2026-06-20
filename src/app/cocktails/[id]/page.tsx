@@ -7,6 +7,7 @@ import { CocktailReviews } from "@/components/CocktailReviews";
 import { MatchQualityBadge } from "@/components/MatchQualityBadge";
 import { SubstitutionPanel } from "@/components/SubstitutionPanel";
 import { CocktailImage } from "@/components/CocktailImage";
+import { AlcoholBadge } from "@/components/AlcoholBadge";
 import { CollectionTags } from "@/components/CollectionTags";
 import { DifficultyBadge } from "@/components/DifficultyBadge";
 import { EmptyState } from "@/components/EmptyState";
@@ -15,6 +16,7 @@ import { FlavorTags } from "@/components/FlavorTags";
 import { ObscurityBadge } from "@/components/ObscurityBadge";
 import { PageLoader } from "@/components/LoadingState";
 import { ERA_LABELS } from "@/lib/cocktail-curation";
+import { MOCKTAIL_SUBCATEGORY_LABELS } from "@/lib/mocktail-curation";
 import {
   getCocktailById,
   getIngredientById,
@@ -96,6 +98,7 @@ export default function CocktailDetailPage() {
       <div className="app-screen pt-5">
         <div className="flex flex-wrap items-center gap-2">
           <DifficultyBadge difficulty={cocktail.difficulty} />
+          <AlcoholBadge cocktail={cocktail} compact />
           <ObscurityBadge score={cocktail.obscurityScore} compact />
           <span className="rounded-full border border-[var(--border)] px-3 py-1 text-[10px] uppercase tracking-wider text-[var(--muted)]">
             {cocktail.category}
@@ -103,6 +106,11 @@ export default function CocktailDetailPage() {
           <span className="rounded-full border border-[var(--border)] px-3 py-1 text-[10px] uppercase tracking-wider text-[var(--muted)]">
             {ERA_LABELS[cocktail.era] ?? cocktail.era}
           </span>
+          {cocktail.mocktailSubcategory && (
+            <span className="rounded-full border border-[var(--border)] px-3 py-1 text-[10px] uppercase tracking-wider text-[var(--muted)]">
+              {MOCKTAIL_SUBCATEGORY_LABELS[cocktail.mocktailSubcategory]}
+            </span>
+          )}
         </div>
         <div className="mt-3 space-y-3">
           <FlavorTags flavors={cocktail.flavorProfile} />

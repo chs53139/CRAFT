@@ -8,8 +8,18 @@ import type {
 export type Ingredient = {
   id: string;
   name: string;
-  category: "spirit" | "liqueur" | "mixer" | "garnish" | "other";
+  category: "spirit" | "liqueur" | "mixer" | "garnish" | "other" | "na-spirit";
 };
+
+export type DrinkType = "cocktail" | "mocktail";
+
+export type MocktailSubcategory =
+  | "classic-mocktail"
+  | "modern-mocktail"
+  | "wellness"
+  | "party"
+  | "coffee"
+  | "tea";
 
 export type CocktailIngredient = {
   ingredientId: string;
@@ -32,7 +42,8 @@ export type CocktailCollection =
   | "historical"
   | "tiki"
   | "experimental"
-  | "craft-original";
+  | "craft-original"
+  | "mocktail";
 
 export type CocktailCategory =
   | "Sour"
@@ -66,6 +77,8 @@ export type Cocktail = {
   funFact: string;
   method: string;
   tags: string[];
+  drinkType: DrinkType;
+  mocktailSubcategory?: MocktailSubcategory;
   glassware: string;
   garnish: string;
   imageUrl: string;

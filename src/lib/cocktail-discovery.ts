@@ -1,6 +1,7 @@
 import { cocktails, matchCocktails } from "@/lib/cocktail-matching";
 import { DISCOVER_COLLECTIONS } from "@/lib/cocktail-curation";
 import { matchesMood, matchesRarity } from "@/lib/cocktail-enrichment";
+import { filterMatchesByDrinkType } from "@/lib/drink-type";
 import { Cocktail, CocktailCollection, CocktailMatch, Difficulty } from "@/lib/types";
 
 export type SurpriseFilters = {
@@ -8,6 +9,7 @@ export type SurpriseFilters = {
   rarity?: string;
   spiritId?: string;
   complexity?: Difficulty | "any";
+  drinkType?: "both" | "cocktails" | "mocktails";
   /** @deprecated only makeable cocktails are returned */
   preferMakeable?: boolean;
 };
@@ -65,6 +67,14 @@ function filterSurprisePool(matches: CocktailMatch[], filters: SurpriseFilters):
       return false;
     }
 
+    if (filters.drinkType && filters.drinkType !== "both") {
+      const typeMatch =
+        filters.drinkType === "mocktails"
+          ? c.drinkType === "mocktail"
+          : c.drinkType === "cocktail";
+      if (!typeMatch) return false;
+    }
+
     return true;
   });
 }
@@ -103,6 +113,11 @@ export function surpriseCocktail(
   let makeable = allMakeable.filter((m) => !exclude.has(m.cocktail.id));
   if (makeable.length === 0) {
     makeable = allMakeable;
+  }
+
+  if (filters.drinkType && filters.drinkType !== "both") {
+    makeable = filterMatchesByDrinkType(makeable, filters.drinkType);
+    if (makeable.length === 0) return null;
   }
 
   for (const attempt of buildFilterAttempts(filters)) {

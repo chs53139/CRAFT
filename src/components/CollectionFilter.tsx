@@ -11,6 +11,7 @@ const COLLECTIONS: Array<{ id: "all" | CocktailCollection; label: string }> = [
   { id: "tiki", label: "Tiki" },
   { id: "experimental", label: "Experimental" },
   { id: "craft-original", label: "CRAFT" },
+  { id: "mocktail", label: "Mocktails" },
 ];
 
 type Props = {

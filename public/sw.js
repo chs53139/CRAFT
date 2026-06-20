@@ -6,6 +6,7 @@ const PRECACHE_URLS = [
   "/",
   "/cocktails",
   "/bar",
+  "/mocktails",
   "/discover",
   "/mixologist",
   "/favorites",

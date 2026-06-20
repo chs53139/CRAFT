@@ -51,7 +51,6 @@ export default function HomePage() {
   const summary = getBarSummary(barIds);
   const matches = matchCocktails(barIds);
   const tonight = matches.filter((m) => m.canMake);
-  const oneAway = matches.filter((m) => m.missingCount === 1);
   const hiddenGems = getHiddenGems(barIds, 10);
   const recommendation = getBestNextIngredient(barIds);
   const barIngredients = getIngredientsByIds(barIds);
@@ -81,7 +80,7 @@ export default function HomePage() {
             : "Add a bottle to unlock more"
         }
         items={tonight.slice(0, 10)}
-        seeAllHref="/cocktails"
+        seeAllHref="/cocktails?view=ready"
         empty="Stock a few more bottles and the magic happens."
       />
 
@@ -104,26 +103,6 @@ export default function HomePage() {
 
       <div className="app-section">
         <SurpriseMe barIds={barIds} />
-      </div>
-
-      <HorizontalCocktailRow
-        title="Almost there"
-        subtitle="One ingredient away"
-        items={oneAway.slice(0, 10)}
-        seeAllHref="/cocktails"
-        empty="Keep building — these show up as your bar grows."
-      />
-
-      <div className="app-section">
-        <Link href="/discover" className="account-row">
-          <div>
-            <p className="text-sm font-semibold text-[var(--foreground)]">Discover collections</p>
-            <p className="mt-0.5 text-xs text-[var(--muted)]">
-              Classics, hidden gems, tiki, and CRAFT originals
-            </p>
-          </div>
-          <span className="text-[var(--accent)]">→</span>
-        </Link>
       </div>
 
       <div className="app-section">

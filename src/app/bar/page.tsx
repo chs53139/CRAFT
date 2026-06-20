@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { BarScan } from "@/components/BarScan";
 import { BestNextBuy } from "@/components/BestNextBuy";
 import { EmptyState } from "@/components/EmptyState";
 import { ErrorBanner } from "@/components/ErrorBanner";
@@ -20,10 +21,20 @@ import { getShopCategory, SHOP_CATEGORIES, ShopCategory } from "@/lib/ingredient
 import { useMyBar } from "@/hooks/use-my-bar";
 
 export default function BarPage() {
-  const { barIds, toggleIngredient, clearBar, loaded, syncing, error, clearError, isAuthenticated } =
-    useMyBar();
+  const {
+    barIds,
+    toggleIngredient,
+    clearBar,
+    addIngredients,
+    loaded,
+    syncing,
+    error,
+    clearError,
+    isAuthenticated,
+  } = useMyBar();
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState<ShopCategory | "all">("all");
+  const [scanOpen, setScanOpen] = useState(false);
 
   const filteredIngredients = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -81,16 +92,32 @@ export default function BarPage() {
         }
         large
         action={
-          barIds.length > 0 ? (
+          <div className="flex items-center gap-1">
             <button
               type="button"
-              onClick={handleClearBar}
-              className="min-h-11 rounded-full px-3 text-sm font-medium text-[var(--muted)] transition active:text-[var(--accent)]"
+              onClick={() => setScanOpen(true)}
+              className="min-h-11 rounded-full px-3 text-sm font-medium text-[var(--accent)] transition active:opacity-80"
             >
-              Clear
+              Scan
             </button>
-          ) : undefined
+            {barIds.length > 0 ? (
+              <button
+                type="button"
+                onClick={handleClearBar}
+                className="min-h-11 rounded-full px-3 text-sm font-medium text-[var(--muted)] transition active:text-[var(--accent)]"
+              >
+                Clear
+              </button>
+            ) : null}
+          </div>
         }
+      />
+
+      <BarScan
+        open={scanOpen}
+        onClose={() => setScanOpen(false)}
+        barIds={barIds}
+        onConfirm={addIngredients}
       />
 
       {error && (
@@ -107,8 +134,13 @@ export default function BarPage() {
         <div className="mt-4">
           <EmptyState
             title="Your shelf is empty"
-            description="Tap ingredients below to build your bar."
+            description="Tap Scan to photo-match bottles, or add ingredients manually below."
             icon="🍾"
+            action={
+              <button type="button" className="btn-primary mt-2" onClick={() => setScanOpen(true)}>
+                Scan My Bar
+              </button>
+            }
           />
         </div>
       ) : (

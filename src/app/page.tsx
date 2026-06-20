@@ -64,9 +64,9 @@ export default function HomePage() {
 
       <StatPills
         stats={[
-          { value: summary.readyTonight, label: "Ready" },
-          { value: summary.oneAway, label: "One away" },
-          { value: cocktailCount, label: "Catalogue" },
+          { value: summary.readyTonight, label: "Ready", href: "/cocktails?view=ready" },
+          { value: summary.oneAway, label: "One away", href: "/cocktails?view=one-away" },
+          { value: cocktailCount, label: "Catalogue", href: "/discover" },
         ]}
         trailingAction={
           <StatPillAction href="/mixologist" label="Mixologist" />

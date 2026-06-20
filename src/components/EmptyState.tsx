@@ -5,6 +5,7 @@ type Props = {
   description: string;
   actionLabel?: string;
   actionHref?: string;
+  action?: React.ReactNode;
   icon?: string;
 };
 
@@ -13,6 +14,7 @@ export function EmptyState({
   description,
   actionLabel,
   actionHref,
+  action,
   icon = "🥃",
 }: Props) {
   return (
@@ -26,6 +28,7 @@ export function EmptyState({
       <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-[var(--muted)]">
         {description}
       </p>
+      {action}
       {actionLabel && actionHref && (
         <Link href={actionHref} className="btn-primary mt-8">
           {actionLabel}

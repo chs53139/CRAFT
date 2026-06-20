@@ -37,6 +37,7 @@ type UserDataContextValue = {
   toggleIngredient: (id: string) => void;
   clearBar: () => void;
   setBarIds: (ids: string[]) => void;
+  addIngredients: (ids: string[]) => void;
   toggleFavorite: (cocktailId: string) => Promise<void>;
   isFavorite: (cocktailId: string) => boolean;
   trackRecent: (cocktailId: string) => void;
@@ -210,6 +211,18 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
 
   const clearBar = useCallback(() => setBarIds([]), [setBarIds]);
 
+  const addIngredients = useCallback(
+    (ids: string[]) => {
+      if (ids.length === 0) return;
+      setBarIdsState((prev) => {
+        const next = [...new Set([...prev, ...ids])];
+        persistBar(next);
+        return next;
+      });
+    },
+    [persistBar]
+  );
+
   const toggleFavorite = useCallback(
     async (cocktailId: string) => {
       const isFav = favoriteIds.includes(cocktailId);
@@ -279,6 +292,7 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
       toggleIngredient,
       clearBar,
       setBarIds,
+      addIngredients,
       toggleFavorite,
       isFavorite,
       trackRecent,
@@ -298,6 +312,7 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
       toggleIngredient,
       clearBar,
       setBarIds,
+      addIngredients,
       toggleFavorite,
       isFavorite,
       trackRecent,
@@ -321,6 +336,7 @@ export function useMyBar() {
     barIds,
     toggleIngredient,
     clearBar,
+    addIngredients,
     loaded,
     syncing,
     error,
@@ -332,6 +348,7 @@ export function useMyBar() {
     barIds,
     toggleIngredient,
     clearBar,
+    addIngredients,
     loaded,
     syncing,
     error,

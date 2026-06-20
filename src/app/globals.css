@@ -350,6 +350,27 @@ h3 {
   text-align: center;
 }
 
+.stat-pill-link {
+  display: block;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.stat-pill-link:active {
+  transform: scale(0.98);
+}
+
+@media (hover: hover) {
+  .stat-pill-link:hover {
+    border-color: rgba(212, 181, 106, 0.28);
+    background:
+      radial-gradient(ellipse 80% 80% at 50% 0%, rgba(212, 181, 106, 0.08), transparent 70%),
+      var(--card);
+  }
+}
+
 .stat-pill-value {
   font-family: var(--font-display), Georgia, serif;
   font-size: clamp(1.25rem, 4.5vw, 1.5rem);
@@ -1106,4 +1127,182 @@ h3 {
   font-size: 0.6875rem;
   line-height: 1.4;
   color: var(--muted);
+}
+
+.bar-scan-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(6px);
+}
+
+.bar-scan-panel {
+  width: min(100%, 28rem);
+  max-height: min(92vh, 44rem);
+  overflow-y: auto;
+  border: 1px solid var(--border-subtle);
+  border-bottom: none;
+  border-radius: 1.25rem 1.25rem 0 0;
+  background:
+    radial-gradient(ellipse 90% 50% at 50% 0%, rgba(212, 181, 106, 0.08), transparent 70%),
+    var(--background);
+  padding: 1.25rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+}
+
+.bar-scan-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.bar-scan-close {
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 9999px;
+  background: var(--background-elevated);
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.bar-scan-body {
+  margin-top: 1rem;
+}
+
+.bar-scan-upload {
+  display: block;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+.bar-scan-upload-placeholder,
+.bar-scan-preview {
+  width: 100%;
+  min-height: 11rem;
+  border: 1px dashed var(--border);
+  border-radius: 1rem;
+  background: var(--card);
+}
+
+.bar-scan-upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.bar-scan-preview {
+  display: block;
+  max-height: 16rem;
+  object-fit: cover;
+}
+
+.bar-scan-filename {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.bar-scan-thinking {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 1rem;
+  text-align: center;
+}
+
+.bar-scan-spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 9999px;
+  animation: bar-scan-spin 0.8s linear infinite;
+}
+
+@keyframes bar-scan-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.bar-scan-demo-note {
+  margin-bottom: 0.75rem;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid rgba(212, 181, 106, 0.25);
+  border-radius: 0.75rem;
+  background: rgba(212, 181, 106, 0.08);
+  font-size: 0.75rem;
+  color: var(--accent-dim);
+}
+
+.bar-scan-results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  margin-top: 1rem;
+}
+
+.bar-scan-result-item {
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.875rem;
+  background: var(--card);
+}
+
+.bar-scan-result-label {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.875rem;
+  cursor: pointer;
+}
+
+.bar-scan-result-disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.bar-scan-checkbox {
+  margin-top: 0.125rem;
+  accent-color: var(--accent);
+}
+
+.bar-scan-review-badge {
+  border-radius: 9999px;
+  background: rgba(251, 191, 36, 0.15);
+  padding: 0.125rem 0.5rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgb(251, 191, 36);
+}
+
+.bar-scan-owned-badge {
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.125rem 0.5rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.bar-scan-actions {
+  display: flex;
+  gap: 0.625rem;
+  margin-top: 1rem;
+}
+
+.bar-scan-done {
+  padding: 1.5rem 0 0.5rem;
+  text-align: center;
 }

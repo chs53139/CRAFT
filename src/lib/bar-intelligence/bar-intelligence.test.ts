@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
+import { buildBarAdvice } from "@/lib/bar-intelligence/bar-advice";
 import { analyzeBarHealth } from "@/lib/bar-intelligence/bar-health";
 import { buildTasteProfile, scoreTasteFit } from "@/lib/bar-intelligence/taste-vector";
 import { getBestUnlockRecommendation } from "@/lib/bar-intelligence/unlock-graph";
-import { getCocktailById } from "@/lib/cocktail-matching";
+import { getCocktailById, matchCocktails } from "@/lib/cocktail-matching";
 
 describe("buildTasteProfile", () => {
   it("builds a profile from favorites and recents", () => {
@@ -55,5 +56,30 @@ describe("getBestUnlockRecommendation", () => {
     expect(recommendation).not.toBeNull();
     expect(recommendation!.unlocksCount).toBeGreaterThan(0);
     expect(recommendation!.reason.length).toBeGreaterThan(0);
+  });
+});
+
+describe("buildBarAdvice", () => {
+  it("returns four actionable insights for a stocked bar", () => {
+    const barIds = [
+      "london-dry-gin",
+      "campari",
+      "sweet-vermouth",
+      "lime-juice",
+      "simple-syrup",
+      "bourbon",
+    ];
+    const matches = matchCocktails(barIds);
+    const advice = buildBarAdvice({
+      barIds,
+      favoriteIds: ["negroni"],
+      recentIds: ["old-fashioned"],
+      matches,
+    });
+
+    expect(advice).not.toBeNull();
+    expect(advice!.tonightsRecommendation).not.toBeNull();
+    expect(advice!.bestNextPurchase).not.toBeNull();
+    expect(advice!.bestNextPurchase!.exampleCocktails.length).toBeGreaterThan(0);
   });
 });

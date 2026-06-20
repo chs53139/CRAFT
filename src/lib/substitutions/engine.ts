@@ -1,4 +1,5 @@
 import { getIngredientById } from "@/lib/cocktail-matching";
+import { getEffectiveBarIds, isHouseStaple } from "@/lib/inventory-tiers";
 import { Cocktail } from "@/lib/types";
 import { getSubstitutionRules } from "./catalog";
 import { getHomemadeAlternative } from "./homemade";
@@ -97,7 +98,7 @@ export function matchCocktailWithSubstitutions(
   cocktail: Cocktail,
   barIds: string[]
 ): SubstitutionMatchResult {
-  const barSet = new Set(barIds);
+  const barSet = new Set(getEffectiveBarIds(barIds));
   const substitutions: AppliedSubstitution[] = [];
   const missingIds: string[] = [];
   const homemadeSuggestions: HomemadeAlternative[] = [];
@@ -105,7 +106,7 @@ export function matchCocktailWithSubstitutions(
   for (const item of cocktail.ingredients) {
     const requiredId = item.ingredientId;
 
-    if (barSet.has(requiredId)) continue;
+    if (isHouseStaple(requiredId) || barSet.has(requiredId)) continue;
 
     const rule = findBestSubstitutionRule(requiredId, barSet);
     if (rule) {

@@ -4,18 +4,19 @@ import {
   matchSingleCocktail,
 } from "@/lib/cocktail-matching";
 import {
-  getShopCategory,
-  SHOP_CATEGORIES,
-  ShopCategory,
+  getInventoryTier,
+  getInventoryTierLabel,
+  INVENTORY_TIERS,
+  InventoryTier,
 } from "@/lib/ingredient-categories";
 import { CocktailMatch } from "@/lib/types";
 import { buildTasteProfile } from "./taste-vector";
-import { BarHealthReport, CategoryGap, CategoryRedundancy } from "./types";
+import { BarHealthReport, CategoryGap, CategoryRedundancy, ReviewSignal } from "./types";
 
-const CATEGORY_MINIMUMS: Partial<Record<ShopCategory, number>> = {
+const TIER_MINIMUMS: Partial<Record<InventoryTier, number>> = {
+  "spirits-liqueurs": 2,
   mixers: 2,
-  bitters: 1,
-  liqueurs: 1,
+  pantry: 1,
 };
 
 const REDUNDANCY_THRESHOLD = 3;
@@ -27,11 +28,11 @@ function gradeFromScore(score: number): BarHealthReport["grade"] {
   return "D";
 }
 
-function countByCategory(barIds: string[]): Partial<Record<ShopCategory, number>> {
-  const counts: Partial<Record<ShopCategory, number>> = {};
+function countByTier(barIds: string[]): Partial<Record<InventoryTier, number>> {
+  const counts: Partial<Record<InventoryTier, number>> = {};
   for (const ing of getIngredientsByIds(barIds)) {
-    const cat = getShopCategory(ing.id, ing.name);
-    counts[cat] = (counts[cat] ?? 0) + 1;
+    const tier = getInventoryTier(ing);
+    counts[tier] = (counts[tier] ?? 0) + 1;
   }
   return counts;
 }
@@ -54,37 +55,35 @@ function computeUtilization(barIds: string[], matches: CocktailMatch[]): number 
 }
 
 function findRedundancies(
-  categoryCounts: Partial<Record<ShopCategory, number>>
+  tierCounts: Partial<Record<InventoryTier, number>>
 ): CategoryRedundancy[] {
   const redundancies: CategoryRedundancy[] = [];
 
-  for (const [category, count] of Object.entries(categoryCounts) as Array<
-    [ShopCategory, number]
-  >) {
+  for (const [tier, count] of Object.entries(tierCounts) as Array<[InventoryTier, number]>) {
     if (count < REDUNDANCY_THRESHOLD) continue;
-    const label = SHOP_CATEGORIES.find((c) => c.id === category)?.label ?? category;
+    const label = getInventoryTierLabel(tier);
     redundancies.push({
-      category,
+      category: tier,
       count,
-      message: `${count} ${label.toLowerCase()} bottles — you may be over-indexed here.`,
+      message: `${count} ${label.toLowerCase()} items — you may be over-indexed here.`,
     });
   }
 
   return redundancies.sort((a, b) => b.count - a.count);
 }
 
-function findGaps(categoryCounts: Partial<Record<ShopCategory, number>>): CategoryGap[] {
+function findGaps(tierCounts: Partial<Record<InventoryTier, number>>): CategoryGap[] {
   const gaps: CategoryGap[] = [];
 
-  for (const [category, minimum] of Object.entries(CATEGORY_MINIMUMS) as Array<
-    [ShopCategory, number]
+  for (const [tier, minimum] of Object.entries(TIER_MINIMUMS) as Array<
+    [InventoryTier, number]
   >) {
-    const count = categoryCounts[category] ?? 0;
+    const count = tierCounts[tier] ?? 0;
     if (count >= minimum) continue;
 
-    const label = SHOP_CATEGORIES.find((c) => c.id === category)?.label ?? category;
+    const label = getInventoryTierLabel(tier);
     gaps.push({
-      category,
+      category: tier,
       label,
       message:
         count === 0
@@ -93,11 +92,11 @@ function findGaps(categoryCounts: Partial<Record<ShopCategory, number>>): Catego
     });
   }
 
-  if ((categoryCounts.liqueurs ?? 0) === 0) {
+  if ((tierCounts["spirits-liqueurs"] ?? 0) === 0) {
     gaps.push({
-      category: "liqueurs",
-      label: "Liqueurs",
-      message: "No amari or vermouth — bitter and stirred classics stay locked.",
+      category: "spirits-liqueurs",
+      label: "Spirits & liqueurs",
+      message: "No spirits or liqueurs yet — start with a gin, bourbon, or vermouth.",
     });
   }
 
@@ -105,7 +104,7 @@ function findGaps(categoryCounts: Partial<Record<ShopCategory, number>>): Catego
 }
 
 function buildInsights(input: {
-  categoryCounts: Partial<Record<ShopCategory, number>>;
+  tierCounts: Partial<Record<InventoryTier, number>>;
   redundancies: CategoryRedundancy[];
   gaps: CategoryGap[];
   utilizationPercent: number;
@@ -136,16 +135,14 @@ function buildInsights(input: {
     );
   }
 
-  const whiskey = input.categoryCounts.whiskey ?? 0;
-  const spirits = input.categoryCounts.spirits ?? 0;
-  const liqueurs = input.categoryCounts.liqueurs ?? 0;
+  const spirits = input.tierCounts["spirits-liqueurs"] ?? 0;
+  const mixers = input.tierCounts.mixers ?? 0;
+  const pantry = input.tierCounts.pantry ?? 0;
 
-  if (whiskey >= 3 && liqueurs === 0) {
-    insights.push(
-      `You own ${whiskey} whiskeys but no amari — adding Campari could unlock dozens of pours.`
-    );
-  } else if (spirits >= 3 && (input.categoryCounts.mixers ?? 0) < 2) {
-    insights.push("Strong on spirits, light on mixers — juices and syrups would stretch your shelf.");
+  if (spirits >= 4 && pantry === 0) {
+    insights.push("Well stocked on spirits — bitters and a syrup would unlock a lot more.");
+  } else if (spirits >= 3 && mixers < 2) {
+    insights.push("Strong on spirits, light on mixers — juice and soda would stretch your shelf.");
   }
 
   return insights.slice(0, 4);
@@ -156,20 +153,20 @@ export function analyzeBarHealth(input: {
   matches?: CocktailMatch[];
   favoriteIds?: string[];
   recentIds?: string[];
+  reviewSignals?: ReviewSignal[];
+  inventionFlavorProfiles?: string[][];
 }): BarHealthReport | null {
   if (input.barIds.length === 0) return null;
 
   const matches = input.matches ?? matchCocktails(input.barIds);
-  const categoryCounts = countByCategory(input.barIds);
-  const redundancies = findRedundancies(categoryCounts);
-  const gaps = findGaps(categoryCounts);
+  const tierCounts = countByTier(input.barIds);
+  const redundancies = findRedundancies(tierCounts);
+  const gaps = findGaps(tierCounts);
   const utilizationPercent = computeUtilization(input.barIds, matches);
   const readyTonight = matches.filter((m) => m.canMake).length;
 
-  const categoriesPresent = SHOP_CATEGORIES.filter(
-    (c) => (categoryCounts[c.id] ?? 0) > 0
-  ).length;
-  const coverageScore = (categoriesPresent / SHOP_CATEGORIES.length) * 100;
+  const tiersPresent = INVENTORY_TIERS.filter((tier) => (tierCounts[tier.id] ?? 0) > 0).length;
+  const coverageScore = (tiersPresent / INVENTORY_TIERS.length) * 100;
   const redundancyPenalty = redundancies.length * 8;
   const gapPenalty = gaps.length * 6;
 
@@ -189,17 +186,19 @@ export function analyzeBarHealth(input: {
   const tasteProfile = buildTasteProfile({
     favoriteIds: input.favoriteIds ?? [],
     recentIds: input.recentIds ?? [],
+    reviewSignals: input.reviewSignals,
+    inventionFlavorProfiles: input.inventionFlavorProfiles,
   });
 
   return {
     score,
     grade: gradeFromScore(score),
     utilizationPercent,
-    categoryCounts,
+    categoryCounts: tierCounts,
     redundancies,
     gaps,
     insights: buildInsights({
-      categoryCounts,
+      tierCounts,
       redundancies,
       gaps,
       utilizationPercent,

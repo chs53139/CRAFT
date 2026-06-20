@@ -78,8 +78,8 @@ export function BarHealthCard({ report, compact }: Props) {
         ))}
       </ul>
 
-      <Link href="/bar" className="bar-health-link">
-        View full bar analysis →
+      <Link href="/bar/analysis" className="bar-health-link">
+        Full bar analysis →
       </Link>
     </section>
   );

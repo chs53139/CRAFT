@@ -17,11 +17,13 @@ import { ObscurityBadge } from "@/components/ObscurityBadge";
 import { PageLoader } from "@/components/LoadingState";
 import { ERA_LABELS } from "@/lib/cocktail-curation";
 import { MOCKTAIL_SUBCATEGORY_LABELS } from "@/lib/mocktail-curation";
+import { MissingIngredientsByTier } from "@/components/MissingIngredientsByTier";
 import {
   getCocktailById,
   getIngredientById,
   matchSingleCocktail,
 } from "@/lib/cocktail-matching";
+import { getEffectiveBarIds, isHouseStaple } from "@/lib/inventory-tiers";
 import { formatSubstitutionLine } from "@/lib/substitution-display";
 import { useFavorites, useMyBar, useRecentCocktails } from "@/hooks/use-my-bar";
 
@@ -62,7 +64,7 @@ export default function CocktailDetailPage() {
   }
 
   const match = matchSingleCocktail(cocktail, barIds);
-  const barSet = new Set(barIds);
+  const barSet = new Set(getEffectiveBarIds(barIds));
   const substitutionMap = new Map(
     match?.substitutions.map((sub) => [sub.requiredId, sub]) ?? []
   );
@@ -195,10 +197,15 @@ export default function CocktailDetailPage() {
                 ? "Exact match — everything in your bar."
                 : match.matchGroup === "substitution"
                   ? "Available with substitutions — expect a different but related drink."
-                  : match.matchGroup === "experimental"
+                    : match.matchGroup === "experimental"
                     ? "Experimental substitutes — bold swaps or homemade builds."
-                    : `Still missing: ${match.missing.map((m) => m.name).join(", ")}.`}
+                    : "Still missing:"}
             </p>
+            {match.matchGroup === "missing" && match.missing.length > 0 && (
+              <div className="mt-3">
+                <MissingIngredientsByTier missingByTier={match.missingByTier} />
+              </div>
+            )}
           </div>
         )}
 
@@ -218,7 +225,9 @@ export default function CocktailDetailPage() {
           <ul className="mt-4 space-y-2">
             {cocktail.ingredients.map((ci) => {
               const ing = getIngredientById(ci.ingredientId);
-              const haveIt = ing ? barSet.has(ing.id) : false;
+              const haveIt = ing
+                ? isHouseStaple(ing.id) || barSet.has(ing.id)
+                : false;
               const substitution = substitutionMap.get(ci.ingredientId);
               const originalName = ing?.name ?? ci.ingredientId;
 

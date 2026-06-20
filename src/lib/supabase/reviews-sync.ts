@@ -56,6 +56,22 @@ export async function fetchReviewsForCocktail(
   return (data ?? []).map((row) => mapReviewRow(row as ReviewRow, currentUserId));
 }
 
+export async function fetchUserReviews(
+  supabase: SupabaseClient,
+  userId: string
+): Promise<CocktailReview[]> {
+  const { data, error } = await supabase
+    .from("reviews")
+    .select("id, cocktail_id, user_id, rating, review_text, would_make_again, created_at")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+    .limit(100);
+
+  if (error) throw error;
+
+  return (data ?? []).map((row) => mapReviewRow(row as ReviewRow, userId));
+}
+
 export async function upsertCocktailReview(
   supabase: SupabaseClient,
   userId: string,

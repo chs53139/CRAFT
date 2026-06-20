@@ -1,6 +1,11 @@
 import { cocktails, cocktailCount, mocktailCount, alcoholicCount, ingredients } from "@/lib/cocktail-data";
 import { getBuyLabel } from "@/lib/ingredient-brands";
 import { getIngredientCostUsd } from "@/lib/ingredient-costs";
+import {
+  groupMissingByTier,
+  isBrowsableIngredient,
+  isHouseStaple,
+} from "@/lib/inventory-tiers";
 import { matchCocktailWithSubstitutions } from "@/lib/substitutions";
 import {
   CocktailMatch,
@@ -47,6 +52,7 @@ export function matchSingleCocktail(
   return {
     cocktail,
     missing,
+    missingByTier: groupMissingByTier(missing),
     missingCount: missing.length,
     canMake: result.canMake,
     canMakeWithSubstitutions: result.canMakeWithSubstitutions,
@@ -150,7 +156,9 @@ export function getBestNextIngredient(
 
   const barSet = new Set(barIds);
   const before = matchCocktails(barIds);
-  const candidates = ingredients.filter((ing) => !barSet.has(ing.id));
+  const candidates = ingredients.filter(
+    (ing) => !barSet.has(ing.id) && isBrowsableIngredient(ing) && !isHouseStaple(ing.id)
+  );
 
   if (candidates.length === 0) return null;
 

@@ -1,13 +1,20 @@
 export type {
   BarHealthReport,
+  BarIntelligenceDashboard,
   BarPersonality,
+  BarScoreSummary,
+  BestDrinkTonight,
   CategoryGap,
   CategoryRedundancy,
   DiscoveryModeId,
   DiscoveryModeResult,
+  DiscoveryRecommendation,
+  IntelligenceSignalSummary,
   NeglectedBottleInsight,
+  ReviewSignal,
   TasteProfile,
   TasteVector,
+  UnderutilizedBottle,
   UnlockRecommendation,
 } from "./types";
 
@@ -34,6 +41,17 @@ export {
   getNeverThinkToMakeMatch,
   runDiscoveryMode,
 } from "./discovery-modes";
+
+export { buildBarAdvice } from "./bar-advice";
+export type {
+  BarAdvice,
+  BarAdviceInput,
+  HiddenGemAdvice,
+  NeglectedBottleAdvice,
+} from "./bar-advice";
+export { getBestDrinkTonight } from "./best-tonight";
+export { getDiscoveryRecommendations } from "./discovery-recommendations";
+export { getUnderutilizedBottles } from "./underutilized";
 
 import { CocktailMatch } from "@/lib/types";
 import { analyzeBarHealth } from "./bar-health";

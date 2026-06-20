@@ -67,13 +67,14 @@ function mapIngredientType(type: string): Ingredient["category"] {
     case "wine":
       return "liqueur";
     case "juice":
-    case "syrup":
     case "mixer":
     case "beer-cider":
-    case "dairy-egg":
       return "mixer";
+    case "syrup":
+    case "bitters":
     case "produce":
-      return "garnish";
+    case "dairy-egg":
+      return "pantry";
     default:
       return "other";
   }

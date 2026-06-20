@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { MissingIngredientsByTier } from "@/components/MissingIngredientsByTier";
 import { CocktailMatch } from "@/lib/types";
 import {
   formatSubstitutionLine,
@@ -125,10 +126,9 @@ export function CocktailCard({
         )}
 
         {matchGroup === "missing" && missing.length > 0 && (
-          <p className="mt-2.5 line-clamp-2 text-xs leading-relaxed text-[var(--muted)]">
+          <p className="mt-2.5 line-clamp-3 text-xs leading-relaxed text-[var(--muted)]">
             <span className="font-medium text-[var(--accent-dim)]">Need </span>
-            {missing.slice(0, 3).map((m) => m.name).join(" · ")}
-            {missing.length > 3 && ` · +${missing.length - 3}`}
+            <MissingIngredientsByTier missingByTier={match.missingByTier} compact />
           </p>
         )}
 

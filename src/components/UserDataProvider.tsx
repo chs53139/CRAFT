@@ -20,6 +20,8 @@ import {
   syncFavoritesToServer,
   trackRecentCocktail,
 } from "@/lib/supabase/bar-sync";
+import { migrateBarInventory } from "@/lib/inventory-migration";
+import { isHouseStaple } from "@/lib/inventory-tiers";
 import { createClient } from "@/lib/supabase/client";
 
 const BAR_KEY = "craft-my-bar";
@@ -45,6 +47,10 @@ type UserDataContextValue = {
   clearError: () => void;
   signOut: () => Promise<void>;
 };
+
+function normalizeBarIds(ids: string[]): string[] {
+  return migrateBarInventory(ids);
+}
 
 const UserDataContext = createContext<UserDataContextValue | null>(null);
 
@@ -96,7 +102,7 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
     if (!authReady) return;
 
     if (!user) {
-      setBarIdsState(readJson(BAR_KEY, []));
+      setBarIdsState(normalizeBarIds(readJson(BAR_KEY, [])));
       setFavoriteIds(readJson(FAVORITES_KEY, []));
       setRecentIds(readJson(RECENT_KEY, []));
       setLoaded(true);
@@ -126,12 +132,13 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
           fetchRecentCocktails(supabase, user!.id),
         ]);
 
-        const mergedBar =
+        const mergedBar = normalizeBarIds(
           serverBar.length > 0 && localBar.length > 0
             ? [...new Set([...serverBar, ...localBar])]
             : serverBar.length > 0
               ? serverBar
-              : localBar;
+              : localBar
+        );
         const mergedFavorites =
           serverFavorites.length > 0 && localFavorites.length > 0
             ? [...new Set([...serverFavorites, ...localFavorites])]
@@ -169,7 +176,7 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
       } catch {
         if (!cancelled) {
           setError("Could not load your saved bar. Showing what is on this device.");
-          setBarIdsState(localBar);
+          setBarIdsState(normalizeBarIds(localBar));
           setFavoriteIds(localFavorites);
           setRecentIds(localRecent);
         }
@@ -206,18 +213,20 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
 
   const setBarIds = useCallback(
     (ids: string[]) => {
-      setBarIdsState(ids);
-      persistBar(ids);
+      const next = normalizeBarIds(ids);
+      setBarIdsState(next);
+      persistBar(next);
     },
     [persistBar]
   );
 
   const toggleIngredient = useCallback(
     (id: string) => {
+      if (isHouseStaple(id)) return;
       setBarIdsState((prev) => {
-        const next = prev.includes(id)
-          ? prev.filter((x) => x !== id)
-          : [...prev, id];
+        const next = normalizeBarIds(
+          prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+        );
         persistBar(next);
         return next;
       });
@@ -229,9 +238,10 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
 
   const addIngredients = useCallback(
     (ids: string[]) => {
-      if (ids.length === 0) return;
+      const filtered = ids.filter((id) => !isHouseStaple(id));
+      if (filtered.length === 0) return;
       setBarIdsState((prev) => {
-        const next = [...new Set([...prev, ...ids])];
+        const next = normalizeBarIds([...new Set([...prev, ...filtered])]);
         persistBar(next);
         return next;
       });

@@ -43,6 +43,7 @@ const CATEGORY_RANGE: Partial<
   spirit: { min: 24, max: 48 },
   liqueur: { min: 18, max: 42 },
   mixer: { min: 3, max: 8 },
+  pantry: { min: 2, max: 10 },
   garnish: { min: 2, max: 6 },
   other: { min: 6, max: 14 },
   "na-spirit": { min: 18, max: 36 },

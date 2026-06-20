@@ -1,24 +1,22 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useState } from "react";
-import { BarHealthCard } from "@/components/BarHealthCard";
 import { BarScan } from "@/components/BarScan";
 import { BarStarterKits } from "@/components/BarStarterKits";
-import { BestNextBuy } from "@/components/BestNextBuy";
 import { EmptyState } from "@/components/EmptyState";
 import { ErrorBanner } from "@/components/ErrorBanner";
 import { IngredientChip } from "@/components/IngredientChip";
 import { BarPageSkeleton } from "@/components/LoadingState";
+import { MyBarAdvice } from "@/components/MyBarAdvice";
 import { MyBarInventory } from "@/components/MyBarInventory";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { SearchField } from "@/components/SearchField";
-import { buildBarIntelligence } from "@/lib/bar-intelligence";
+import { buildBarAdvice } from "@/lib/bar-intelligence/bar-advice";
 import {
   getIngredientsByIds,
   ingredients,
 } from "@/lib/cocktail-matching";
-import { getShopCategory, SHOP_CATEGORIES, ShopCategory } from "@/lib/ingredient-categories";
+import { getInventoryTier, INVENTORY_TIERS, InventoryTier, isBrowsableIngredient } from "@/lib/inventory-tiers";
 import { useFavorites, useMyBar, useRecentCocktails } from "@/hooks/use-my-bar";
 import { useCocktailMatches } from "@/hooks/use-cocktail-matches";
 
@@ -37,7 +35,7 @@ export default function BarPage() {
   const { favoriteIds } = useFavorites();
   const { recentIds } = useRecentCocktails();
   const [search, setSearch] = useState("");
-  const [activeCategory, setActiveCategory] = useState<ShopCategory | "all">("all");
+  const [activeCategory, setActiveCategory] = useState<InventoryTier | "all">("all");
   const [scanOpen, setScanOpen] = useState(false);
 
   const { matches } = useCocktailMatches(barIds);
@@ -46,9 +44,10 @@ export default function BarPage() {
     const q = search.trim().toLowerCase();
     return ingredients
       .filter((ing) => {
+        if (!isBrowsableIngredient(ing)) return false;
         const matchesSearch = !q || ing.name.toLowerCase().includes(q);
-        const cat = getShopCategory(ing.id, ing.name);
-        const matchesCategory = activeCategory === "all" || cat === activeCategory;
+        const tier = getInventoryTier(ing);
+        const matchesCategory = activeCategory === "all" || tier === activeCategory;
         return matchesSearch && matchesCategory;
       })
       .sort((a, b) => {
@@ -59,9 +58,9 @@ export default function BarPage() {
       });
   }, [search, activeCategory, barIds]);
 
-  const intelligence = useMemo(
+  const advice = useMemo(
     () =>
-      buildBarIntelligence({
+      buildBarAdvice({
         barIds,
         favoriteIds,
         recentIds,
@@ -75,7 +74,6 @@ export default function BarPage() {
   }
 
   const barIngredients = getIngredientsByIds(barIds);
-  const tonightCount = matches.filter((m) => m.canMake).length;
 
   function handleClearBar() {
     if (
@@ -99,11 +97,13 @@ export default function BarPage() {
       <ScreenHeader
         title="My Bar"
         subtitle={
-          isAuthenticated
-            ? syncing
-              ? "Saving…"
-              : `${ingredients.length} ingredients · synced`
-            : `${ingredients.length} ingredients · on this device`
+          barIds.length > 0
+            ? `${barIds.length} bottle${barIds.length !== 1 ? "s" : ""} on your shelf`
+            : isAuthenticated
+              ? syncing
+                ? "Saving…"
+                : "Add what you own"
+              : "Add what you own"
         }
         large
         action={
@@ -141,17 +141,17 @@ export default function BarPage() {
         </div>
       )}
 
+      {advice && (
+        <div className="mt-8">
+          <MyBarAdvice advice={advice} />
+        </div>
+      )}
+
       <div className="mt-8">
         <MyBarInventory ingredients={barIngredients} onRemove={toggleIngredient} />
       </div>
 
-      {intelligence.health && barIds.length > 0 && (
-        <div className="mt-8">
-          <BarHealthCard report={intelligence.health} />
-        </div>
-      )}
-
-      {barIds.length === 0 ? (
+      {barIds.length === 0 && (
         <div className="mt-4 space-y-6">
           <BarStarterKits barIds={barIds} onApply={addIngredients} />
           <EmptyState
@@ -165,39 +165,13 @@ export default function BarPage() {
             }
           />
         </div>
-      ) : (
-        <>
-          <Link href="/cocktails" className="account-row mt-4">
-            <div>
-              <p className="text-sm font-semibold text-[var(--foreground)]">
-                {tonightCount} cocktail{tonightCount !== 1 ? "s" : ""} ready
-              </p>
-              <p className="mt-0.5 text-xs text-[var(--muted)]">View Tonight tab</p>
-            </div>
-            <span className="text-[var(--accent)]">→</span>
-          </Link>
-
-          <Link href="/mixologist" className="account-row mt-3">
-            <div>
-              <p className="text-sm font-semibold text-[var(--foreground)]">Mixologist</p>
-              <p className="mt-0.5 text-xs text-[var(--muted)]">Invent a drink from your shelf</p>
-            </div>
-            <span className="text-[var(--accent)]">→</span>
-          </Link>
-        </>
-      )}
-
-      {intelligence.bestUnlock && barIds.length > 0 && (
-        <div className="mt-10">
-          <BestNextBuy recommendation={intelligence.bestUnlock} />
-        </div>
       )}
 
       <div className="app-section">
         <div className="mb-4 space-y-4">
           <div>
             <h2 className="section-row-title">Add ingredients</h2>
-            <p className="section-row-subtitle">Tap to add or remove</p>
+            <p className="section-row-subtitle">Spirits, mixers, and pantry — tap to add or remove</p>
           </div>
 
           <SearchField
@@ -213,12 +187,12 @@ export default function BarPage() {
                 active={activeCategory === "all"}
                 onClick={() => setActiveCategory("all")}
               />
-              {SHOP_CATEGORIES.map((cat) => (
+              {INVENTORY_TIERS.map((tier) => (
                 <CategoryPill
-                  key={cat.id}
-                  label={cat.label}
-                  active={activeCategory === cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
+                  key={tier.id}
+                  label={tier.label}
+                  active={activeCategory === tier.id}
+                  onClick={() => setActiveCategory(tier.id)}
                 />
               ))}
             </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { groupByInventoryTier, INVENTORY_TIERS } from "@/lib/inventory-tiers";
 import { Ingredient } from "@/lib/types";
 
 type Props = {
@@ -24,6 +25,7 @@ export function MyBarInventory({
     );
   }
 
+  const grouped = groupByInventoryTier(ingredients);
   const panelId = "bar-inventory-panel";
 
   return (
@@ -39,8 +41,7 @@ export function MyBarInventory({
           <p className="eyebrow">On your shelf</p>
           {!expanded && (
             <p className="mt-1 text-xs text-[var(--muted)]">
-              {ingredients.length} bottle{ingredients.length !== 1 ? "s" : ""} saved — tap to
-              show
+              {ingredients.length} item{ingredients.length !== 1 ? "s" : ""} saved — tap to show
             </p>
           )}
         </div>
@@ -58,25 +59,35 @@ export function MyBarInventory({
       </button>
 
       {expanded && (
-        <div id={panelId} className="bar-inventory-panel">
-          <div className="flex flex-wrap gap-2">
-            {ingredients.map((ing) => (
-              <button
-                key={ing.id}
-                type="button"
-                onClick={() => onRemove(ing.id)}
-                className="group flex min-h-11 items-center gap-2 rounded-full border border-[var(--accent)]/25 bg-[var(--accent)]/8 px-3.5 py-2 text-sm text-[var(--foreground)] transition hover:border-[var(--accent)]/50 hover:bg-[var(--accent)]/14"
-                title={`Remove ${ing.name}`}
-              >
-                <span>{ing.name}</span>
-                <span className="text-[var(--accent)] opacity-50 transition group-hover:opacity-100">
-                  ×
-                </span>
-              </button>
-            ))}
-          </div>
-          <p className="mt-4 text-[11px] tracking-wide text-[var(--muted)]">
-            Tap any bottle to remove it from your bar.
+        <div id={panelId} className="bar-inventory-panel space-y-5">
+          {INVENTORY_TIERS.map((tier) => {
+            const items = grouped[tier.id];
+            if (items.length === 0) return null;
+
+            return (
+              <div key={tier.id}>
+                <p className="bar-inventory-tier-label">{tier.shelfLabel}</p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {items.map((ing) => (
+                    <button
+                      key={ing.id}
+                      type="button"
+                      onClick={() => onRemove(ing.id)}
+                      className="group flex min-h-11 items-center gap-2 rounded-full border border-[var(--accent)]/25 bg-[var(--accent)]/8 px-3.5 py-2 text-sm text-[var(--foreground)] transition hover:border-[var(--accent)]/50 hover:bg-[var(--accent)]/14"
+                      title={`Remove ${ing.name}`}
+                    >
+                      <span>{ing.name}</span>
+                      <span className="text-[var(--accent)] opacity-50 transition group-hover:opacity-100">
+                        ×
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+          <p className="text-[11px] tracking-wide text-[var(--muted)]">
+            Ice and water are always assumed on hand. Tap any item to remove it.
           </p>
         </div>
       )}

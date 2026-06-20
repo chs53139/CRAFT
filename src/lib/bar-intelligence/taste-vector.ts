@@ -1,9 +1,10 @@
 import { cocktails, getCocktailById } from "@/lib/cocktail-matching";
 import { Cocktail } from "@/lib/types";
-import { BarPersonality, TasteProfile, TasteVector } from "./types";
+import { BarPersonality, ReviewSignal, TasteProfile, TasteVector } from "./types";
 
 const FAVORITE_WEIGHT = 3;
 const RECENT_WEIGHT = 2;
+const INVENTION_WEIGHT = 2.5;
 
 const PERSONALITY_RULES: Array<{
   tags: string[];
@@ -132,19 +133,38 @@ export function scoreTasteFit(cocktail: Cocktail, vector: TasteVector): number {
   return Math.round((dot / (Math.sqrt(magA) * Math.sqrt(magB))) * 100) / 100;
 }
 
+function reviewWeight(signal: ReviewSignal): number {
+  if (signal.rating <= 2) return 0;
+  if (signal.rating >= 4 && signal.wouldMakeAgain) return 4;
+  if (signal.rating >= 4) return 2.5;
+  return 1.5;
+}
+
+function flavorsToVector(flavors: string[]): TasteVector {
+  const vector: TasteVector = {};
+  for (const tag of flavors) {
+    vector[tag] = (vector[tag] ?? 0) + 1;
+  }
+  return vector;
+}
+
 export function buildTasteProfile(input: {
   favoriteIds: string[];
   recentIds: string[];
+  reviewSignals?: ReviewSignal[];
+  inventionFlavorProfiles?: string[][];
 }): TasteProfile | null {
   const raw: TasteVector = {};
   const engaged: Cocktail[] = [];
   const seen = new Set<string>();
+  let signalCount = 0;
 
   for (const id of input.favoriteIds) {
     const cocktail = getCocktailById(id);
     if (!cocktail || seen.has(id)) continue;
     seen.add(id);
     engaged.push(cocktail);
+    signalCount += 1;
     accumulateVector(raw, cocktailToVector(cocktail), FAVORITE_WEIGHT);
   }
 
@@ -155,11 +175,34 @@ export function buildTasteProfile(input: {
       seen.add(id);
       engaged.push(cocktail);
     }
+    signalCount += 1;
     const recencyBoost = 1 + (input.recentIds.length - index) / input.recentIds.length;
     accumulateVector(raw, cocktailToVector(cocktail), RECENT_WEIGHT * recencyBoost);
   });
 
-  if (engaged.length === 0) return null;
+  for (const signal of input.reviewSignals ?? []) {
+    const weight = reviewWeight(signal);
+    if (weight === 0) continue;
+
+    const cocktail = getCocktailById(signal.cocktailId);
+    if (!cocktail) continue;
+
+    if (!seen.has(signal.cocktailId)) {
+      seen.add(signal.cocktailId);
+      engaged.push(cocktail);
+    }
+
+    signalCount += 1;
+    accumulateVector(raw, cocktailToVector(cocktail), weight);
+  }
+
+  for (const flavors of input.inventionFlavorProfiles ?? []) {
+    if (flavors.length === 0) continue;
+    signalCount += 1;
+    accumulateVector(raw, flavorsToVector(flavors), INVENTION_WEIGHT);
+  }
+
+  if (signalCount === 0) return null;
 
   const vector = normalizeVector(raw);
   const dominantFlavors = Object.entries(vector)
@@ -183,6 +226,6 @@ export function buildTasteProfile(input: {
     adventurousnessScore: Math.min(100, Math.round(avgObscurity)),
     discoveryScore,
     personality: inferPersonality(vector),
-    signalCount: engaged.length,
+    signalCount,
   };
 }

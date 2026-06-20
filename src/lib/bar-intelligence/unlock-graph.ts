@@ -4,8 +4,13 @@ import {
   matchSingleCocktail,
 } from "@/lib/cocktail-matching";
 import { calculateRoiScore, getIngredientCostUsd } from "@/lib/ingredient-costs";
-import { getShopCategory, ShopCategory } from "@/lib/ingredient-categories";
-import { CocktailMatch } from "@/lib/types";
+import {
+  getInventoryTier,
+  getInventoryTierLabel,
+  InventoryTier,
+  isBrowsableIngredient,
+} from "@/lib/inventory-tiers";
+import { CocktailMatch, Ingredient } from "@/lib/types";
 import { ingredientUnlockPreview } from "./bar-health";
 import { scoreTasteFit } from "./taste-vector";
 import { TasteVector, UnlockRecommendation } from "./types";
@@ -22,30 +27,36 @@ function candidateMayUnlockExact(before: CocktailMatch, candidateId: string): bo
 function gapFillScore(
   ingredientId: string,
   ingredientName: string,
-  categoryCounts: Partial<Record<ShopCategory, number>>
+  category: Ingredient["category"] | undefined,
+  tierCounts: Partial<Record<InventoryTier, number>>
 ): number {
-  const category = getShopCategory(ingredientId, ingredientName);
-  const count = categoryCounts[category] ?? 0;
+  const tier = getInventoryTier({
+    id: ingredientId,
+    name: ingredientName,
+    category: category ?? "other",
+  });
+  const count = tierCounts[tier] ?? 0;
 
-  if (category === "liqueurs" && count === 0) return 1;
-  if (category === "bitters" && count === 0) return 0.9;
-  if (category === "mixers" && count < 2) return 0.7;
+  if (tier === "spirits-liqueurs" && count === 0) return 1;
+  if (tier === "pantry" && count === 0) return 0.9;
+  if (tier === "mixers" && count < 2) return 0.7;
   if (count === 0) return 0.5;
-  if (count >= 3) return 0.1;
+  if (count >= 5) return 0.1;
   return 0.35;
 }
 
 function buildReason(input: {
   unlocksCount: number;
   gapFillScore: number;
-  category: ShopCategory;
+  tier: InventoryTier;
   tasteFitScore: number;
 }): string {
+  const tierLabel = getInventoryTierLabel(input.tier).toLowerCase();
   if (input.gapFillScore >= 0.9 && input.unlocksCount >= 10) {
-    return `Fills a ${input.category} gap and unlocks ${input.unlocksCount} new pours.`;
+    return `Fills a ${tierLabel} gap and unlocks ${input.unlocksCount} new pours.`;
   }
   if (input.gapFillScore >= 0.9) {
-    return `Strong gap-fill for your ${input.category} coverage.`;
+    return `Strong gap-fill for your ${tierLabel} shelf.`;
   }
   if (input.unlocksCount >= 20) {
     return `Highest unlock count on your shelf — ${input.unlocksCount} new cocktails.`;
@@ -60,7 +71,7 @@ export function getUnlockRecommendations(
   barIds: string[],
   options?: {
     tasteVector?: TasteVector;
-    categoryCounts?: Partial<Record<ShopCategory, number>>;
+    categoryCounts?: Partial<Record<InventoryTier, number>>;
     limit?: number;
     precomputedMatches?: CocktailMatch[];
   }
@@ -70,14 +81,16 @@ export function getUnlockRecommendations(
   const limit = options?.limit ?? 3;
   const barSet = new Set(barIds);
   const before = options?.precomputedMatches ?? matchCocktails(barIds);
-  const candidates = ingredients.filter((ing) => !barSet.has(ing.id));
+  const candidates = ingredients.filter(
+    (ing) => !barSet.has(ing.id) && isBrowsableIngredient(ing)
+  );
 
-  const actualCategoryCounts: Partial<Record<ShopCategory, number>> = {};
+  const actualTierCounts: Partial<Record<InventoryTier, number>> = {};
   for (const id of barIds) {
     const ing = ingredients.find((i) => i.id === id);
     if (!ing) continue;
-    const cat = getShopCategory(ing.id, ing.name);
-    actualCategoryCounts[cat] = (actualCategoryCounts[cat] ?? 0) + 1;
+    const tier = getInventoryTier(ing);
+    actualTierCounts[tier] = (actualTierCounts[tier] ?? 0) + 1;
   }
 
   const extendedBar = [...barIds];
@@ -111,7 +124,8 @@ export function getUnlockRecommendations(
     const gapScore = gapFillScore(
       ingredient.id,
       ingredient.name,
-      options?.categoryCounts ?? actualCategoryCounts
+      ingredient.category,
+      options?.categoryCounts ?? actualTierCounts
     );
     const costUsd = getIngredientCostUsd(ingredient);
     const roiScore = calculateRoiScore(
@@ -141,7 +155,7 @@ export function getUnlockRecommendations(
         reason: buildReason({
           unlocksCount: preview.unlocks,
           gapFillScore: gapScore,
-          category: getShopCategory(ingredient.id, ingredient.name),
+          tier: getInventoryTier(ingredient),
           tasteFitScore,
         }),
       },

@@ -3,6 +3,7 @@ import { humanizeReviewError } from "@/lib/review-errors";
 import { getSupabaseConfigError } from "@/lib/supabase/config";
 import {
   fetchReviewsForCocktail,
+  fetchUserReviews,
   isReviewsTableMissing,
   upsertCocktailReview,
 } from "@/lib/supabase/reviews-sync";

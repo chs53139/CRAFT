@@ -8,8 +8,10 @@ import type {
 export type Ingredient = {
   id: string;
   name: string;
-  category: "spirit" | "liqueur" | "mixer" | "garnish" | "other" | "na-spirit";
+  category: "spirit" | "liqueur" | "mixer" | "pantry" | "garnish" | "other" | "na-spirit";
 };
+
+export type { InventoryTier } from "@/lib/inventory-tiers";
 
 export type DrinkType = "cocktail" | "mocktail";
 
@@ -89,6 +91,7 @@ export type Cocktail = {
 export type CocktailMatch = {
   cocktail: Cocktail;
   missing: Ingredient[];
+  missingByTier: Partial<Record<import("@/lib/inventory-tiers").InventoryTier, Ingredient[]>>;
   missingCount: number;
   canMake: boolean;
   canMakeWithSubstitutions: boolean;

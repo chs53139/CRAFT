@@ -27,8 +27,24 @@ function defaultSelected(detections: ScanDetection[], barIds: string[]): Set<num
   return selected;
 }
 
+function isImageFile(file: File): boolean {
+  if (file.type.startsWith("image/")) return true;
+  if (!file.type) return true;
+  return /\.(jpe?g|png|webp|heic|heif|gif)$/i.test(file.name);
+}
+
+function inferMimeType(file: File): string {
+  if (file.type.startsWith("image/")) return file.type;
+  if (/\.png$/i.test(file.name)) return "image/png";
+  if (/\.webp$/i.test(file.name)) return "image/webp";
+  if (/\.heic$/i.test(file.name)) return "image/heic";
+  if (/\.heif$/i.test(file.name)) return "image/heif";
+  return "image/jpeg";
+}
+
 export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
+  const libraryInputRef = useRef<HTMLInputElement>(null);
   const [step, setStep] = useState<Step>("capture");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -39,6 +55,7 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
   const [addedCount, setAddedCount] = useState(0);
 
   const reviewItems = useMemo(() => result?.detections ?? [], [result]);
+  const hasPhoto = !!selectedFile && !!previewUrl;
 
   if (!open) return null;
 
@@ -52,7 +69,8 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
     setResult(null);
     setSelected(new Set());
     setAddedCount(0);
-    if (inputRef.current) inputRef.current.value = "";
+    if (cameraInputRef.current) cameraInputRef.current.value = "";
+    if (libraryInputRef.current) libraryInputRef.current.value = "";
   }
 
   function handleClose() {
@@ -60,32 +78,30 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
     onClose();
   }
 
-  async function handleFileChange(file: File | null) {
+  function handleFileChange(file: File | null) {
     setError(null);
     setResult(null);
 
     if (!file) return;
-    if (!file.type.startsWith("image/")) {
+
+    if (!isImageFile(file)) {
       setError("Please choose a photo of your bottles.");
       return;
     }
+
     if (file.size > MAX_FILE_BYTES) {
       setError("Photo must be under 8 MB.");
       return;
     }
 
-    setFileName(file.name);
     if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setFileName(file.name || "Bar photo");
     setPreviewUrl(URL.createObjectURL(file));
     setSelectedFile(file);
   }
 
-  function openFilePicker() {
-    inputRef.current?.click();
-  }
-
   async function handleScan() {
-    const file = selectedFile ?? inputRef.current?.files?.[0];
+    const file = selectedFile;
     if (!file) {
       setError("Add a photo of your bar shelf first.");
       return;
@@ -101,7 +117,7 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           imageBase64: base64,
-          mimeType: file.type || "image/jpeg",
+          mimeType: inferMimeType(file),
         }),
       });
 
@@ -160,10 +176,17 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
     <div className="bar-scan-overlay" role="dialog" aria-modal="true" aria-labelledby="bar-scan-title">
       <div className="bar-scan-panel animate-fade-in">
         <input
-          ref={inputRef}
+          ref={cameraInputRef}
           type="file"
           accept="image/*"
           capture="environment"
+          className="sr-only"
+          onChange={(event) => handleFileChange(event.target.files?.[0] ?? null)}
+        />
+        <input
+          ref={libraryInputRef}
+          type="file"
+          accept="image/*"
           className="sr-only"
           onChange={(event) => handleFileChange(event.target.files?.[0] ?? null)}
         />
@@ -172,7 +195,7 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
           <div>
             <p className="eyebrow text-[var(--accent-dim)]">Scan My Bar</p>
             <h2 id="bar-scan-title" className="screen-title mt-1">
-              {step === "capture" && "Snap your shelf"}
+              {step === "capture" && (hasPhoto ? "Ready to scan" : "Snap your shelf")}
               {step === "scanning" && "Reading labels…"}
               {step === "review" && "Confirm additions"}
               {step === "done" && "Bar updated"}
@@ -183,18 +206,19 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
           </button>
         </div>
 
-        {error && (
-          <div className="mt-4">
-            <ErrorBanner message={error} onDismiss={() => setError(null)} />
-          </div>
-        )}
+        <div className="bar-scan-scroll">
+          {error && (
+            <div className="mb-4">
+              <ErrorBanner message={error} onDismiss={() => setError(null)} />
+            </div>
+          )}
 
-        {step === "capture" && (
-          <>
-            <div className="bar-scan-scroll">
+          {step === "capture" && (
+            <>
               <p className="text-sm leading-relaxed text-[var(--muted)]">
-                Take or upload a photo of your bottles. CRAFT will suggest matches — nothing is added until
-                you confirm.
+                {hasPhoto
+                  ? "Looks good — scan this photo to find bottles on your shelf."
+                  : "Take or upload a photo of your bottles. Nothing is added until you confirm."}
               </p>
 
               <div className="bar-scan-upload">
@@ -216,34 +240,58 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
 
               {fileName && <p className="bar-scan-filename">{fileName}</p>}
 
-              <button type="button" className="btn-secondary mt-3 w-full" onClick={openFilePicker}>
-                {previewUrl ? "Choose a different photo" : "Take or upload photo"}
-              </button>
+              <div className="bar-scan-actions-stack">
+                {hasPhoto ? (
+                  <>
+                    <button type="button" className="btn-primary w-full" onClick={handleScan}>
+                      Scan bottles
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-secondary w-full"
+                      onClick={() => libraryInputRef.current?.click()}
+                    >
+                      Choose a different photo
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-secondary w-full"
+                      onClick={() => cameraInputRef.current?.click()}
+                    >
+                      Retake photo
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      className="btn-primary w-full"
+                      onClick={() => cameraInputRef.current?.click()}
+                    >
+                      Take photo
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-secondary w-full"
+                      onClick={() => libraryInputRef.current?.click()}
+                    >
+                      Upload from library
+                    </button>
+                  </>
+                )}
+              </div>
+            </>
+          )}
+
+          {step === "scanning" && (
+            <div className="bar-scan-thinking">
+              <div className="bar-scan-spinner" aria-hidden />
+              <p className="mt-4 text-sm text-[var(--muted)]">Identifying bottles and mapping to CRAFT…</p>
             </div>
+          )}
 
-            <div className="bar-scan-footer">
-              <button
-                type="button"
-                className="btn-primary w-full"
-                disabled={!selectedFile}
-                onClick={handleScan}
-              >
-                Scan bottles
-              </button>
-            </div>
-          </>
-        )}
-
-        {step === "scanning" && (
-          <div className="bar-scan-body bar-scan-thinking">
-            <div className="bar-scan-spinner" aria-hidden />
-            <p className="mt-4 text-sm text-[var(--muted)]">Identifying bottles and mapping to CRAFT…</p>
-          </div>
-        )}
-
-        {step === "review" && result && (
-          <>
-            <div className="bar-scan-scroll">
+          {step === "review" && result && (
+            <>
               {result.mock && (
                 <p className="bar-scan-demo-note">{result.message ?? "Using demo scan results."}</p>
               )}
@@ -278,9 +326,7 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
                             {item.needsReview && (
                               <span className="bar-scan-review-badge">Needs Review</span>
                             )}
-                            {alreadyInBar && (
-                              <span className="bar-scan-owned-badge">In bar</span>
-                            )}
+                            {alreadyInBar && <span className="bar-scan-owned-badge">In bar</span>}
                           </div>
                           <p className="mt-1 text-xs text-[var(--muted)]">
                             {item.mappedIngredientName
@@ -300,41 +346,41 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
                   );
                 })}
               </ul>
-            </div>
 
-            <div className="bar-scan-footer bar-scan-actions">
-              <button
-                type="button"
-                className="btn-secondary flex-1"
-                onClick={() => {
-                  setStep("capture");
-                  setResult(null);
-                }}
-              >
-                Retake
-              </button>
-              <button
-                type="button"
-                className="btn-primary flex-1"
-                onClick={handleConfirm}
-                disabled={selectedCount === 0}
-              >
-                Add {selectedCount} ingredient{selectedCount === 1 ? "" : "s"}
+              <div className="bar-scan-actions-stack">
+                <button
+                  type="button"
+                  className="btn-primary w-full"
+                  onClick={handleConfirm}
+                  disabled={selectedCount === 0}
+                >
+                  Add {selectedCount} ingredient{selectedCount === 1 ? "" : "s"}
+                </button>
+                <button
+                  type="button"
+                  className="btn-secondary w-full"
+                  onClick={() => {
+                    setStep("capture");
+                    setResult(null);
+                  }}
+                >
+                  Retake photo
+                </button>
+              </div>
+            </>
+          )}
+
+          {step === "done" && (
+            <div className="bar-scan-done">
+              <p className="text-sm text-[var(--foreground)]">
+                Added {addedCount} ingredient{addedCount === 1 ? "" : "s"} to My Bar.
+              </p>
+              <button type="button" className="btn-primary mt-4 w-full" onClick={handleClose}>
+                Done
               </button>
             </div>
-          </>
-        )}
-
-        {step === "done" && (
-          <div className="bar-scan-body bar-scan-done">
-            <p className="text-sm text-[var(--foreground)]">
-              Added {addedCount} ingredient{addedCount === 1 ? "" : "s"} to My Bar.
-            </p>
-            <button type="button" className="btn-primary mt-4 w-full" onClick={handleClose}>
-              Done
-            </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

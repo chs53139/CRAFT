@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 160" role="img" aria-label="CRAFT">
+  <rect width="160" height="160" rx="36" fill="#050506"/>
+  <text
+    x="80"
+    y="118"
+    fill="#f4efe6"
+    font-family="Cormorant Garamond, Georgia, 'Times New Roman', serif"
+    font-size="108"
+    font-weight="600"
+    text-anchor="middle"
+  >C</text>
+  <text
+    x="188"
+    y="98"
+    fill="#f4efe6"
+    font-family="Cormorant Garamond, Georgia, 'Times New Roman', serif"
+    font-size="72"
+    font-weight="600"
+    letter-spacing="0.28em"
+  >CRAFT</text>
+</svg>

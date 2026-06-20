@@ -41,6 +41,28 @@ body {
   overscroll-behavior-y: none;
 }
 
+html,
+body {
+  touch-action: manipulation;
+}
+
+@media (display-mode: standalone) {
+  .app-frame {
+    min-height: 100dvh;
+    min-height: 100svh;
+  }
+
+  .app-topbar {
+    padding-top: calc(0.75rem + env(safe-area-inset-top, 0px));
+  }
+
+  .app-main {
+    padding-bottom: calc(
+      var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px) + 0.75rem
+    );
+  }
+}
+
 .pb-safe {
   padding-bottom: max(env(safe-area-inset-bottom, 0px), 1rem);
 }
@@ -142,7 +164,7 @@ h3 {
   top: 0;
   z-index: 40;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   padding: calc(0.625rem + env(safe-area-inset-top, 0px)) 1rem 0.75rem;
   border-bottom: 1px solid var(--border-subtle);
   background: rgba(5, 5, 6, 0.82);
@@ -153,7 +175,99 @@ h3 {
   display: block;
   min-width: 0;
   max-width: 100%;
-  text-align: center;
+}
+
+.craft-logo-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.craft-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.85rem;
+  background: #050506;
+}
+
+.craft-mark-sm {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.craft-mark-md {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.craft-mark-lg {
+  width: 3.25rem;
+  height: 3.25rem;
+}
+
+.craft-mark-letter {
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+  font-size: 1.45rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--foreground);
+  transform: translateX(0.04em);
+}
+
+.craft-mark-sm .craft-mark-letter {
+  font-size: 1.3rem;
+}
+
+.craft-mark-lg .craft-mark-letter {
+  font-size: 1.85rem;
+}
+
+.craft-logo-mark-only {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.craft-logo-icon {
+  flex-shrink: 0;
+}
+
+.craft-logo-text {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  text-align: left;
+}
+
+.craft-logo-name {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  color: var(--foreground);
+  line-height: 1;
+}
+
+.craft-logo-tagline {
+  margin-top: 0.2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .app-logo:hover .craft-logo-tagline,
+  .app-logo:focus-visible .craft-logo-tagline {
+    color: var(--accent-dim);
+  }
 }
 
 .app-logo-mark {

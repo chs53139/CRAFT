@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="CRAFT monogram mark">
+  <defs>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e8c878"/>
+      <stop offset="100%" stop-color="#9a8448"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#050506"/>
+  <!-- Premium geometric monogram C -->
+  <path
+    d="M334 148
+       C252 132 176 188 176 268
+       C176 348 252 404 334 388
+       L334 352
+       C272 364 216 322 216 268
+       C216 214 272 172 334 184
+       Z"
+    fill="url(#gold)"
+  />
+  <circle cx="334" cy="268" r="10" fill="#d4b56a" opacity="0.85"/>
+  <path
+    d="M196 268 H292"
+    stroke="#d4b56a"
+    stroke-width="6"
+    stroke-linecap="round"
+    opacity="0.35"
+  />
+</svg>

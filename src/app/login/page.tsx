@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, Suspense, useState } from "react";
+import { CraftLogo } from "@/components/CraftLogo";
 
 function LoginForm() {
   const router = useRouter();
@@ -50,8 +51,10 @@ function LoginForm() {
   return (
     <div className="auth-screen">
       <div className="auth-card animate-fade-in-up">
-        <p className="eyebrow">CRAFT</p>
-        <h1 className="screen-title-large mt-3">Sign in</h1>
+        <div className="flex justify-center">
+          <CraftLogo variant="mark" href={null} />
+        </div>
+        <h1 className="screen-title-large mt-5 text-center">Sign in</h1>
         <p className="screen-subtitle">Your bar syncs when you&apos;re signed in.</p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">

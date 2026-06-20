@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="CRAFT peel twist mark">
+  <defs>
+    <linearGradient id="peel" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#c9782a"/>
+      <stop offset="45%" stop-color="#e8a040"/>
+      <stop offset="100%" stop-color="#d4b56a"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#050506"/>
+  <!-- Orange peel strip forming C -->
+  <path
+    d="M352 156
+       C286 118 198 148 178 228
+       C164 284 188 342 244 372
+       C268 384 292 386 314 382
+       L302 352
+       C284 356 264 354 246 344
+       C204 322 186 276 196 232
+       C210 172 276 148 328 176
+       C340 182 348 190 354 200
+       Z"
+    fill="url(#peel)"
+  />
+  <path
+    d="M328 176 C340 182 348 190 354 200
+       M178 228 C164 284 188 342 244 372"
+    fill="none"
+    stroke="#f4efe6"
+    stroke-width="4"
+    stroke-linecap="round"
+    opacity="0.12"
+  />
+</svg>

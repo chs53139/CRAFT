@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
+import { CraftLogo } from "@/components/CraftLogo";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -75,8 +76,10 @@ export default function RegisterPage() {
   return (
     <div className="auth-screen">
       <div className="auth-card animate-fade-in-up">
-        <p className="eyebrow">CRAFT</p>
-        <h1 className="screen-title-large mt-3">Create account</h1>
+        <div className="flex justify-center">
+          <CraftLogo variant="mark" href={null} />
+        </div>
+        <h1 className="screen-title-large mt-5 text-center">Create account</h1>
         <p className="screen-subtitle">Save your bar and favorites across devices.</p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 640" role="img" aria-label="CRAFT">
+  <rect width="512" height="640" fill="#050506"/>
+  <rect x="96" y="120" width="320" height="320" rx="72" fill="#0b0b0e"/>
+  <text
+    x="256"
+    y="332"
+    fill="#f4efe6"
+    font-family="Cormorant Garamond, Georgia, 'Times New Roman', serif"
+    font-size="220"
+    font-weight="600"
+    text-anchor="middle"
+  >C</text>
+  <text
+    x="256"
+    y="520"
+    fill="#f4efe6"
+    font-family="Cormorant Garamond, Georgia, 'Times New Roman', serif"
+    font-size="56"
+    font-weight="600"
+    letter-spacing="0.32em"
+    text-anchor="middle"
+  >CRAFT</text>
+  <text
+    x="256"
+    y="560"
+    fill="#78736e"
+    font-family="system-ui, sans-serif"
+    font-size="16"
+    letter-spacing="0.18em"
+    text-anchor="middle"
+  >YOUR BAR KNOWS MORE</text>
+</svg>

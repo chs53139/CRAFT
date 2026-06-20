@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="CRAFT rocks glass mark">
+  <defs>
+    <linearGradient id="amber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e8c878"/>
+      <stop offset="100%" stop-color="#b8944a"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#050506"/>
+  <!-- Rocks glass profile forming a C -->
+  <path
+    d="M318 142
+       C248 142 198 198 198 268
+       C198 328 232 372 286 386
+       L286 410
+       C214 394 162 338 162 268
+       C162 182 232 118 318 118
+       C334 118 348 120 360 124
+       L348 152
+       C338 148 328 142 318 142Z"
+    fill="url(#amber)"
+  />
+  <path
+    d="M286 386 L286 410 M214 410 L358 410"
+    stroke="#d4b56a"
+    stroke-width="10"
+    stroke-linecap="round"
+    opacity="0.55"
+  />
+  <rect x="248" y="248" width="44" height="44" rx="8" fill="#d4b56a" opacity="0.18"/>
+</svg>

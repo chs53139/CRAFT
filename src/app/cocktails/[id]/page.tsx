@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { CocktailReviews } from "@/components/CocktailReviews";
 import { CocktailImage } from "@/components/CocktailImage";
 import { CollectionTags } from "@/components/CollectionTags";
 import { DifficultyBadge } from "@/components/DifficultyBadge";
@@ -226,6 +227,8 @@ export default function CocktailDetailPage() {
             ))}
           </ol>
         </section>
+
+        <CocktailReviews cocktailId={cocktail.id} cocktailName={cocktail.name} />
 
         {!match?.canMake && (
           <Link href="/bar" className="btn-secondary mt-2 inline-flex w-full justify-center">

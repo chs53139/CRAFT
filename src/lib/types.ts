@@ -107,3 +107,26 @@ export type RawCocktail = {
     note: string;
   }>;
 };
+
+export type CocktailReview = {
+  id: string;
+  cocktailId: string;
+  rating: number;
+  text: string;
+  wouldMakeAgain: boolean;
+  createdAt: string;
+  authorLabel: string;
+  isOwn?: boolean;
+};
+
+export type CocktailReviewInput = {
+  rating: number;
+  text: string;
+  wouldMakeAgain: boolean;
+};
+
+export type CocktailReviewSummary = {
+  averageRating: number;
+  reviewCount: number;
+  wouldMakeAgainPercent: number;
+};

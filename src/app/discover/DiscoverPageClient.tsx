@@ -126,6 +126,16 @@ function LibraryContent() {
 
         <DrinkTypeFilter value={drinkTypeFilter} onChange={setDrinkTypeFilter} />
 
+        <Link href="/find-ingredient" className="account-row">
+          <div>
+            <p className="text-sm font-semibold text-[var(--foreground)]">Find by ingredient</p>
+            <p className="mt-0.5 text-xs text-[var(--muted)]">
+              Must-haves, exclusions, and match-ranked results
+            </p>
+          </div>
+          <span className="text-[var(--accent)]">→</span>
+        </Link>
+
         <div className="flex gap-2">
           <button
             type="button"

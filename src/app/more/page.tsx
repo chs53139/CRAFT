@@ -17,6 +17,16 @@ export default function MorePage() {
       <ScreenHeader title="More" subtitle="Browse, account, and tools" large />
 
       <div className="app-section space-y-3">
+        <Link href="/find-ingredient" className="account-row">
+          <div>
+            <p className="text-sm font-semibold text-[var(--foreground)]">Find by ingredient</p>
+            <p className="mt-0.5 text-xs text-[var(--muted)]">
+              Search the catalogue by what goes in the glass
+            </p>
+          </div>
+          <span className="text-[var(--accent)]">→</span>
+        </Link>
+
         <Link href="/discover" className="account-row">
           <div>
             <p className="text-sm font-semibold text-[var(--foreground)]">Library</p>

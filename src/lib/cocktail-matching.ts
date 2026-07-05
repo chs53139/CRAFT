@@ -85,31 +85,7 @@ export function groupCocktailMatches(matches: CocktailMatch[]): GroupedCocktailM
   return { exactMatches, availableWithSubstitutions, experimentalMatches, stillMissing };
 }
 
-export function filterMatchesBySearch(
-  matches: CocktailMatch[],
-  query: string
-): CocktailMatch[] {
-  const q = query.trim().toLowerCase();
-  if (!q) return matches;
-
-  return matches.filter(
-    (m) =>
-      m.cocktail.name.toLowerCase().includes(q) ||
-      m.cocktail.category.toLowerCase().includes(q) ||
-      m.cocktail.flavorProfile.some((f) => f.includes(q)) ||
-      m.cocktail.collections.some((c) => c.replace(/-/g, " ").includes(q)) ||
-      m.cocktail.regionOfOrigin.toLowerCase().includes(q) ||
-      m.cocktail.sourceAttribution.toLowerCase().includes(q) ||
-      String(m.cocktail.yearInvented).includes(q) ||
-      m.cocktail.funFact.toLowerCase().includes(q) ||
-      m.missing.some((ing) => ing.name.toLowerCase().includes(q)) ||
-      m.substitutions.some(
-        (sub) =>
-          sub.requiredName.toLowerCase().includes(q) ||
-          sub.substituteName.toLowerCase().includes(q)
-      )
-  );
-}
+export { filterMatchesBySearch, searchMatches } from "@/lib/cocktail-search";
 
 export function getBarSummaryFromMatches(matches: CocktailMatch[]) {
   const { exactMatches, availableWithSubstitutions, experimentalMatches, stillMissing } =

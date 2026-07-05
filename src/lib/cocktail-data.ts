@@ -1,4 +1,5 @@
 import rawCocktails from "@/data/cocktails.json";
+import cocktailsExpanded from "@/data/cocktails-expanded.json";
 import craftOriginals from "@/data/craft-originals.json";
 import mocktails from "@/data/mocktails.json";
 import { enrichCocktail } from "@/lib/cocktail-enrichment";
@@ -14,6 +15,7 @@ import {
 
 const SOURCE = [
   ...(rawCocktails as RawCocktail[]),
+  ...(cocktailsExpanded as RawCocktail[]),
   ...(craftOriginals as RawCocktail[]),
   ...(mocktails as RawCocktail[]),
 ];

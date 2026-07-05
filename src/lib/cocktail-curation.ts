@@ -133,6 +133,14 @@ export const FUN_FACTS: Record<string, string> = {
     "Suze and Lillet replace Campari and sweet vermouth for a bitter, pale twist on the classic.",
   "chartreuse-swizzle":
     "Green Chartreuse stars in this tiki-adjacent swizzle — herbal, complex, and dangerously drinkable.",
+  "pearl-diver":
+    "Don the Beachcomber's 1937 masterpiece — buttered rum, citrus, and spices served in its iconic glass.",
+  "aku-aku":
+    "Named for the Polynesian god of fertility — a fruity rum punch from the golden age of tiki.",
+  "nui-nui":
+    "A Don the Beachcomber classic with aged rum, citrus, and a whisper of vanilla and allspice.",
+  "rum-barrel":
+    "A modern tiki build that layers aged and dark rums with falernum and orgeat over crushed ice.",
   "trinidad-sour":
     "Angostura bitters as the base spirit? Only 1 oz — but it rewired what a sour could be.",
   "division-bell":

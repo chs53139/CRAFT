@@ -4,9 +4,13 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import { CocktailCard } from "@/components/CocktailCard";
+import {
+  DiscoveryFilterPanel,
+  DiscoveryFilterToggle,
+} from "@/components/DiscoveryFilterPanel";
 import { DrinkTypeFilter } from "@/components/DrinkTypeFilter";
 import { EmptyState } from "@/components/EmptyState";
+import { InfiniteCocktailGrid } from "@/components/InfiniteCocktailGrid";
 import { PageLoader } from "@/components/LoadingState";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { SearchField } from "@/components/SearchField";
@@ -21,6 +25,14 @@ import {
   searchCatalogue,
 } from "@/lib/cocktail-discovery";
 import {
+  applyDiscoveryFilters,
+  DEFAULT_DISCOVERY_FILTERS,
+  DiscoveryFilters,
+  DiscoverySort,
+  hasActiveDiscoveryFilters,
+  sortDiscoveryResults,
+} from "@/lib/discovery-filters";
+import {
   cocktailCount,
   isPourable,
   matchCocktails,
@@ -30,8 +42,6 @@ import {
 import { CocktailCollection } from "@/lib/types";
 import { useMyBar } from "@/hooks/use-my-bar";
 
-const PAGE_SIZE = 24;
-
 function parseDrinkType(value: string | null): "both" | "cocktails" | "mocktails" {
   if (value === "cocktails" || value === "mocktails") return value;
   return "both";
@@ -39,6 +49,19 @@ function parseDrinkType(value: string | null): "both" | "cocktails" | "mocktails
 
 function isCollection(value: string | null): value is CocktailCollection {
   return !!value && DISCOVER_COLLECTIONS.includes(value as CocktailCollection);
+}
+
+function countActiveFilters(filters: DiscoveryFilters): number {
+  let count = 0;
+  if (filters.spirit !== "all") count++;
+  if (filters.category !== "all") count++;
+  if (filters.difficulty !== "all") count++;
+  if (filters.flavor !== "all") count++;
+  if (filters.strength !== "all") count++;
+  if (filters.rarity !== "all") count++;
+  if (filters.rating !== "all") count++;
+  if (filters.craftOriginals) count++;
+  return count;
 }
 
 function LibraryContent() {
@@ -53,7 +76,11 @@ function LibraryContent() {
   const [drinkTypeFilter, setDrinkTypeFilter] = useState<"both" | "cocktails" | "mocktails">(
     () => parseDrinkType(initialType)
   );
-  const [limit, setLimit] = useState(PAGE_SIZE);
+  const [showFilters, setShowFilters] = useState(false);
+  const [discoveryFilters, setDiscoveryFilters] = useState<DiscoveryFilters>(
+    DEFAULT_DISCOVERY_FILTERS
+  );
+  const [sort, setSort] = useState<DiscoverySort>("popularity");
   const { barIds, loaded } = useMyBar();
 
   const counts = useMemo(() => getCollectionCounts(), []);
@@ -78,21 +105,38 @@ function LibraryContent() {
       .filter((m): m is NonNullable<typeof m> => !!m);
   }, [barIds, catalogue, loaded]);
 
-  const makeable = matches.filter((m) => isPourable(m));
-  const totalVisible = showMakeable ? makeable.length : catalogue.length;
+  const filteredMatches = useMemo(() => {
+    let results = applyDiscoveryFilters(matches, {
+      ...discoveryFilters,
+      collection: collection ?? undefined,
+    });
+    results = sortDiscoveryResults(results, sort, search);
+    return results;
+  }, [matches, discoveryFilters, collection, sort, search]);
 
-  const visible = showMakeable
-    ? makeable.slice(0, limit)
-    : catalogue.slice(0, limit).map((cocktail) => {
-        const match = matches.find((m) => m.cocktail.id === cocktail.id);
-        return match ?? matchSingleCocktail(cocktail, barIds);
-      });
+  const makeable = filteredMatches.filter((m) => isPourable(m));
+
+  const hasSearchOrFilters =
+    search.trim().length > 0 || hasActiveDiscoveryFilters(discoveryFilters);
+
+  const displayMatches = showMakeable
+    ? makeable
+    : hasSearchOrFilters
+      ? filteredMatches
+      : filteredMatches.length > 0
+        ? filteredMatches
+        : catalogue.map((cocktail) => {
+            const match = matches.find((m) => m.cocktail.id === cocktail.id);
+            return match ?? matchSingleCocktail(cocktail, barIds);
+          });
+
+  const filterResetKey = `${search}|${JSON.stringify(discoveryFilters)}|${sort}|${showMakeable}|${collection}`;
 
   return (
     <div className="app-screen animate-fade-in">
       <ScreenHeader
         title="Library"
-        subtitle={`${cocktailCount} drinks · ${mocktailCount} zero-proof mocktails included.`}
+        subtitle={`${cocktailCount} drinks · ${mocktailCount} zero-proof mocktails · search by spirit, flavor, or ingredient`}
         large
       />
 
@@ -104,7 +148,6 @@ function LibraryContent() {
             className={`discover-collection-card ${collection === id ? "discover-collection-card-active" : ""}`}
             onClick={() => {
               setCollection(collection === id ? null : id);
-              setLimit(PAGE_SIZE);
             }}
           >
             <p className="discover-collection-count">{counts[id]}</p>
@@ -117,14 +160,26 @@ function LibraryContent() {
       <div className="app-section space-y-4">
         <SearchField
           value={search}
-          onChange={(value) => {
-            setSearch(value);
-            setLimit(PAGE_SIZE);
-          }}
-          placeholder="Search cocktails, mocktails, eras, or collections…"
+          onChange={setSearch}
+          placeholder="Search gin, tiki, orange, smoky, glassware…"
         />
 
         <DrinkTypeFilter value={drinkTypeFilter} onChange={setDrinkTypeFilter} />
+
+        <DiscoveryFilterToggle
+          expanded={showFilters}
+          onToggle={() => setShowFilters((value) => !value)}
+          activeCount={countActiveFilters(discoveryFilters)}
+        />
+
+        {showFilters && (
+          <DiscoveryFilterPanel
+            filters={discoveryFilters}
+            sort={sort}
+            onFiltersChange={setDiscoveryFilters}
+            onSortChange={setSort}
+          />
+        )}
 
         <Link href="/find-ingredient" className="account-row">
           <div>
@@ -172,32 +227,31 @@ function LibraryContent() {
         <p className="mb-4 text-sm text-[var(--muted)]">
           Showing <span className="text-[var(--foreground)]">{COLLECTION_LABELS[collection]}</span>
           {" · "}
-          {catalogue.length} drinks
+          {displayMatches.length} drinks
         </p>
       )}
 
-      {visible.length === 0 ? (
+      {(search.trim() || hasActiveDiscoveryFilters(discoveryFilters)) && (
+        <p className="discovery-results-count app-section">
+          Found <strong>{displayMatches.length}</strong> cocktail
+          {displayMatches.length === 1 ? "" : "s"}
+        </p>
+      )}
+
+      {displayMatches.length === 0 ? (
         <EmptyState
           title="Nothing matched"
-          description="Try another collection, drink type, or clear your search."
+          description="Try another spirit, category, or clear your search."
           icon="🔍"
         />
       ) : (
-        <div className="list-card-grid">
-          {visible.map((match) => (
-            <CocktailCard key={match.cocktail.id} match={match} showObscurity showShare compact />
-          ))}
+        <div className="app-section">
+          <InfiniteCocktailGrid
+            items={displayMatches}
+            resetKey={filterResetKey}
+            showObscurity
+          />
         </div>
-      )}
-
-      {visible.length < totalVisible && (
-        <button
-          type="button"
-          className="btn-secondary mt-4 w-full"
-          onClick={() => setLimit((value) => value + PAGE_SIZE)}
-        >
-          Load more
-        </button>
       )}
     </div>
   );

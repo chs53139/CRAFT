@@ -1375,6 +1375,129 @@ h3 {
   color: var(--muted);
 }
 
+.makeable-count-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.125rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(212, 181, 106, 0.2);
+  border-radius: 1rem;
+  background:
+    radial-gradient(ellipse 80% 70% at 0% 50%, rgba(212, 181, 106, 0.08), transparent 70%),
+    var(--card);
+}
+
+.makeable-count-banner-title {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.makeable-count-banner-subtitle {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.makeable-count-banner-link {
+  flex-shrink: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.discovery-filter-panel {
+  padding: 0.875rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 1rem;
+  background: var(--background-elevated);
+}
+
+.discovery-filter-label {
+  margin-bottom: 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.discovery-filter-chips {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.discovery-filter-chips::-webkit-scrollbar {
+  display: none;
+}
+
+.discovery-sort-select {
+  flex: 1;
+}
+
+.discovery-sort-input {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.75rem;
+  background: var(--card);
+  color: var(--foreground);
+  font-size: 0.875rem;
+}
+
+.discovery-filter-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.discovery-filter-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.375rem;
+  border-radius: 9999px;
+  background: var(--accent);
+  color: var(--background);
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+.discovery-toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 0.8125rem;
+  color: var(--foreground);
+}
+
+.discovery-toggle-checkbox {
+  accent-color: var(--accent);
+}
+
+.discovery-results-count {
+  margin-bottom: 0.75rem;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.discovery-results-count strong {
+  color: var(--foreground);
+  font-weight: 600;
+}
+
 .bar-health-card {
   border: 1px solid var(--border-subtle);
   border-radius: 1.25rem;

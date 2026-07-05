@@ -1,12 +1,15 @@
 "use client";
 
 import { useMemo } from "react";
+import Link from "next/link";
 import { HorizontalCocktailRow } from "@/components/HorizontalCocktailRow";
+import { MakeableCountBanner } from "@/components/InfiniteCocktailGrid";
 import { RecentCocktails } from "@/components/RecentCocktails";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { SkeletonGrid } from "@/components/LoadingState";
 import { StatPillAction, StatPills } from "@/components/StatPills";
 import { EmptyState } from "@/components/EmptyState";
+import { countExactMakeable, countMakeable } from "@/lib/discovery-filters";
 import {
   cocktailCount,
   getBarSummaryFromMatches,
@@ -15,11 +18,15 @@ import {
 import { useCocktailMatches } from "@/hooks/use-cocktail-matches";
 import { useMyBar } from "@/hooks/use-my-bar";
 
+const PREVIEW_COUNT = 12;
+
 export default function HomePage() {
   const { barIds, loaded } = useMyBar();
   const { matches, grouped } = useCocktailMatches(barIds);
 
   const summary = useMemo(() => getBarSummaryFromMatches(matches), [matches]);
+  const exactCount = useMemo(() => countExactMakeable(matches), [matches]);
+  const totalMakeable = useMemo(() => countMakeable(matches), [matches]);
   const tonight = grouped.exactMatches;
   const withSwaps = useMemo(
     () => grouped.availableWithSubstitutions,
@@ -59,11 +66,17 @@ export default function HomePage() {
       <ScreenHeader
         title="Home"
         subtitle={
-          summary.readyTonight > 0
-            ? `${summary.readyTonight} ready to pour · open My Bar for personal picks`
+          totalMakeable > 0
+            ? `${totalMakeable} cocktails within reach · explore your bar's potential`
             : "Stock a few more bottles to unlock pours"
         }
         large
+      />
+
+      <MakeableCountBanner
+        exactCount={exactCount}
+        totalMakeable={totalMakeable}
+        viewAllHref="/cocktails?view=browse"
       />
 
       <StatPills
@@ -72,7 +85,7 @@ export default function HomePage() {
           {
             value: summary.withSubstitutions,
             label: "With swaps",
-            href: "/cocktails?view=all",
+            href: "/cocktails?view=browse",
           },
         ]}
         bottomRow={[
@@ -92,8 +105,8 @@ export default function HomePage() {
               ? "No exact matches — try a swap below"
               : "Add a bottle to unlock more"
         }
-        items={tonight.slice(0, 10)}
-        seeAllHref="/cocktails"
+        items={tonight.slice(0, PREVIEW_COUNT)}
+        seeAllHref="/cocktails?view=browse"
         empty="Stock a few more bottles and the magic happens."
       />
 
@@ -101,10 +114,18 @@ export default function HomePage() {
         <HorizontalCocktailRow
           title="Close with a swap"
           subtitle={`${withSwaps.length} cocktail${withSwaps.length === 1 ? "" : "s"} with a simple substitute`}
-          items={withSwaps.slice(0, 10)}
-          seeAllHref="/cocktails?view=all"
+          items={withSwaps.slice(0, PREVIEW_COUNT)}
+          seeAllHref="/cocktails?view=browse"
           empty=""
         />
+      )}
+
+      {totalMakeable > PREVIEW_COUNT && (
+        <div className="app-section">
+          <Link href="/cocktails?view=browse" className="btn-secondary w-full text-center">
+            Explore all {totalMakeable} cocktails
+          </Link>
+        </div>
       )}
 
       <RecentCocktails />

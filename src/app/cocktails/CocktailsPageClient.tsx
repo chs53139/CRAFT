@@ -5,16 +5,35 @@ import { Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { CocktailSection } from "@/components/CocktailSection";
 import { CollectionFilter } from "@/components/CollectionFilter";
+import {
+  DiscoveryFilterPanel,
+  DiscoveryFilterToggle,
+} from "@/components/DiscoveryFilterPanel";
 import { DrinkTypeFilter } from "@/components/DrinkTypeFilter";
 import { EmptyState } from "@/components/EmptyState";
 import { ErrorBanner } from "@/components/ErrorBanner";
+import {
+  InfiniteCocktailGrid,
+  MakeableCountBanner,
+} from "@/components/InfiniteCocktailGrid";
 import { MenuPageSkeleton, PageLoader } from "@/components/LoadingState";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { SearchField } from "@/components/SearchField";
 import { SubstitutionModeFilter } from "@/components/SubstitutionModeFilter";
 import {
+  countExactMakeable,
+  countMakeable,
+  DEFAULT_DISCOVERY_FILTERS,
+  applyDiscoveryFilters,
+  DiscoveryFilters,
+  DiscoverySort,
+  hasActiveDiscoveryFilters,
+  sortDiscoveryResults,
+} from "@/lib/discovery-filters";
+import {
   filterMatchesBySearch,
   groupCocktailMatches,
+  isPourable,
   matchCocktails,
 } from "@/lib/cocktail-matching";
 import {
@@ -25,28 +44,18 @@ import { filterMatchesByDrinkType } from "@/lib/drink-type";
 import { CocktailCollection } from "@/lib/types";
 import { useMyBar } from "@/hooks/use-my-bar";
 
-const SECTION_LIMIT = 24;
-
-type TonightView = "all" | "ready" | "one-away";
+type TonightView = "all" | "ready" | "one-away" | "browse";
 
 const VIEW_TABS: Array<{ id: TonightView; label: string; href: string }> = [
   { id: "ready", label: "Ready now", href: "/cocktails" },
-  { id: "all", label: "All", href: "/cocktails?view=all" },
+  { id: "browse", label: "Browse all", href: "/cocktails?view=browse" },
+  { id: "all", label: "All sections", href: "/cocktails?view=all" },
   { id: "one-away", label: "One away", href: "/cocktails?view=one-away" },
 ];
 
 function parseView(value: string | null): TonightView {
-  if (value === "all" || value === "one-away") return value;
+  if (value === "all" || value === "one-away" || value === "browse") return value;
   return "ready";
-}
-
-function SectionTruncation({ shown, total }: { shown: number; total: number }) {
-  if (total <= shown) return null;
-  return (
-    <p className="mt-2 text-xs text-[var(--muted)]">
-      Showing {shown} of {total}. Use search to narrow down.
-    </p>
-  );
 }
 
 function TonightViewTabs({ active }: { active: TonightView }) {
@@ -65,6 +74,19 @@ function TonightViewTabs({ active }: { active: TonightView }) {
   );
 }
 
+function countActiveFilters(filters: DiscoveryFilters): number {
+  let count = 0;
+  if (filters.spirit !== "all") count++;
+  if (filters.category !== "all") count++;
+  if (filters.difficulty !== "all") count++;
+  if (filters.flavor !== "all") count++;
+  if (filters.strength !== "all") count++;
+  if (filters.rarity !== "all") count++;
+  if (filters.rating !== "all") count++;
+  if (filters.craftOriginals) count++;
+  return count;
+}
+
 function CocktailsContent() {
   const searchParams = useSearchParams();
   const view = parseView(searchParams.get("view"));
@@ -76,24 +98,25 @@ function CocktailsContent() {
   const [drinkTypeFilter, setDrinkTypeFilter] =
     useState<"both" | "cocktails" | "mocktails">("cocktails");
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  const [discoveryFilters, setDiscoveryFilters] = useState<DiscoveryFilters>(
+    DEFAULT_DISCOVERY_FILTERS
+  );
+  const [sort, setSort] = useState<DiscoverySort>("best-match");
 
   const allMatches = useMemo(() => matchCocktails(barIds), [barIds]);
-  const drinkFilteredMatches = useMemo(
-    () => filterMatchesByDrinkType(allMatches, drinkTypeFilter),
-    [allMatches, drinkTypeFilter]
-  );
-  const searchedMatches = useMemo(
-    () => filterMatchesBySearch(drinkFilteredMatches, search),
-    [drinkFilteredMatches, search]
-  );
-  const filteredMatches = useMemo(() => {
-    if (collection === "all") return searchedMatches;
-    return searchedMatches.filter((m) => m.cocktail.collections.includes(collection));
-  }, [searchedMatches, collection]);
-  const { exactMatches, availableWithSubstitutions, experimentalMatches, stillMissing } = useMemo(
-    () => groupCocktailMatches(filteredMatches),
-    [filteredMatches]
-  );
+
+  const processedMatches = useMemo(() => {
+    let results = filterMatchesByDrinkType(allMatches, drinkTypeFilter);
+    results = filterMatchesBySearch(results, search);
+    results = applyDiscoveryFilters(results, {
+      ...discoveryFilters,
+      collection: collection === "all" ? undefined : collection,
+    });
+    return sortDiscoveryResults(results, sort, search);
+  }, [allMatches, drinkTypeFilter, search, discoveryFilters, collection, sort]);
+
+  const { exactMatches, availableWithSubstitutions, experimentalMatches, stillMissing } =
+    useMemo(() => groupCocktailMatches(processedMatches), [processedMatches]);
 
   const visibleExact = useMemo(
     () => exactMatches.filter((match) => matchPassesSubstitutionMode(match, substitutionMode)),
@@ -114,17 +137,27 @@ function CocktailsContent() {
     [experimentalMatches, substitutionMode]
   );
 
+  const makeableMatches = useMemo(
+    () => processedMatches.filter((m) => isPourable(m)),
+    [processedMatches]
+  );
+
+  const exactCount = useMemo(() => countExactMakeable(allMatches), [allMatches]);
+  const totalMakeable = useMemo(() => countMakeable(allMatches), [allMatches]);
+
   if (!loaded) {
     return <MenuPageSkeleton />;
   }
 
   const oneAway = stillMissing.filter((m) => m.missingCount === 1);
-  const searchActive = search.trim().length > 0;
+  const searchActive = search.trim().length > 0 || hasActiveDiscoveryFilters(discoveryFilters);
+  const showBrowse = view === "browse" || (searchActive && view !== "one-away");
   const showAllSections = view === "all";
-  const showReady = view === "all" || view === "ready";
-  const showOneAway = view === "all" || view === "one-away";
+  const showReady = view === "ready" || view === "all";
+  const showOneAway = view === "one-away";
 
   const hasVisibleResults =
+    (showBrowse && makeableMatches.length > 0) ||
     (showReady &&
       (visibleExact.length > 0 ||
         visibleSubstitutions.length > 0 ||
@@ -132,16 +165,20 @@ function CocktailsContent() {
     (showOneAway && oneAway.length > 0) ||
     (showAllSections && stillMissing.length > 0);
 
-  const noSearchResults = searchActive && !hasVisibleResults;
+  const noResults = !hasVisibleResults;
+
+  const filterResetKey = `${search}|${JSON.stringify(discoveryFilters)}|${sort}|${view}|${collection}`;
 
   const headerSubtitle =
-    view === "ready"
-      ? `${visibleExact.length} exact · ${visibleSubstitutions.length} with subs`
-      : view === "one-away"
-        ? `${oneAway.length} one bottle away`
-        : barIds.length === 0
-          ? "Stock your bar first"
-          : `${visibleExact.length} exact · ${visibleSubstitutions.length} subs · ${stillMissing.length} missing`;
+    view === "browse"
+      ? `${makeableMatches.length} cocktails to explore`
+      : view === "ready"
+        ? `${visibleExact.length} exact · ${visibleSubstitutions.length} with subs`
+        : view === "one-away"
+          ? `${oneAway.length} one bottle away`
+          : barIds.length === 0
+            ? "Stock your bar first"
+            : `${exactCount} exact · ${totalMakeable} makeable`;
 
   return (
     <div className="app-screen animate-fade-in">
@@ -162,27 +199,37 @@ function CocktailsContent() {
         />
       ) : (
         <>
+          <MakeableCountBanner
+            exactCount={exactCount}
+            totalMakeable={totalMakeable}
+            viewAllHref="/cocktails?view=browse"
+          />
+
           <TonightViewTabs active={view} />
 
           <SearchField
             value={search}
             onChange={setSearch}
-            placeholder="Search cocktails, eras, or collections…"
+            placeholder="Search spirits, ingredients, flavors, tiki…"
           />
 
           <div className="app-section space-y-4">
             <SubstitutionModeFilter value={substitutionMode} onChange={setSubstitutionMode} />
 
-            <button
-              type="button"
-              className="text-xs font-semibold text-[var(--accent)]"
-              onClick={() => setShowAdvancedFilters((value) => !value)}
-            >
-              {showAdvancedFilters ? "Hide filters" : "More filters"}
-            </button>
+            <DiscoveryFilterToggle
+              expanded={showAdvancedFilters}
+              onToggle={() => setShowAdvancedFilters((value) => !value)}
+              activeCount={countActiveFilters(discoveryFilters)}
+            />
 
             {showAdvancedFilters && (
               <>
+                <DiscoveryFilterPanel
+                  filters={discoveryFilters}
+                  sort={sort}
+                  onFiltersChange={setDiscoveryFilters}
+                  onSortChange={setSort}
+                />
                 <DrinkTypeFilter
                   value={drinkTypeFilter}
                   onChange={setDrinkTypeFilter}
@@ -197,81 +244,73 @@ function CocktailsContent() {
             )}
           </div>
 
-          {noSearchResults ? (
+          {noResults ? (
             <div className="app-section">
               <EmptyState
-                title={`No matches for “${search.trim()}”`}
-                description="Try a cocktail name, spirit, flavor, or collection."
+                title={searchActive ? `No matches for “${search.trim() || "your filters"}”` : "Nothing here yet"}
+                description="Try a spirit, ingredient, flavor, or clear your filters."
                 icon="🔍"
+              />
+            </div>
+          ) : showBrowse ? (
+            <div className="app-section">
+              <p className="discovery-results-count">
+                Showing <strong>{makeableMatches.length}</strong> cocktail
+                {makeableMatches.length === 1 ? "" : "s"}
+                {searchActive ? " matching your search" : " you can make"}
+              </p>
+              <InfiniteCocktailGrid
+                items={makeableMatches}
+                resetKey={filterResetKey}
+                showObscurity
               />
             </div>
           ) : (
             <>
               {showReady && (
-                <>
-                  <CocktailSection
-                    title="Exact matches"
-                    subtitle={`${visibleExact.length} cocktails — everything in your bar`}
-                    items={visibleExact.slice(0, SECTION_LIMIT)}
-                    empty="Not quite there yet — add a bottle in My Bar or try a swap below."
-                  />
-                  <SectionTruncation shown={SECTION_LIMIT} total={visibleExact.length} />
-                </>
+                <CocktailSection
+                  title="Exact matches"
+                  subtitle={`${visibleExact.length} cocktails — everything in your bar`}
+                  items={visibleExact}
+                  empty="Not quite there yet — add a bottle in My Bar or try a swap below."
+                />
               )}
 
               {showReady && visibleSubstitutions.length > 0 && (
-                <>
-                  <CocktailSection
-                    title="Available with substitutions"
-                    subtitle="Owned substitutes fill the gaps — not identical, but in the ballpark"
-                    items={visibleSubstitutions.slice(0, SECTION_LIMIT)}
-                    empty=""
-                  />
-                  <SectionTruncation
-                    shown={SECTION_LIMIT}
-                    total={visibleSubstitutions.length}
-                  />
-                </>
+                <CocktailSection
+                  title="Available with substitutions"
+                  subtitle="Owned substitutes fill the gaps — not identical, but in the ballpark"
+                  items={visibleSubstitutions}
+                  empty=""
+                />
               )}
 
               {showReady && visibleExperimental.length > 0 && (
-                <>
-                  <CocktailSection
-                    title="Bold swaps"
-                    subtitle="Low-confidence swaps or homemade builds — expect a different drink"
-                    items={visibleExperimental.slice(0, SECTION_LIMIT)}
-                    empty=""
-                  />
-                  <SectionTruncation
-                    shown={SECTION_LIMIT}
-                    total={visibleExperimental.length}
-                  />
-                </>
+                <CocktailSection
+                  title="Bold swaps"
+                  subtitle="Low-confidence swaps or homemade builds — expect a different drink"
+                  items={visibleExperimental}
+                  empty=""
+                />
               )}
 
-              {showOneAway && view === "one-away" && (
-                <>
-                  <CocktailSection
-                    title="One away"
-                    subtitle="One bottle from an exact match"
-                    items={oneAway.slice(0, SECTION_LIMIT)}
-                    empty="Nothing teasing you tonight. Yet."
-                  />
-                  <SectionTruncation shown={SECTION_LIMIT} total={oneAway.length} />
-                </>
+              {showOneAway && (
+                <CocktailSection
+                  title="One away"
+                  subtitle="One bottle from an exact match"
+                  items={oneAway}
+                  empty="Nothing teasing you tonight. Yet."
+                />
               )}
 
-              {showAllSections && view === "all" && stillMissing.length > 0 && (
-                <>
-                  <CocktailSection
-                    title="Still missing ingredients"
-                    subtitle={`${stillMissing.length} cocktails need bottles you don't have (or substitutes for)`}
-                    items={stillMissing.slice(0, SECTION_LIMIT)}
-                    empty=""
-                    compact
-                  />
-                  <SectionTruncation shown={SECTION_LIMIT} total={stillMissing.length} />
-                </>
+              {showAllSections && stillMissing.length > 0 && (
+                <CocktailSection
+                  title="Still missing ingredients"
+                  subtitle={`${stillMissing.length} cocktails need bottles you don't have (or substitutes for)`}
+                  items={stillMissing}
+                  empty=""
+                  compact
+                />
               )}
             </>
           )}

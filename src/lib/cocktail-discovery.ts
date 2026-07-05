@@ -1,4 +1,5 @@
 import { cocktails, matchCocktails } from "@/lib/cocktail-matching";
+import { searchCocktails } from "@/lib/cocktail-search";
 import { DISCOVER_COLLECTIONS } from "@/lib/cocktail-curation";
 import { matchesMood, matchesRarity } from "@/lib/cocktail-enrichment";
 import { filterMatchesByDrinkType } from "@/lib/drink-type";
@@ -162,19 +163,6 @@ export function getCollectionCounts(): Record<CocktailCollection, number> {
 }
 
 export function searchCatalogue(query: string, collection?: CocktailCollection): Cocktail[] {
-  const q = query.trim().toLowerCase();
   const pool = collection ? getCatalogueByCollection(collection) : cocktails;
-
-  if (!q) return pool;
-
-  return pool.filter(
-    (cocktail) =>
-      cocktail.name.toLowerCase().includes(q) ||
-      cocktail.category.toLowerCase().includes(q) ||
-      cocktail.regionOfOrigin.toLowerCase().includes(q) ||
-      cocktail.sourceAttribution.toLowerCase().includes(q) ||
-      cocktail.collections.some((c) => c.replace(/-/g, " ").includes(q)) ||
-      cocktail.flavorProfile.some((f) => f.includes(q)) ||
-      String(cocktail.yearInvented).includes(q)
-  );
+  return searchCocktails(query, pool);
 }

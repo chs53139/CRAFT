@@ -10,7 +10,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "generate:brand": "node scripts/generate-brand-assets.mjs",
-    "generate:cocktails": "node scripts/generate-cocktail-expansion.mjs"
+    "generate:cocktails": "node scripts/generate-cocktail-expansion.mjs",
+    "generate:image-overrides": "node scripts/generate-image-overrides.mjs",
+    "check:images": "node scripts/check-cocktail-images.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.6.1",

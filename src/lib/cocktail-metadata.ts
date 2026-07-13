@@ -1,3 +1,4 @@
+import { getCocktailProvenance } from "@/lib/cocktail-provenance";
 import { CocktailEra } from "@/lib/types";
 
 export type CuratedMetadata = {
@@ -55,6 +56,15 @@ export function resolveMetadata(
   era: CocktailEra,
   isCraftOriginal: boolean
 ): Required<Pick<CuratedMetadata, "yearInvented" | "regionOfOrigin" | "sourceAttribution">> {
+  const provenance = getCocktailProvenance(slug);
+  if (provenance) {
+    return {
+      yearInvented: provenance.yearInvented,
+      regionOfOrigin: provenance.regionOfOrigin,
+      sourceAttribution: provenance.sourceAttribution,
+    };
+  }
+
   const curated = CURATED_METADATA[slug];
   if (curated?.yearInvented && curated.regionOfOrigin && curated.sourceAttribution) {
     return {

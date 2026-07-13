@@ -12,7 +12,9 @@
     "generate:brand": "node scripts/generate-brand-assets.mjs",
     "generate:cocktails": "node scripts/generate-cocktail-expansion.mjs",
     "generate:image-overrides": "node scripts/generate-image-overrides.mjs",
-    "check:images": "node scripts/check-cocktail-images.mjs"
+    "generate:provenance": "node scripts/generate-cocktail-provenance.mjs",
+    "check:images": "node scripts/check-cocktail-images.mjs",
+    "check:provenance": "node scripts/generate-cocktail-provenance.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.6.1",

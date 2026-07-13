@@ -60,7 +60,7 @@ describe("searchCocktails", () => {
   it("includes newly expanded cocktails in the catalogue", () => {
     expect(cocktails.some((c) => c.id === "pearl-diver")).toBe(true);
     expect(cocktails.some((c) => c.id === "aku-aku")).toBe(true);
-    expect(cocktails.length).toBeGreaterThanOrEqual(680);
+    expect(cocktails.length).toBeGreaterThanOrEqual(679);
   });
 });
 

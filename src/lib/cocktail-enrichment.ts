@@ -4,6 +4,7 @@ import {
   HISTORICAL_SLUGS,
   WELL_KNOWN_SLUGS,
 } from "@/lib/cocktail-curation";
+import { getCocktailProvenance } from "@/lib/cocktail-provenance";
 import { inferPopularityScore, resolveMetadata } from "@/lib/cocktail-metadata";
 import {
   CocktailCollection,
@@ -185,18 +186,19 @@ export function enrichCocktail(raw: RawCocktail, allCocktails: RawCocktail[]): E
   const obscurityScore = inferObscurityScore(raw, usage);
   const era = inferEra(raw);
   const collections = inferCollections(raw, obscurityScore, usage);
-  const funFact = inferFunFact(raw, era, collections);
   const isCraftOriginal = collections.includes("craft-original");
   const isVerifiedClassic = collections.includes("verified-classic");
   const isWellKnown = WELL_KNOWN_SLUGS.has(raw.slug);
+  const provenance = getCocktailProvenance(raw.slug);
   const metadata = resolveMetadata(raw.slug, raw.family, era, isCraftOriginal);
+  const funFact = provenance?.funFact ?? inferFunFact(raw, era, collections);
 
   return {
     obscurityScore,
     popularityScore: inferPopularityScore(obscurityScore, isVerifiedClassic, isWellKnown),
-    yearInvented: metadata.yearInvented,
-    regionOfOrigin: metadata.regionOfOrigin,
-    sourceAttribution: metadata.sourceAttribution,
+    yearInvented: provenance?.yearInvented ?? metadata.yearInvented,
+    regionOfOrigin: provenance?.regionOfOrigin ?? metadata.regionOfOrigin,
+    sourceAttribution: provenance?.sourceAttribution ?? metadata.sourceAttribution,
     era,
     collections,
     funFact,

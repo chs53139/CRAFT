@@ -4,6 +4,7 @@ import craftOriginals from "@/data/craft-originals.json";
 import mocktails from "@/data/mocktails.json";
 import { enrichCocktail } from "@/lib/cocktail-enrichment";
 import { getCocktailImageUrl } from "@/lib/cocktail-images";
+import { getCocktailProvenance } from "@/lib/cocktail-provenance";
 import { inferDrinkType, inferMocktailSubcategory } from "@/lib/drink-type";
 import {
   Cocktail,
@@ -13,12 +14,21 @@ import {
   RawCocktail,
 } from "@/lib/types";
 
-const SOURCE = [
+const SOURCE = dedupeBySlug([
   ...(rawCocktails as RawCocktail[]),
   ...(cocktailsExpanded as RawCocktail[]),
   ...(craftOriginals as RawCocktail[]),
   ...(mocktails as RawCocktail[]),
-];
+]);
+
+/** Later sources override earlier entries with the same slug */
+function dedupeBySlug(cocktails: RawCocktail[]): RawCocktail[] {
+  const map = new Map<string, RawCocktail>();
+  for (const cocktail of cocktails) {
+    map.set(cocktail.slug, cocktail);
+  }
+  return [...map.values()];
+}
 
 const familyFlavors: Record<string, string[]> = {
   Sour: ["citrus", "bright", "balanced"],
@@ -175,6 +185,7 @@ export function transformCocktail(raw: RawCocktail, index: number): Cocktail {
   const enriched = enrichCocktail(raw, SOURCE);
   const drinkType = inferDrinkType(raw);
   const mocktailSubcategory = inferMocktailSubcategory(raw);
+  const provenance = getCocktailProvenance(raw.slug);
 
   return {
     id: raw.slug,
@@ -183,7 +194,7 @@ export function transformCocktail(raw: RawCocktail, index: number): Cocktail {
       drinkType === "mocktail"
         ? "Zero-proof pour — full flavor without the alcohol."
         : (familyDescriptions[raw.family] ?? familyDescriptions.Other),
-    cheekyLine: inferCheekyLine(raw, index),
+    cheekyLine: provenance?.cheekyLine ?? inferCheekyLine(raw, index),
     difficulty: inferDifficulty(raw),
     flavorProfile: inferFlavorProfile(raw),
     category: raw.family as CocktailCategory,

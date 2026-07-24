@@ -16,6 +16,19 @@ import {
 
 const ingredientMap = new Map(ingredients.map((i) => [i.id, i]));
 
+let matchCacheKey = "";
+let matchCacheResult: CocktailMatch[] | null = null;
+
+function barIdsCacheKey(barIds: string[]): string {
+  if (barIds.length === 0) return "";
+  return [...barIds].sort().join("|");
+}
+
+export function clearMatchCache(): void {
+  matchCacheKey = "";
+  matchCacheResult = null;
+}
+
 export { cocktails, cocktailCount, mocktailCount, alcoholicCount, ingredients };
 
 export function getIngredientById(id: string): Ingredient | undefined {
@@ -39,7 +52,15 @@ function resolveIngredient(id: string): Ingredient {
 }
 
 export function matchCocktails(myBarIds: string[]): CocktailMatch[] {
-  return cocktails.map((cocktail) => matchSingleCocktail(cocktail, myBarIds));
+  const key = barIdsCacheKey(myBarIds);
+  if (key === matchCacheKey && matchCacheResult) {
+    return matchCacheResult;
+  }
+
+  const results = cocktails.map((cocktail) => matchSingleCocktail(cocktail, myBarIds));
+  matchCacheKey = key;
+  matchCacheResult = results;
+  return results;
 }
 
 export function matchSingleCocktail(

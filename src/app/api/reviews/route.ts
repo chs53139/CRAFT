@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import { humanizeReviewError } from "@/lib/review-errors";
+import { resolveReviewerDisplayName } from "@/lib/reviewer-names";
 import { getSupabaseConfigError } from "@/lib/supabase/config";
 import {
   fetchReviewsForCocktail,
@@ -99,7 +100,14 @@ export async function POST(request: Request) {
   }
 
   try {
-    await upsertCocktailReview(supabase, user.id, parsed.cocktailId, parsed.input);
+    const authorName = resolveReviewerDisplayName(user);
+    await upsertCocktailReview(
+      supabase,
+      user.id,
+      parsed.cocktailId,
+      parsed.input,
+      authorName
+    );
     const reviews = await fetchReviewsForCocktail(supabase, parsed.cocktailId, user.id);
     return Response.json({ ok: true, reviews });
   } catch (error) {

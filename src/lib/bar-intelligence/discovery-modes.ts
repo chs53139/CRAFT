@@ -32,11 +32,13 @@ export function getNeglectedBottleInsight(
 
   if (owned.length === 0) return null;
 
+  const resolvedMatches = matches ?? matchCocktails(barIds);
+
   const candidates = owned
     .map((ingredient) => {
-      const makeableCount = countMakeableUses(ingredient.id, barIds);
-      const oneAwayCount = countOneAwayUses(ingredient.id, barIds);
-      const examples = (matches ?? matchCocktails(barIds))
+      const makeableCount = countMakeableUses(ingredient.id, barIds, resolvedMatches);
+      const oneAwayCount = countOneAwayUses(ingredient.id, barIds, resolvedMatches);
+      const examples = resolvedMatches
         .filter(
           (m) =>
             (m.canMake || m.missingCount <= 2) &&
@@ -165,11 +167,15 @@ export function runDiscoveryMode(
   };
 }
 
-export function getNeglectedSpiritNames(barIds: string[]): string[] {
+export function getNeglectedSpiritNames(
+  barIds: string[],
+  matches?: CocktailMatch[]
+): string[] {
+  const resolvedMatches = matches ?? matchCocktails(barIds);
   return getIngredientsByIds(barIds)
     .filter((ing) => {
       if (ing.category !== "spirit" && ing.category !== "liqueur") return false;
-      return countMakeableUses(ing.id, barIds) === 0;
+      return countMakeableUses(ing.id, barIds, resolvedMatches) === 0;
     })
     .map((ing) => ing.name);
 }

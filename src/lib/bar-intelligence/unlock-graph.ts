@@ -101,7 +101,7 @@ export function getUnlockRecommendations(
     extendedBar.length = barIds.length;
     extendedBar.push(ingredient.id);
 
-    const preview = ingredientUnlockPreview(barIds, ingredient.id);
+    const preview = ingredientUnlockPreview(barIds, ingredient.id, before);
     if (preview.unlocks === 0 && preview.movesToOneAway === 0) continue;
 
     const newlyUnlocked: string[] = preview.examples;

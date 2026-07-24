@@ -292,3 +292,9 @@ export function searchCatalogue(query: string, pool?: Cocktail[]): Cocktail[] {
 }
 
 export { SPIRIT_SEARCH_TERMS, INGREDIENT_ALIASES, CATEGORY_SEARCH_TERMS };
+
+if (typeof window !== "undefined") {
+  queueMicrotask(() => {
+    getSearchIndex();
+  });
+}

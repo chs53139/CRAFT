@@ -12,8 +12,8 @@ export function getUnderutilizedBottles(
 
   return getIngredientsByIds(barIds)
     .map((ingredient) => {
-      const makeableCount = countMakeableUses(ingredient.id, barIds);
-      const oneAwayCount = countOneAwayUses(ingredient.id, barIds);
+      const makeableCount = countMakeableUses(ingredient.id, barIds, matches);
+      const oneAwayCount = countOneAwayUses(ingredient.id, barIds, matches);
       const exampleCocktails = matches
         .filter(
           (m) =>

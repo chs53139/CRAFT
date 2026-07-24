@@ -4,7 +4,6 @@ import craftOriginals from "@/data/craft-originals.json";
 import mocktails from "@/data/mocktails.json";
 import { enrichCocktail } from "@/lib/cocktail-enrichment";
 import { getCocktailImageUrl } from "@/lib/cocktail-images";
-import { getCocktailProvenance } from "@/lib/cocktail-provenance";
 import { inferDrinkType, inferMocktailSubcategory } from "@/lib/drink-type";
 import {
   Cocktail,
@@ -185,7 +184,6 @@ export function transformCocktail(raw: RawCocktail, index: number): Cocktail {
   const enriched = enrichCocktail(raw, SOURCE);
   const drinkType = inferDrinkType(raw);
   const mocktailSubcategory = inferMocktailSubcategory(raw);
-  const provenance = getCocktailProvenance(raw.slug);
 
   return {
     id: raw.slug,
@@ -194,7 +192,7 @@ export function transformCocktail(raw: RawCocktail, index: number): Cocktail {
       drinkType === "mocktail"
         ? "Zero-proof pour — full flavor without the alcohol."
         : (familyDescriptions[raw.family] ?? familyDescriptions.Other),
-    cheekyLine: provenance?.cheekyLine ?? inferCheekyLine(raw, index),
+    cheekyLine: enriched.cheekyLine ?? inferCheekyLine(raw, index),
     difficulty: inferDifficulty(raw),
     flavorProfile: inferFlavorProfile(raw),
     category: raw.family as CocktailCategory,

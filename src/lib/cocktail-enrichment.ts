@@ -28,6 +28,7 @@ type EnrichedFields = {
   era: CocktailEra;
   collections: CocktailCollection[];
   funFact: string;
+  cheekyLine?: string;
   method: string;
   tags: string[];
 };
@@ -202,6 +203,7 @@ export function enrichCocktail(raw: RawCocktail, allCocktails: RawCocktail[]): E
     era,
     collections,
     funFact,
+    cheekyLine: provenance?.cheekyLine,
     method: raw.method,
     tags: raw.tags,
   };

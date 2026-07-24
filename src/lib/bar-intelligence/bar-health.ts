@@ -210,8 +210,13 @@ export function analyzeBarHealth(input: {
 }
 
 /** Count makeable cocktails that use a given owned ingredient. */
-export function countMakeableUses(ingredientId: string, barIds: string[]): number {
-  return matchCocktails(barIds).filter(
+export function countMakeableUses(
+  ingredientId: string,
+  barIds: string[],
+  matches?: CocktailMatch[]
+): number {
+  const pool = matches ?? matchCocktails(barIds);
+  return pool.filter(
     (m) =>
       m.canMake &&
       m.cocktail.ingredients.some((item) => item.ingredientId === ingredientId)
@@ -219,8 +224,13 @@ export function countMakeableUses(ingredientId: string, barIds: string[]): numbe
 }
 
 /** Count one-away cocktails that need this owned ingredient plus one buy. */
-export function countOneAwayUses(ingredientId: string, barIds: string[]): number {
-  return matchCocktails(barIds).filter(
+export function countOneAwayUses(
+  ingredientId: string,
+  barIds: string[],
+  matches?: CocktailMatch[]
+): number {
+  const pool = matches ?? matchCocktails(barIds);
+  return pool.filter(
     (m) =>
       m.missingCount === 1 &&
       m.cocktail.ingredients.some((item) => item.ingredientId === ingredientId)
@@ -229,9 +239,10 @@ export function countOneAwayUses(ingredientId: string, barIds: string[]): number
 
 export function ingredientUnlockPreview(
   barIds: string[],
-  candidateId: string
+  candidateId: string,
+  precomputedMatches?: CocktailMatch[]
 ): { unlocks: number; movesToOneAway: number; examples: string[] } {
-  const before = matchCocktails(barIds);
+  const before = precomputedMatches ?? matchCocktails(barIds);
   const extended = [...barIds, candidateId];
   const examples: string[] = [];
   let unlocks = 0;

@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import Link from "next/link";
 import { MissingIngredientsByTier } from "@/components/MissingIngredientsByTier";
 import { CocktailMatch } from "@/lib/types";
@@ -25,7 +26,7 @@ type Props = {
   variant?: "default" | "carousel";
 };
 
-export function CocktailCard({
+export const CocktailCard = memo(function CocktailCard({
   match,
   compact,
   showFavorite = true,
@@ -152,4 +153,4 @@ export function CocktailCard({
       </div>
     </Link>
   );
-}
+});

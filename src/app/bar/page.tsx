@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useDeferredValue, useState } from "react";
 import { BarScan } from "@/components/BarScan";
 import { BarStarterKits } from "@/components/BarStarterKits";
 import { EmptyState } from "@/components/EmptyState";
@@ -39,7 +39,8 @@ export default function BarPage() {
   const [activeCategory, setActiveCategory] = useState<InventoryTier | "all">("all");
   const [scanOpen, setScanOpen] = useState(false);
 
-  const { matches } = useCocktailMatches(barIds);
+  const deferredBarIds = useDeferredValue(barIds);
+  const { matches: deferredMatches } = useCocktailMatches(deferredBarIds);
 
   const filteredIngredients = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -62,12 +63,12 @@ export default function BarPage() {
   const advice = useMemo(
     () =>
       buildBarAdvice({
-        barIds,
+        barIds: deferredBarIds,
         favoriteIds,
         recentIds,
-        matches,
+        matches: deferredMatches,
       }),
-    [barIds, favoriteIds, recentIds, matches]
+    [deferredBarIds, favoriteIds, recentIds, deferredMatches]
   );
 
   if (!loaded) {

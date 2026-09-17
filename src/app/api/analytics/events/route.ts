@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
 import { enrichProductEvent } from "@/lib/analytics/enrich-event";
+import {
+  isPersistedProductEventName,
+  sanitizeAnalyticsPayload,
+} from "@/lib/analytics/sanitize-payload";
 import { ProductEventName, ProductEventPayload } from "@/lib/analytics/types";
 import { createServiceRoleClient } from "@/lib/supabase/admin";
 
@@ -13,16 +17,6 @@ type Body = {
   events?: IncomingEvent[];
   sessionId?: string;
 };
-
-function sanitizePayload(payload: Record<string, unknown>): Record<string, unknown> {
-  const copy = { ...payload };
-  for (const key of Object.keys(copy)) {
-    if (/zip|postal|email|lat|lng|geo|location/i.test(key)) {
-      delete copy[key];
-    }
-  }
-  return copy;
-}
 
 export async function POST(request: Request) {
   let body: Body;
@@ -38,15 +32,22 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true, stored: 0 });
   }
 
-  const rows = events.slice(0, 12).map((raw) => {
+  const rows = events.slice(0, 12).flatMap((raw) => {
+    if (!isPersistedProductEventName(raw.name)) return [];
     const payload = enrichProductEvent(raw.name, raw.payload);
-    return {
-      session_id: sessionId,
-      event_name: raw.name,
-      payload: sanitizePayload(payload as Record<string, unknown>),
-      created_at: raw.at,
-    };
+    return [
+      {
+        session_id: sessionId,
+        event_name: raw.name,
+        payload: sanitizeAnalyticsPayload(payload as Record<string, unknown>),
+        created_at: raw.at,
+      },
+    ];
   });
+
+  if (rows.length === 0) {
+    return NextResponse.json({ ok: true, stored: 0 });
+  }
 
   const supabase = createServiceRoleClient();
   if (!supabase) {

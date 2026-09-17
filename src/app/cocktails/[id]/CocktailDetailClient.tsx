@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { CocktailReviews } from "@/components/CocktailReviews";
@@ -39,9 +39,12 @@ export function CocktailDetailClient() {
   const { trackRecent } = useRecentCocktails();
 
   const cocktail = getCocktailById(id);
+  const viewedRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (!cocktail) return;
+    if (viewedRef.current === cocktail.id) return;
+    viewedRef.current = cocktail.id;
     trackRecent(cocktail.id);
     trackProductEvent("cocktail_viewed", {
       cocktailId: cocktail.id,

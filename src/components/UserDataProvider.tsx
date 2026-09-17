@@ -256,6 +256,11 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
       if (filtered.length === 0) return;
       setBarIdsState((prev) => {
         const next = normalizeBarIds([...new Set([...prev, ...filtered])]);
+        for (const id of filtered) {
+          if (!prev.includes(id)) {
+            trackProductEvent("bar_ingredient_added", { ingredientId: id });
+          }
+        }
         persistBar(next);
         return next;
       });

@@ -1,5 +1,9 @@
 import { cocktails, ingredients } from "@/lib/cocktail-data";
 import { ERA_LABELS } from "@/lib/cocktail-curation";
+import {
+  filterMatchesByIngredientQuery,
+  parseIngredientQuery,
+} from "@/lib/cocktail-query-search";
 import { Cocktail, CocktailMatch } from "@/lib/types";
 
 /** Maps search terms to ingredient IDs and spirit families */
@@ -14,6 +18,7 @@ const SPIRIT_SEARCH_TERMS: Record<string, string[]> = {
   vodka: ["vodka"],
   brandy: ["brandy", "cognac", "pisco", "calvados", "applejack"],
   cognac: ["cognac", "brandy-cognac"],
+  campari: ["campari"],
   amaro: ["campari", "aperol", "amaro-montenegro", "amaro-nonino", "amaro-lucano", "fernet-branca", "cynar", "averna", "amaro"],
   aperitif: ["lillet-blanc", "lillet-rose", "suze", "aperol", "campari", "dry-vermouth", "sweet-vermouth"],
   liqueur: ["triple-sec", "cointreau", "maraschino-liqueur", "green-chartreuse", "yellow-chartreuse", "benedictine", "grand-marnier", "elderflower-liqueur", "coffee-liqueur", "crème-de-cacao", "amaretto", "kahlua", "st-germain", "domaine-de-canton"],
@@ -22,6 +27,11 @@ const SPIRIT_SEARCH_TERMS: Record<string, string[]> = {
 /** Ingredient aliases for flavor/ingredient discovery */
 const INGREDIENT_ALIASES: Record<string, string[]> = {
   orange: ["orange-juice", "orange-bitters", "cointreau", "grand-marnier", "triple-sec", "aperol", "curacao", "orange-curacao", "orange-liqueur", "orange-marmalade"],
+  "orange juice": ["orange-juice"],
+  "lemon juice": ["lemon-juice"],
+  "lime juice": ["lime-juice"],
+  "pineapple juice": ["pineapple-juice"],
+  "grapefruit juice": ["grapefruit-juice"],
   lemon: ["lemon-juice", "lemon-liqueur", "limoncello"],
   lime: ["lime-juice", "lime-wheel"],
   grapefruit: ["grapefruit-juice", "grapefruit-soda"],
@@ -246,23 +256,33 @@ export function searchMatches(query: string, matches: CocktailMatch[]): Cocktail
   const q = query.trim();
   if (!q) return matches;
 
+  const parsed = parseIngredientQuery(q);
+  let scoped = matches;
+
+  if (parsed.includeIngredientIds.length > 0 || parsed.excludeIngredientIds.length > 0) {
+    scoped = filterMatchesByIngredientQuery(scoped, parsed);
+  }
+
+  const textQuery = parsed.freeText || (parsed.includeIngredientIds.length === 0 ? q : "");
+  if (!textQuery.trim()) return scoped;
+
   const index = getSearchIndex();
-  const matchMap = new Map(matches.map((m) => [m.cocktail.id, m]));
+  const matchMap = new Map(scoped.map((m) => [m.cocktail.id, m]));
 
   const scored = index
     .filter((entry) => matchMap.has(entry.cocktail.id))
     .map((entry) => {
-      let score = scoreMatch(entry, q);
+      let score = scoreMatch(entry, textQuery);
 
       const match = matchMap.get(entry.cocktail.id);
       if (match) {
         for (const ing of match.missing) {
-          if (ing.name.toLowerCase().includes(q.toLowerCase())) score += 10;
+          if (ing.name.toLowerCase().includes(textQuery.toLowerCase())) score += 10;
         }
         for (const sub of match.substitutions) {
           if (
-            sub.requiredName.toLowerCase().includes(q.toLowerCase()) ||
-            sub.substituteName.toLowerCase().includes(q.toLowerCase())
+            sub.requiredName.toLowerCase().includes(textQuery.toLowerCase()) ||
+            sub.substituteName.toLowerCase().includes(textQuery.toLowerCase())
           ) {
             score += 8;
           }

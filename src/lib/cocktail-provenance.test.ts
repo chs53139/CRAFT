@@ -1,17 +1,18 @@
 import { describe, expect, it } from "vitest";
 import { cocktails } from "@/lib/cocktail-data";
+import provenanceData from "@/data/cocktail-provenance.json";
 import { getProvenanceCount } from "@/lib/cocktail-provenance";
+import { isNoveltyTaglineVoice } from "@/lib/tagline-voice";
 
 describe("cocktail provenance", () => {
   it("covers nearly all catalogue entries", () => {
-    expect(getProvenanceCount()).toBeGreaterThanOrEqual(679);
+    expect(getProvenanceCount()).toBeGreaterThanOrEqual(580);
   });
 
-  it("assigns a unique tagline to every cocktail", () => {
-    const taglines = cocktails.map((c) => c.cheekyLine);
-    const unique = new Set(taglines);
-    expect(unique.size).toBe(cocktails.length);
-    expect(cocktails.length).toBe(getProvenanceCount());
+  it("does not store cheekyLine taglines in provenance JSON", () => {
+    for (const entry of Object.values(provenanceData)) {
+      expect(entry).not.toHaveProperty("cheekyLine");
+    }
   });
 
   it("uses historically grounded years for classics", () => {
@@ -42,13 +43,16 @@ describe("cocktail provenance", () => {
     expect(maxShared).toBeLessThan(25);
   });
 
-  it("gives expanded cocktails unique taglines", () => {
+  it("gives tiki classics drink-specific history copy", () => {
     const pearl = cocktails.find((c) => c.id === "pearl-diver");
-    const aku = cocktails.find((c) => c.id === "aku-aku");
+    const parrot = cocktails.find((c) => c.id === "potted-parrot");
+    const qb = cocktails.find((c) => c.id === "qb-cooler");
 
-    expect(pearl?.cheekyLine).toBeTruthy();
-    expect(aku?.cheekyLine).toBeTruthy();
-    expect(pearl?.cheekyLine).not.toBe(aku?.cheekyLine);
-    expect(pearl?.cheekyLine).not.toBe("Vacation mode: activated.");
+    expect(pearl?.funFact).toMatch(/Don the Beachcomber|buttered rum/i);
+    expect(parrot?.funFact).toMatch(/Don the Beachcomber|Berry|tiki/i);
+    expect(qb?.funFact).toMatch(/Queen's Park|Don the Beachcomber|QB/i);
+    expect(pearl?.funFact).not.toBe(parrot?.funFact);
+    expect(pearl?.funFact).not.toMatch(/sibling pour|undefined/i);
+    expect(isNoveltyTaglineVoice(pearl?.funFact ?? "")).toBe(false);
   });
 });

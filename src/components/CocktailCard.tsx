@@ -82,7 +82,7 @@ export const CocktailCard = memo(function CocktailCard({
             <AlcoholBadge cocktail={cocktail} compact />
           </div>
           {showObscurity ? (
-            <ObscurityBadge score={cocktail.obscurityScore} compact />
+            <ObscurityBadge score={cocktail.obscurityScore} cocktail={cocktail} compact />
           ) : isExact ? (
             <MatchQualityBadge quality="exact" compact />
           ) : isSubMatch ? (
@@ -107,11 +107,11 @@ export const CocktailCard = memo(function CocktailCard({
           {cocktail.name}
         </h3>
 
-        {!compact && !isCarousel && (
+        {!compact && !isCarousel && cocktail.description.trim() ? (
           <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-[var(--muted)]">
             {cocktail.description}
           </p>
-        )}
+        ) : null}
 
         {isSubMatch && substitutions.length > 0 && (
           <div className="mt-2.5 space-y-2">
@@ -145,11 +145,6 @@ export const CocktailCard = memo(function CocktailCard({
           </p>
         )}
 
-        {isExact && isCarousel && (
-          <p className="mt-2 line-clamp-1 text-xs italic text-[var(--accent-dim)]">
-            {cocktail.cheekyLine}
-          </p>
-        )}
       </div>
     </Link>
   );

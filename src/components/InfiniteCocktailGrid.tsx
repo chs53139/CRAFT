@@ -92,7 +92,7 @@ export function MakeableCountBanner({
       </div>
       {viewAllHref && count > 0 && (
         <Link href={viewAllHref} className="makeable-count-banner-link">
-          View all
+          View all {count}
         </Link>
       )}
     </div>

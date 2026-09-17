@@ -209,7 +209,7 @@ function CocktailsContent() {
           <SearchField
             value={search}
             onChange={setSearch}
-            placeholder="Search spirits, ingredients, flavors, tiki…"
+            placeholder="Try Gin, Campari, Tiki, or Gin + Orange Juice without Lemon"
           />
 
           <div className="app-section space-y-4">

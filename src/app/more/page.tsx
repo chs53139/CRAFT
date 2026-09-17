@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { useUserData } from "@/components/UserDataProvider";
+import { isMixologistLaunchHidden } from "@/lib/feature-flags";
 
 export default function MorePage() {
   const { user, isAuthenticated, signOut } = useUserData();
@@ -37,15 +38,17 @@ export default function MorePage() {
           <span className="text-[var(--accent)]">→</span>
         </Link>
 
-        <Link href="/mixologist" className="account-row">
-          <div>
-            <p className="text-sm font-semibold text-[var(--foreground)]">Mixologist</p>
-            <p className="mt-0.5 text-xs text-[var(--muted)]">
-              Invent a drink from your shelf
-            </p>
-          </div>
-          <span className="text-[var(--accent)]">→</span>
-        </Link>
+        {!isMixologistLaunchHidden() && (
+          <Link href="/mixologist" className="account-row">
+            <div>
+              <p className="text-sm font-semibold text-[var(--foreground)]">Mixologist</p>
+              <p className="mt-0.5 text-xs text-[var(--muted)]">
+                Invent a drink from your shelf
+              </p>
+            </div>
+            <span className="text-[var(--accent)]">→</span>
+          </Link>
+        )}
       </div>
 
       <div className="app-section">

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { COCKTAIL_PLACEHOLDER, getCocktailImageUrl } from "@/lib/cocktail-images";
+import { COCKTAIL_PLACEHOLDER, getCocktailImageSrc } from "@/lib/cocktail-images";
 
 type Props = {
   slug: string;
@@ -20,7 +20,7 @@ export function CocktailImage({
   sizes = "(max-width: 768px) 100vw, 400px",
 }: Props) {
   const [failed, setFailed] = useState(false);
-  const src = failed ? COCKTAIL_PLACEHOLDER : getCocktailImageUrl(slug);
+  const src = failed ? COCKTAIL_PLACEHOLDER : getCocktailImageSrc(slug);
 
   return (
     <div className={`relative overflow-hidden bg-[var(--background-elevated)] ${className}`}>

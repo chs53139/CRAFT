@@ -65,7 +65,6 @@ export type Cocktail = {
   id: string;
   name: string;
   description: string;
-  cheekyLine: string;
   difficulty: Difficulty;
   flavorProfile: string[];
   category: CocktailCategory | string;

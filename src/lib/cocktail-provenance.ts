@@ -3,7 +3,6 @@ export type CocktailProvenance = {
   regionOfOrigin: string;
   sourceAttribution: string;
   funFact: string;
-  cheekyLine: string;
 };
 
 import provenanceData from "@/data/cocktail-provenance.json";

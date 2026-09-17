@@ -8,6 +8,7 @@ import { RecentCocktails } from "@/components/RecentCocktails";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { SkeletonGrid } from "@/components/LoadingState";
 import { StatPillAction, StatPills } from "@/components/StatPills";
+import { isMixologistLaunchHidden } from "@/lib/feature-flags";
 import { EmptyState } from "@/components/EmptyState";
 import { countExactMakeable, countMakeable } from "@/lib/discovery-filters";
 import {
@@ -93,7 +94,11 @@ export default function HomePage() {
           { value: cocktailCount, label: "Library", href: "/discover" },
           { value: mocktailCount, label: "Mocktails", href: "/discover?type=mocktails" },
         ]}
-        centerAction={<StatPillAction href="/mixologist" label="Mixologist" />}
+        centerAction={
+          isMixologistLaunchHidden() ? undefined : (
+            <StatPillAction href="/mixologist" label="Mixologist" />
+          )
+        }
       />
 
       <HorizontalCocktailRow

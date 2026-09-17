@@ -774,185 +774,141 @@ for (const [name, slug, glass, family, method, tags, ingredients, garnish, prepa
   EXPANSION.push(cocktail({ name, slug, glass, family, method, tags, ingredients, garnish, preparation }));
 }
 
-// Generate additional tiki variations programmatically
-const TIKI_BASE_SPIRITS = [
-  ["White rum", "rum-white"],
-  ["Dark rum", "rum-dark"],
-  ["Aged rum", "rum-aged"],
-  ["Overproof rum", "overproof-rum"],
-  ["Jamaican rum", "jamaican-rum"],
-];
-
-const TIKI_MODIFIERS = [
-  ["Falernum", "falernum", 15],
-  ["Orgeat", "orgeat", 15],
-  ["Passion fruit", "passion-fruit-syrup", 15],
-  ["Allspice dram", "pimento-dram", 7.5],
-  ["Cinnamon", "cinnamon-syrup", 7.5],
-];
-
-const TIKI_NAMES = [
-  "Island Hopper", "Polynesian Parfait", "Tropical Storm", "Rum Rendezvous",
-  "Sunset Swizzle", "Volcano Bowl", "Bamboo Bar", "Lagoon Lounge",
-  "Trader's Treasure", "Exotic Export", "Pacific Punch", "Hula Hideaway",
-  "Coral Reef", "Palm Frond", "Tiki Torchlight", "Rum Runner's Delight",
-  "Blue Hawaiian Dream", "Castaway Cooler", "Bermuda Triangle", "Molokai Magic",
-  "Waikiki Wave", "Honolulu Heat", "Samoa Sunset", "Fiji Fizz",
-  "Tahitian Treat", "Marquesas Mist", "Bora Bora Breeze", "Kona Cooler",
-  "Lanai Lemon", "Maui Mule Tiki", "Oahu Oasis", "Kauai Kiss",
-];
-
-let tikiIndex = 0;
-for (const name of TIKI_NAMES) {
-  const slug = name.toLowerCase().replace(/'/g, "").replace(/\s+/g, "-");
-  if (existingSlugs.has(slug)) continue;
-
-  const spirit = TIKI_BASE_SPIRITS[tikiIndex % TIKI_BASE_SPIRITS.length];
-  const mod = TIKI_MODIFIERS[tikiIndex % TIKI_MODIFIERS.length];
-  tikiIndex++;
-
-  EXPANSION.push(
-    cocktail({
-      name,
-      slug,
-      glass: "Tiki mug",
-      family: "Tiki",
-      method: tikiIndex % 3 === 0 ? "Blend" : "Shaken",
-      tags: ["tiki"],
-      ingredients: [
-        ing(spirit[1], spirit[0], "spirit", 45),
-        ing("lime-juice", "Lime juice", "juice", 22.5),
-        ing("pineapple-juice", "Pineapple juice", "juice", 30),
-        ing(mod[1], mod[0], mod[1].includes("syrup") ? "syrup" : "liqueur", mod[2]),
-        ing("grenadine", "Grenadine", "syrup", 7.5),
-      ],
-      garnish: ["Mint sprig", "pineapple wedge"],
-      preparation: [
-        "Combine all ingredients with ice.",
-        tikiIndex % 3 === 0 ? "Blend until smooth." : "Shake and strain over crushed ice.",
-        "Garnish with mint and pineapple.",
-      ],
-    })
-  );
-}
-
-// Generate modern sour variations
-const SOUR_SPIRITS = [
-  ["Gin", "gin"], ["Bourbon", "bourbon"], ["Rye", "rye-whiskey"],
-  ["Tequila", "tequila-blanco"], ["Mezcal", "mezcal"], ["Rum", "rum-aged"],
-  ["Vodka", "vodka"], ["Brandy", "brandy"], ["Scotch", "scotch-whisky"],
-];
-
-const SOUR_MODS = [
-  ["Honey", "honey-syrup"], ["Maple", "maple-syrup"], ["Ginger", "ginger-syrup"],
-  ["Elderflower", "elderflower-liqueur"], ["Amaretto", "amaretto"],
-  ["Aperol", "aperol"], ["Campari", "campari"],
-];
-
-const SOUR_NAMES = [
-  "Autumn Sour", "Winter Sour", "Spring Sour", "Summer Sour",
-  "Midnight Sour", "Golden Sour", "Silver Sour", "Copper Sour",
-  "Velvet Sour", "Silk Sour", "Rust Sour", "Ember Sour",
-  "Frost Sour", "Harvest Sour", "Garden Sour", "Orchard Sour",
-  "Coastal Sour", "Highland Sour", "Urban Sour", "Desert Sour",
-  "Forest Sour", "River Sour", "Summit Sour", "Valley Sour",
-  "Harbor Sour", "Canyon Sour", "Meadow Sour", "Cedar Sour",
-  "Willow Sour", "Birch Sour", "Maple Sour", "Stone Sour Craft",
-  "Iron Sour", "Bronze Sour", "Pearl Sour", "Onyx Sour",
-  "Amber Sour", "Jade Sour", "Ruby Sour", "Sapphire Sour",
-];
-
-let sourIndex = 0;
-for (const name of SOUR_NAMES) {
-  const slug = name.toLowerCase().replace(/\s+/g, "-");
-  if (existingSlugs.has(slug)) continue;
-
-  const spirit = SOUR_SPIRITS[sourIndex % SOUR_SPIRITS.length];
-  const mod = SOUR_MODS[sourIndex % SOUR_MODS.length];
-  sourIndex++;
-
-  EXPANSION.push(
-    cocktail({
-      name,
-      slug,
-      glass: "Coupe",
-      family: "Sour",
-      method: "Shaken",
-      tags: ["modern-classic"],
-      ingredients: [
-        ing(spirit[1], spirit[0], "spirit", 60),
-        ing("lemon-juice", "Lemon juice", "juice", 22.5),
-        ing(mod[1], mod[0], mod[1].includes("syrup") ? "syrup" : "liqueur", 15),
-        ing("simple-syrup", "Simple syrup", "syrup", 7.5),
-      ],
-      garnish: ["Lemon twist"],
-      preparation: [
-        "Shake all ingredients with ice.",
-        "Strain into a chilled coupe.",
-        "Garnish with lemon twist.",
-      ],
-    })
-  );
-}
-
-// Highballs & Collins
-const HIGHBALL_NAMES = [
-  "Ginger Highball", "Citrus Highball", "Herbal Highball", "Spiced Highball",
-  "Berry Highball", "Stone Fruit Highball", "Tropical Highball", "Smoky Highball",
-  "Elderflower Collins", "Basil Collins", "Cucumber Collins", "Rose Collins",
-  "Lavender Collins", "Thyme Collins", "Rosemary Collins", "Sage Collins",
-  "Peach Fizz", "Apricot Fizz", "Raspberry Fizz", "Blackberry Fizz",
-  "Cherry Smash", "Plum Smash", "Fig Smash", "Grape Smash",
-  "Celery Mule", "Cucumber Mule", "Pineapple Mule", "Passion Mule",
-];
-
-let hbIndex = 0;
-for (const name of HIGHBALL_NAMES) {
-  const slug = name.toLowerCase().replace(/\s+/g, "-");
-  if (existingSlugs.has(slug)) continue;
-
-  const isMule = name.includes("Mule");
-  const isCollins = name.includes("Collins");
-  const isFizz = name.includes("Fizz");
-  const isSmash = name.includes("Smash");
-  const family = isCollins || isFizz ? "Fizz & Collins" : "Highball";
-  const spirit = SOUR_SPIRITS[hbIndex % 4];
-
-  hbIndex++;
-
-  const ingredients = [
-    ing(spirit[1], spirit[0], "spirit", 45),
-    ing("lime-juice", "Lime juice", "juice", 15),
-    ing("simple-syrup", "Simple syrup", "syrup", 15),
-  ];
-
-  if (isMule) {
-    ingredients.push(ing("ginger-beer", "Ginger beer", "mixer", 120));
-  } else if (isCollins || isFizz) {
-    ingredients.push(ing("lemon-juice", "Lemon juice", "juice", 22.5));
-    ingredients.push(ing("club-soda", "Club soda", "mixer", 90));
-  } else {
-    ingredients.push(ing("club-soda", "Club soda", "mixer", 120));
-  }
-
-  EXPANSION.push(
-    cocktail({
-      name,
-      slug,
-      glass: isMule ? "Copper mug" : "Highball",
-      family,
-      method: "Built",
-      tags: ["modern"],
-      ingredients,
-      garnish: ["Citrus wheel"],
-      preparation: [
-        "Build spirit and juices over ice.",
-        isMule || isCollins || isFizz ? "Top with mixer." : "Top with soda.",
-        "Stir gently and garnish.",
-      ],
-    })
-  );
-}
+// Curated tiki gaps — published builds only (no bulk name generation).
+EXPANSION.push(
+  cocktail({
+    name: "Potted Parrot",
+    slug: "potted-parrot",
+    glass: "Tiki mug",
+    family: "Tiki",
+    method: "Shaken",
+    tags: ["tiki", "classic-tiki"],
+    ingredients: [
+      ing("rum-white", "White rum", "spirit", 30),
+      ing("rum-dark", "Dark rum", "spirit", 30),
+      ing("lime-juice", "Lime juice", "juice", 15),
+      ing("grapefruit-juice", "Grapefruit juice", "juice", 15),
+      ing("honey-syrup", "Honey syrup", "syrup", 15),
+      ing("falernum", "Falernum", "liqueur", 7.5),
+      ing("absinthe", "Absinthe", "liqueur", 2.5),
+      ing("angostura-bitters", "Angostura bitters", "bitters", 1, "dash"),
+    ],
+    garnish: ["Mint sprig", "edible orchid"],
+    preparation: [
+      "Shake all ingredients with ice.",
+      "Strain into a tiki mug over crushed ice.",
+      "Garnish with mint and orchid.",
+    ],
+  }),
+  cocktail({
+    name: "Tradewinds",
+    slug: "tradewinds",
+    glass: "Tiki mug",
+    family: "Tiki",
+    method: "Blend",
+    tags: ["tiki", "classic-tiki"],
+    ingredients: [
+      ing("rum-white", "White rum", "spirit", 30),
+      ing("rum-dark", "Dark rum", "spirit", 30),
+      ing("coconut-cream", "Coconut cream", "dairy-egg", 30),
+      ing("apricot-liqueur", "Apricot liqueur", "liqueur", 15),
+      ing("lime-juice", "Lime juice", "juice", 15),
+    ],
+    garnish: ["Pineapple wedge", "cherry"],
+    preparation: [
+      "Blend all ingredients with crushed ice until smooth.",
+      "Pour into a tiki mug.",
+      "Garnish with pineapple and cherry.",
+    ],
+  }),
+  cocktail({
+    name: "Chief Lapu Lapu",
+    slug: "chief-lapu-lapu",
+    glass: "Tiki mug",
+    family: "Tiki",
+    method: "Shaken",
+    tags: ["tiki", "classic-tiki"],
+    ingredients: [
+      ing("rum-white", "White rum", "spirit", 45),
+      ing("rum-dark", "Dark rum", "spirit", 22.5),
+      ing("orange-juice", "Orange juice", "juice", 45),
+      ing("lime-juice", "Lime juice", "juice", 22.5),
+      ing("orgeat", "Orgeat", "syrup", 15),
+      ing("simple-syrup", "Simple syrup", "syrup", 7.5),
+    ],
+    garnish: ["Mint sprig", "orchid"],
+    preparation: [
+      "Shake all ingredients with ice.",
+      "Strain into a tiki mug over crushed ice.",
+      "Garnish with mint and orchid.",
+    ],
+  }),
+  cocktail({
+    name: "QB Cooler",
+    slug: "qb-cooler",
+    glass: "Collins",
+    family: "Tiki",
+    method: "Shaken",
+    tags: ["tiki", "classic-tiki"],
+    ingredients: [
+      ing("rum-aged", "Aged rum", "spirit", 45),
+      ing("lime-juice", "Lime juice", "juice", 22.5),
+      ing("lemon-juice", "Lemon juice", "juice", 22.5),
+      ing("falernum", "Falernum", "liqueur", 15),
+      ing("simple-syrup", "Simple syrup", "syrup", 7.5),
+      ing("club-soda", "Club soda", "mixer", 60),
+    ],
+    garnish: ["Mint sprig"],
+    preparation: [
+      "Shake rum, juices, falernum, and syrup with ice.",
+      "Strain into a Collins glass over ice and top with soda.",
+      "Garnish with mint.",
+    ],
+  }),
+  cocktail({
+    name: "Ancient Mariner",
+    slug: "ancient-mariner",
+    glass: "Tiki mug",
+    family: "Tiki",
+    method: "Shaken",
+    tags: ["tiki", "modern-tiki"],
+    ingredients: [
+      ing("demerara-rum", "Demerara rum", "spirit", 30),
+      ing("rum-dark", "Dark rum", "spirit", 30),
+      ing("lime-juice", "Lime juice", "juice", 22.5),
+      ing("grapefruit-juice", "Grapefruit juice", "juice", 22.5),
+      ing("passion-fruit-syrup", "Passion fruit syrup", "syrup", 15),
+      ing("pimento-dram", "Pimento dram", "liqueur", 7.5),
+    ],
+    garnish: ["Lime wheel", "mint"],
+    preparation: [
+      "Shake all ingredients with ice.",
+      "Strain into a tiki mug over crushed ice.",
+      "Garnish with lime and mint.",
+    ],
+  }),
+  cocktail({
+    name: "151 Swizzle",
+    slug: "151-swizzle",
+    glass: "Collins",
+    family: "Tiki",
+    method: "Swizzled",
+    tags: ["tiki", "classic-tiki"],
+    ingredients: [
+      ing("overproof-rum", "Overproof rum", "spirit", 22.5),
+      ing("lime-juice", "Lime juice", "juice", 22.5),
+      ing("simple-syrup", "Simple syrup", "syrup", 15),
+      ing("falernum", "Falernum", "liqueur", 7.5),
+      ing("angostura-bitters", "Angostura bitters", "bitters", 2, "dash"),
+    ],
+    garnish: ["Mint sprig", "nutmeg"],
+    preparation: [
+      "Build in a Collins glass with crushed ice.",
+      "Swizzle until frosted.",
+      "Garnish with mint and grated nutmeg.",
+    ],
+  })
+);
 
 // Filter out duplicates against existing catalogue
 const unique = EXPANSION.filter((c) => !existingSlugs.has(c.slug));

@@ -20,6 +20,7 @@ import {
 } from "@/lib/cocktail-matching";
 import { MocktailSubcategory } from "@/lib/types";
 import { useMyBar } from "@/hooks/use-my-bar";
+import { isMixologistLaunchHidden } from "@/lib/feature-flags";
 
 const PAGE_SIZE = 24;
 
@@ -119,17 +120,19 @@ export default function MocktailsPageClient() {
         </button>
       )}
 
-      <div className="app-section">
-        <Link href="/mixologist" className="account-row">
-          <div>
-            <p className="text-sm font-semibold text-[var(--foreground)]">Mixologist</p>
-            <p className="mt-0.5 text-xs text-[var(--muted)]">
-              Invent a zero-proof drink from your shelf
-            </p>
-          </div>
-          <span className="text-[var(--accent)]">→</span>
-        </Link>
-      </div>
+      {!isMixologistLaunchHidden() && (
+        <div className="app-section">
+          <Link href="/mixologist" className="account-row">
+            <div>
+              <p className="text-sm font-semibold text-[var(--foreground)]">Mixologist</p>
+              <p className="mt-0.5 text-xs text-[var(--muted)]">
+                Invent a zero-proof drink from your shelf
+              </p>
+            </div>
+            <span className="text-[var(--accent)]">→</span>
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

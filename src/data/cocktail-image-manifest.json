@@ -1,0 +1,2304 @@
+{
+  "generatedAt": "2026-09-17T03:09:22.362Z",
+  "stats": {
+    "total": 588,
+    "direct": 500,
+    "trustedOverride": 28,
+    "missing": 60,
+    "staleOverridesRemoved": 0
+  },
+  "entries": {
+    "margarita": {
+      "tier": "direct",
+      "cdnSlug": "margarita"
+    },
+    "old-fashioned": {
+      "tier": "direct",
+      "cdnSlug": "old-fashioned"
+    },
+    "negroni": {
+      "tier": "direct",
+      "cdnSlug": "negroni"
+    },
+    "daiquiri": {
+      "tier": "direct",
+      "cdnSlug": "daiquiri"
+    },
+    "manhattan": {
+      "tier": "direct",
+      "cdnSlug": "manhattan"
+    },
+    "mojito": {
+      "tier": "direct",
+      "cdnSlug": "mojito"
+    },
+    "whiskey-sour": {
+      "tier": "direct",
+      "cdnSlug": "whiskey-sour"
+    },
+    "martini": {
+      "tier": "direct",
+      "cdnSlug": "martini"
+    },
+    "espresso-martini": {
+      "tier": "direct",
+      "cdnSlug": "espresso-martini"
+    },
+    "cosmopolitan": {
+      "tier": "direct",
+      "cdnSlug": "cosmopolitan"
+    },
+    "mai-tai": {
+      "tier": "direct",
+      "cdnSlug": "mai-tai"
+    },
+    "moscow-mule": {
+      "tier": "direct",
+      "cdnSlug": "moscow-mule"
+    },
+    "aperol-spritz": {
+      "tier": "direct",
+      "cdnSlug": "aperol-spritz"
+    },
+    "pina-colada": {
+      "tier": "direct",
+      "cdnSlug": "pina-colada"
+    },
+    "gin-and-tonic": {
+      "tier": "direct",
+      "cdnSlug": "gin-and-tonic"
+    },
+    "paloma": {
+      "tier": "direct",
+      "cdnSlug": "paloma"
+    },
+    "sidecar": {
+      "tier": "direct",
+      "cdnSlug": "sidecar"
+    },
+    "tom-collins": {
+      "tier": "direct",
+      "cdnSlug": "tom-collins"
+    },
+    "french-75": {
+      "tier": "direct",
+      "cdnSlug": "french-75"
+    },
+    "boulevardier": {
+      "tier": "direct",
+      "cdnSlug": "boulevardier"
+    },
+    "caipirinha": {
+      "tier": "direct",
+      "cdnSlug": "caipirinha"
+    },
+    "gimlet": {
+      "tier": "direct",
+      "cdnSlug": "gimlet"
+    },
+    "mint-julep": {
+      "tier": "direct",
+      "cdnSlug": "mint-julep"
+    },
+    "dark-n-stormy": {
+      "tier": "direct",
+      "cdnSlug": "dark-n-stormy"
+    },
+    "sazerac": {
+      "tier": "direct",
+      "cdnSlug": "sazerac"
+    },
+    "zombie": {
+      "tier": "direct",
+      "cdnSlug": "zombie"
+    },
+    "aviation": {
+      "tier": "direct",
+      "cdnSlug": "aviation"
+    },
+    "pisco-sour": {
+      "tier": "direct",
+      "cdnSlug": "pisco-sour"
+    },
+    "last-word": {
+      "tier": "direct",
+      "cdnSlug": "last-word"
+    },
+    "penicillin": {
+      "tier": "direct",
+      "cdnSlug": "penicillin"
+    },
+    "corpse-reviver-no-2": {
+      "tier": "direct",
+      "cdnSlug": "corpse-reviver-no-2"
+    },
+    "amaretto-sour": {
+      "tier": "direct",
+      "cdnSlug": "amaretto-sour"
+    },
+    "clover-club": {
+      "tier": "direct",
+      "cdnSlug": "clover-club"
+    },
+    "vieux-carre": {
+      "tier": "direct",
+      "cdnSlug": "vieux-carre"
+    },
+    "jungle-bird": {
+      "tier": "direct",
+      "cdnSlug": "jungle-bird"
+    },
+    "bees-knees": {
+      "tier": "direct",
+      "cdnSlug": "bees-knees"
+    },
+    "gin-fizz": {
+      "tier": "direct",
+      "cdnSlug": "gin-fizz"
+    },
+    "ramos-gin-fizz": {
+      "tier": "direct",
+      "cdnSlug": "ramos-gin-fizz"
+    },
+    "tequila-sunrise": {
+      "tier": "direct",
+      "cdnSlug": "tequila-sunrise"
+    },
+    "vesper": {
+      "tier": "direct",
+      "cdnSlug": "vesper"
+    },
+    "paper-plane": {
+      "tier": "direct",
+      "cdnSlug": "paper-plane"
+    },
+    "blood-and-sand": {
+      "tier": "direct",
+      "cdnSlug": "blood-and-sand"
+    },
+    "rob-roy": {
+      "tier": "direct",
+      "cdnSlug": "rob-roy"
+    },
+    "rusty-nail": {
+      "tier": "direct",
+      "cdnSlug": "rusty-nail"
+    },
+    "godfather": {
+      "tier": "direct",
+      "cdnSlug": "godfather"
+    },
+    "irish-coffee": {
+      "tier": "direct",
+      "cdnSlug": "irish-coffee"
+    },
+    "hot-toddy": {
+      "tier": "direct",
+      "cdnSlug": "hot-toddy"
+    },
+    "bramble": {
+      "tier": "direct",
+      "cdnSlug": "bramble"
+    },
+    "pornstar-martini": {
+      "tier": "direct",
+      "cdnSlug": "pornstar-martini"
+    },
+    "brandy-alexander": {
+      "tier": "direct",
+      "cdnSlug": "brandy-alexander"
+    },
+    "tommys-margarita": {
+      "tier": "direct",
+      "cdnSlug": "tommys-margarita"
+    },
+    "naked-and-famous": {
+      "tier": "direct",
+      "cdnSlug": "naked-and-famous"
+    },
+    "hemingway-daiquiri": {
+      "tier": "direct",
+      "cdnSlug": "hemingway-daiquiri"
+    },
+    "hanky-panky": {
+      "tier": "direct",
+      "cdnSlug": "hanky-panky"
+    },
+    "singapore-sling": {
+      "tier": "direct",
+      "cdnSlug": "singapore-sling"
+    },
+    "long-island-iced-tea": {
+      "tier": "direct",
+      "cdnSlug": "long-island-iced-tea"
+    },
+    "white-russian": {
+      "tier": "direct",
+      "cdnSlug": "white-russian"
+    },
+    "black-russian": {
+      "tier": "direct",
+      "cdnSlug": "black-russian"
+    },
+    "negroni-sbagliato": {
+      "tier": "direct",
+      "cdnSlug": "negroni-sbagliato"
+    },
+    "bijou": {
+      "tier": "direct",
+      "cdnSlug": "bijou"
+    },
+    "americano": {
+      "tier": "direct",
+      "cdnSlug": "americano"
+    },
+    "bellini": {
+      "tier": "direct",
+      "cdnSlug": "bellini"
+    },
+    "kir-royale": {
+      "tier": "direct",
+      "cdnSlug": "kir-royale"
+    },
+    "champagne-cocktail": {
+      "tier": "direct",
+      "cdnSlug": "champagne-cocktail"
+    },
+    "mezcal-negroni": {
+      "tier": "direct",
+      "cdnSlug": "mezcal-negroni"
+    },
+    "suffering-bastard": {
+      "tier": "direct",
+      "cdnSlug": "suffering-bastard"
+    },
+    "grasshopper": {
+      "tier": "direct",
+      "cdnSlug": "grasshopper"
+    },
+    "harvey-wallbanger": {
+      "tier": "direct",
+      "cdnSlug": "harvey-wallbanger"
+    },
+    "screwdriver": {
+      "tier": "direct",
+      "cdnSlug": "screwdriver"
+    },
+    "greyhound": {
+      "tier": "direct",
+      "cdnSlug": "greyhound"
+    },
+    "salty-dog": {
+      "tier": "direct",
+      "cdnSlug": "salty-dog"
+    },
+    "sea-breeze": {
+      "tier": "direct",
+      "cdnSlug": "sea-breeze"
+    },
+    "bay-breeze": {
+      "tier": "direct",
+      "cdnSlug": "bay-breeze"
+    },
+    "cape-codder": {
+      "tier": "direct",
+      "cdnSlug": "cape-codder"
+    },
+    "cuba-libre": {
+      "tier": "direct",
+      "cdnSlug": "cuba-libre"
+    },
+    "jack-rose": {
+      "tier": "direct",
+      "cdnSlug": "jack-rose"
+    },
+    "midori-sour": {
+      "tier": "direct",
+      "cdnSlug": "midori-sour"
+    },
+    "painkiller": {
+      "tier": "direct",
+      "cdnSlug": "painkiller"
+    },
+    "hurricane": {
+      "tier": "direct",
+      "cdnSlug": "hurricane"
+    },
+    "planters-punch": {
+      "tier": "direct",
+      "cdnSlug": "planters-punch"
+    },
+    "el-diablo": {
+      "tier": "direct",
+      "cdnSlug": "el-diablo"
+    },
+    "vodka-martini": {
+      "tier": "direct",
+      "cdnSlug": "vodka-martini"
+    },
+    "dirty-martini": {
+      "tier": "direct",
+      "cdnSlug": "dirty-martini"
+    },
+    "gibson": {
+      "tier": "direct",
+      "cdnSlug": "gibson"
+    },
+    "fitzgerald": {
+      "tier": "direct",
+      "cdnSlug": "fitzgerald"
+    },
+    "army-and-navy": {
+      "tier": "direct",
+      "cdnSlug": "army-and-navy"
+    },
+    "rum-punch": {
+      "tier": "direct",
+      "cdnSlug": "rum-punch"
+    },
+    "scorpion": {
+      "tier": "direct",
+      "cdnSlug": "scorpion"
+    },
+    "test-pilot": {
+      "tier": "direct",
+      "cdnSlug": "test-pilot"
+    },
+    "three-dots-and-a-dash": {
+      "tier": "direct",
+      "cdnSlug": "three-dots-and-a-dash"
+    },
+    "fog-cutter": {
+      "tier": "direct",
+      "cdnSlug": "fog-cutter"
+    },
+    "navy-grog": {
+      "tier": "direct",
+      "cdnSlug": "navy-grog"
+    },
+    "saturn": {
+      "tier": "direct",
+      "cdnSlug": "saturn"
+    },
+    "jet-pilot": {
+      "tier": "direct",
+      "cdnSlug": "jet-pilot"
+    },
+    "missionarys-downfall": {
+      "tier": "direct",
+      "cdnSlug": "missionarys-downfall"
+    },
+    "rum-runner": {
+      "tier": "direct",
+      "cdnSlug": "rum-runner"
+    },
+    "blue-lagoon": {
+      "tier": "direct",
+      "cdnSlug": "blue-lagoon"
+    },
+    "cobras-fang": {
+      "tier": "direct",
+      "cdnSlug": "cobras-fang"
+    },
+    "stinger": {
+      "tier": "direct",
+      "cdnSlug": "stinger"
+    },
+    "between-the-sheets": {
+      "tier": "direct",
+      "cdnSlug": "between-the-sheets"
+    },
+    "tuxedo": {
+      "tier": "direct",
+      "cdnSlug": "tuxedo"
+    },
+    "martinez": {
+      "tier": "direct",
+      "cdnSlug": "martinez"
+    },
+    "ward-eight": {
+      "tier": "direct",
+      "cdnSlug": "ward-eight"
+    },
+    "brandy-crusta": {
+      "tier": "direct",
+      "cdnSlug": "brandy-crusta"
+    },
+    "angel-face": {
+      "tier": "direct",
+      "cdnSlug": "angel-face"
+    },
+    "algonquin": {
+      "tier": "direct",
+      "cdnSlug": "algonquin"
+    },
+    "bamboo": {
+      "tier": "direct",
+      "cdnSlug": "bamboo"
+    },
+    "adonis": {
+      "tier": "direct",
+      "cdnSlug": "adonis"
+    },
+    "sherry-cobbler": {
+      "tier": "direct",
+      "cdnSlug": "sherry-cobbler"
+    },
+    "sbagliato-spritz": {
+      "tier": "direct",
+      "cdnSlug": "sbagliato-spritz"
+    },
+    "hugo-spritz": {
+      "tier": "direct",
+      "cdnSlug": "hugo-spritz"
+    },
+    "limoncello-spritz": {
+      "tier": "direct",
+      "cdnSlug": "limoncello-spritz"
+    },
+    "campari-spritz": {
+      "tier": "direct",
+      "cdnSlug": "campari-spritz"
+    },
+    "select-spritz": {
+      "tier": "direct",
+      "cdnSlug": "select-spritz"
+    },
+    "cynar-spritz": {
+      "tier": "direct",
+      "cdnSlug": "cynar-spritz"
+    },
+    "b-52": {
+      "tier": "direct",
+      "cdnSlug": "b-52"
+    },
+    "kamikaze": {
+      "tier": "direct",
+      "cdnSlug": "kamikaze"
+    },
+    "lemon-drop-shot": {
+      "tier": "direct",
+      "cdnSlug": "lemon-drop-shot"
+    },
+    "jagerbomb": {
+      "tier": "direct",
+      "cdnSlug": "jagerbomb"
+    },
+    "mezcal-mule": {
+      "tier": "direct",
+      "cdnSlug": "mezcal-mule"
+    },
+    "kentucky-mule": {
+      "tier": "direct",
+      "cdnSlug": "kentucky-mule"
+    },
+    "gold-rush": {
+      "tier": "direct",
+      "cdnSlug": "gold-rush"
+    },
+    "brown-derby": {
+      "tier": "direct",
+      "cdnSlug": "brown-derby"
+    },
+    "new-york-sour": {
+      "tier": "direct",
+      "cdnSlug": "new-york-sour"
+    },
+    "old-pal": {
+      "tier": "direct",
+      "cdnSlug": "old-pal"
+    },
+    "tipperary": {
+      "tier": "direct",
+      "cdnSlug": "tipperary"
+    },
+    "toronto": {
+      "tier": "direct",
+      "cdnSlug": "toronto"
+    },
+    "monte-carlo": {
+      "tier": "direct",
+      "cdnSlug": "monte-carlo"
+    },
+    "bobby-burns": {
+      "tier": "direct",
+      "cdnSlug": "bobby-burns"
+    },
+    "chrysanthemum": {
+      "tier": "direct",
+      "cdnSlug": "chrysanthemum"
+    },
+    "improved-whiskey-cocktail": {
+      "tier": "direct",
+      "cdnSlug": "improved-whiskey-cocktail"
+    },
+    "whiskey-smash": {
+      "tier": "direct",
+      "cdnSlug": "whiskey-smash"
+    },
+    "oaxaca-old-fashioned": {
+      "tier": "direct",
+      "cdnSlug": "oaxaca-old-fashioned"
+    },
+    "division-bell": {
+      "tier": "direct",
+      "cdnSlug": "division-bell"
+    },
+    "agua-fresca-cocktail": {
+      "tier": "direct",
+      "cdnSlug": "agua-fresca-cocktail"
+    },
+    "frozen-daiquiri": {
+      "tier": "direct",
+      "cdnSlug": "frozen-daiquiri"
+    },
+    "frozen-margarita": {
+      "tier": "direct",
+      "cdnSlug": "frozen-margarita"
+    },
+    "frozen-strawberry-daiquiri": {
+      "tier": "direct",
+      "cdnSlug": "frozen-strawberry-daiquiri"
+    },
+    "mudslide": {
+      "tier": "direct",
+      "cdnSlug": "mudslide"
+    },
+    "pina-colada-shaken": {
+      "tier": "direct",
+      "cdnSlug": "pina-colada-shaken"
+    },
+    "banana-daiquiri": {
+      "tier": "direct",
+      "cdnSlug": "banana-daiquiri"
+    },
+    "frose": {
+      "tier": "direct",
+      "cdnSlug": "frose"
+    },
+    "chi-chi": {
+      "tier": "direct",
+      "cdnSlug": "chi-chi"
+    },
+    "paloma-fresca": {
+      "tier": "direct",
+      "cdnSlug": "paloma-fresca"
+    },
+    "improved-gin-cocktail": {
+      "tier": "direct",
+      "cdnSlug": "improved-gin-cocktail"
+    },
+    "japanese-cocktail": {
+      "tier": "direct",
+      "cdnSlug": "japanese-cocktail"
+    },
+    "tequila-old-fashioned": {
+      "tier": "direct",
+      "cdnSlug": "tequila-old-fashioned"
+    },
+    "rum-old-fashioned": {
+      "tier": "direct",
+      "cdnSlug": "rum-old-fashioned"
+    },
+    "rum-manhattan": {
+      "tier": "direct",
+      "cdnSlug": "rum-manhattan"
+    },
+    "mezcal-margarita": {
+      "tier": "direct",
+      "cdnSlug": "mezcal-margarita"
+    },
+    "mezcal-last-word": {
+      "tier": "direct",
+      "cdnSlug": "mezcal-last-word"
+    },
+    "final-ward": {
+      "tier": "direct",
+      "cdnSlug": "final-ward"
+    },
+    "chartreuse-swizzle": {
+      "tier": "direct",
+      "cdnSlug": "chartreuse-swizzle"
+    },
+    "daiquiri-no-3": {
+      "tier": "direct",
+      "cdnSlug": "daiquiri-no-3"
+    },
+    "el-presidente": {
+      "tier": "direct",
+      "cdnSlug": "el-presidente"
+    },
+    "mary-pickford": {
+      "tier": "direct",
+      "cdnSlug": "mary-pickford"
+    },
+    "twelve-mile-limit": {
+      "tier": "direct",
+      "cdnSlug": "twelve-mile-limit"
+    },
+    "cable-car": {
+      "tier": "direct",
+      "cdnSlug": "cable-car"
+    },
+    "angostura-sour": {
+      "tier": "direct",
+      "cdnSlug": "angostura-sour"
+    },
+    "trinidad-sour": {
+      "tier": "direct",
+      "cdnSlug": "trinidad-sour"
+    },
+    "eastside": {
+      "tier": "direct",
+      "cdnSlug": "eastside"
+    },
+    "southside": {
+      "tier": "direct",
+      "cdnSlug": "southside"
+    },
+    "gin-basil-smash": {
+      "tier": "direct",
+      "cdnSlug": "gin-basil-smash"
+    },
+    "jasmine": {
+      "tier": "direct",
+      "cdnSlug": "jasmine"
+    },
+    "white-lady": {
+      "tier": "direct",
+      "cdnSlug": "white-lady"
+    },
+    "casino": {
+      "tier": "direct",
+      "cdnSlug": "casino"
+    },
+    "monkey-gland": {
+      "tier": "direct",
+      "cdnSlug": "monkey-gland"
+    },
+    "20th-century": {
+      "tier": "direct",
+      "cdnSlug": "20th-century"
+    },
+    "pegu-club": {
+      "tier": "direct",
+      "cdnSlug": "pegu-club"
+    },
+    "corpse-reviver-no-1": {
+      "tier": "direct",
+      "cdnSlug": "corpse-reviver-no-1"
+    },
+    "pink-lady": {
+      "tier": "direct",
+      "cdnSlug": "pink-lady"
+    },
+    "bronx": {
+      "tier": "direct",
+      "cdnSlug": "bronx"
+    },
+    "lucien-gaudin": {
+      "tier": "direct",
+      "cdnSlug": "lucien-gaudin"
+    },
+    "journalist": {
+      "tier": "direct",
+      "cdnSlug": "journalist"
+    },
+    "satans-whiskers": {
+      "tier": "direct",
+      "cdnSlug": "satans-whiskers"
+    },
+    "millionaire": {
+      "tier": "direct",
+      "cdnSlug": "millionaire"
+    },
+    "remember-the-maine": {
+      "tier": "direct",
+      "cdnSlug": "remember-the-maine"
+    },
+    "rattlesnake": {
+      "tier": "direct",
+      "cdnSlug": "rattlesnake"
+    },
+    "pendennis-club": {
+      "tier": "direct",
+      "cdnSlug": "pendennis-club"
+    },
+    "death-in-the-afternoon": {
+      "tier": "direct",
+      "cdnSlug": "death-in-the-afternoon"
+    },
+    "seelbach": {
+      "tier": "direct",
+      "cdnSlug": "seelbach"
+    },
+    "prince-of-wales": {
+      "tier": "direct",
+      "cdnSlug": "prince-of-wales"
+    },
+    "midnight-stinger": {
+      "tier": "direct",
+      "cdnSlug": "midnight-stinger"
+    },
+    "bentons-old-fashioned": {
+      "tier": "direct",
+      "cdnSlug": "bentons-old-fashioned"
+    },
+    "corn-n-oil": {
+      "tier": "direct",
+      "cdnSlug": "corn-n-oil"
+    },
+    "angostura-colada": {
+      "tier": "direct",
+      "cdnSlug": "angostura-colada"
+    },
+    "ti-punch": {
+      "tier": "direct",
+      "cdnSlug": "ti-punch"
+    },
+    "daisy-de-santiago": {
+      "tier": "direct",
+      "cdnSlug": "daisy-de-santiago"
+    },
+    "black-manhattan": {
+      "tier": "direct",
+      "cdnSlug": "black-manhattan"
+    },
+    "little-italy": {
+      "tier": "direct",
+      "cdnSlug": "little-italy"
+    },
+    "myrtle-bank-punch": {
+      "tier": "direct",
+      "cdnSlug": "myrtle-bank-punch"
+    },
+    "industry-sour": {
+      "tier": "direct",
+      "cdnSlug": "industry-sour"
+    },
+    "siesta": {
+      "tier": "direct",
+      "cdnSlug": "siesta"
+    },
+    "enzoni": {
+      "tier": "direct",
+      "cdnSlug": "enzoni"
+    },
+    "porto-flip": {
+      "tier": "direct",
+      "cdnSlug": "porto-flip"
+    },
+    "rum-flip": {
+      "tier": "direct",
+      "cdnSlug": "rum-flip"
+    },
+    "eggnog": {
+      "tier": "direct",
+      "cdnSlug": "eggnog"
+    },
+    "tom-and-jerry": {
+      "tier": "direct",
+      "cdnSlug": "tom-and-jerry"
+    },
+    "mulled-wine": {
+      "tier": "direct",
+      "cdnSlug": "mulled-wine"
+    },
+    "hot-buttered-rum": {
+      "tier": "direct",
+      "cdnSlug": "hot-buttered-rum"
+    },
+    "cafe-de-olla-cocktail": {
+      "tier": "direct",
+      "cdnSlug": "cafe-de-olla-cocktail"
+    },
+    "gluhwein": {
+      "tier": "direct",
+      "cdnSlug": "gluhwein"
+    },
+    "amaretto-coffee": {
+      "tier": "direct",
+      "cdnSlug": "amaretto-coffee"
+    },
+    "mexican-coffee": {
+      "tier": "direct",
+      "cdnSlug": "mexican-coffee"
+    },
+    "blood-orange-margarita": {
+      "tier": "direct",
+      "cdnSlug": "blood-orange-margarita"
+    },
+    "spicy-margarita": {
+      "tier": "direct",
+      "cdnSlug": "spicy-margarita"
+    },
+    "picante-de-la-casa": {
+      "tier": "direct",
+      "cdnSlug": "picante-de-la-casa"
+    },
+    "mexican-firing-squad": {
+      "tier": "direct",
+      "cdnSlug": "mexican-firing-squad"
+    },
+    "batanga": {
+      "tier": "direct",
+      "cdnSlug": "batanga"
+    },
+    "ranch-water": {
+      "tier": "direct",
+      "cdnSlug": "ranch-water"
+    },
+    "cantarito": {
+      "tier": "direct",
+      "cdnSlug": "cantarito"
+    },
+    "vampiro": {
+      "tier": "direct",
+      "cdnSlug": "vampiro"
+    },
+    "bloody-mary": {
+      "tier": "direct",
+      "cdnSlug": "bloody-mary"
+    },
+    "bloody-caesar": {
+      "tier": "direct",
+      "cdnSlug": "bloody-caesar"
+    },
+    "red-snapper": {
+      "tier": "direct",
+      "cdnSlug": "red-snapper"
+    },
+    "michelada": {
+      "tier": "direct",
+      "cdnSlug": "michelada"
+    },
+    "shandy": {
+      "tier": "direct",
+      "cdnSlug": "shandy"
+    },
+    "radler": {
+      "tier": "direct",
+      "cdnSlug": "radler"
+    },
+    "garibaldi": {
+      "tier": "direct",
+      "cdnSlug": "garibaldi"
+    },
+    "carajillo": {
+      "tier": "direct",
+      "cdnSlug": "carajillo"
+    },
+    "white-negroni": {
+      "tier": "direct",
+      "cdnSlug": "white-negroni"
+    },
+    "suffering-bastard-cairo": {
+      "tier": "direct",
+      "cdnSlug": "suffering-bastard-cairo"
+    },
+    "aperol-sour": {
+      "tier": "direct",
+      "cdnSlug": "aperol-sour"
+    },
+    "campari-sour": {
+      "tier": "direct",
+      "cdnSlug": "campari-sour"
+    },
+    "gin-sour": {
+      "tier": "direct",
+      "cdnSlug": "gin-sour"
+    },
+    "brandy-sour": {
+      "tier": "direct",
+      "cdnSlug": "brandy-sour"
+    },
+    "tequila-sour": {
+      "tier": "direct",
+      "cdnSlug": "tequila-sour"
+    },
+    "mezcal-sour": {
+      "tier": "direct",
+      "cdnSlug": "mezcal-sour"
+    },
+    "vodka-sour": {
+      "tier": "direct",
+      "cdnSlug": "vodka-sour"
+    },
+    "rum-sour": {
+      "tier": "direct",
+      "cdnSlug": "rum-sour"
+    },
+    "jungle-bird-modern": {
+      "tier": "direct",
+      "cdnSlug": "jungle-bird-modern"
+    },
+    "rum-swizzle": {
+      "tier": "direct",
+      "cdnSlug": "rum-swizzle"
+    },
+    "queens-park-swizzle": {
+      "tier": "direct",
+      "cdnSlug": "queens-park-swizzle"
+    },
+    "prescription-julep": {
+      "tier": "direct",
+      "cdnSlug": "prescription-julep"
+    },
+    "mint-condition": {
+      "tier": "direct",
+      "cdnSlug": "mint-condition"
+    },
+    "bamboo-cocktail": {
+      "tier": "direct",
+      "cdnSlug": "bamboo-cocktail"
+    },
+    "coronation": {
+      "tier": "direct",
+      "cdnSlug": "coronation"
+    },
+    "shirley-temple": {
+      "tier": "direct",
+      "cdnSlug": "shirley-temple"
+    },
+    "virgin-mojito": {
+      "tier": "direct",
+      "cdnSlug": "virgin-mojito"
+    },
+    "seedlip-garden-spritz": {
+      "tier": "direct",
+      "cdnSlug": "seedlip-garden-spritz"
+    },
+    "nojito": {
+      "tier": "direct",
+      "cdnSlug": "nojito"
+    },
+    "kumquat-caipirinha": {
+      "tier": "direct",
+      "cdnSlug": "kumquat-caipirinha"
+    },
+    "caipiroska": {
+      "tier": "direct",
+      "cdnSlug": "caipiroska"
+    },
+    "batida-de-coco": {
+      "tier": "direct",
+      "cdnSlug": "batida-de-coco"
+    },
+    "batida-de-maracuja": {
+      "tier": "direct",
+      "cdnSlug": "batida-de-maracuja"
+    },
+    "rabo-de-galo": {
+      "tier": "direct",
+      "cdnSlug": "rabo-de-galo"
+    },
+    "chilcano": {
+      "tier": "direct",
+      "cdnSlug": "chilcano"
+    },
+    "capitan": {
+      "tier": "direct",
+      "cdnSlug": "capitan"
+    },
+    "pisco-punch": {
+      "tier": "direct",
+      "cdnSlug": "pisco-punch"
+    },
+    "sake-martini": {
+      "tier": "direct",
+      "cdnSlug": "sake-martini"
+    },
+    "sake-mojito": {
+      "tier": "direct",
+      "cdnSlug": "sake-mojito"
+    },
+    "lemon-drop-martini": {
+      "tier": "direct",
+      "cdnSlug": "lemon-drop-martini"
+    },
+    "appletini": {
+      "tier": "direct",
+      "cdnSlug": "appletini"
+    },
+    "chocolate-martini": {
+      "tier": "direct",
+      "cdnSlug": "chocolate-martini"
+    },
+    "french-martini": {
+      "tier": "direct",
+      "cdnSlug": "french-martini"
+    },
+    "cucumber-martini": {
+      "tier": "direct",
+      "cdnSlug": "cucumber-martini"
+    },
+    "elderflower-martini": {
+      "tier": "direct",
+      "cdnSlug": "elderflower-martini"
+    },
+    "espresso-old-fashioned": {
+      "tier": "direct",
+      "cdnSlug": "espresso-old-fashioned"
+    },
+    "pornstar-fizz": {
+      "tier": "direct",
+      "cdnSlug": "pornstar-fizz"
+    },
+    "elderflower-collins": {
+      "tier": "direct",
+      "cdnSlug": "elderflower-collins"
+    },
+    "vodka-collins": {
+      "tier": "direct",
+      "cdnSlug": "vodka-collins"
+    },
+    "john-collins": {
+      "tier": "direct",
+      "cdnSlug": "john-collins"
+    },
+    "whiskey-buck": {
+      "tier": "direct",
+      "cdnSlug": "whiskey-buck"
+    },
+    "gin-buck": {
+      "tier": "direct",
+      "cdnSlug": "gin-buck"
+    },
+    "horses-neck": {
+      "tier": "direct",
+      "cdnSlug": "horses-neck"
+    },
+    "presbyterian": {
+      "tier": "direct",
+      "cdnSlug": "presbyterian"
+    },
+    "gin-gin-mule": {
+      "tier": "direct",
+      "cdnSlug": "gin-gin-mule"
+    },
+    "sapphire-gimlet": {
+      "tier": "direct",
+      "cdnSlug": "sapphire-gimlet"
+    },
+    "sgroppino": {
+      "tier": "direct",
+      "cdnSlug": "sgroppino"
+    },
+    "paloma-rosa": {
+      "tier": "direct",
+      "cdnSlug": "paloma-rosa"
+    },
+    "gold-fashioned": {
+      "tier": "direct",
+      "cdnSlug": "gold-fashioned"
+    },
+    "naked-martini": {
+      "tier": "direct",
+      "cdnSlug": "naked-martini"
+    },
+    "perfect-manhattan": {
+      "tier": "direct",
+      "cdnSlug": "perfect-manhattan"
+    },
+    "perfect-martini": {
+      "tier": "direct",
+      "cdnSlug": "perfect-martini"
+    },
+    "dry-manhattan": {
+      "tier": "direct",
+      "cdnSlug": "dry-manhattan"
+    },
+    "bamboo-dry": {
+      "tier": "direct",
+      "cdnSlug": "bamboo-dry"
+    },
+    "kombucha-cocktail": {
+      "tier": "direct",
+      "cdnSlug": "kombucha-cocktail"
+    },
+    "rosemary-gin-fizz": {
+      "tier": "direct",
+      "cdnSlug": "rosemary-gin-fizz"
+    },
+    "watermelon-margarita": {
+      "tier": "direct",
+      "cdnSlug": "watermelon-margarita"
+    },
+    "cucumber-collins": {
+      "tier": "direct",
+      "cdnSlug": "cucumber-collins"
+    },
+    "lavender-collins": {
+      "tier": "direct",
+      "cdnSlug": "lavender-collins"
+    },
+    "bicicletta": {
+      "tier": "direct",
+      "cdnSlug": "bicicletta"
+    },
+    "bamboo-reverse": {
+      "tier": "direct",
+      "cdnSlug": "bamboo-reverse"
+    },
+    "rebujito": {
+      "tier": "direct",
+      "cdnSlug": "rebujito"
+    },
+    "sbagliato-fizz": {
+      "tier": "direct",
+      "cdnSlug": "sbagliato-fizz"
+    },
+    "gin-daisy": {
+      "tier": "direct",
+      "cdnSlug": "gin-daisy"
+    },
+    "whiskey-daisy": {
+      "tier": "direct",
+      "cdnSlug": "whiskey-daisy"
+    },
+    "stone-fence": {
+      "tier": "direct",
+      "cdnSlug": "stone-fence"
+    },
+    "applejack-rabbit": {
+      "tier": "direct",
+      "cdnSlug": "applejack-rabbit"
+    },
+    "widows-kiss": {
+      "tier": "direct",
+      "cdnSlug": "widows-kiss"
+    },
+    "diamondback": {
+      "tier": "direct",
+      "cdnSlug": "diamondback"
+    },
+    "alaska": {
+      "tier": "direct",
+      "cdnSlug": "alaska"
+    },
+    "champs-elysees": {
+      "tier": "direct",
+      "cdnSlug": "champs-elysees"
+    },
+    "greenpoint": {
+      "tier": "direct",
+      "cdnSlug": "greenpoint"
+    },
+    "red-hook": {
+      "tier": "direct",
+      "cdnSlug": "red-hook"
+    },
+    "brooklyn": {
+      "tier": "direct",
+      "cdnSlug": "brooklyn"
+    },
+    "bensonhurst": {
+      "tier": "direct",
+      "cdnSlug": "bensonhurst"
+    },
+    "carroll-gardens": {
+      "tier": "direct",
+      "cdnSlug": "carroll-gardens"
+    },
+    "fancy-free": {
+      "tier": "direct",
+      "cdnSlug": "fancy-free"
+    },
+    "de-la-louisiane": {
+      "tier": "direct",
+      "cdnSlug": "de-la-louisiane"
+    },
+    "blinker": {
+      "tier": "direct",
+      "cdnSlug": "blinker"
+    },
+    "scofflaw": {
+      "tier": "direct",
+      "cdnSlug": "scofflaw"
+    },
+    "boulevardier-rye": {
+      "tier": "direct",
+      "cdnSlug": "boulevardier-rye"
+    },
+    "toronto-cocktail": {
+      "tier": "direct",
+      "cdnSlug": "toronto-cocktail"
+    },
+    "revolver": {
+      "tier": "direct",
+      "cdnSlug": "revolver"
+    },
+    "black-flip": {
+      "tier": "direct",
+      "cdnSlug": "black-flip"
+    },
+    "chartreuse-mule": {
+      "tier": "direct",
+      "cdnSlug": "chartreuse-mule"
+    },
+    "bitter-giuseppe": {
+      "tier": "direct",
+      "cdnSlug": "bitter-giuseppe"
+    },
+    "black-manhattan-averna": {
+      "tier": "direct",
+      "cdnSlug": "black-manhattan-averna"
+    },
+    "trident": {
+      "tier": "direct",
+      "cdnSlug": "trident"
+    },
+    "toronto-flip": {
+      "tier": "direct",
+      "cdnSlug": "toronto-flip"
+    },
+    "gin-and-juice": {
+      "tier": "direct",
+      "cdnSlug": "gin-and-juice"
+    },
+    "southside-fizz": {
+      "tier": "direct",
+      "cdnSlug": "southside-fizz"
+    },
+    "suffering-bastard-original": {
+      "tier": "direct",
+      "cdnSlug": "suffering-bastard-original"
+    },
+    "pimms-cup": {
+      "tier": "direct",
+      "cdnSlug": "pimms-cup"
+    },
+    "fish-house-punch": {
+      "tier": "direct",
+      "cdnSlug": "fish-house-punch"
+    },
+    "chatham-artillery-punch": {
+      "tier": "direct",
+      "cdnSlug": "chatham-artillery-punch"
+    },
+    "champagne-punch": {
+      "tier": "direct",
+      "cdnSlug": "champagne-punch"
+    },
+    "planters-punch-classic": {
+      "tier": "direct",
+      "cdnSlug": "planters-punch-classic"
+    },
+    "philly-fish-house-punch": {
+      "tier": "direct",
+      "cdnSlug": "philly-fish-house-punch"
+    },
+    "sangaree": {
+      "tier": "direct",
+      "cdnSlug": "sangaree"
+    },
+    "snowball": {
+      "tier": "direct",
+      "cdnSlug": "snowball"
+    },
+    "freddy-fudpucker": {
+      "tier": "direct",
+      "cdnSlug": "freddy-fudpucker"
+    },
+    "hemingway-hammer": {
+      "tier": "direct",
+      "cdnSlug": "hemingway-hammer"
+    },
+    "anejo-highball": {
+      "tier": "direct",
+      "cdnSlug": "anejo-highball"
+    },
+    "kentucky-colonel": {
+      "tier": "direct",
+      "cdnSlug": "kentucky-colonel"
+    },
+    "rum-martinez": {
+      "tier": "direct",
+      "cdnSlug": "rum-martinez"
+    },
+    "latin-quarter": {
+      "tier": "direct",
+      "cdnSlug": "latin-quarter"
+    },
+    "rosita": {
+      "tier": "direct",
+      "cdnSlug": "rosita"
+    },
+    "la-perla": {
+      "tier": "direct",
+      "cdnSlug": "la-perla"
+    },
+    "brave-bull": {
+      "tier": "direct",
+      "cdnSlug": "brave-bull"
+    },
+    "paloma-negra": {
+      "tier": "direct",
+      "cdnSlug": "paloma-negra"
+    },
+    "mezcal-paloma": {
+      "tier": "direct",
+      "cdnSlug": "mezcal-paloma"
+    },
+    "left-hand": {
+      "tier": "direct",
+      "cdnSlug": "left-hand"
+    },
+    "right-hand": {
+      "tier": "direct",
+      "cdnSlug": "right-hand"
+    },
+    "ace": {
+      "tier": "direct",
+      "cdnSlug": "ace"
+    },
+    "bee-sting": {
+      "tier": "direct",
+      "cdnSlug": "bee-sting"
+    },
+    "thunderbolt": {
+      "tier": "direct",
+      "cdnSlug": "thunderbolt"
+    },
+    "green-ghost": {
+      "tier": "direct",
+      "cdnSlug": "green-ghost"
+    },
+    "jack-and-coke": {
+      "tier": "direct",
+      "cdnSlug": "jack-and-coke"
+    },
+    "godmother": {
+      "tier": "direct",
+      "cdnSlug": "godmother"
+    },
+    "madras": {
+      "tier": "direct",
+      "cdnSlug": "madras"
+    },
+    "woo-woo": {
+      "tier": "direct",
+      "cdnSlug": "woo-woo"
+    },
+    "sex-on-the-beach": {
+      "tier": "direct",
+      "cdnSlug": "sex-on-the-beach"
+    },
+    "fuzzy-navel": {
+      "tier": "direct",
+      "cdnSlug": "fuzzy-navel"
+    },
+    "sloe-gin-fizz": {
+      "tier": "direct",
+      "cdnSlug": "sloe-gin-fizz"
+    },
+    "sloe-gin-negroni": {
+      "tier": "direct",
+      "cdnSlug": "sloe-gin-negroni"
+    },
+    "southside-royale": {
+      "tier": "direct",
+      "cdnSlug": "southside-royale"
+    },
+    "whiskey-highball": {
+      "tier": "direct",
+      "cdnSlug": "whiskey-highball"
+    },
+    "mizuwari": {
+      "tier": "direct",
+      "cdnSlug": "mizuwari"
+    },
+    "bamboo-sweet": {
+      "tier": "direct",
+      "cdnSlug": "bamboo-sweet"
+    },
+    "whiskey-cobbler": {
+      "tier": "direct",
+      "cdnSlug": "whiskey-cobbler"
+    },
+    "brandy-cobbler": {
+      "tier": "direct",
+      "cdnSlug": "brandy-cobbler"
+    },
+    "porto-tonico": {
+      "tier": "direct",
+      "cdnSlug": "porto-tonico"
+    },
+    "sherry-and-tonic": {
+      "tier": "direct",
+      "cdnSlug": "sherry-and-tonic"
+    },
+    "tinto-de-verano": {
+      "tier": "direct",
+      "cdnSlug": "tinto-de-verano"
+    },
+    "kalimotxo": {
+      "tier": "direct",
+      "cdnSlug": "kalimotxo"
+    },
+    "vermouth-and-soda": {
+      "tier": "direct",
+      "cdnSlug": "vermouth-and-soda"
+    },
+    "dry-vermouth-on-the-rocks": {
+      "tier": "direct",
+      "cdnSlug": "dry-vermouth-on-the-rocks"
+    },
+    "cynar-and-soda": {
+      "tier": "direct",
+      "cdnSlug": "cynar-and-soda"
+    },
+    "suze-and-tonic": {
+      "tier": "direct",
+      "cdnSlug": "suze-and-tonic"
+    },
+    "old-hickory": {
+      "tier": "direct",
+      "cdnSlug": "old-hickory"
+    },
+    "chrysanthemum-modern": {
+      "tier": "direct",
+      "cdnSlug": "chrysanthemum-modern"
+    },
+    "martinez-modern": {
+      "tier": "direct",
+      "cdnSlug": "martinez-modern"
+    },
+    "honey-bee": {
+      "tier": "direct",
+      "cdnSlug": "honey-bee"
+    },
+    "jungle-juice": {
+      "tier": "direct",
+      "cdnSlug": "jungle-juice"
+    },
+    "amaretto-stone-sour": {
+      "tier": "direct",
+      "cdnSlug": "amaretto-stone-sour"
+    },
+    "lynchburg-lemonade": {
+      "tier": "direct",
+      "cdnSlug": "lynchburg-lemonade"
+    },
+    "alabama-slammer": {
+      "tier": "direct",
+      "cdnSlug": "alabama-slammer"
+    },
+    "buttery-nipple": {
+      "tier": "direct",
+      "cdnSlug": "buttery-nipple"
+    },
+    "cement-mixer": {
+      "tier": "direct",
+      "cdnSlug": "cement-mixer"
+    },
+    "mind-eraser": {
+      "tier": "direct",
+      "cdnSlug": "mind-eraser"
+    },
+    "flaming-dr-pepper": {
+      "tier": "direct",
+      "cdnSlug": "flaming-dr-pepper"
+    },
+    "irish-car-bomb": {
+      "tier": "direct",
+      "cdnSlug": "irish-car-bomb"
+    },
+    "pickleback": {
+      "tier": "direct",
+      "cdnSlug": "pickleback"
+    },
+    "lemon-basil-martini": {
+      "tier": "direct",
+      "cdnSlug": "lemon-basil-martini"
+    },
+    "peach-margarita": {
+      "tier": "direct",
+      "cdnSlug": "peach-margarita"
+    },
+    "rose-spritz": {
+      "tier": "direct",
+      "cdnSlug": "rose-spritz"
+    },
+    "vodka-gimlet": {
+      "tier": "direct",
+      "cdnSlug": "vodka-gimlet"
+    },
+    "amaretto-colada": {
+      "tier": "direct",
+      "cdnSlug": "amaretto-colada"
+    },
+    "rum-and-raisin-old-fashioned": {
+      "tier": "direct",
+      "cdnSlug": "rum-and-raisin-old-fashioned"
+    },
+    "negroni-bianco-sweet": {
+      "tier": "direct",
+      "cdnSlug": "negroni-bianco-sweet"
+    },
+    "highland-fling": {
+      "tier": "direct",
+      "cdnSlug": "highland-fling"
+    },
+    "rob-roy-dry": {
+      "tier": "direct",
+      "cdnSlug": "rob-roy-dry"
+    },
+    "rob-roy-perfect": {
+      "tier": "direct",
+      "cdnSlug": "rob-roy-perfect"
+    },
+    "blood-orange-negroni": {
+      "tier": "direct",
+      "cdnSlug": "blood-orange-negroni"
+    },
+    "sparkling-negroni": {
+      "tier": "direct",
+      "cdnSlug": "sparkling-negroni"
+    },
+    "bitter-lemon": {
+      "tier": "direct",
+      "cdnSlug": "bitter-lemon"
+    },
+    "vodka-gimlet-classic": {
+      "tier": "direct",
+      "cdnSlug": "vodka-gimlet-classic"
+    },
+    "paper-plane-mezcal": {
+      "tier": "direct",
+      "cdnSlug": "paper-plane-mezcal"
+    },
+    "spiced-pear-fizz": {
+      "tier": "direct",
+      "cdnSlug": "spiced-pear-fizz"
+    },
+    "gold-rush-variation": {
+      "tier": "direct",
+      "cdnSlug": "gold-rush-variation"
+    },
+    "aquavit-sour": {
+      "tier": "direct",
+      "cdnSlug": "aquavit-sour"
+    },
+    "nordic-mule": {
+      "tier": "direct",
+      "cdnSlug": "nordic-mule"
+    },
+    "doctor-cocktail": {
+      "tier": "direct",
+      "cdnSlug": "doctor-cocktail"
+    },
+    "gimlet-rose": {
+      "tier": "direct",
+      "cdnSlug": "gimlet-rose"
+    },
+    "rye-buck": {
+      "tier": "direct",
+      "cdnSlug": "rye-buck"
+    },
+    "cognac-and-soda": {
+      "tier": "direct",
+      "cdnSlug": "cognac-and-soda"
+    },
+    "french-connection": {
+      "tier": "direct",
+      "cdnSlug": "french-connection"
+    },
+    "sazerac-cognac": {
+      "tier": "direct",
+      "cdnSlug": "sazerac-cognac"
+    },
+    "stork-club": {
+      "tier": "direct",
+      "cdnSlug": "stork-club"
+    },
+    "el-floridita-daiquiri": {
+      "tier": "direct",
+      "cdnSlug": "el-floridita-daiquiri"
+    },
+    "dark-and-lovely": {
+      "tier": "direct",
+      "cdnSlug": "dark-and-lovely"
+    },
+    "peach-bourbon-smash": {
+      "tier": "direct",
+      "cdnSlug": "peach-bourbon-smash"
+    },
+    "genever-cocktail": {
+      "tier": "direct",
+      "cdnSlug": "genever-cocktail"
+    },
+    "gin-and-it": {
+      "tier": "direct",
+      "cdnSlug": "gin-and-it"
+    },
+    "pink-gin": {
+      "tier": "direct",
+      "cdnSlug": "pink-gin"
+    },
+    "corpse-reviver-blue": {
+      "tier": "direct",
+      "cdnSlug": "corpse-reviver-blue"
+    },
+    "fernandito": {
+      "tier": "direct",
+      "cdnSlug": "fernandito"
+    },
+    "mezcal-old-fashioned": {
+      "tier": "direct",
+      "cdnSlug": "mezcal-old-fashioned"
+    },
+    "smoky-margarita": {
+      "tier": "direct",
+      "cdnSlug": "smoky-margarita"
+    },
+    "infante": {
+      "tier": "direct",
+      "cdnSlug": "infante"
+    },
+    "grilled-pineapple-mezcal": {
+      "tier": "direct",
+      "cdnSlug": "grilled-pineapple-mezcal"
+    },
+    "mango-daiquiri": {
+      "tier": "direct",
+      "cdnSlug": "mango-daiquiri"
+    },
+    "frozen-negroni": {
+      "tier": "direct",
+      "cdnSlug": "frozen-negroni"
+    },
+    "hugo": {
+      "tier": "direct",
+      "cdnSlug": "hugo"
+    },
+    "blackberry-bourbon-smash": {
+      "tier": "direct",
+      "cdnSlug": "blackberry-bourbon-smash"
+    },
+    "raspberry-gimlet": {
+      "tier": "direct",
+      "cdnSlug": "raspberry-gimlet"
+    },
+    "improved-pisco-sour": {
+      "tier": "direct",
+      "cdnSlug": "improved-pisco-sour"
+    },
+    "canchanchara": {
+      "tier": "direct",
+      "cdnSlug": "canchanchara"
+    },
+    "pineapple-mezcal-mule": {
+      "tier": "direct",
+      "cdnSlug": "pineapple-mezcal-mule"
+    },
+    "ginger-margarita": {
+      "tier": "direct",
+      "cdnSlug": "ginger-margarita"
+    },
+    "hot-honey-old-fashioned": {
+      "tier": "direct",
+      "cdnSlug": "hot-honey-old-fashioned"
+    },
+    "cucumber-gin-and-tonic": {
+      "tier": "direct",
+      "cdnSlug": "cucumber-gin-and-tonic"
+    },
+    "rye-and-ginger": {
+      "tier": "direct",
+      "cdnSlug": "rye-and-ginger"
+    },
+    "bourbon-and-branch": {
+      "tier": "direct",
+      "cdnSlug": "bourbon-and-branch"
+    },
+    "mai-tai-modern": {
+      "tier": "direct",
+      "cdnSlug": "mai-tai-modern"
+    },
+    "cucumber-sake-martini": {
+      "tier": "direct",
+      "cdnSlug": "cucumber-sake-martini"
+    },
+    "scotch-and-soda": {
+      "tier": "direct",
+      "cdnSlug": "scotch-and-soda"
+    },
+    "bobby-burns-variation": {
+      "tier": "direct",
+      "cdnSlug": "bobby-burns-variation"
+    },
+    "clover-club-dry": {
+      "tier": "direct",
+      "cdnSlug": "clover-club-dry"
+    },
+    "air-mail": {
+      "tier": "direct",
+      "cdnSlug": "air-mail"
+    },
+    "caramel-apple-martini": {
+      "tier": "direct",
+      "cdnSlug": "caramel-apple-martini"
+    },
+    "tiki-torch": {
+      "tier": "direct",
+      "cdnSlug": "tiki-torch"
+    },
+    "port-and-tonic": {
+      "tier": "direct",
+      "cdnSlug": "port-and-tonic"
+    },
+    "sherry-flip": {
+      "tier": "direct",
+      "cdnSlug": "sherry-flip"
+    },
+    "chartreuse-and-tonic": {
+      "tier": "direct",
+      "cdnSlug": "chartreuse-and-tonic"
+    },
+    "fino-sour": {
+      "tier": "direct",
+      "cdnSlug": "fino-sour"
+    },
+    "hot-gin-toddy": {
+      "tier": "direct",
+      "cdnSlug": "hot-gin-toddy"
+    },
+    "rum-negroni": {
+      "tier": "direct",
+      "cdnSlug": "rum-negroni"
+    },
+    "bees-kiss": {
+      "tier": "direct",
+      "cdnSlug": "bees-kiss"
+    },
+    "trade-winds": {
+      "tier": "direct",
+      "cdnSlug": "trade-winds"
+    },
+    "dr-funk": {
+      "tier": "direct",
+      "cdnSlug": "dr-funk"
+    },
+    "port-light": {
+      "tier": "direct",
+      "cdnSlug": "port-light"
+    },
+    "port-au-prince": {
+      "tier": "direct",
+      "cdnSlug": "port-au-prince"
+    },
+    "rum-daisy": {
+      "tier": "direct",
+      "cdnSlug": "rum-daisy"
+    },
+    "rum-fix": {
+      "tier": "direct",
+      "cdnSlug": "rum-fix"
+    },
+    "bermuda-rum-swizzle": {
+      "tier": "direct",
+      "cdnSlug": "bermuda-rum-swizzle"
+    },
+    "bitter-mai-tai": {
+      "tier": "direct",
+      "cdnSlug": "bitter-mai-tai"
+    },
+    "derby": {
+      "tier": "direct",
+      "cdnSlug": "derby"
+    },
+    "whiskey-fix": {
+      "tier": "direct",
+      "cdnSlug": "whiskey-fix"
+    },
+    "gin-fix": {
+      "tier": "direct",
+      "cdnSlug": "gin-fix"
+    },
+    "smoked-old-fashioned": {
+      "tier": "direct",
+      "cdnSlug": "smoked-old-fashioned"
+    },
+    "boulevardier-blanc": {
+      "tier": "direct",
+      "cdnSlug": "boulevardier-blanc"
+    },
+    "turf-cocktail": {
+      "tier": "direct",
+      "cdnSlug": "turf-cocktail"
+    },
+    "tuxedo-no-2": {
+      "tier": "direct",
+      "cdnSlug": "tuxedo-no-2"
+    },
+    "hemingway-margarita": {
+      "tier": "direct",
+      "cdnSlug": "hemingway-margarita"
+    },
+    "black-thorn": {
+      "tier": "direct",
+      "cdnSlug": "black-thorn"
+    },
+    "claridge": {
+      "tier": "direct",
+      "cdnSlug": "claridge"
+    },
+    "communist": {
+      "tier": "direct",
+      "cdnSlug": "communist"
+    },
+    "gin-and-sin": {
+      "tier": "direct",
+      "cdnSlug": "gin-and-sin"
+    },
+    "maidens-prayer": {
+      "tier": "direct",
+      "cdnSlug": "maidens-prayer"
+    },
+    "paradise-cocktail": {
+      "tier": "direct",
+      "cdnSlug": "paradise-cocktail"
+    },
+    "income-tax-cocktail": {
+      "tier": "direct",
+      "cdnSlug": "income-tax-cocktail"
+    },
+    "orange-blossom": {
+      "tier": "direct",
+      "cdnSlug": "orange-blossom"
+    },
+    "mamie-taylor": {
+      "tier": "direct",
+      "cdnSlug": "mamie-taylor"
+    },
+    "penicillin-royale": {
+      "tier": "direct",
+      "cdnSlug": "penicillin-royale"
+    },
+    "espresso-negroni": {
+      "tier": "direct",
+      "cdnSlug": "espresso-negroni"
+    },
+    "dark-and-handsome": {
+      "tier": "direct",
+      "cdnSlug": "dark-and-handsome"
+    },
+    "el-diablo-mezcal": {
+      "tier": "direct",
+      "cdnSlug": "el-diablo-mezcal"
+    },
+    "rum-and-coke": {
+      "tier": "direct",
+      "cdnSlug": "rum-and-coke"
+    },
+    "gin-tonica": {
+      "tier": "direct",
+      "cdnSlug": "gin-tonica"
+    },
+    "suffering-bastard-joes": {
+      "tier": "direct",
+      "cdnSlug": "suffering-bastard-joes"
+    },
+    "daisy-buchanan": {
+      "tier": "direct",
+      "cdnSlug": "daisy-buchanan"
+    },
+    "last-mechanical-art": {
+      "tier": "direct",
+      "cdnSlug": "last-mechanical-art"
+    },
+    "vieux-mot": {
+      "tier": "direct",
+      "cdnSlug": "vieux-mot"
+    },
+    "the-word": {
+      "tier": "direct",
+      "cdnSlug": "the-word"
+    },
+    "greenpoint-original": {
+      "tier": "direct",
+      "cdnSlug": "greenpoint-original"
+    },
+    "new-york-sour-classic": {
+      "tier": "direct",
+      "cdnSlug": "new-york-sour-classic"
+    },
+    "night-cap": {
+      "tier": "direct",
+      "cdnSlug": "night-cap"
+    },
+    "absinthe-frappe": {
+      "tier": "direct",
+      "cdnSlug": "absinthe-frappe"
+    },
+    "hemingway-gin-and-tonic": {
+      "tier": "direct",
+      "cdnSlug": "hemingway-gin-and-tonic"
+    },
+    "breakfast-martini": {
+      "tier": "direct",
+      "cdnSlug": "breakfast-martini"
+    },
+    "gin-rickey": {
+      "tier": "direct",
+      "cdnSlug": "gin-rickey"
+    },
+    "spaghett": {
+      "tier": "direct",
+      "cdnSlug": "spaghett"
+    },
+    "cynar-negroni": {
+      "tier": "direct",
+      "cdnSlug": "cynar-negroni"
+    },
+    "old-cuban": {
+      "tier": "direct",
+      "cdnSlug": "old-cuban"
+    },
+    "nuclear-daiquiri": {
+      "tier": "direct",
+      "cdnSlug": "nuclear-daiquiri"
+    },
+    "maximilian-affair": {
+      "tier": "direct",
+      "cdnSlug": "maximilian-affair"
+    },
+    "brooklynite": {
+      "tier": "direct",
+      "cdnSlug": "brooklynite"
+    },
+    "hotel-nacional-special": {
+      "tier": "direct",
+      "cdnSlug": "hotel-nacional-special"
+    },
+    "kentucky-buck": {
+      "tier": "direct",
+      "cdnSlug": "kentucky-buck"
+    },
+    "slope": {
+      "tier": "direct",
+      "cdnSlug": "slope"
+    },
+    "affinity": {
+      "tier": "direct",
+      "cdnSlug": "affinity"
+    },
+    "toreador": {
+      "tier": "direct",
+      "cdnSlug": "toreador"
+    },
+    "cobble-hill": {
+      "tier": "direct",
+      "cdnSlug": "cobble-hill"
+    },
+    "newark": {
+      "tier": "direct",
+      "cdnSlug": "newark"
+    },
+    "conference": {
+      "tier": "direct",
+      "cdnSlug": "conference"
+    },
+    "mexican-55": {
+      "tier": "direct",
+      "cdnSlug": "mexican-55"
+    },
+    "saoco": {
+      "tier": "direct",
+      "cdnSlug": "saoco"
+    },
+    "pearl-diver": {
+      "tier": "missing"
+    },
+    "aku-aku": {
+      "tier": "missing"
+    },
+    "nui-nui": {
+      "tier": "missing"
+    },
+    "rum-barrel": {
+      "tier": "missing"
+    },
+    "doctor-funk": {
+      "tier": "missing"
+    },
+    "dons-beachcomber": {
+      "tier": "missing"
+    },
+    "caribbean-punch": {
+      "tier": "missing"
+    },
+    "royal-bermuda-yacht-club": {
+      "tier": "missing"
+    },
+    "saturn-variation": {
+      "tier": "trusted-override",
+      "cdnSlug": "saturn"
+    },
+    "mai-tai-royal-hawaiian": {
+      "tier": "trusted-override",
+      "cdnSlug": "mai-tai"
+    },
+    "mai-tai-trader-vics": {
+      "tier": "trusted-override",
+      "cdnSlug": "mai-tai"
+    },
+    "beachcombers-gold": {
+      "tier": "missing"
+    },
+    "halekulani": {
+      "tier": "missing"
+    },
+    "taboo-tiki": {
+      "tier": "missing"
+    },
+    "cobras-breath": {
+      "tier": "missing"
+    },
+    "kon-tiki": {
+      "tier": "missing"
+    },
+    "shrunken-skull": {
+      "tier": "missing"
+    },
+    "vicious-virgin": {
+      "tier": "missing"
+    },
+    "navy-grog-modern": {
+      "tier": "trusted-override",
+      "cdnSlug": "navy-grog"
+    },
+    "penicillin-smoky": {
+      "tier": "trusted-override",
+      "cdnSlug": "penicillin"
+    },
+    "paper-plane-split": {
+      "tier": "trusted-override",
+      "cdnSlug": "paper-plane"
+    },
+    "naked-famous-reposado": {
+      "tier": "missing"
+    },
+    "gold-rush-honey": {
+      "tier": "trusted-override",
+      "cdnSlug": "gold-rush"
+    },
+    "boulevardier-perfect": {
+      "tier": "trusted-override",
+      "cdnSlug": "boulevardier"
+    },
+    "old-pal-rye": {
+      "tier": "trusted-override",
+      "cdnSlug": "old-pal"
+    },
+    "jungle-bird-mezcal": {
+      "tier": "trusted-override",
+      "cdnSlug": "jungle-bird"
+    },
+    "chartreuse-swizzle-yellow": {
+      "tier": "trusted-override",
+      "cdnSlug": "chartreuse-swizzle"
+    },
+    "corpse-reviver-cynar": {
+      "tier": "missing"
+    },
+    "bees-knees-lavender": {
+      "tier": "trusted-override",
+      "cdnSlug": "bees-knees"
+    },
+    "aviation-violette": {
+      "tier": "trusted-override",
+      "cdnSlug": "aviation"
+    },
+    "hemingway-daiquiri-papa-doble": {
+      "tier": "trusted-override",
+      "cdnSlug": "hemingway-daiquiri"
+    },
+    "ward-eight-boston": {
+      "tier": "trusted-override",
+      "cdnSlug": "ward-eight"
+    },
+    "remember-the-alamo": {
+      "tier": "missing"
+    },
+    "income-tax": {
+      "tier": "missing"
+    },
+    "bronx-cocktail": {
+      "tier": "trusted-override",
+      "cdnSlug": "bronx"
+    },
+    "blood-and-sand-smoky": {
+      "tier": "trusted-override",
+      "cdnSlug": "blood-and-sand"
+    },
+    "caipirinha-passion": {
+      "tier": "trusted-override",
+      "cdnSlug": "caipirinha"
+    },
+    "pisco-sour-amargo": {
+      "tier": "trusted-override",
+      "cdnSlug": "pisco-sour"
+    },
+    "french-75-cognac": {
+      "tier": "trusted-override",
+      "cdnSlug": "french-75"
+    },
+    "singapore-sling-modern": {
+      "tier": "trusted-override",
+      "cdnSlug": "singapore-sling"
+    },
+    "ti-punch-spiced": {
+      "tier": "trusted-override",
+      "cdnSlug": "ti-punch"
+    },
+    "paloma-smoky": {
+      "tier": "trusted-override",
+      "cdnSlug": "paloma"
+    },
+    "irish-coffee-modern": {
+      "tier": "trusted-override",
+      "cdnSlug": "irish-coffee"
+    },
+    "sazerac-split-base": {
+      "tier": "trusted-override",
+      "cdnSlug": "sazerac"
+    },
+    "pumpkin-old-fashioned": {
+      "tier": "missing"
+    },
+    "apple-cider-mule": {
+      "tier": "missing"
+    },
+    "hot-toddy-spiced-rum": {
+      "tier": "trusted-override",
+      "cdnSlug": "hot-toddy"
+    },
+    "mulled-wine-spritz": {
+      "tier": "trusted-override",
+      "cdnSlug": "mulled-wine"
+    },
+    "peppermint-espresso-martini": {
+      "tier": "missing"
+    },
+    "cranberry-boulevardier": {
+      "tier": "missing"
+    },
+    "eggnog-spiked": {
+      "tier": "trusted-override",
+      "cdnSlug": "eggnog"
+    },
+    "clarified-milk-punch": {
+      "tier": "missing"
+    },
+    "fat-washed-negroni": {
+      "tier": "missing"
+    },
+    "tomato-leaf-gimlet": {
+      "tier": "missing"
+    },
+    "potted-parrot": {
+      "tier": "missing"
+    },
+    "tradewinds": {
+      "tier": "missing"
+    },
+    "chief-lapu-lapu": {
+      "tier": "missing"
+    },
+    "qb-cooler": {
+      "tier": "missing"
+    },
+    "ancient-mariner": {
+      "tier": "missing"
+    },
+    "151-swizzle": {
+      "tier": "missing"
+    },
+    "craft-ember-line": {
+      "tier": "missing"
+    },
+    "craft-velvet-compass": {
+      "tier": "missing"
+    },
+    "craft-copper-orchard": {
+      "tier": "missing"
+    },
+    "craft-midnight-saber": {
+      "tier": "missing"
+    },
+    "craft-tidepool-club": {
+      "tier": "missing"
+    },
+    "craft-laboratory-no-7": {
+      "tier": "missing"
+    },
+    "virgin-pina-colada": {
+      "tier": "missing"
+    },
+    "roy-rogers": {
+      "tier": "missing"
+    },
+    "cucumber-garden-cooler": {
+      "tier": "missing"
+    },
+    "hibiscus-ginger-fizz": {
+      "tier": "missing"
+    },
+    "sparkling-rosemary-grapefruit": {
+      "tier": "missing"
+    },
+    "salted-vanilla-cola-highball": {
+      "tier": "missing"
+    },
+    "green-detox-refresher": {
+      "tier": "missing"
+    },
+    "ginger-turmeric-spritzer": {
+      "tier": "missing"
+    },
+    "lavender-honey-lemonade": {
+      "tier": "missing"
+    },
+    "coconut-mint-hydration-cooler": {
+      "tier": "missing"
+    },
+    "virgin-sunrise-punch": {
+      "tier": "missing"
+    },
+    "sparkling-berry-party-cup": {
+      "tier": "missing"
+    },
+    "tropical-sunset-spritz": {
+      "tier": "missing"
+    },
+    "citrus-celebration-punch": {
+      "tier": "missing"
+    },
+    "iced-vanilla-coffee-shakerato": {
+      "tier": "missing"
+    },
+    "cold-brew-tonic": {
+      "tier": "missing"
+    },
+    "maple-mocha-cooler": {
+      "tier": "missing"
+    },
+    "espresso-sparkler": {
+      "tier": "missing"
+    },
+    "iced-london-fog": {
+      "tier": "missing"
+    },
+    "green-tea-ginger-refresher": {
+      "tier": "missing"
+    },
+    "chai-spiced-sparkler": {
+      "tier": "missing"
+    },
+    "hibiscus-iced-tea-lemonade": {
+      "tier": "missing"
+    }
+  }
+}

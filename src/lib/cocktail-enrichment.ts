@@ -28,7 +28,6 @@ type EnrichedFields = {
   era: CocktailEra;
   collections: CocktailCollection[];
   funFact: string;
-  cheekyLine?: string;
   method: string;
   tags: string[];
 };
@@ -157,29 +156,34 @@ function inferFunFact(
   const fromMovie = movieFact(raw);
   if (fromMovie) return fromMovie;
 
+  const spirits = raw.ingredients.filter((i) => i.type === "spirit").map((i) => i.name);
+  const juices = raw.ingredients.filter((i) => i.type === "juice").map((i) => i.name);
+  const base = spirits[0] ?? raw.ingredients[0]?.name ?? "spirit";
+  const citrus = juices[0] ?? "citrus";
+
   if (collections.includes("tiki")) {
-    return `${raw.name} belongs to the tiki tradition — elaborate, tropical, and built for escapism in a tall glass.`;
+    return `${raw.name} is a ${raw.method.toLowerCase()} tiki build—${spirits.join(" and ") || "rum"} with ${citrus.toLowerCase()} and spice. Attribution varies by recipe source.`;
   }
   if (collections.includes("craft-original")) {
-    return `${raw.name} was composed in the CRAFT Bar Lab — built for balance, not novelty.`;
+    return `${raw.name} was composed in the CRAFT Bar Lab—a ${raw.method.toLowerCase()} ${raw.family.toLowerCase()} built for balance, not novelty.`;
   }
   if (collections.includes("verified-classic")) {
-    return `${raw.name} is a verified classic — the kind of drink serious bars keep on permanent rotation.`;
+    return `${raw.name} is a ${raw.method.toLowerCase()} ${raw.family.toLowerCase()} built around ${base.toLowerCase()}—the sort of drink serious bars keep on rotation.`;
   }
   if (raw.tags.includes("modern-classic")) {
-    return `${raw.name} is part of the modern classics wave — post-2000 drinks that earned a permanent spot on serious bar menus.`;
+    return `${raw.name} is a post-2000 bar staple—${raw.method.toLowerCase()} ${base.toLowerCase()} with ${citrus.toLowerCase()} in support.`;
   }
   if (era === "pre-prohibition") {
-    return `${raw.name} carries pre-Prohibition DNA — a drink from the era when American cocktail culture was being defined.`;
+    return `${raw.name} follows an old American template—${raw.method.toLowerCase()} ${base.toLowerCase()} with ${citrus.toLowerCase()}, from the era when 'cocktail' was still being defined.`;
   }
   if (collections.includes("experimental")) {
-    return `${raw.name} pushes beyond the usual template with ${raw.ingredients.length} ingredients and a ${raw.method.toLowerCase()} build.`;
+    return `${raw.name} stretches the usual ${raw.family.toLowerCase()} shape—${raw.ingredients.length} ingredients, ${raw.method.toLowerCase()}, not shy about odd bottles.`;
   }
   if (collections.includes("hidden-gem")) {
-    return `${raw.name} flies under most radars — uncommon on home menus, but worth the hunt.`;
+    return `${raw.name} is an under-ordered ${raw.method.toLowerCase()} ${raw.family.toLowerCase()}—${base.toLowerCase()} and ${citrus.toLowerCase()} worth hunting down.`;
   }
 
-  return `${raw.name} is a ${raw.family.toLowerCase()} ${raw.method.toLowerCase()} cocktail — ${raw.tags.join(", ") || "house style"}.`;
+  return `${raw.name} is a ${raw.method.toLowerCase()} ${raw.family.toLowerCase()}—${base.toLowerCase()} with ${citrus.toLowerCase()} in the mix.`;
 }
 
 export function enrichCocktail(raw: RawCocktail, allCocktails: RawCocktail[]): EnrichedFields {
@@ -203,7 +207,6 @@ export function enrichCocktail(raw: RawCocktail, allCocktails: RawCocktail[]): E
     era,
     collections,
     funFact,
-    cheekyLine: provenance?.cheekyLine,
     method: raw.method,
     tags: raw.tags,
   };

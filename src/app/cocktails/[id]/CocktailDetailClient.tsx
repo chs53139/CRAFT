@@ -119,8 +119,9 @@ export function CocktailDetailClient() {
         </div>
 
         <h1 className="screen-title-large mt-5">{cocktail.name}</h1>
-        <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">{cocktail.description}</p>
-        <p className="mt-2 text-sm italic text-[var(--accent-dim)]">{cocktail.cheekyLine}</p>
+        {cocktail.description.trim() ? (
+          <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">{cocktail.description}</p>
+        ) : null}
 
         <div className="premium-card mt-6 px-4 py-4">
           <p className="eyebrow text-[var(--accent-dim)]">History & fun fact</p>

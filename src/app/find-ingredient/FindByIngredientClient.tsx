@@ -28,6 +28,7 @@ import {
 import { INVENTORY_TIERS, InventoryTier } from "@/lib/inventory-tiers";
 import { InventDrinkResponse, MixologistInvention } from "@/lib/mixologist/types";
 import { useMyBar } from "@/hooks/use-my-bar";
+import { isMixologistLaunchHidden } from "@/lib/feature-flags";
 
 const DEFAULT_FILTERS: IngredientSearchFilters = {
   mustInclude: [],
@@ -267,6 +268,7 @@ export default function FindByIngredientClient() {
             )}
           </section>
 
+          {!isMixologistLaunchHidden() && (
           <section className="app-section">
             <div>
               <h2 className="section-row-title">AI recommendations</h2>
@@ -293,6 +295,7 @@ export default function FindByIngredientClient() {
               </div>
             ) : null}
           </section>
+          )}
         </>
       )}
     </div>

@@ -1,6 +1,6 @@
 /**
- * Generates src/data/cocktail-provenance.json with unique taglines,
- * historically grounded years, and per-drink fun facts.
+ * Generates src/data/cocktail-provenance.json with drink-specific history,
+ * optional subtitles (never template spam), and catalogue fun facts.
  * Run: node scripts/generate-cocktail-provenance.mjs
  */
 import fs from "node:fs";
@@ -161,6 +161,36 @@ const KNOWN_HISTORY = {
   "craft-midnight-saber": { year: 2025, region: "CRAFT Bar Lab", source: "CRAFT Original", fact: "Mezcal, Campari, and vermouth — CRAFT's smoky Negroni for late hours." },
   "craft-tidepool-club": { year: 2025, region: "CRAFT Bar Lab", source: "CRAFT Original", fact: "CRAFT's tiki-leaning original — rum, orgeat, falernum, and lime with soda lift." },
   "craft-laboratory-no-7": { year: 2026, region: "CRAFT Bar Lab", source: "CRAFT Original", fact: "Gin, vermouth, elderflower, and absinthe rinse — CRAFT's experimental Martini-adjacent pour." },
+  "potted-parrot": {
+    year: 1950,
+    region: "Hollywood, USA",
+    source: "Don the Beachcomber / Beachbum Berry research",
+    fact: "An obscure Don the Beachcomber-era rum drink dug up in Jeff Berry's tiki research—tropical fruit and spice without the Mai Tai fame. Modern bars revived it for the name alone.",
+  },
+  "chief-lapu-lapu": {
+    year: 1960,
+    region: "Polynesian pop / American tiki",
+    source: "Trader Vic era menus",
+    fact: "Named for Lapu Lapu, the Filipino chieftain who resisted Magellan—Hawaiian-tiki kitsch in the name, rum and fruit punch in the glass. Recipes vary by book and bar.",
+  },
+  "qb-cooler": {
+    year: 1950,
+    region: "Hollywood, USA",
+    source: "Don the Beachcomber",
+    fact: "Jeff Berry traced the QB Cooler to Don the Beachcomber's mid-century menus—'QB' nods to the Queen's Park Swizzle family, but served long and cold like a cooler.",
+  },
+  "ancient-mariner": {
+    year: 2010,
+    region: "United States",
+    source: "Jeffrey Morgenthaler / Smuggler's Cove canon",
+    fact: "Jeffrey Morgenthaler's Demerara rum sour with grapefruit and allspice—printed in Smuggler's Cove and adopted fast by the modern tiki revival.",
+  },
+  "151-swizzle": {
+    year: 1960,
+    region: "Caribbean / American tiki",
+    source: "Overproof rum swizzle tradition",
+    fact: "Swizzled overproof rum drinks come from Caribbean bar culture; the '151' label marks the Bacardi 151 era of falernum-lime swizzles—crushed ice and caution advised.",
+  },
 };
 
 const STRIP_SUFFIXES = [
@@ -230,511 +260,79 @@ function garnishText(c) {
   return c.garnish?.[0] ?? "a careful garnish";
 }
 
-const TAGLINE_TEMPLATES = [
-  (c, s) => `${c.name}: ${s} in a glass, no passport required.`,
-  (c) => `${primarySpirit(c)} and ${primaryJuice(c).toLowerCase()} — ${c.method.toLowerCase()} with intent.`,
-  (c) => `A ${c.family.toLowerCase()} built ${c.method.toLowerCase()} — ${c.name} doesn't do subtle.`,
-  (c) => `${c.name} finishes with ${garnishText(c).toLowerCase()} and zero regrets.`,
-  (c, s) => `${s} energy, ${c.method.toLowerCase()} execution.`,
-  (c) => `Order ${c.name} when you want ${c.family.toLowerCase()} confidence.`,
-  (c) => `${c.method} it. Pour it. Own the ${c.family.toLowerCase()} moment.`,
-  (c) => `${c.name}: where ${primarySpirit(c).toLowerCase()} meets ${c.glass.toLowerCase()}.`,
-  (c) => `Less conversation, more ${c.name} — a ${c.method.toLowerCase()} ${c.family.toLowerCase()}.`,
-  (c, s) => `${s} called; ${c.name} answered.`,
-  (c) => `${c.ingredients.length} ingredients, one clear point of view.`,
-  (c) => `${c.name} — ${c.method.toLowerCase()}, not shy.`,
-  (c) => `Your bar's ${c.family.toLowerCase()} flex: ${c.name}.`,
-  (c) => `${primaryJuice(c)} and ${primarySpirit(c).toLowerCase()} — ${c.name} keeps it honest.`,
-  (c) => `${c.name}: garnish with ${garnishText(c).toLowerCase()}, serve with conviction.`,
-  (c, s) => `From ${s}: ${c.name} in ${c.glass.toLowerCase()}.`,
-  (c) => `${c.method} ${c.name} — the ${c.family.toLowerCase()} move.`,
-  (c) => `${c.name} hits like a ${c.family.toLowerCase()} should.`,
-  (c) => `No shortcuts on ${c.name} — ${c.method.toLowerCase()} and proper.`,
-  (c) => `${c.name}: ${c.preparation.length} steps to a very good idea.`,
-  (c, s) => `${c.family} royalty from ${s}.`,
-  (c) => `${c.name} — bold enough for tonight, balanced enough for tomorrow.`,
-  (c) => `${c.glass} glass. ${c.method} method. ${c.name} attitude.`,
-  (c) => `${primarySpirit(c)} forward, ${c.name} approved.`,
-  (c) => `${c.name}: ${c.tags[0] ?? c.family.toLowerCase()} energy in liquid form.`,
-  (c) => `Make ${c.name} when the night needs a ${c.family.toLowerCase()}.`,
-  (c, s) => `${s} in the DNA, ${c.name} in the glass.`,
-  (c) => `${c.name} — ${c.method.toLowerCase()} beats shaken, or the other way around. You decide.`,
-  (c) => `${c.ingredients.length}-part harmony: ${c.name}.`,
-  (c) => `${c.name} wears ${garnishText(c).toLowerCase()} like it means it.`,
-  (c) => `The ${c.family.toLowerCase()} case for ${c.name} is airtight.`,
-  (c, s) => `${c.name}: ${s}'s answer to 'what should we pour?'`,
-  (c) => `${c.method} ${primarySpirit(c).toLowerCase()}, call it ${c.name}.`,
-  (c) => `${c.name} — not famous by accident.`,
-  (c) => `${c.family} logic, ${c.name} flavor.`,
-  (c) => `${c.name} in a ${c.glass.toLowerCase()}: correct.`,
-  (c) => `${primaryJuice(c)} bright, ${primarySpirit(c).toLowerCase()} steady — ${c.name}.`,
-  (c, s) => `${c.name} carries a little ${s} history.`,
-  (c) => `${c.method} until cold. Pour ${c.name}. Continue evening.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} with a point of view.`,
-  (c) => `Trust ${c.name}. Distrust anyone who skips the ${garnishText(c).toLowerCase()}.`,
-  (c) => `${c.name}: built ${c.method.toLowerCase()}, finished proud.`,
-  (c, s) => `${s} roots, ${c.method.toLowerCase()} presentation.`,
-  (c) => `${c.name} — the ${c.family.toLowerCase()} your bar needed.`,
-  (c) => `${primarySpirit(c)} and ${c.name} — a reliable alliance.`,
-  (c) => `${c.name} doesn't whisper. It ${c.method.toLowerCase()}s.`,
-  (c) => `${c.glass} required. ${c.name} deserved.`,
-  (c, s) => `${c.name}: small ${s} story, large flavor.`,
-  (c) => `${c.preparation.length}-step ${c.name}. Worth every one.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} done with respect.`,
-  (c) => `${c.method} ${c.name} like you mean it.`,
-  (c) => `${c.name}: ${primaryJuice(c).toLowerCase()} first, questions later.`,
-  (c, s) => `${s} classic energy in ${c.name}.`,
-  (c) => `${c.name} — garnish optional, excellence not.`,
-  (c) => `${c.family} by design. ${c.name} by choice.`,
-  (c) => `${c.name} in ${c.glass.toLowerCase()}: the move.`,
-  (c) => `${primarySpirit(c)}-led, ${c.name}-approved.`,
-  (c, s) => `${c.name} remembers ${s} so you don't have to.`,
-  (c) => `${c.method} ${c.name} — no weak pours.`,
-  (c) => `${c.name}: ${c.ingredients.length} bottles, one verdict — yes.`,
-  (c) => `${c.family.toLowerCase()} season peaks with ${c.name}.`,
-  (c) => `${c.name} — ${garnishText(c).toLowerCase()} on top, doubt elsewhere.`,
-  (c, s) => `${c.name} is ${s} in a ${c.glass.toLowerCase()}.`,
-  (c) => `${c.method} ${primarySpirit(c).toLowerCase()} into ${c.name}.`,
-  (c) => `${c.name}: the ${c.family.toLowerCase()} with receipts.`,
-  (c) => `${c.name} — ${c.tags.join(", ") || c.family} in motion.`,
-  (c, s) => `${s} → ${c.glass.toLowerCase()} → ${c.name}.`,
-  (c) => `${c.name} finishes clean. Starts bold.`,
-  (c) => `${c.method} ${c.name}. Thank your bar later.`,
-  (c) => `${c.name}: ${primaryJuice(c).toLowerCase()} meets ${primarySpirit(c).toLowerCase()} — properly.`,
-  (c, s) => `${c.name} — ${s} pedigree, home-bar reality.`,
-  (c) => `${c.family} category. ${c.name} personality.`,
-  (c) => `${c.name} in hand beats ${c.name} on a menu.`,
-  (c) => `${c.method} ${c.name} — standards exist for a reason.`,
-  (c) => `${c.name}: ${c.glass.toLowerCase()}, ${garnishText(c).toLowerCase()}, go.`,
-  (c, s) => `${c.name} channels ${s} without the airfare.`,
-  (c) => `${primarySpirit(c)}-driven ${c.family.toLowerCase()}: ${c.name}.`,
-  (c) => `${c.name} — ${c.method.toLowerCase()} precision, ${c.family.toLowerCase()} soul.`,
-  (c) => `${c.name}: every ${c.family.toLowerCase()} shelf needs one.`,
-  (c, s) => `${s} called. ${c.name} picked up.`,
-  (c) => `${c.name} — ${c.preparation.length} steps, zero apologies.`,
-  (c) => `${c.method} ${c.name} like the ${c.family.toLowerCase()} depends on it.`,
-  (c) => `${c.name}: ${primaryJuice(c).toLowerCase()} sharp, finish long.`,
-  (c, s) => `${c.name} — born in ${s}, raised on your bar.`,
-  (c) => `${c.glass} glass, ${c.name} standards.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} that actually delivers.`,
-  (c) => `${primarySpirit(c)} and ${c.name}: still a great idea.`,
-  (c, s) => `${c.name} keeps ${s} on speed dial.`,
-  (c) => `${c.method} ${c.name} — the ${c.family.toLowerCase()} flex.`,
-  (c) => `${c.name}: ${c.ingredients.length} parts, one mood.`,
-  (c) => `${c.name} — ${garnishText(c).toLowerCase()} mandatory, mediocrity forbidden.`,
-  (c, s) => `${s} soul, ${c.method.toLowerCase()} craft — ${c.name}.`,
-  (c) => `${c.name} in ${c.glass.toLowerCase()}. Correct choice.`,
-  (c) => `${c.family} by the book. ${c.name} by the pour.`,
-  (c) => `${c.name} — ${primarySpirit(c).toLowerCase()} with somewhere to go.`,
-  (c, s) => `${c.name}: ${s} history, tonight's pour.`,
-  (c) => `${c.method} ${c.name}. Repeat as needed.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} without the lecture.`,
-  (c) => `${primaryJuice(c)} lifts ${c.name}; ${primarySpirit(c).toLowerCase()} anchors it.`,
-  (c, s) => `${c.name} — a ${s} ${c.family.toLowerCase()} worth knowing.`,
-  (c) => `${c.name}: ${c.method.toLowerCase()}, served ${c.glass.toLowerCase()}, enjoyed immediately.`,
-  (c) => `${c.name} — the ${c.family.toLowerCase()} that closes the debate.`,
-  (c, s) => `${s} in the backstory, ${c.name} in the foreground.`,
-  (c) => `${c.method} ${primarySpirit(c).toLowerCase()}. Name it ${c.name}. Win.`,
-  (c) => `${c.name}: ${c.tags[0] ?? "classic"} confidence.`,
-  (c) => `${c.glass} + ${c.name} = correct math.`,
-  (c, s) => `${c.name} — ${s} via ${c.method.toLowerCase()}.`,
-  (c) => `${c.name} doesn't need hype. It needs ${garnishText(c).toLowerCase()}.`,
-  (c) => `${c.family} frame, ${c.name} focus.`,
-  (c) => `${c.name} — ${primarySpirit(c).toLowerCase()} and ${primaryJuice(c).toLowerCase()}, aligned.`,
-  (c, s) => `${c.name}: ${s} roots, sharp finish.`,
-  (c) => `${c.method} ${c.name} — standards, not suggestions.`,
-  (c) => `${c.name} in a ${c.glass.toLowerCase()}: chef's kiss.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} with actual personality.`,
-  (c, s) => `${s} pedigree. ${c.name} pour.`,
-  (c) => `${c.name}: ${c.method.toLowerCase()} until the glass is cold.`,
-  (c) => `${primarySpirit(c)}-first ${c.family.toLowerCase()} — ${c.name}.`,
-  (c) => `${c.name} — ${c.preparation.length} steps to excellence.`,
-  (c, s) => `${c.name} brings ${s} to your counter.`,
-  (c) => `${c.method} ${c.name}. Trust the ${c.family.toLowerCase()}.`,
-  (c) => `${c.name}: ${garnishText(c).toLowerCase()} on, doubt off.`,
-  (c) => `${c.family} logic says ${c.name}. Your palate agrees.`,
-  (c, s) => `${c.name} — ${s} in a ${c.glass.toLowerCase()}, no layover.`,
-  (c) => `${c.name} — ${primaryJuice(c).toLowerCase()} bright, ${c.method.toLowerCase()} clean.`,
-  (c) => `${c.method} ${c.name} — the bar move.`,
-  (c) => `${c.name}: ${c.ingredients.length} ingredients, full send.`,
-  (c, s) => `${c.name} — ${s} story, your glass.`,
-  (c) => `${c.name} in ${c.glass.toLowerCase()}. Proceed.`,
-  (c) => `${c.family} royalty: ${c.name}.`,
-  (c) => `${c.name} — ${primarySpirit(c).toLowerCase()} with a plan.`,
-  (c, s) => `${s} → ${c.name} → excellent night.`,
-  (c) => `${c.method} ${c.name} — no half measures.`,
-  (c) => `${c.name}: ${c.family.toLowerCase()} done right.`,
-  (c) => `${c.name} — ${garnishText(c).toLowerCase()} required, compromise rejected.`,
-  (c, s) => `${c.name} keeps ${s} in rotation.`,
-  (c) => `${c.glass} glass. ${c.name}. Good night.`,
-  (c) => `${c.name} — ${c.method.toLowerCase()} ${c.family.toLowerCase()}, full flavor.`,
-  (c, s) => `${c.name}: ${s} classic, personal pour.`,
-  (c) => `${primarySpirit(c)} meets ${c.name} — still works.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} with conviction.`,
-  (c, s) => `${s} heritage, ${c.method.toLowerCase()} ${c.name}.`,
-  (c) => `${c.name} in hand. Argument over.`,
-  (c) => `${c.method} ${c.name} — the ${c.family.toLowerCase()} standard.`,
-  (c) => `${c.name}: ${primaryJuice(c).toLowerCase()} and ${primarySpirit(c).toLowerCase()}, in order.`,
-  (c, s) => `${c.name} — ${s} via your home bar.`,
-  (c) => `${c.name} — ${c.preparation.length} steps, one great pour.`,
-  (c) => `${c.family} by category. ${c.name} by reputation.`,
-  (c, s) => `${c.name} channels ${s} without the fuss.`,
-  (c) => `${c.method} ${primarySpirit(c).toLowerCase()}. Call it ${c.name}.`,
-  (c) => `${c.name} — ${garnishText(c).toLowerCase()} finish, strong start.`,
-  (c) => `${c.glass} + ${c.method.toLowerCase()} + ${c.name} = yes.`,
-  (c, s) => `${c.name}: ${s} in liquid form.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} worth the ice.`,
-  (c) => `${primarySpirit(c)}-led ${c.name}. Always.`,
-  (c, s) => `${c.name} — ${s} roots, sharp ${c.family.toLowerCase()}.`,
-  (c) => `${c.method} ${c.name}. Continue.`,
-  (c) => `${c.name}: ${c.ingredients.length}-part ${c.family.toLowerCase()} clarity.`,
-  (c) => `${c.name} — ${c.tags[0] ?? c.family} done properly.`,
-  (c, s) => `${s} story. ${c.name} pour. Repeat.`,
-  (c) => `${c.name} in ${c.glass.toLowerCase()} — correct.`,
-  (c) => `${c.family} frame. ${c.name} center.`,
-  (c) => `${c.name} — ${primaryJuice(c).toLowerCase()} up front, ${primarySpirit(c).toLowerCase()} behind.`,
-  (c, s) => `${c.name}: ${s} via ${c.glass.toLowerCase()}.`,
-  (c) => `${c.method} ${c.name} — non-negotiable quality.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} with a backbone.`,
-  (c, s) => `${c.name} brings ${s} home.`,
-  (c) => `${c.glass} required. ${c.name} delivered.`,
-  (c) => `${c.name}: ${c.method.toLowerCase()} ${c.family.toLowerCase()}, zero fluff.`,
-  (c) => `${primarySpirit(c)} and ${c.name} — still undefeated.`,
-  (c, s) => `${c.name} — ${s} classic, tonight's choice.`,
-  (c) => `${c.method} ${c.name}. That is all.`,
-  (c) => `${c.name} — ${garnishText(c).toLowerCase()} and go.`,
-  (c, s) => `${s} in the glass: ${c.name}.`,
-  (c) => `${c.name}: ${c.family.toLowerCase()} with receipts.`,
-  (c) => `${c.name} — ${c.preparation.length} steps to a very good night.`,
-  (c, s) => `${c.name} — ${s} energy, ${c.method.toLowerCase()} finish.`,
-  (c) => `${c.family} category, ${c.name} charisma.`,
-  (c) => `${c.name} in ${c.glass.toLowerCase()}. Done.`,
-  (c) => `${c.method} ${c.name} — the move.`,
-  (c) => `${c.name}: ${primaryJuice(c).toLowerCase()} sharp, ${primarySpirit(c).toLowerCase()} steady.`,
-  (c, s) => `${c.name} — ${s} by origin, yours by pour.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} that earns its garnish.`,
-  (c) => `${c.glass} + ${c.name} = good call.`,
-  (c, s) => `${c.name}: ${s} history, fresh pour.`,
-  (c) => `${c.method} ${primarySpirit(c).toLowerCase()} into ${c.name}. Win.`,
-  (c) => `${c.name} — ${c.ingredients.length} parts, full commitment.`,
-  (c) => `${c.name}: ${c.method.toLowerCase()} ${c.family.toLowerCase()} — no notes.`,
-  (c, s) => `${s} roots. ${c.name} results.`,
-  (c) => `${c.name} — ${primarySpirit(c).toLowerCase()} with purpose.`,
-  (c) => `${c.method} ${c.name}. Excellent.`,
-  (c) => `${c.name} in ${c.glass.toLowerCase()}: approved.`,
-  (c, s) => `${c.name} — ${s} classic, personal standard.`,
-  (c) => `${c.family} done right: ${c.name}.`,
-  (c) => `${c.name}: ${garnishText(c).toLowerCase()} on, hesitation off.`,
-  (c, s) => `${c.name} keeps ${s} relevant.`,
-  (c) => `${c.method} ${c.name} — ${c.family.toLowerCase()} excellence.`,
-  (c) => `${c.name} — ${c.preparation.length} steps, zero regret.`,
-  (c, s) => `${s} → ${c.name} → repeat.`,
-  (c) => `${c.name}: ${primaryJuice(c).toLowerCase()} and ${primarySpirit(c).toLowerCase()}, balanced.`,
-  (c) => `${c.glass} glass. ${c.name} attitude.`,
-  (c, s) => `${c.name} — ${s} in a ${c.glass.toLowerCase()}.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} with standards.`,
-  (c) => `${c.method} ${c.name}. Proceed confidently.`,
-  (c) => `${c.name}: ${c.tags[0] ?? c.family} energy, ${c.method.toLowerCase()} craft.`,
-  (c, s) => `${c.name} — ${s} story, sharp pour.`,
-  (c) => `${c.name} in hand beats theory.`,
-  (c) => `${c.family} frame, ${c.name} flavor.`,
-  (c, s) => `${c.name}: ${s} via ${c.method.toLowerCase()}.`,
-  (c) => `${c.name} — ${primarySpirit(c).toLowerCase()} forward, ${c.family.toLowerCase()} true.`,
-  (c) => `${c.method} ${c.name} — always.`,
-  (c) => `${c.name}: ${c.ingredients.length}-part ${c.family.toLowerCase()} — worth it.`,
-  (c, s) => `${c.name} brings ${s} to the counter.`,
-  (c) => `${c.glass} + ${c.name} = tonight sorted.`,
-  (c) => `${c.name} — ${garnishText(c).toLowerCase()} finish, bold start.`,
-  (c, s) => `${s} heritage in ${c.name}.`,
-  (c) => `${c.method} ${c.name} — ${c.family.toLowerCase()} standard.`,
-  (c) => `${c.name}: ${c.method.toLowerCase()} ${c.family.toLowerCase()}, full flavor.`,
-  (c) => `${c.name} — ${primaryJuice(c).toLowerCase()} lifts, ${primarySpirit(c).toLowerCase()} delivers.`,
-  (c, s) => `${c.name} — ${s} classic, your bar.`,
-  (c) => `${c.name} in ${c.glass.toLowerCase()}. Correct.`,
-  (c) => `${c.family} royalty from ${c.name}.`,
-  (c, s) => `${c.name}: ${s} roots, ${c.method.toLowerCase()} soul.`,
-  (c) => `${c.method} ${c.name}. Trust it.`,
-  (c) => `${c.name} — ${c.preparation.length} steps to yes.`,
-  (c) => `${c.name}: ${primarySpirit(c).toLowerCase()} and ${primaryJuice(c).toLowerCase()} — aligned.`,
-  (c, s) => `${c.name} — ${s} in motion.`,
-  (c) => `${c.glass} glass. ${c.name}. Go.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} with personality.`,
-  (c, s) => `${s} → ${c.name} → done.`,
-  (c) => `${c.method} ${c.name} — the ${c.family.toLowerCase()} call.`,
-  (c) => `${c.name}: ${c.ingredients.length} ingredients, one verdict.`,
-  (c) => `${c.name} — ${garnishText(c).toLowerCase()} mandatory.`,
-  (c, s) => `${c.name} keeps ${s} on the menu.`,
-  (c) => `${c.family} by design. ${c.name} by pour.`,
-  (c) => `${c.name} in ${c.glass.toLowerCase()}: yes.`,
-  (c, s) => `${c.name}: ${s} classic, fresh night.`,
-  (c) => `${c.method} ${primarySpirit(c).toLowerCase()}. ${c.name}. Win.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} worth knowing.`,
-  (c, s) => `${s} story, ${c.name} glass.`,
-  (c) => `${c.name}: ${c.method.toLowerCase()} ${c.family.toLowerCase()} — proper.`,
-  (c) => `${c.name} — ${primaryJuice(c).toLowerCase()} sharp, finish clean.`,
-  (c) => `${c.glass} + ${c.method.toLowerCase()} + ${c.name}.`,
-  (c, s) => `${c.name} — ${s} via ${c.glass.toLowerCase()}.`,
-  (c) => `${c.method} ${c.name}. Full stop.`,
-  (c) => `${c.name}: ${c.tags[0] ?? c.family} confidence, ${c.method.toLowerCase()} craft.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} with a point.`,
-  (c, s) => `${c.name} brings ${s} home tonight.`,
-  (c) => `${c.name} in hand. Good night.`,
-  (c) => `${c.family} frame. ${c.name} center stage.`,
-  (c, s) => `${s} in ${c.name}.`,
-  (c) => `${c.method} ${c.name} — standards met.`,
-  (c) => `${c.name}: ${primarySpirit(c).toLowerCase()}-led ${c.family.toLowerCase()}.`,
-  (c) => `${c.name} — ${c.preparation.length} steps, one great drink.`,
-  (c, s) => `${c.name} — ${s} roots, ${c.glass.toLowerCase()} finish.`,
-  (c) => `${c.glass} glass. ${c.name}. Proceed.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} without compromise.`,
-  (c, s) => `${c.name}: ${s} classic, personal pour.`,
-  (c) => `${c.method} ${c.name}. Repeat.`,
-  (c) => `${c.name} — ${garnishText(c).toLowerCase()} and conviction.`,
-  (c) => `${c.name}: ${c.method.toLowerCase()} ${c.family.toLowerCase()}, full send.`,
-  (c, s) => `${s} → ${c.name} → excellent.`,
-  (c) => `${c.name} in ${c.glass.toLowerCase()}. Move.`,
-  (c) => `${c.family} logic: ${c.name}.`,
-  (c) => `${c.name} — ${primaryJuice(c).toLowerCase()} and ${primarySpirit(c).toLowerCase()}, done right.`,
-  (c, s) => `${c.name} — ${s} by birth, yours by pour.`,
-  (c) => `${c.method} ${c.name} — the bar standard.`,
-  (c) => `${c.name}: ${c.ingredients.length}-part harmony.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} with standards intact.`,
-  (c, s) => `${c.name} keeps ${s} in the rotation.`,
-  (c) => `${c.glass} + ${c.name} = correct.`,
-  (c) => `${c.name} — ${c.method.toLowerCase()} ${c.family.toLowerCase()}, zero doubt.`,
-  (c, s) => `${s} heritage. ${c.name} pour. Enjoy.`,
-  (c) => `${c.method} ${primarySpirit(c).toLowerCase()}. Name: ${c.name}.`,
-  (c) => `${c.name}: ${garnishText(c).toLowerCase()} on top.`,
-  (c) => `${c.name} — ${c.preparation.length} steps to a great pour.`,
-  (c, s) => `${c.name} — ${s} classic, sharp ${c.family.toLowerCase()}.`,
-  (c) => `${c.family} by book. ${c.name} by taste.`,
-  (c) => `${c.name} in ${c.glass.toLowerCase()}: the call.`,
-  (c, s) => `${c.name}: ${s} story, ${c.method.toLowerCase()} craft.`,
-  (c) => `${c.method} ${c.name} — ${c.family.toLowerCase()} done.`,
-  (c) => `${c.name} — ${primarySpirit(c).toLowerCase()} with direction.`,
-  (c) => `${c.name}: ${c.method.toLowerCase()} until cold.`,
-  (c, s) => `${c.name} brings ${s} to your glass.`,
-  (c) => `${c.glass} glass. ${c.name}. Tonight.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} that delivers.`,
-  (c, s) => `${s} roots in ${c.name}.`,
-  (c) => `${c.method} ${c.name}. Done well.`,
-  (c) => `${c.name}: ${primaryJuice(c).toLowerCase()} bright, ${c.family.toLowerCase()} true.`,
-  (c) => `${c.name} — ${c.ingredients.length} parts, full flavor.`,
-  (c, s) => `${c.name} — ${s} via ${c.method.toLowerCase()}.`,
-  (c) => `${c.name} in ${c.glass.toLowerCase()}. Go time.`,
-  (c) => `${c.family} frame. ${c.name} star.`,
-  (c) => `${c.name} — ${garnishText(c).toLowerCase()} required.`,
-  (c, s) => `${c.name}: ${s} classic, ${c.glass.toLowerCase()} serve.`,
-  (c) => `${c.method} ${c.name} — always the move.`,
-  (c) => `${c.name}: ${c.tags[0] ?? c.family} in a glass.`,
-  (c, s) => `${c.name} — ${s} energy, your bar.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} with clarity.`,
-  (c) => `${c.glass} + ${c.name} = yes.`,
-  (c, s) => `${s} → ${c.name} → pour.`,
-  (c) => `${c.method} ${primarySpirit(c).toLowerCase()}. ${c.name}.`,
-  (c) => `${c.name}: ${c.method.toLowerCase()} ${c.family.toLowerCase()} — go.`,
-  (c) => `${c.name} — ${c.preparation.length} steps, one mood.`,
-  (c, s) => `${c.name} keeps ${s} alive.`,
-  (c) => `${c.name} in hand. Proceed.`,
-  (c) => `${c.family} by category. ${c.name} by choice.`,
-  (c, s) => `${c.name}: ${s} in ${c.glass.toLowerCase()}.`,
-  (c) => `${c.method} ${c.name} — proper ${c.family.toLowerCase()}.`,
-  (c) => `${c.name} — ${primaryJuice(c).toLowerCase()} and ${primarySpirit(c).toLowerCase()}, sharp.`,
-  (c) => `${c.name}: ${c.ingredients.length}-part ${c.family.toLowerCase()} — correct.`,
-  (c, s) => `${c.name} — ${s} classic, ${c.method.toLowerCase()} serve.`,
-  (c) => `${c.glass} glass. ${c.name}. Standard.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} worth the pour.`,
-  (c, s) => `${s} story in ${c.name}.`,
-  (c) => `${c.method} ${c.name}. Trust.`,
-  (c) => `${c.name}: ${garnishText(c).toLowerCase()}, ${c.method.toLowerCase()}, go.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} with intent.`,
-  (c, s) => `${c.name} brings ${s} to tonight.`,
-  (c) => `${c.name} in ${c.glass.toLowerCase()}. Standard met.`,
-  (c) => `${c.family} logic says pour ${c.name}.`,
-  (c, s) => `${c.name}: ${s} roots, ${c.family.toLowerCase()} finish.`,
-  (c) => `${c.method} ${c.name} — ${c.family.toLowerCase()} excellence.`,
-  (c) => `${c.name} — ${primarySpirit(c).toLowerCase()} forward.`,
-  (c) => `${c.name}: ${c.method.toLowerCase()} ${c.family.toLowerCase()}, done.`,
-  (c, s) => `${s} → ${c.name} → repeat.`,
-  (c) => `${c.glass} + ${c.method.toLowerCase()} = ${c.name}.`,
-  (c) => `${c.name} — ${c.preparation.length} steps, full flavor.`,
-  (c, s) => `${c.name} — ${s} classic, home pour.`,
-  (c) => `${c.method} ${c.name}. Standard.`,
-  (c) => `${c.name}: ${primaryJuice(c).toLowerCase()} lifts the ${c.family.toLowerCase()}.`,
-  (c) => `${c.name} — ${c.tags[0] ?? c.family} done ${c.method.toLowerCase()}.`,
-  (c, s) => `${c.name} keeps ${s} on speed dial.`,
-  (c) => `${c.name} in ${c.glass.toLowerCase()}. Pour.`,
-  (c) => `${c.family} frame. ${c.name} focus.`,
-  (c, s) => `${c.name}: ${s} via ${c.name}.`,
-  (c) => `${c.method} ${primarySpirit(c).toLowerCase()} into ${c.name}.`,
-  (c) => `${c.name} — ${garnishText(c).toLowerCase()} finish.`,
-  (c) => `${c.name}: ${c.ingredients.length} parts, one pour.`,
-  (c, s) => `${c.name} — ${s} in the glass.`,
-  (c) => `${c.glass} glass. ${c.name}. Correct.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} with backbone.`,
-  (c, s) => `${s} heritage in every ${c.name}.`,
-  (c) => `${c.method} ${c.name} — go.`,
-  (c) => `${c.name}: ${c.method.toLowerCase()} ${c.family.toLowerCase()}, sharp.`,
-  (c) => `${c.name} — ${primaryJuice(c).toLowerCase()} and ${primarySpirit(c).toLowerCase()}.`,
-  (c, s) => `${c.name} — ${s} classic, ${c.glass.toLowerCase()} serve.`,
-  (c) => `${c.name} in hand. Standard exceeded.`,
-  (c) => `${c.family} by design. ${c.name} by night.`,
-  (c, s) => `${c.name}: ${s} roots, ${c.method.toLowerCase()} pour.`,
-  (c) => `${c.method} ${c.name}. Full flavor.`,
-  (c) => `${c.name} — ${c.preparation.length} steps, zero shortcuts.`,
-  (c) => `${c.glass} + ${c.name} = tonight.`,
-  (c, s) => `${c.name} brings ${s} home.`,
-  (c) => `${c.name}: ${c.tags[0] ?? c.family} confidence in ${c.glass.toLowerCase()}.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} with standards.`,
-  (c, s) => `${s} → ${c.name} → done.`,
-  (c) => `${c.method} ${c.name} — the standard.`,
-  (c) => `${c.name}: ${primarySpirit(c).toLowerCase()}-led, ${c.method.toLowerCase()} clean.`,
-  (c) => `${c.name} — ${garnishText(c).toLowerCase()} and go.`,
-  (c, s) => `${c.name} — ${s} classic, sharp pour.`,
-  (c) => `${c.name} in ${c.glass.toLowerCase()}. Yes.`,
-  (c) => `${c.family} royalty: pour ${c.name}.`,
-  (c, s) => `${c.name}: ${s} story, ${c.family.toLowerCase()} soul.`,
-  (c) => `${c.method} ${c.name}. Proceed.`,
-  (c) => `${c.name} — ${c.ingredients.length}-part ${c.family.toLowerCase()} clarity.`,
-  (c) => `${c.name}: ${c.method.toLowerCase()} ${c.family.toLowerCase()} — standard.`,
-  (c, s) => `${c.name} keeps ${s} relevant tonight.`,
-  (c) => `${c.glass} glass. ${c.name}. Excellent.`,
-  (c) => `${c.name} — ${primaryJuice(c).toLowerCase()} sharp, ${primarySpirit(c).toLowerCase()} steady.`,
-  (c, s) => `${c.name} — ${s} by origin, yours now.`,
-  (c) => `${c.method} ${c.name} — ${c.family.toLowerCase()} call.`,
-  (c) => `${c.name}: ${garnishText(c).toLowerCase()} on, pour on.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} worth the ice.`,
-  (c, s) => `${s} in ${c.name}. Pour.`,
-  (c) => `${c.name} in ${c.glass.toLowerCase()}. Standard.`,
-  (c) => `${c.family} frame. ${c.name} pour.`,
-  (c, s) => `${c.name}: ${s} classic, ${c.method.toLowerCase()} craft.`,
-  (c) => `${c.method} ${primarySpirit(c).toLowerCase()}. ${c.name}. Done.`,
-  (c) => `${c.name} — ${c.preparation.length} steps, one great ${c.family.toLowerCase()}.`,
-  (c) => `${c.name}: ${c.method.toLowerCase()} ${c.family.toLowerCase()}, full commitment.`,
-  (c, s) => `${c.name} brings ${s} to the glass.`,
-  (c) => `${c.glass} + ${c.name} = excellent.`,
-  (c) => `${c.name} — ${c.tags[0] ?? c.family} with ${primarySpirit(c).toLowerCase()}.`,
-  (c, s) => `${c.name} — ${s} roots, ${c.glass.toLowerCase()} serve.`,
-  (c) => `${c.method} ${c.name}. Full send.`,
-  (c) => `${c.name}: ${primaryJuice(c).toLowerCase()} and ${primarySpirit(c).toLowerCase()}, proper.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} with conviction.`,
-  (c, s) => `${s} → ${c.name} → win.`,
-  (c) => `${c.name} in hand. Night sorted.`,
-  (c) => `${c.family} by book. ${c.name} by bar.`,
-  (c, s) => `${c.name}: ${s} energy, ${c.family.toLowerCase()} finish.`,
-  (c) => `${c.method} ${c.name} — always correct.`,
-  (c) => `${c.name} — ${garnishText(c).toLowerCase()} required, excellence expected.`,
-  (c) => `${c.name}: ${c.ingredients.length} ingredients, ${c.family.toLowerCase()} clarity.`,
-  (c, s) => `${c.name} — ${s} classic, your standard.`,
-  (c) => `${c.glass} glass. ${c.name}. Pour.`,
-  (c) => `${c.name} — ${c.method.toLowerCase()} ${c.family.toLowerCase()}, full flavor.`,
-  (c, s) => `${c.name} keeps ${s} in hand.`,
-  (c) => `${c.method} ${primarySpirit(c).toLowerCase()}. ${c.name}. Standard.`,
-  (c) => `${c.name}: ${c.method.toLowerCase()} until the glass is right.`,
-  (c) => `${c.name} — ${c.preparation.length} steps, one excellent pour.`,
-  (c, s) => `${s} heritage. ${c.name}. Tonight.`,
-  (c) => `${c.name} in ${c.glass.toLowerCase()}. Full send.`,
-  (c) => `${c.family} logic: ${c.name} wins.`,
-  (c, s) => `${c.name}: ${s} via ${c.method.toLowerCase()}, ${c.glass.toLowerCase()} serve.`,
-  (c) => `${c.method} ${c.name} — ${c.family.toLowerCase()} standard.`,
-  (c) => `${c.name} — ${primaryJuice(c).toLowerCase()} bright, ${c.method.toLowerCase()} clean.`,
-  (c) => `${c.name}: ${c.tags[0] ?? c.family} in ${c.glass.toLowerCase()}.`,
-  (c, s) => `${c.name} — ${s} story, ${c.family.toLowerCase()} pour.`,
-  (c) => `${c.glass} + ${c.method.toLowerCase()} + ${c.name} = standard.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} with personality intact.`,
-  (c, s) => `${c.name} brings ${s} to your night.`,
-  (c) => `${c.method} ${c.name}. Standard exceeded.`,
-  (c) => `${c.name}: ${primarySpirit(c).toLowerCase()} and ${c.name} — aligned.`,
-  (c) => `${c.name} — ${garnishText(c).toLowerCase()}, ${c.method.toLowerCase()}, done.`,
-  (c, s) => `${c.name} — ${s} classic, ${c.family.toLowerCase()} truth.`,
-  (c) => `${c.name} in ${c.glass.toLowerCase()}. Full flavor.`,
-  (c) => `${c.family} frame. ${c.name}. Pour.`,
-  (c, s) => `${s} → ${c.name} → standard.`,
-  (c) => `${c.method} ${c.name} — correct ${c.family.toLowerCase()}.`,
-  (c) => `${c.name}: ${c.method.toLowerCase()} ${c.family.toLowerCase()}, zero compromise.`,
-  (c) => `${c.name} — ${c.ingredients.length} parts, ${c.family.toLowerCase()} soul.`,
-  (c, s) => `${c.name} keeps ${s} on the bar.`,
-  (c) => `${c.glass} glass. ${c.name}. Standard met.`,
-  (c) => `${c.name} — ${primarySpirit(c).toLowerCase()} with ${c.family.toLowerCase()} intent.`,
-  (c, s) => `${c.name}: ${s} roots, ${c.method.toLowerCase()} standard.`,
-  (c) => `${c.method} ${c.name}. Full commitment.`,
-  (c) => `${c.name} — ${c.preparation.length} steps, ${c.family.toLowerCase()} excellence.`,
-  (c) => `${c.name}: ${primaryJuice(c).toLowerCase()} lifts, ${primarySpirit(c).toLowerCase()} holds.`,
-  (c, s) => `${c.name} — ${s} in every pour.`,
-  (c) => `${c.name} in hand. Standard.`,
-  (c) => `${c.family} by category. ${c.name} by reputation.`,
-  (c, s) => `${c.name}: ${s} classic, ${c.glass.toLowerCase()} standard.`,
-  (c) => `${c.method} ${primarySpirit(c).toLowerCase()}. ${c.name}. Full send.`,
-  (c) => `${c.name} — ${garnishText(c).toLowerCase()} and standards.`,
-  (c) => `${c.name}: ${c.method.toLowerCase()} ${c.family.toLowerCase()}, full standard.`,
-  (c, s) => `${c.name} brings ${s} standard home.`,
-  (c) => `${c.glass} + ${c.name} = full send.`,
-  (c) => `${c.name} — ${c.tags[0] ?? c.family} ${c.method.toLowerCase()} standard.`,
-  (c, s) => `${c.name} — ${s} roots, ${c.family.toLowerCase()} standard.`,
-  (c) => `${c.method} ${c.name}. Full standard.`,
-  (c) => `${c.name}: ${c.ingredients.length}-part ${c.family.toLowerCase()} standard.`,
-  (c) => `${c.name} — ${primaryJuice(c).toLowerCase()} and ${primarySpirit(c).toLowerCase()}, standard.`,
-  (c, s) => `${c.name} — ${s} standard, ${c.glass.toLowerCase()} serve.`,
-  (c) => `${c.name} in ${c.glass.toLowerCase()}. Full standard.`,
-  (c) => `${c.family} standard: ${c.name}.`,
-  (c, s) => `${c.name}: ${s} standard, ${c.method.toLowerCase()} pour.`,
-  (c) => `${c.method} ${c.name} — full ${c.family.toLowerCase()} standard.`,
-  (c) => `${c.name} — ${c.preparation.length} steps, full standard.`,
-  (c) => `${c.name}: ${garnishText(c).toLowerCase()}, full standard.`,
-  (c, s) => `${c.name} — ${s} full standard.`,
-  (c) => `${c.glass} glass. ${c.name}. Full standard.`,
-  (c) => `${c.name} — ${c.family.toLowerCase()} full standard.`,
-  (c, s) => `${c.name} full ${s} standard.`,
-  (c) => `${c.method} ${c.name}. Full ${c.family.toLowerCase()} standard.`,
-  (c) => `${c.name}: full ${c.family.toLowerCase()} standard.`,
-  (c) => `${c.name} — full standard ${c.method.toLowerCase()}.`,
-  (c, s) => `${c.name} full standard from ${s}.`,
-  (c) => `${c.name} in ${c.glass.toLowerCase()}. Full ${c.family.toLowerCase()} standard.`,
-];
-
-function generateUniqueTagline(c, region, used) {
-  const h = hashSlug(c.slug);
-  for (let attempt = 0; attempt < TAGLINE_TEMPLATES.length + 50; attempt++) {
-    const idx = (h + attempt * 17) % TAGLINE_TEMPLATES.length;
-    let line = TAGLINE_TEMPLATES[idx](c, region);
-    if (line.length > 120) line = line.slice(0, 117) + "…";
-    if (!used.has(line)) {
-      used.add(line);
-      return line;
-    }
-    line = `${line} (${c.slug.slice(-4)})`;
-    if (!used.has(line)) {
-      used.add(line);
-      return line;
-    }
-  }
-  const fallback = `${c.name} — ${c.method} ${c.family}, slug ${c.slug}.`;
-  used.add(fallback);
-  return fallback;
+function spiritsOf(c) {
+  return c.ingredients.filter((i) => i.type === "spirit").map((i) => i.name);
 }
 
-function generateFunFact(c, meta, parent) {
+function accentLiqueurs(c) {
+  return c.ingredients
+    .filter((i) => i.type === "liqueur" || i.type === "fortified-wine")
+    .map((i) => i.name);
+}
+
+function findCocktail(slug) {
+  return all.find((x) => x.slug === slug) ?? null;
+}
+
+function variationDiffPhrase(c, parentSlug) {
+  const parent = findCocktail(parentSlug);
+  if (!parent) return "same family, different published spec.";
+  const parentSpirits = new Set(spiritsOf(parent));
+  const spirits = spiritsOf(c);
+  const shifted = spirits.filter((s) => !parentSpirits.has(s));
+  if (shifted.length) {
+    return `this version leans on ${shifted.join(" and ")} and tweaks the ${c.method.toLowerCase()} build`;
+  }
+  if (c.method !== parent.method) {
+    return `${c.method.toLowerCase()} where the classic is ${parent.method.toLowerCase()}, with different ratios`;
+  }
+  return "different ratios and accents on the same template";
+}
+
+function generateFunFact(c, meta, parentSlug) {
   if (meta?.fact) return meta.fact;
-  if (parent && KNOWN_HISTORY[parent]?.fact) {
-    return `A sibling pour to ${parent.replace(/-/g, " ")} — ${KNOWN_HISTORY[parent].fact.split("—")[0].trim()}. This build: ${c.method.toLowerCase()} with ${c.ingredients.length} ingredients.`;
+
+  const parentLabel = parentSlug ? parentSlug.replace(/-/g, " ") : null;
+  if (parentSlug && KNOWN_HISTORY[parentSlug]?.fact) {
+    const parentFact = KNOWN_HISTORY[parentSlug].fact;
+    const diff = variationDiffPhrase(c, parentSlug);
+    return `${c.name} is a published variation on the ${parentLabel}—${diff}. For the original story: ${parentFact}`;
   }
+
   if (c.tags.includes("mocktail")) {
-    return `${c.name} (${meta.year}) — zero-proof, full flavor. Built ${c.method.toLowerCase()} with ${c.ingredients.map((i) => i.name).slice(0, 3).join(", ")}.`;
+    const parts = c.ingredients
+      .slice(0, 4)
+      .map((i) => i.name)
+      .join(", ");
+    return `${c.name} is zero-proof on purpose—${c.method.toLowerCase()} with ${parts}, built for texture and balance without the ABV.`;
   }
+
   if (c.tags.includes("craft-original")) {
-    return `${c.name} was composed in the CRAFT Bar Lab (${meta.year}) — ${c.method.toLowerCase()} ${c.family.toLowerCase()} with ${c.ingredients.length} ingredients, built for balance.`;
+    return `${c.name} was composed in the CRAFT Bar Lab—a ${c.method.toLowerCase()} ${c.family.toLowerCase()} built for balance, not novelty.`;
   }
+
   if (c.tags.includes("seasonal") || c.tags.includes("holiday")) {
-    return `${c.name} (${meta.year}) — a seasonal ${c.family.toLowerCase()} from ${meta.region}, ${c.method.toLowerCase()} with ${primarySpirit(c).toLowerCase()} and ${primaryJuice(c).toLowerCase()}.`;
+    const base = spiritsOf(c)[0] ?? primarySpirit(c);
+    return `${c.name} is a seasonal ${c.family.toLowerCase()}—${c.method.toLowerCase()} ${base.toLowerCase()} with ${primaryJuice(c).toLowerCase()} when the calendar (or the party) calls for it.`;
   }
+
   if (c.family === "Tiki" || c.tags.includes("tiki")) {
-    return `${c.name} (${meta.year}) — tiki lineage from ${meta.region}. ${c.method} build with ${c.ingredients.length} ingredients including ${primarySpirit(c).toLowerCase()}.`;
+    const spirits = spiritsOf(c);
+    return `${c.name} is a ${c.method.toLowerCase()} tiki build—${spirits.join(" and ") || "rum"}, ${primaryJuice(c).toLowerCase()}, and spice in the mix. Recipe books disagree on who first printed it; compare specs before you pick a house version.`;
   }
+
   if (c.tags.includes("modern-classic")) {
-    return `${c.name} (${meta.year}) — a post-2000 classic from ${meta.region}, ${c.method.toLowerCase()} with ${primarySpirit(c).toLowerCase()} at its core.`;
+    const base = spiritsOf(c)[0] ?? primarySpirit(c);
+    return `${c.name} stuck on serious bar menus in the modern-classics wave—${c.method.toLowerCase()} and ${base.toLowerCase()}-forward, young enough to remember who invented it, old enough to order without explaining.`;
   }
-  return `${c.name} (${meta.year}) — a ${c.family.toLowerCase()} from ${meta.region}, attributed to ${meta.source}. ${c.method} with ${c.ingredients.length} ingredients.`;
+
+  const spirits = spiritsOf(c);
+  const accents = accentLiqueurs(c).slice(0, 2);
+  const core = spirits.length ? spirits.join(" and ") : primarySpirit(c);
+  const accentBit = accents.length ? `, ${accents.join(" and ")} in support` : "";
+  return `${c.name} is a ${c.method.toLowerCase()} ${c.family.toLowerCase()}—${core.toLowerCase()}${accentBit}, with ${primaryJuice(c).toLowerCase()} doing the bright work.`;
 }
+
 
 function resolveMeta(c) {
   const known = KNOWN_HISTORY[c.slug];
@@ -778,12 +376,10 @@ function resolveMeta(c) {
   };
 }
 
-const usedTaglines = new Set();
 const provenance = {};
 
 for (const c of all) {
   const meta = resolveMeta(c);
-  const cheekyLine = generateUniqueTagline(c, meta.regionOfOrigin.split(",")[0], usedTaglines);
   const funFact = generateFunFact(c, meta, meta.parent ?? resolveParentSlug(c.slug));
 
   provenance[c.slug] = {
@@ -791,27 +387,23 @@ for (const c of all) {
     regionOfOrigin: meta.regionOfOrigin,
     sourceAttribution: meta.sourceAttribution,
     funFact,
-    cheekyLine,
   };
 }
 
-// Validate uniqueness
-const taglineCounts = new Map();
+// Validate copy quality
 const yearCounts = new Map();
-for (const p of Object.values(provenance)) {
-  taglineCounts.set(p.cheekyLine, (taglineCounts.get(p.cheekyLine) || 0) + 1);
-  yearCounts.set(p.yearInvented, (yearCounts.get(p.yearInvented) || 0) + 1);
+for (const entry of Object.values(provenance)) {
+  yearCounts.set(entry.yearInvented, (yearCounts.get(entry.yearInvented) || 0) + 1);
 }
-const dupTaglines = [...taglineCounts.entries()].filter(([, n]) => n > 1);
 const maxYearDup = Math.max(...yearCounts.values());
+const siblingFacts = Object.values(provenance).filter((e) => /sibling pour/i.test(e.funFact)).length;
+const brokenTiki = Object.values(provenance).filter((e) => /undefined/i.test(e.funFact)).length;
 
 console.log(`Generated ${Object.keys(provenance).length} entries`);
-console.log(`Duplicate taglines: ${dupTaglines.length}`);
 console.log(`Max drinks sharing a year: ${maxYearDup}`);
-if (dupTaglines.length) {
-  console.log("Dup examples:", dupTaglines.slice(0, 5));
-  process.exit(1);
-}
+console.log(`Legacy sibling-pour facts: ${siblingFacts}`);
+console.log(`Broken template facts: ${brokenTiki}`);
+if (siblingFacts || brokenTiki) process.exit(1);
 
 fs.writeFileSync(
   path.join(root, "src/data/cocktail-provenance.json"),

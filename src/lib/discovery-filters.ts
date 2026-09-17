@@ -1,3 +1,4 @@
+import { getRarityTier } from "@/lib/cocktail-rarity";
 import { SPIRIT_SEARCH_TERMS, CATEGORY_SEARCH_TERMS } from "@/lib/cocktail-search";
 import { getCatalogueRatingScore } from "@/lib/ingredient-search";
 import { Cocktail, CocktailMatch, Difficulty } from "@/lib/types";
@@ -57,11 +58,11 @@ export type DiscoveryFilters = {
 
 export type DiscoverySort =
   | "best-match"
+  | "name"
   | "popularity"
   | "rating"
   | "hidden-gems"
   | "recently-added"
-  | "ai-recommended"
   | "most-owned"
   | "fewest-missing"
   | "rarest";
@@ -144,22 +145,22 @@ export const STRENGTH_FILTER_OPTIONS: Array<{ id: StrengthFilter; label: string 
 
 export const RARITY_FILTER_OPTIONS: Array<{ id: RarityFilter; label: string }> = [
   { id: "all", label: "Any rarity" },
-  { id: "common", label: "Crowd pleaser" },
-  { id: "uncommon", label: "Uncommon" },
-  { id: "rare", label: "Rare find" },
-  { id: "hidden-gem", label: "Hidden gem" },
+  { id: "common", label: "Classic / well known" },
+  { id: "uncommon", label: "Hidden gem" },
+  { id: "rare", label: "Rare / deep cut" },
+  { id: "hidden-gem", label: "Hidden gem pours" },
 ];
 
 export const SORT_OPTIONS: Array<{ id: DiscoverySort; label: string }> = [
   { id: "best-match", label: "Best match" },
+  { id: "name", label: "Name (A–Z)" },
   { id: "popularity", label: "Most popular" },
   { id: "rating", label: "Highest rated" },
   { id: "hidden-gems", label: "Hidden gems" },
   { id: "recently-added", label: "Recently added" },
-  { id: "ai-recommended", label: "AI recommended" },
   { id: "most-owned", label: "Most ingredients owned" },
   { id: "fewest-missing", label: "Fewest missing" },
-  { id: "rarest", label: "Rarest" },
+  { id: "rarest", label: "Rarity" },
 ];
 
 function cocktailHasSpirit(cocktail: Cocktail, spirit: SpiritFilter): boolean {
@@ -214,14 +215,12 @@ function inferStrength(cocktail: Cocktail): StrengthFilter {
 
 function matchesRarity(cocktail: Cocktail, rarity: RarityFilter): boolean {
   if (rarity === "all") return true;
-  if (rarity === "common") return cocktail.popularityScore >= 70;
-  if (rarity === "uncommon") return cocktail.obscurityScore >= 40 && cocktail.obscurityScore < 58;
-  if (rarity === "rare") return cocktail.obscurityScore >= 58;
+  const tier = getRarityTier(cocktail);
+  if (rarity === "common") return tier === "classic" || tier === "well-known";
+  if (rarity === "uncommon") return tier === "hidden-gem";
+  if (rarity === "rare") return tier === "deep-cut";
   if (rarity === "hidden-gem") {
-    return (
-      cocktail.collections.includes("hidden-gem") ||
-      cocktail.obscurityScore >= 55
-    );
+    return tier === "hidden-gem" || tier === "deep-cut";
   }
   return true;
 }
@@ -287,6 +286,8 @@ export function sortDiscoveryResults(
     const cb = b.cocktail;
 
     switch (sort) {
+      case "name":
+        return ca.name.localeCompare(cb.name);
       case "popularity":
         return cb.popularityScore - ca.popularityScore || ca.name.localeCompare(cb.name);
       case "rating":
@@ -302,11 +303,6 @@ export function sortDiscoveryResults(
         return cb.popularityScore - ca.popularityScore;
       case "rarest":
         return cb.obscurityScore - ca.obscurityScore || ca.name.localeCompare(cb.name);
-      case "ai-recommended": {
-        const scoreA = aiRecommendScore(a);
-        const scoreB = aiRecommendScore(b);
-        return scoreB - scoreA;
-      }
       case "best-match":
       default: {
         if (searchQuery.trim()) {

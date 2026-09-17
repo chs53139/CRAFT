@@ -1,8 +1,13 @@
+"use client";
+
 import type { ReactNode } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import { AlcoholBadge } from "@/components/AlcoholBadge";
 import { CocktailImage } from "@/components/CocktailImage";
 import { DifficultyBadge } from "@/components/DifficultyBadge";
+import { FindNearbyButton } from "@/components/FindNearbySheet";
+import { trackProductEvent } from "@/lib/analytics";
 import { BarAdvice } from "@/lib/bar-intelligence/bar-advice";
 import { getBuyLabel } from "@/lib/ingredient-brands";
 
@@ -12,6 +17,14 @@ type Props = {
 
 export function MyBarAdvice({ advice }: Props) {
   const { tonightsRecommendation, bestNextPurchase, hiddenGem, neglectedBottle } = advice;
+
+  useEffect(() => {
+    if (!bestNextPurchase) return;
+    trackProductEvent("best_next_purchase_viewed", {
+      ingredientId: bestNextPurchase.ingredient.id,
+      unlocksCount: bestNextPurchase.unlocksCount,
+    });
+  }, [bestNextPurchase]);
 
   return (
     <section className="my-bar-advice animate-fade-in-up">
@@ -50,21 +63,24 @@ export function MyBarAdvice({ advice }: Props) {
           <div className="my-bar-advice-card">
             <p className="my-bar-advice-label">Best next purchase</p>
             <h3 className="my-bar-advice-title">{getBuyLabel(bestNextPurchase.ingredient)}</h3>
-            <p className="my-bar-advice-copy">
-              {bestNextPurchase.reason ||
-                "The one bottle that opens the most new pours from your shelf."}
-            </p>
-            {bestNextPurchase.exampleCocktails.length > 0 && (
-              <ul className="my-bar-advice-examples">
-                {bestNextPurchase.exampleCocktails.slice(0, 3).map((name) => (
-                  <li key={name}>{name}</li>
-                ))}
-              </ul>
-            )}
             <p className="my-bar-advice-footnote">
-              Unlocks {bestNextPurchase.unlocksCount} more drink
+              Unlocks {bestNextPurchase.unlocksCount} cocktail
               {bestNextPurchase.unlocksCount !== 1 ? "s" : ""}
             </p>
+            {bestNextPurchase.exampleCocktails.length > 0 && (
+              <p className="my-bar-advice-copy">
+                {bestNextPurchase.exampleCocktails.slice(0, 4).join(" · ")}
+                {bestNextPurchase.exampleCocktails.length > 4 ? " · …" : ""}
+              </p>
+            )}
+            {bestNextPurchase.reason ? (
+              <p className="my-bar-advice-copy">{bestNextPurchase.reason}</p>
+            ) : null}
+            <FindNearbyButton
+              ingredient={bestNextPurchase.ingredient}
+              context="best_next_purchase"
+              className="my-bar-advice-find"
+            />
           </div>
         )}
 

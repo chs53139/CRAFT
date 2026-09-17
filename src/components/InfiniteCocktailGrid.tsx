@@ -62,31 +62,31 @@ export function InfiniteCocktailGrid({
 
 type BannerProps = {
   exactCount: number;
-  totalMakeable: number;
+  withinReach: number;
+  swapCount: number;
   viewAllHref?: string;
   label?: string;
 };
 
 export function MakeableCountBanner({
   exactCount,
-  totalMakeable,
+  withinReach,
+  swapCount,
   viewAllHref = "/cocktails",
   label,
 }: BannerProps) {
-  const count = totalMakeable > 0 ? totalMakeable : exactCount;
+  const count = withinReach > 0 ? withinReach : exactCount;
   const message =
     label ??
-    (count === 1
-      ? "You can make 1 cocktail"
-      : `You can make ${count} cocktails`);
+    (count === 1 ? "You can make 1 cocktail" : `You can make ${count} cocktails`);
 
   return (
     <div className="makeable-count-banner">
       <div>
         <p className="makeable-count-banner-title">{message}</p>
-        {totalMakeable > exactCount && exactCount > 0 && (
+        {count > 0 && (
           <p className="makeable-count-banner-subtitle">
-            {exactCount} exact · {totalMakeable - exactCount} with swaps
+            {exactCount} ready · {swapCount} with swaps
           </p>
         )}
       </div>

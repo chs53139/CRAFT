@@ -21,6 +21,7 @@ import {
   trackRecentCocktail,
 } from "@/lib/supabase/bar-sync";
 import { migrateBarInventory } from "@/lib/inventory-migration";
+import { trackProductEvent } from "@/lib/analytics";
 import { isHouseStaple } from "@/lib/inventory-tiers";
 import { createClient } from "@/lib/supabase/client";
 import { humanizeSupabaseUnavailable, withTimeout } from "@/lib/supabase/resilience";
@@ -232,8 +233,13 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
     (id: string) => {
       if (isHouseStaple(id)) return;
       setBarIdsState((prev) => {
+        const removing = prev.includes(id);
         const next = normalizeBarIds(
-          prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+          removing ? prev.filter((x) => x !== id) : [...prev, id]
+        );
+        trackProductEvent(
+          removing ? "bar_ingredient_removed" : "bar_ingredient_added",
+          { ingredientId: id }
         );
         persistBar(next);
         return next;
@@ -263,6 +269,8 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
       const next = isFav
         ? favoriteIds.filter((id) => id !== cocktailId)
         : [...favoriteIds, cocktailId];
+
+      trackProductEvent(isFav ? "favorite_removed" : "favorite_added", { cocktailId });
 
       setFavoriteIds(next);
       localStorage.setItem(FAVORITES_KEY, JSON.stringify(next));

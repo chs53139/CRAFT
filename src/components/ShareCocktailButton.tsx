@@ -5,6 +5,7 @@ import { ShareButton } from "@/components/ShareButton";
 import { getCocktailById } from "@/lib/cocktail-matching";
 import { buildInventionSharePath } from "@/lib/invention-share";
 import { MixologistInvention } from "@/lib/mixologist/types";
+import { trackProductEvent } from "@/lib/analytics";
 import {
   buildCocktailSharePayload,
   buildInventionSharePayload,
@@ -20,7 +21,16 @@ type CocktailProps = {
 export function ShareCocktailButton({ cocktail, compact, className }: CocktailProps) {
   const payload = useMemo(() => buildCocktailSharePayload(cocktail), [cocktail]);
 
-  return <ShareButton payload={payload} compact={compact} className={className} />;
+  return (
+    <ShareButton
+      payload={payload}
+      compact={compact}
+      className={className}
+      onShared={(method) =>
+        trackProductEvent("cocktail_shared", { cocktailId: cocktail.id, method })
+      }
+    />
+  );
 }
 
 type InventionProps = {

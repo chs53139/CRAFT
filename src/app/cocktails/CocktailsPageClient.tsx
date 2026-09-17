@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { trackProductEvent } from "@/lib/analytics";
 import { useSearchParams } from "next/navigation";
 import { CocktailSection } from "@/components/CocktailSection";
 import { CollectionFilter } from "@/components/CollectionFilter";
@@ -31,7 +32,9 @@ import {
   sortDiscoveryResults,
 } from "@/lib/discovery-filters";
 import {
+  countWithinReach,
   filterMatchesBySearch,
+  getBarSummaryFromMatches,
   groupCocktailMatches,
   isPourable,
 } from "@/lib/cocktail-matching";
@@ -148,12 +151,37 @@ function CocktailsContent() {
 
   const exactCount = useMemo(() => countExactMakeable(allMatches), [allMatches]);
   const totalMakeable = useMemo(() => countMakeable(allMatches), [allMatches]);
+  const withinReach = useMemo(() => countWithinReach(allMatches), [allMatches]);
+  const barSummary = useMemo(() => getBarSummaryFromMatches(allMatches), [allMatches]);
+
+  const lastSearchTracked = useRef("");
+  useEffect(() => {
+    const q = search.trim();
+    if (q.length < 2 || q === lastSearchTracked.current) return;
+    lastSearchTracked.current = q;
+    trackProductEvent("cocktail_searched", {
+      queryLength: q.length,
+      resultCount: processedMatches.length,
+      hasExclusion: /\bwithout\b/i.test(q),
+    });
+  }, [search, processedMatches.length]);
+
+  const oneAway = stillMissing.filter((m) => m.missingCount === 1);
+  useEffect(() => {
+    if (view !== "one-away" || oneAway.length === 0) return;
+    const match = oneAway[0];
+    const missing = match.missing[0];
+    if (!missing) return;
+    trackProductEvent("one_away_viewed", {
+      cocktailId: match.cocktail.id,
+      missingIngredientId: missing.id,
+    });
+  }, [view, oneAway]);
 
   if (!loaded) {
     return <MenuPageSkeleton />;
   }
 
-  const oneAway = stillMissing.filter((m) => m.missingCount === 1);
   const searchActive = search.trim().length > 0 || hasActiveDiscoveryFilters(discoveryFilters);
   const showBrowse = view === "browse" || (searchActive && view !== "one-away");
   const showAllSections = view === "all";
@@ -207,7 +235,8 @@ function CocktailsContent() {
         <>
           <MakeableCountBanner
             exactCount={exactCount}
-            totalMakeable={totalMakeable}
+            withinReach={withinReach}
+            swapCount={barSummary.withSubstitutions}
             viewAllHref="/cocktails?view=browse"
           />
 

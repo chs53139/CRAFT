@@ -17,13 +17,16 @@ import { ObscurityBadge } from "@/components/ObscurityBadge";
 import { ShareCocktailButton } from "@/components/ShareCocktailButton";
 import { ERA_LABELS } from "@/lib/cocktail-curation";
 import { MOCKTAIL_SUBCATEGORY_LABELS } from "@/lib/mocktail-curation";
+import { FindNearbyButton } from "@/components/FindNearbySheet";
 import { MissingIngredientsByTier } from "@/components/MissingIngredientsByTier";
+import { OneIngredientAwayPanel } from "@/components/OneIngredientAwayPanel";
+import { trackProductEvent } from "@/lib/analytics";
 import {
   getCocktailById,
   getIngredientById,
   matchSingleCocktail,
 } from "@/lib/cocktail-matching";
-import { getEffectiveBarIds, isHouseStaple } from "@/lib/inventory-tiers";
+import { getEffectiveBarIds, isBrowsableIngredient, isHouseStaple } from "@/lib/inventory-tiers";
 import { formatSubstitutionLine } from "@/lib/substitution-display";
 import { useFavorites, useMyBar, useRecentCocktails } from "@/hooks/use-my-bar";
 
@@ -38,7 +41,15 @@ export function CocktailDetailClient() {
   const cocktail = getCocktailById(id);
 
   useEffect(() => {
-    if (cocktail) trackRecent(cocktail.id);
+    if (!cocktail) return;
+    trackRecent(cocktail.id);
+    trackProductEvent("cocktail_viewed", {
+      cocktailId: cocktail.id,
+      drinkType: cocktail.drinkType,
+    });
+    if (cocktail.drinkType === "mocktail") {
+      trackProductEvent("mocktail_viewed", { cocktailId: cocktail.id });
+    }
   }, [cocktail, trackRecent]);
 
   if (!cocktail) {
@@ -65,6 +76,13 @@ export function CocktailDetailClient() {
     match?.substitutions.map((sub) => [sub.requiredId, sub]) ?? []
   );
   const fav = favLoaded && isFavorite(cocktail.id);
+  const oneAwayIngredient =
+    match?.matchGroup === "missing" &&
+    match.missingCount === 1 &&
+    match.missing[0] &&
+    isBrowsableIngredient(match.missing[0])
+      ? match.missing[0]
+      : null;
 
   return (
     <div className="animate-fade-in pb-6">
@@ -78,7 +96,7 @@ export function CocktailDetailClient() {
             {favLoaded && (
               <FavoriteButton
                 active={fav}
-                onToggle={() => toggleFavorite(cocktail.id)}
+                onToggle={() => void toggleFavorite(cocktail.id)}
                 className="h-11 w-11"
               />
             )}
@@ -201,9 +219,21 @@ export function CocktailDetailClient() {
                     ? "Bold swaps — low-confidence substitutes or homemade builds."
                     : "Still missing:"}
             </p>
-            {match.matchGroup === "missing" && match.missing.length > 0 && (
+            {oneAwayIngredient && (
               <div className="mt-3">
-                <MissingIngredientsByTier missingByTier={match.missingByTier} />
+                <OneIngredientAwayPanel
+                  ingredient={oneAwayIngredient}
+                  cocktailId={cocktail.id}
+                />
+              </div>
+            )}
+            {match.matchGroup === "missing" && match.missing.length > 0 && !oneAwayIngredient && (
+              <div className="mt-3">
+                <MissingIngredientsByTier
+                  missingByTier={match.missingByTier}
+                  cocktailId={cocktail.id}
+                  showFindNearby
+                />
               </div>
             )}
           </div>
@@ -282,7 +312,20 @@ export function CocktailDetailClient() {
                       )}
                     </div>
                   </div>
-                  <span className="shrink-0 text-sm text-[var(--muted)]">{ci.amount}</span>
+                  <div className="flex shrink-0 flex-col items-end gap-2">
+                    <span className="text-sm text-[var(--muted)]">{ci.amount}</span>
+                    {ing &&
+                      !haveIt &&
+                      !substitution &&
+                      isBrowsableIngredient(ing) && (
+                        <FindNearbyButton
+                          ingredient={ing}
+                          context="cocktail_detail"
+                          cocktailId={cocktail.id}
+                          className="find-nearby-btn-inline"
+                        />
+                      )}
+                  </div>
                 </li>
               );
             })}

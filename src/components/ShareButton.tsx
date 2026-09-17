@@ -8,9 +8,10 @@ type Props = {
   className?: string;
   label?: string;
   compact?: boolean;
+  onShared?: (method: "native" | "clipboard") => void;
 };
 
-export function ShareButton({ payload, className = "", label, compact }: Props) {
+export function ShareButton({ payload, className = "", label, compact, onShared }: Props) {
   const [status, setStatus] = useState<"idle" | "copied" | "shared">("idle");
 
   const handleShare = useCallback(
@@ -20,6 +21,7 @@ export function ShareButton({ payload, className = "", label, compact }: Props) 
 
       try {
         const result = await sharePayload(payload);
+        onShared?.(result === "shared" ? "native" : "clipboard");
         setStatus(result);
         window.setTimeout(() => setStatus("idle"), 2200);
       } catch (error) {
@@ -31,7 +33,7 @@ export function ShareButton({ payload, className = "", label, compact }: Props) 
         window.setTimeout(() => setStatus("idle"), 2200);
       }
     },
-    [payload]
+    [payload, onShared]
   );
 
   const ariaLabel =

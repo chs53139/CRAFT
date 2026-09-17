@@ -106,6 +106,12 @@ export function groupCocktailMatches(matches: CocktailMatch[]): GroupedCocktailM
   return { exactMatches, availableWithSubstitutions, experimentalMatches, stillMissing };
 }
 
+/** Exact + standard substitution pours (excludes experimental/bold swaps). */
+export function countWithinReach(matches: CocktailMatch[]): number {
+  const { exactMatches, availableWithSubstitutions } = groupCocktailMatches(matches);
+  return exactMatches.length + availableWithSubstitutions.length;
+}
+
 export { filterMatchesBySearch, searchMatches } from "@/lib/cocktail-search";
 
 export function getBarSummaryFromMatches(matches: CocktailMatch[]) {

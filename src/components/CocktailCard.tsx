@@ -2,7 +2,9 @@
 
 import { memo } from "react";
 import Link from "next/link";
+import { FindNearbyButton } from "@/components/FindNearbySheet";
 import { MissingIngredientsByTier } from "@/components/MissingIngredientsByTier";
+import { isBrowsableIngredient } from "@/lib/inventory-tiers";
 import { CocktailMatch } from "@/lib/types";
 import {
   formatSubstitutionLine,
@@ -144,6 +146,26 @@ export const CocktailCard = memo(function CocktailCard({
             <MissingIngredientsByTier missingByTier={match.missingByTier} compact />
           </p>
         )}
+
+        {matchGroup === "missing" &&
+          missingCount === 1 &&
+          missing[0] &&
+          isBrowsableIngredient(missing[0]) && (
+            <div
+              className="mt-3"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+            >
+              <FindNearbyButton
+                ingredient={missing[0]}
+                context="one_away"
+                cocktailId={cocktail.id}
+                className="find-nearby-btn-card w-full"
+              />
+            </div>
+          )}
 
       </div>
     </Link>

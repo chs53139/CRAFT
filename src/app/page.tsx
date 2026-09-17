@@ -10,9 +10,10 @@ import { SkeletonGrid } from "@/components/LoadingState";
 import { StatPillAction, StatPills } from "@/components/StatPills";
 import { isMixologistLaunchHidden } from "@/lib/feature-flags";
 import { EmptyState } from "@/components/EmptyState";
-import { countExactMakeable, countMakeable } from "@/lib/discovery-filters";
+import { countExactMakeable } from "@/lib/discovery-filters";
 import {
   cocktailCount,
+  countWithinReach,
   getBarSummaryFromMatches,
   mocktailCount,
 } from "@/lib/cocktail-matching";
@@ -27,7 +28,7 @@ export default function HomePage() {
 
   const summary = useMemo(() => getBarSummaryFromMatches(matches), [matches]);
   const exactCount = useMemo(() => countExactMakeable(matches), [matches]);
-  const totalMakeable = useMemo(() => countMakeable(matches), [matches]);
+  const withinReach = useMemo(() => countWithinReach(matches), [matches]);
   const tonight = grouped.exactMatches;
   const withSwaps = useMemo(
     () => grouped.availableWithSubstitutions,
@@ -67,8 +68,8 @@ export default function HomePage() {
       <ScreenHeader
         title="Home"
         subtitle={
-          totalMakeable > 0
-            ? `${totalMakeable} cocktails within reach · explore your bar's potential`
+          withinReach > 0
+            ? `${withinReach} cocktails within reach · explore your bar's potential`
             : "Stock a few more bottles to unlock pours"
         }
         large
@@ -76,7 +77,8 @@ export default function HomePage() {
 
       <MakeableCountBanner
         exactCount={exactCount}
-        totalMakeable={totalMakeable}
+        withinReach={withinReach}
+        swapCount={summary.withSubstitutions}
         viewAllHref="/cocktails?view=browse"
       />
 
@@ -131,10 +133,10 @@ export default function HomePage() {
         />
       )}
 
-      {totalMakeable > PREVIEW_COUNT && (
+      {withinReach > PREVIEW_COUNT && (
         <div className="app-section">
           <Link href="/cocktails?view=browse" className="btn-secondary w-full text-center">
-            Explore all {totalMakeable} cocktails
+            Explore all {withinReach} cocktails
           </Link>
         </div>
       )}

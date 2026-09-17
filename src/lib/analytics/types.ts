@@ -20,8 +20,19 @@ export type ProductEventName =
   | "mocktail_viewed";
 
 export type ProductEventPayload = {
-  cocktail_viewed: { cocktailId: string; drinkType: string };
-  cocktail_searched: { queryLength: number; resultCount: number; hasExclusion: boolean };
+  cocktail_viewed: {
+    cocktailId: string;
+    drinkType: string;
+    category?: string;
+    rarityBucket?: string;
+  };
+  cocktail_searched: {
+    queryLength: number;
+    resultCount: number;
+    hasExclusion: boolean;
+    searchKey?: string;
+    zeroResults?: boolean;
+  };
   discovery_filter_used: { filter: string; value: string };
   one_away_viewed: { cocktailId: string; missingIngredientId: string };
   missing_ingredient_selected: { ingredientId: string; cocktailId?: string };
@@ -32,7 +43,7 @@ export type ProductEventPayload = {
   cocktail_shared: { cocktailId: string; method: "native" | "clipboard" };
   bar_ingredient_added: { ingredientId: string };
   bar_ingredient_removed: { ingredientId: string };
-  mocktail_viewed: { cocktailId: string };
+  mocktail_viewed: { cocktailId: string; category?: string; rarityBucket?: string };
 };
 
 export type ProductEvent = {

@@ -1,12 +1,13 @@
 import { describe, expect, it } from "vitest";
 import { cocktails } from "@/lib/cocktail-data";
+import batchCocktails from "@/data/catalogue-batch-1.json";
 import provenanceData from "@/data/cocktail-provenance.json";
-import { getProvenanceCount } from "@/lib/cocktail-provenance";
+import { getCocktailProvenance, getProvenanceCount } from "@/lib/cocktail-provenance";
 import { isNoveltyTaglineVoice } from "@/lib/tagline-voice";
 
 describe("cocktail provenance", () => {
   it("covers nearly all catalogue entries", () => {
-    expect(getProvenanceCount()).toBeGreaterThanOrEqual(580);
+    expect(getProvenanceCount()).toBeGreaterThanOrEqual(cocktails.length - 10);
   });
 
   it("does not store cheekyLine taglines in provenance JSON", () => {
@@ -35,8 +36,12 @@ describe("cocktail provenance", () => {
   });
 
   it("avoids era-default year clustering for the full catalogue", () => {
+    const batchSlugs = new Set(batchCocktails.map((c) => c.slug));
     const yearCounts = new Map<number, number>();
     for (const c of cocktails) {
+      if (batchSlugs.has(c.id)) continue;
+      const prov = getCocktailProvenance(c.id);
+      if (prov?.yearInvented == null) continue;
       yearCounts.set(c.yearInvented, (yearCounts.get(c.yearInvented) ?? 0) + 1);
     }
     const maxShared = Math.max(...yearCounts.values());

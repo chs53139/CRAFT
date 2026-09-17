@@ -1,0 +1,61 @@
+{
+  "generatedAt": "2026-09-17T04:45:48.422Z",
+  "catalogueBefore": {
+    "totalUnique": 672,
+    "alcoholicEstimate": 648,
+    "mocktails": 24,
+    "byFamily": {
+      "Sour": 190,
+      "Spirit-Forward": 141,
+      "Fizz & Collins": 28,
+      "Tiki": 71,
+      "Highball": 106,
+      "Spritz": 21,
+      "Champagne Cocktail": 14,
+      "Hot Drink": 13,
+      "Flip & Nog": 14,
+      "Punch": 17,
+      "Other": 11,
+      "Shot": 12,
+      "Aperitif": 12,
+      "Fizz": 5,
+      "Manhattan": 8,
+      "Flip": 7,
+      "Hot": 2
+    },
+    "tikiTagged": 74,
+    "modernClassicTagged": 113
+  },
+  "targetChecklist": {
+    "total": 0,
+    "present": 0,
+    "missing": 0,
+    "missingSlugs": []
+  },
+  "overrepresentedFamilies": [
+    [
+      "Sour",
+      190
+    ],
+    [
+      "Spirit-Forward",
+      141
+    ],
+    [
+      "Highball",
+      106
+    ],
+    [
+      "Tiki",
+      71
+    ],
+    [
+      "Fizz & Collins",
+      28
+    ]
+  ],
+  "notes": [
+    "Target list is a canonical gap checklist — not every missing slug is auto-ingested.",
+    "Expansion batch must pass source-first validation separately."
+  ]
+}

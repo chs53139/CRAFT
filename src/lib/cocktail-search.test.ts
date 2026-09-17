@@ -60,7 +60,9 @@ describe("searchCocktails", () => {
   it("includes newly expanded cocktails in the catalogue", () => {
     expect(cocktails.some((c) => c.id === "pearl-diver")).toBe(true);
     expect(cocktails.some((c) => c.id === "aku-aku")).toBe(true);
-    expect(cocktails.length).toBe(588);
+    expect(cocktails.length).toBe(672);
+    expect(cocktails.some((c) => c.id === "airmail")).toBe(true);
+    expect(cocktails.some((c) => c.id === "lion-tail")).toBe(true);
   });
 
   const PROCEDURAL_EXPANSION_IDS = [

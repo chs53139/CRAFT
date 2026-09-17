@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { trackProductEvent } from "@/lib/analytics";
+import { normalizeSearchKey } from "@/lib/analytics/search-key";
 import { useSearchParams } from "next/navigation";
 import { CocktailSection } from "@/components/CocktailSection";
 import { CollectionFilter } from "@/components/CollectionFilter";
@@ -159,10 +160,13 @@ function CocktailsContent() {
     const q = search.trim();
     if (q.length < 2 || q === lastSearchTracked.current) return;
     lastSearchTracked.current = q;
+    const searchKey = normalizeSearchKey(q);
     trackProductEvent("cocktail_searched", {
       queryLength: q.length,
       resultCount: processedMatches.length,
       hasExclusion: /\bwithout\b/i.test(q),
+      searchKey: searchKey || undefined,
+      zeroResults: processedMatches.length === 0,
     });
   }, [search, processedMatches.length]);
 

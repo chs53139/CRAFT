@@ -14,7 +14,10 @@
     "generate:image-overrides": "node scripts/generate-image-overrides.mjs",
     "generate:provenance": "node scripts/generate-cocktail-provenance.mjs",
     "check:images": "node scripts/check-cocktail-images.mjs",
-    "check:provenance": "node scripts/generate-cocktail-provenance.mjs"
+    "check:provenance": "node scripts/generate-cocktail-provenance.mjs",
+    "catalogue:validate-batch-1": "node scripts/catalogue/validate-candidates.mjs",
+    "catalogue:apply-batch-1": "node scripts/catalogue/apply-batch-1.mjs",
+    "catalogue:gap-audit": "node scripts/catalogue/gap-audit.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.6.1",

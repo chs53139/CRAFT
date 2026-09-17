@@ -48,8 +48,12 @@ function loadCatalogue() {
   );
   const orig = JSON.parse(fs.readFileSync(path.join(root, "src/data/craft-originals.json"), "utf8"));
   const mock = JSON.parse(fs.readFileSync(path.join(root, "src/data/mocktails.json"), "utf8"));
+  const batch1Path = path.join(root, "src/data/catalogue-batch-1.json");
+  const batch1 = fs.existsSync(batch1Path)
+    ? JSON.parse(fs.readFileSync(batch1Path, "utf8"))
+    : [];
   const map = new Map();
-  for (const c of [...raw, ...exp, ...orig, ...mock]) map.set(c.slug, c);
+  for (const c of [...raw, ...exp, ...batch1, ...orig, ...mock]) map.set(c.slug, c);
   return [...map.values()];
 }
 

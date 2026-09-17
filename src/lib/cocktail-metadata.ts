@@ -57,10 +57,18 @@ export function resolveMetadata(
   isCraftOriginal: boolean
 ): Required<Pick<CuratedMetadata, "yearInvented" | "regionOfOrigin" | "sourceAttribution">> {
   const provenance = getCocktailProvenance(slug);
-  if (provenance) {
+  if (provenance && provenance.yearInvented != null) {
     return {
       yearInvented: provenance.yearInvented,
       regionOfOrigin: provenance.regionOfOrigin,
+      sourceAttribution: provenance.sourceAttribution,
+    };
+  }
+  if (provenance) {
+    const curated = CURATED_METADATA[slug];
+    return {
+      yearInvented: curated?.yearInvented ?? ERA_YEAR[era],
+      regionOfOrigin: provenance.regionOfOrigin || curated?.regionOfOrigin || REGION_BY_FAMILY[family] || "International",
       sourceAttribution: provenance.sourceAttribution,
     };
   }

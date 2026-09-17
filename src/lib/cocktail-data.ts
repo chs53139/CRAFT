@@ -1,5 +1,6 @@
 import rawCocktails from "@/data/cocktails.json";
 import cocktailsExpanded from "@/data/cocktails-expanded.json";
+import catalogueBatch1 from "@/data/catalogue-batch-1.json";
 import craftOriginals from "@/data/craft-originals.json";
 import mocktails from "@/data/mocktails.json";
 import { enrichCocktail } from "@/lib/cocktail-enrichment";
@@ -17,6 +18,7 @@ import {
 const SOURCE = dedupeBySlug([
   ...(rawCocktails as RawCocktail[]),
   ...(cocktailsExpanded as RawCocktail[]),
+  ...(catalogueBatch1 as RawCocktail[]),
   ...(craftOriginals as RawCocktail[]),
   ...(mocktails as RawCocktail[]),
 ]);

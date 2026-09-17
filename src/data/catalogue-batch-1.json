@@ -1,0 +1,4092 @@
+[
+  {
+    "name": "Lion's Tail",
+    "slug": "lion-tail",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "classic",
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "bourbon",
+        "name": "Bourbon",
+        "type": "spirit",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ref": "allspice-dram",
+        "name": "Allspice dram",
+        "type": "liqueur",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "simple-syrup",
+        "name": "Simple syrup",
+        "type": "syrup",
+        "amount": 7.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "angostura-bitters",
+        "name": "Angostura bitters",
+        "type": "bitters",
+        "amount": 2,
+        "unit": "dash"
+      }
+    ],
+    "garnish": [
+      "Lime wheel"
+    ],
+    "preparation": [
+      "Shake all ingredients with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lime."
+    ]
+  },
+  {
+    "name": "Corn and Oil",
+    "slug": "corn-and-oil",
+    "glass": "Rocks",
+    "family": "Highball",
+    "method": "Built",
+    "tags": [
+      "classic",
+      "tiki"
+    ],
+    "ingredients": [
+      {
+        "ref": "blackstrap-rum",
+        "name": "Blackstrap rum",
+        "type": "spirit",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ref": "falernum",
+        "name": "Falernum",
+        "type": "liqueur",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Spent lime shell"
+    ],
+    "preparation": [
+      "Add rum and falernum to a rocks glass with ice.",
+      "Squeeze lime and drop shell into the glass.",
+      "Stir briefly and serve."
+    ]
+  },
+  {
+    "name": "Airmail",
+    "slug": "airmail",
+    "glass": "Collins",
+    "family": "Highball",
+    "method": "Shaken",
+    "tags": [
+      "classic",
+      "historical",
+      "champagne"
+    ],
+    "ingredients": [
+      {
+        "ref": "rum-white",
+        "name": "White rum",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "honey-syrup",
+        "name": "Honey syrup",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "champagne",
+        "name": "Champagne",
+        "type": "wine",
+        "amount": 60,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lime wheel"
+    ],
+    "preparation": [
+      "Shake rum, lime, and honey syrup with ice.",
+      "Strain into a Collins glass over ice.",
+      "Top with chilled champagne and garnish."
+    ]
+  },
+  {
+    "name": "Taboo",
+    "slug": "taboo",
+    "glass": "Tiki mug",
+    "family": "Tiki",
+    "method": "Blend",
+    "tags": [
+      "tiki",
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "rum-white",
+        "name": "White rum",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "rum-dark",
+        "name": "Dark rum",
+        "type": "spirit",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "banana-liqueur",
+        "name": "Banana liqueur",
+        "type": "liqueur",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "coconut-cream",
+        "name": "Coconut cream",
+        "type": "mixer",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "falernum",
+        "name": "Falernum",
+        "type": "liqueur",
+        "amount": 7.5,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Mint sprig",
+      "nutmeg"
+    ],
+    "preparation": [
+      "Blend all ingredients with crushed ice until smooth.",
+      "Pour into a tiki mug.",
+      "Garnish with mint and grated nutmeg."
+    ]
+  },
+  {
+    "name": "Donn Beach Grog",
+    "slug": "donn-beach-grog",
+    "glass": "Tiki mug",
+    "family": "Tiki",
+    "method": "Blend",
+    "tags": [
+      "tiki",
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "gold-rum",
+        "name": "Gold rum",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "rum-dark",
+        "name": "Dark rum",
+        "type": "spirit",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "grapefruit-juice",
+        "name": "Grapefruit juice",
+        "type": "juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "honey-syrup",
+        "name": "Honey syrup",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "allspice-dram",
+        "name": "Allspice dram",
+        "type": "liqueur",
+        "amount": 7.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "club-soda",
+        "name": "Club soda",
+        "type": "mixer",
+        "amount": 30,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Mint sprig"
+    ],
+    "preparation": [
+      "Blend rums, juices, honey, and pimento dram with crushed ice.",
+      "Pour into a tiki mug and top with a splash of soda.",
+      "Garnish with mint."
+    ]
+  },
+  {
+    "name": "Eastern Standard",
+    "slug": "eastern-standard",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "modern-classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "bourbon",
+        "name": "Bourbon",
+        "type": "spirit",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "simple-syrup",
+        "name": "Simple syrup",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "mint-leaves",
+        "name": "Mint leaves",
+        "type": "garnish",
+        "amount": 8,
+        "unit": "leaves"
+      }
+    ],
+    "garnish": [
+      "Mint sprig"
+    ],
+    "preparation": [
+      "Gently muddle mint with syrup and lime in a shaker.",
+      "Add bourbon and ice; shake well.",
+      "Fine-strain into a chilled coupe and garnish with mint."
+    ]
+  },
+  {
+    "name": "Hotel Nacional",
+    "slug": "hotel-nacional",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "classic",
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "rum-white",
+        "name": "White rum",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "pineapple-juice",
+        "name": "Pineapple juice",
+        "type": "juice",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "apricot-liqueur",
+        "name": "Apricot liqueur",
+        "type": "liqueur",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Pineapple wedge"
+    ],
+    "preparation": [
+      "Shake all ingredients with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with pineapple."
+    ]
+  },
+  {
+    "name": "Pimm's Cup",
+    "slug": "pimm-cup",
+    "glass": "Collins",
+    "family": "Highball",
+    "method": "Built",
+    "tags": [
+      "classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "pimm-s-no-1",
+        "name": "Pimm's No. 1",
+        "type": "liqueur",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ref": "lemonade",
+        "name": "Lemonade",
+        "type": "mixer",
+        "amount": 90,
+        "unit": "ml"
+      },
+      {
+        "ref": "lemon",
+        "name": "Lemon slice",
+        "type": "garnish",
+        "amount": 1,
+        "unit": "slice"
+      },
+      {
+        "ref": "cucumber",
+        "name": "Cucumber",
+        "type": "garnish",
+        "amount": 2,
+        "unit": "slice"
+      }
+    ],
+    "garnish": [
+      "Cucumber ribbon",
+      "mint sprig",
+      "strawberries"
+    ],
+    "preparation": [
+      "Fill a Collins glass with ice.",
+      "Add Pimm's and top with chilled lemonade.",
+      "Garnish with cucumber, fruit, and mint."
+    ]
+  },
+  {
+    "name": "Paradise",
+    "slug": "paradise",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "classic",
+      "iba"
+    ],
+    "ingredients": [
+      {
+        "ref": "gin",
+        "name": "Gin",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "apricot-brandy",
+        "name": "Apricot brandy",
+        "type": "liqueur",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "orange-juice",
+        "name": "Orange juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Orange twist"
+    ],
+    "preparation": [
+      "Shake all ingredients with ice.",
+      "Strain into a chilled coupe.",
+      "Express orange twist over the drink."
+    ]
+  },
+  {
+    "name": "Yellow Bird",
+    "slug": "yellow-bird",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "classic",
+      "iba"
+    ],
+    "ingredients": [
+      {
+        "ref": "rum-white",
+        "name": "White rum",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "galliano",
+        "name": "Galliano",
+        "type": "liqueur",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "triple-sec",
+        "name": "Triple sec",
+        "type": "liqueur",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lime wheel"
+    ],
+    "preparation": [
+      "Shake all ingredients with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lime."
+    ]
+  },
+  {
+    "name": "Flamingo",
+    "slug": "flamingo",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "classic",
+      "iba"
+    ],
+    "ingredients": [
+      {
+        "ref": "rum-white",
+        "name": "White rum",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "apricot-brandy",
+        "name": "Apricot brandy",
+        "type": "liqueur",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lime wheel"
+    ],
+    "preparation": [
+      "Shake all ingredients with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lime."
+    ]
+  },
+  {
+    "name": "Deauville",
+    "slug": "deauville",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "classic",
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "apple-brandy",
+        "name": "Apple brandy",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "triple-sec",
+        "name": "Triple sec",
+        "type": "liqueur",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "lemon-juice",
+        "name": "Lemon juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lemon twist"
+    ],
+    "preparation": [
+      "Shake all ingredients with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lemon twist."
+    ]
+  },
+  {
+    "name": "Dubonnet Cocktail",
+    "slug": "dubonnet-cocktail",
+    "glass": "Coupe",
+    "family": "Aperitif",
+    "method": "Stirred",
+    "tags": [
+      "classic",
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "sweet-vermouth",
+        "name": "Sweet vermouth",
+        "type": "wine",
+        "amount": 45,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Orange twist"
+    ],
+    "preparation": [
+      "Stir gin and Dubonnet-style aromatized wine with ice.",
+      "Strain into a chilled coupe.",
+      "Express orange twist; note house Dubonnet rouge when available."
+    ]
+  },
+  {
+    "name": "Morning Glory Fizz",
+    "slug": "morning-glory-fizz",
+    "glass": "Collins",
+    "family": "Fizz",
+    "method": "Shaken",
+    "tags": [
+      "historical",
+      "classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "scotch",
+        "name": "Scotch whisky",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "lemon-juice",
+        "name": "Lemon juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "simple-syrup",
+        "name": "Simple syrup",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "egg-white",
+        "name": "Egg white",
+        "type": "dairy-egg",
+        "amount": 1,
+        "unit": "white"
+      },
+      {
+        "ref": "absinthe",
+        "name": "Absinthe",
+        "type": "spirit",
+        "amount": 1,
+        "unit": "dash"
+      },
+      {
+        "ref": "club-soda",
+        "name": "Club soda",
+        "type": "mixer",
+        "amount": 60,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lemon peel"
+    ],
+    "preparation": [
+      "Dry-shake scotch, citrus, syrup, and egg white.",
+      "Add ice and shake again; rinse glass with absinthe.",
+      "Strain into a Collins glass and top with soda."
+    ]
+  },
+  {
+    "name": "Purgatory",
+    "slug": "purgatory",
+    "glass": "Coupe",
+    "family": "Aperitif",
+    "method": "Stirred",
+    "tags": [
+      "modern-classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "rye-whiskey",
+        "name": "Rye whiskey",
+        "type": "spirit",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "green-chartreuse",
+        "name": "Green Chartreuse",
+        "type": "liqueur",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "dry-vermouth",
+        "name": "Dry vermouth",
+        "type": "wine",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "angostura-bitters",
+        "name": "Angostura bitters",
+        "type": "bitters",
+        "amount": 1,
+        "unit": "dash"
+      }
+    ],
+    "garnish": [
+      "Lemon twist"
+    ],
+    "preparation": [
+      "Stir all ingredients with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lemon twist."
+    ]
+  },
+  {
+    "name": "Satan's Whiskers",
+    "slug": "satan-whiskers",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "classic",
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "dry-vermouth",
+        "name": "Dry vermouth",
+        "type": "wine",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "orange-juice",
+        "name": "Orange juice",
+        "type": "juice",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "grand-marnier",
+        "name": "Grand Marnier",
+        "type": "liqueur",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "orange-bitters",
+        "name": "Orange bitters",
+        "type": "bitters",
+        "amount": 1,
+        "unit": "dash"
+      }
+    ],
+    "garnish": [
+      "Orange twist"
+    ],
+    "preparation": [
+      "Shake all ingredients with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with orange twist."
+    ]
+  },
+  {
+    "name": "Vermouth Cassis",
+    "slug": "vermouth-cassiss",
+    "glass": "Wine glass",
+    "family": "Aperitif",
+    "method": "Built",
+    "tags": [
+      "classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "dry-vermouth",
+        "name": "Dry vermouth",
+        "type": "wine",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "creme-de-cassis",
+        "name": "Crème de cassis",
+        "type": "liqueur",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lemon twist"
+    ],
+    "preparation": [
+      "Build vermouth and cassis over ice in a wine glass.",
+      "Stir gently and garnish with lemon twist."
+    ]
+  },
+  {
+    "name": "Whiskey Rickey",
+    "slug": "whiskey-rickey",
+    "glass": "Highball",
+    "family": "Highball",
+    "method": "Built",
+    "tags": [
+      "classic",
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "bourbon",
+        "name": "Bourbon",
+        "type": "spirit",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "club-soda",
+        "name": "Club soda",
+        "type": "mixer",
+        "amount": 90,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lime wedge"
+    ],
+    "preparation": [
+      "Add whiskey and lime juice to a highball glass with ice.",
+      "Top with chilled soda and stir once.",
+      "Garnish with lime wedge."
+    ]
+  },
+  {
+    "name": "Charleston",
+    "slug": "charleston",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "classic",
+      "iba"
+    ],
+    "ingredients": [
+      {
+        "ref": "rum-white",
+        "name": "White rum",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "grenadine",
+        "name": "Grenadine",
+        "type": "syrup",
+        "amount": 7.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "angostura-bitters",
+        "name": "Angostura bitters",
+        "type": "bitters",
+        "amount": 2,
+        "unit": "dash"
+      }
+    ],
+    "garnish": [
+      "Lime wheel"
+    ],
+    "preparation": [
+      "Shake with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lime."
+    ]
+  },
+  {
+    "name": "Harvard",
+    "slug": "harvard",
+    "glass": "Highball",
+    "family": "Highball",
+    "method": "Stirred",
+    "tags": [
+      "classic",
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "cognac",
+        "name": "Cognac",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "sweet-vermouth",
+        "name": "Sweet vermouth",
+        "type": "wine",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "club-soda",
+        "name": "Club soda",
+        "type": "mixer",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "angostura-bitters",
+        "name": "Angostura bitters",
+        "type": "bitters",
+        "amount": 2,
+        "unit": "dash"
+      }
+    ],
+    "garnish": [
+      "Lemon twist"
+    ],
+    "preparation": [
+      "Stir cognac, vermouth, and bitters with ice.",
+      "Strain over fresh ice.",
+      "Top with soda and garnish."
+    ]
+  },
+  {
+    "name": "Horse's Neck",
+    "slug": "horse-neck",
+    "glass": "Highball",
+    "family": "Highball",
+    "method": "Built",
+    "tags": [
+      "classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "bourbon",
+        "name": "Bourbon",
+        "type": "spirit",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ref": "ginger-ale",
+        "name": "Ginger ale",
+        "type": "mixer",
+        "amount": 120,
+        "unit": "ml"
+      },
+      {
+        "ref": "angostura-bitters",
+        "name": "Angostura bitters",
+        "type": "bitters",
+        "amount": 2,
+        "unit": "dash"
+      }
+    ],
+    "garnish": [
+      "Long lemon peel spiral"
+    ],
+    "preparation": [
+      "Build bourbon and bitters over ice in a highball.",
+      "Top with ginger ale.",
+      "Drape lemon peel over the rim."
+    ]
+  },
+  {
+    "name": "Kir",
+    "slug": "kir",
+    "glass": "Wine glass",
+    "family": "Aperitif",
+    "method": "Built",
+    "tags": [
+      "classic",
+      "iba"
+    ],
+    "ingredients": [
+      {
+        "ref": "dry-white-wine",
+        "name": "Dry white wine",
+        "type": "wine",
+        "amount": 120,
+        "unit": "ml"
+      },
+      {
+        "ref": "creme-de-cassis",
+        "name": "Crème de cassis",
+        "type": "liqueur",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lemon twist"
+    ],
+    "preparation": [
+      "Add cassis to a wine glass.",
+      "Top with chilled white wine and stir gently."
+    ]
+  },
+  {
+    "name": "Palmetto",
+    "slug": "palmetto",
+    "glass": "Coupe",
+    "family": "Manhattan",
+    "method": "Stirred",
+    "tags": [
+      "classic",
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "rum-aged",
+        "name": "Aged rum",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "sweet-vermouth",
+        "name": "Sweet vermouth",
+        "type": "wine",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "dry-vermouth",
+        "name": "Dry vermouth",
+        "type": "wine",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "orange-bitters",
+        "name": "Orange bitters",
+        "type": "bitters",
+        "amount": 2,
+        "unit": "dash"
+      }
+    ],
+    "garnish": [
+      "Orange twist"
+    ],
+    "preparation": [
+      "Stir all ingredients with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with orange twist."
+    ]
+  },
+  {
+    "name": "Coffee Cocktail",
+    "slug": "coffee-cocktail",
+    "glass": "Coupe",
+    "family": "Flip",
+    "method": "Shaken",
+    "tags": [
+      "historical",
+      "classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "ruby-port",
+        "name": "Ruby port",
+        "type": "wine",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "cognac",
+        "name": "Cognac",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "egg-yolk",
+        "name": "Egg yolk",
+        "type": "dairy-egg",
+        "amount": 1,
+        "unit": "yolk"
+      },
+      {
+        "ref": "simple-syrup",
+        "name": "Simple syrup",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "nutmeg",
+        "name": "Nutmeg",
+        "type": "garnish",
+        "amount": 1,
+        "unit": "grating"
+      }
+    ],
+    "garnish": [
+      "Grated nutmeg"
+    ],
+    "preparation": [
+      "Shake all ingredients vigorously with ice.",
+      "Strain into a chilled coupe.",
+      "Grate nutmeg over the foam."
+    ]
+  },
+  {
+    "name": "Blue Blazer",
+    "slug": "blue-blazer",
+    "glass": "Mug",
+    "family": "Hot",
+    "method": "Built",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "scotch",
+        "name": "Scotch whisky",
+        "type": "spirit",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ref": "hot-water",
+        "name": "Hot water",
+        "type": "mixer",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ref": "simple-syrup",
+        "name": "Simple syrup",
+        "type": "syrup",
+        "amount": 7.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "lemon-peel",
+        "name": "Lemon peel",
+        "type": "garnish",
+        "amount": 1,
+        "unit": "twist"
+      }
+    ],
+    "garnish": [
+      "Lemon twist"
+    ],
+    "preparation": [
+      "Warm scotch, syrup, and water; ignite carefully if performing the classic toss.",
+      "Pour between preheated mugs to mix.",
+      "Serve hot with lemon twist; skip flames for home service."
+    ]
+  },
+  {
+    "name": "Brandy Flip",
+    "slug": "brandy-flip",
+    "glass": "Coupe",
+    "family": "Flip",
+    "method": "Shaken",
+    "tags": [
+      "historical",
+      "classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "brandy",
+        "name": "Brandy",
+        "type": "spirit",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ref": "whole-egg",
+        "name": "Whole egg",
+        "type": "dairy-egg",
+        "amount": 1,
+        "unit": "egg"
+      },
+      {
+        "ref": "simple-syrup",
+        "name": "Simple syrup",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "nutmeg",
+        "name": "Nutmeg",
+        "type": "garnish",
+        "amount": 1,
+        "unit": "grating"
+      }
+    ],
+    "garnish": [
+      "Grated nutmeg"
+    ],
+    "preparation": [
+      "Dry-shake then shake with ice.",
+      "Strain into a chilled coupe.",
+      "Grate nutmeg on top."
+    ]
+  },
+  {
+    "name": "Cooperstown",
+    "slug": "cooperstown",
+    "glass": "Coupe",
+    "family": "Aperitif",
+    "method": "Stirred",
+    "tags": [
+      "classic",
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "dry-vermouth",
+        "name": "Dry vermouth",
+        "type": "wine",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "mint-leaves",
+        "name": "Mint leaves",
+        "type": "garnish",
+        "amount": 6,
+        "unit": "leaves"
+      },
+      {
+        "ref": "orange-bitters",
+        "name": "Orange bitters",
+        "type": "bitters",
+        "amount": 2,
+        "unit": "dash"
+      }
+    ],
+    "garnish": [
+      "Mint sprig"
+    ],
+    "preparation": [
+      "Stir gin, vermouth, and bitters with ice.",
+      "Strain into a coupe.",
+      "Slap mint and garnish."
+    ]
+  },
+  {
+    "name": "Chicago Fizz",
+    "slug": "chicago-fizz",
+    "glass": "Collins",
+    "family": "Fizz",
+    "method": "Shaken",
+    "tags": [
+      "historical",
+      "classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "rum-white",
+        "name": "White rum",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "ruby-port",
+        "name": "Ruby port",
+        "type": "wine",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "lemon-juice",
+        "name": "Lemon juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "simple-syrup",
+        "name": "Simple syrup",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "egg-white",
+        "name": "Egg white",
+        "type": "dairy-egg",
+        "amount": 1,
+        "unit": "white"
+      },
+      {
+        "ref": "club-soda",
+        "name": "Club soda",
+        "type": "mixer",
+        "amount": 60,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Nutmeg"
+    ],
+    "preparation": [
+      "Dry-shake, then shake with ice.",
+      "Strain into Collins over ice.",
+      "Top with soda and nutmeg."
+    ]
+  },
+  {
+    "name": "Artillery",
+    "slug": "artillery",
+    "glass": "Coupe",
+    "family": "Manhattan",
+    "method": "Stirred",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "sweet-vermouth",
+        "name": "Sweet vermouth",
+        "type": "wine",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "angostura-bitters",
+        "name": "Angostura bitters",
+        "type": "bitters",
+        "amount": 2,
+        "unit": "dash"
+      }
+    ],
+    "garnish": [
+      "Lemon twist"
+    ],
+    "preparation": [
+      "Stir with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lemon twist."
+    ]
+  },
+  {
+    "name": "Ford Cocktail",
+    "slug": "ford-cocktail",
+    "glass": "Coupe",
+    "family": "Aperitif",
+    "method": "Stirred",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "dry-vermouth",
+        "name": "Dry vermouth",
+        "type": "wine",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "benedictine",
+        "name": "Benedictine",
+        "type": "liqueur",
+        "amount": 7.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "angostura-bitters",
+        "name": "Angostura bitters",
+        "type": "bitters",
+        "amount": 1,
+        "unit": "dash"
+      }
+    ],
+    "garnish": [
+      "Orange twist"
+    ],
+    "preparation": [
+      "Stir all ingredients with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with orange twist."
+    ]
+  },
+  {
+    "name": "Golden Cadillac",
+    "slug": "golden-cadillac",
+    "glass": "Coupe",
+    "family": "Flip",
+    "method": "Shaken",
+    "tags": [
+      "classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "galliano",
+        "name": "Galliano",
+        "type": "liqueur",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "creme-de-cacao-white",
+        "name": "White crème de cacao",
+        "type": "liqueur",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "heavy-cream",
+        "name": "Heavy cream",
+        "type": "dairy-egg",
+        "amount": 30,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Nutmeg"
+    ],
+    "preparation": [
+      "Shake with ice.",
+      "Strain into a chilled coupe.",
+      "Grate nutmeg if desired."
+    ]
+  },
+  {
+    "name": "Metropole",
+    "slug": "metropole",
+    "glass": "Coupe",
+    "family": "Manhattan",
+    "method": "Stirred",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "cognac",
+        "name": "Cognac",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "dry-vermouth",
+        "name": "Dry vermouth",
+        "type": "wine",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "simple-syrup",
+        "name": "Simple syrup",
+        "type": "syrup",
+        "amount": 7.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "angostura-bitters",
+        "name": "Angostura bitters",
+        "type": "bitters",
+        "amount": 2,
+        "unit": "dash"
+      }
+    ],
+    "garnish": [
+      "Lemon twist"
+    ],
+    "preparation": [
+      "Stir with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lemon twist."
+    ]
+  },
+  {
+    "name": "Opera",
+    "slug": "opera",
+    "glass": "Coupe",
+    "family": "Flip",
+    "method": "Shaken",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "maraschino-liqueur",
+        "name": "Maraschino liqueur",
+        "type": "liqueur",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "heavy-cream",
+        "name": "Heavy cream",
+        "type": "dairy-egg",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "orange-bitters",
+        "name": "Orange bitters",
+        "type": "bitters",
+        "amount": 2,
+        "unit": "dash"
+      }
+    ],
+    "garnish": [
+      "Orange twist"
+    ],
+    "preparation": [
+      "Shake with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with orange twist."
+    ]
+  },
+  {
+    "name": "Poet's Dream",
+    "slug": "poets-dream",
+    "glass": "Coupe",
+    "family": "Aperitif",
+    "method": "Stirred",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "dry-vermouth",
+        "name": "Dry vermouth",
+        "type": "wine",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "sweet-vermouth",
+        "name": "Sweet vermouth",
+        "type": "wine",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "absinthe",
+        "name": "Absinthe",
+        "type": "spirit",
+        "amount": 7.5,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lemon twist"
+    ],
+    "preparation": [
+      "Stir with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lemon twist."
+    ]
+  },
+  {
+    "name": "Port Flip",
+    "slug": "port-flip",
+    "glass": "Coupe",
+    "family": "Flip",
+    "method": "Shaken",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "ruby-port",
+        "name": "Ruby port",
+        "type": "wine",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ref": "whole-egg",
+        "name": "Whole egg",
+        "type": "dairy-egg",
+        "amount": 1,
+        "unit": "egg"
+      },
+      {
+        "ref": "simple-syrup",
+        "name": "Simple syrup",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "nutmeg",
+        "name": "Nutmeg",
+        "type": "garnish",
+        "amount": 1,
+        "unit": "grating"
+      }
+    ],
+    "garnish": [
+      "Grated nutmeg"
+    ],
+    "preparation": [
+      "Shake vigorously with ice.",
+      "Strain into a chilled coupe.",
+      "Grate nutmeg."
+    ]
+  },
+  {
+    "name": "Princeton",
+    "slug": "princeton",
+    "glass": "Coupe",
+    "family": "Aperitif",
+    "method": "Stirred",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "old-tom-gin",
+        "name": "Old tom gin",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "ruby-port",
+        "name": "Ruby port",
+        "type": "wine",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "orange-bitters",
+        "name": "Orange bitters",
+        "type": "bitters",
+        "amount": 2,
+        "unit": "dash"
+      }
+    ],
+    "garnish": [
+      "Orange twist"
+    ],
+    "preparation": [
+      "Stir with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with orange twist."
+    ]
+  },
+  {
+    "name": "Tipperary Cocktail",
+    "slug": "tipperary-cocktail",
+    "glass": "Coupe",
+    "family": "Manhattan",
+    "method": "Stirred",
+    "tags": [
+      "classic",
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "irish-whiskey",
+        "name": "Irish whiskey",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "sweet-vermouth",
+        "name": "Sweet vermouth",
+        "type": "wine",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "green-chartreuse",
+        "name": "Green Chartreuse",
+        "type": "liqueur",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Orange twist"
+    ],
+    "preparation": [
+      "Stir with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with orange twist."
+    ]
+  },
+  {
+    "name": "Hemingway Special",
+    "slug": "hemingway-special",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "classic",
+      "iba"
+    ],
+    "ingredients": [
+      {
+        "ref": "rum-white",
+        "name": "White rum",
+        "type": "spirit",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ref": "maraschino-liqueur",
+        "name": "Maraschino liqueur",
+        "type": "liqueur",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "grapefruit-juice",
+        "name": "Grapefruit juice",
+        "type": "juice",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lime wheel"
+    ],
+    "preparation": [
+      "Shake hard with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lime."
+    ]
+  },
+  {
+    "name": "Periodista",
+    "slug": "periodista",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "tequila-blanco",
+        "name": "Tequila blanco",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "coffee-liqueur",
+        "name": "Coffee liqueur",
+        "type": "liqueur",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lime wheel"
+    ],
+    "preparation": [
+      "Shake with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lime."
+    ]
+  },
+  {
+    "name": "Milk Punch",
+    "slug": "milk-punch",
+    "glass": "Coupe",
+    "family": "Punch",
+    "method": "Shaken",
+    "tags": [
+      "historical",
+      "classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "brandy",
+        "name": "Brandy",
+        "type": "spirit",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ref": "whole-milk",
+        "name": "Whole milk",
+        "type": "dairy-egg",
+        "amount": 90,
+        "unit": "ml"
+      },
+      {
+        "ref": "simple-syrup",
+        "name": "Simple syrup",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "vanilla-syrup",
+        "name": "Vanilla syrup",
+        "type": "syrup",
+        "amount": 7.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "nutmeg",
+        "name": "Nutmeg",
+        "type": "garnish",
+        "amount": 1,
+        "unit": "grating"
+      }
+    ],
+    "garnish": [
+      "Grated nutmeg"
+    ],
+    "preparation": [
+      "Shake brandy, milk, and syrups with ice.",
+      "Strain into a coupe.",
+      "Grate nutmeg; clarify for bottled service if desired."
+    ]
+  },
+  {
+    "name": "Queen's",
+    "slug": "queens",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "ruby-port",
+        "name": "Ruby port",
+        "type": "wine",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "lemon-juice",
+        "name": "Lemon juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "raspberry-syrup",
+        "name": "Raspberry syrup",
+        "type": "syrup",
+        "amount": 7.5,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Raspberry"
+    ],
+    "preparation": [
+      "Shake with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with raspberry."
+    ]
+  },
+  {
+    "name": "Rose Cocktail",
+    "slug": "rose-cocktail",
+    "glass": "Coupe",
+    "family": "Aperitif",
+    "method": "Stirred",
+    "tags": [
+      "classic",
+      "iba"
+    ],
+    "ingredients": [
+      {
+        "ref": "dry-vermouth",
+        "name": "Dry vermouth",
+        "type": "wine",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "apple-brandy",
+        "name": "Apple brandy",
+        "type": "spirit",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "raspberry-syrup",
+        "name": "Raspberry syrup",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lemon twist"
+    ],
+    "preparation": [
+      "Stir with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lemon twist."
+    ]
+  },
+  {
+    "name": "Star Cocktail",
+    "slug": "star-cocktail",
+    "glass": "Coupe",
+    "family": "Manhattan",
+    "method": "Stirred",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "apple-brandy",
+        "name": "Apple brandy",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "sweet-vermouth",
+        "name": "Sweet vermouth",
+        "type": "wine",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "angostura-bitters",
+        "name": "Angostura bitters",
+        "type": "bitters",
+        "amount": 1,
+        "unit": "dash"
+      }
+    ],
+    "garnish": [
+      "Cherry"
+    ],
+    "preparation": [
+      "Stir with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with cherry."
+    ]
+  },
+  {
+    "name": "Imperial Fizz",
+    "slug": "imperial-fizz",
+    "glass": "Flute",
+    "family": "Fizz",
+    "method": "Shaken",
+    "tags": [
+      "classic",
+      "champagne"
+    ],
+    "ingredients": [
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "lemon-juice",
+        "name": "Lemon juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "simple-syrup",
+        "name": "Simple syrup",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "egg-white",
+        "name": "Egg white",
+        "type": "dairy-egg",
+        "amount": 1,
+        "unit": "white"
+      },
+      {
+        "ref": "champagne",
+        "name": "Champagne",
+        "type": "wine",
+        "amount": 60,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lemon twist"
+    ],
+    "preparation": [
+      "Dry-shake, then shake with ice.",
+      "Strain into a flute.",
+      "Top with champagne."
+    ]
+  },
+  {
+    "name": "Nightcap",
+    "slug": "nightcap",
+    "glass": "Coupe",
+    "family": "Flip",
+    "method": "Shaken",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "cognac",
+        "name": "Cognac",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "creme-de-cacao-white",
+        "name": "White crème de cacao",
+        "type": "liqueur",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "heavy-cream",
+        "name": "Heavy cream",
+        "type": "dairy-egg",
+        "amount": 30,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Nutmeg"
+    ],
+    "preparation": [
+      "Shake with ice.",
+      "Strain into a chilled coupe.",
+      "Grate nutmeg lightly."
+    ]
+  },
+  {
+    "name": "King Cole",
+    "slug": "king-cole",
+    "glass": "Tiki mug",
+    "family": "Tiki",
+    "method": "Blend",
+    "tags": [
+      "tiki",
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "rum-dark",
+        "name": "Dark rum",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "grenadine",
+        "name": "Grenadine",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "passion-fruit-syrup",
+        "name": "Passion fruit syrup",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "falernum",
+        "name": "Falernum",
+        "type": "liqueur",
+        "amount": 7.5,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Mint sprig"
+    ],
+    "preparation": [
+      "Blend with crushed ice.",
+      "Pour into a tiki mug.",
+      "Garnish with mint."
+    ]
+  },
+  {
+    "name": "Man O' War",
+    "slug": "man-o-war",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "bourbon",
+        "name": "Bourbon",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "sweet-vermouth",
+        "name": "Sweet vermouth",
+        "type": "wine",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "lemon-juice",
+        "name": "Lemon juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "grenadine",
+        "name": "Grenadine",
+        "type": "syrup",
+        "amount": 7.5,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lemon twist"
+    ],
+    "preparation": [
+      "Shake with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lemon twist."
+    ]
+  },
+  {
+    "name": "Royal Hawaiian",
+    "slug": "royal-hawaiian",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "classic",
+      "tiki"
+    ],
+    "ingredients": [
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "pineapple-juice",
+        "name": "Pineapple juice",
+        "type": "juice",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "lemon-juice",
+        "name": "Lemon juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "orgeat",
+        "name": "Orgeat",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Pineapple wedge"
+    ],
+    "preparation": [
+      "Shake with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with pineapple."
+    ]
+  },
+  {
+    "name": "San Francisco",
+    "slug": "san-francisco",
+    "glass": "Coupe",
+    "family": "Flip",
+    "method": "Shaken",
+    "tags": [
+      "classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "banana-liqueur",
+        "name": "Banana liqueur",
+        "type": "liqueur",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "vodka",
+        "name": "Vodka",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "pineapple-juice",
+        "name": "Pineapple juice",
+        "type": "juice",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "heavy-cream",
+        "name": "Heavy cream",
+        "type": "dairy-egg",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Pineapple wedge"
+    ],
+    "preparation": [
+      "Shake with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with pineapple."
+    ]
+  },
+  {
+    "name": "Left Bank",
+    "slug": "left-bank",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "modern-classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "elderflower-liqueur",
+        "name": "Elderflower liqueur",
+        "type": "liqueur",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "dry-white-wine",
+        "name": "Dry white wine",
+        "type": "wine",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "lemon-juice",
+        "name": "Lemon juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lemon twist"
+    ],
+    "preparation": [
+      "Shake gin, elderflower, and lemon with ice.",
+      "Strain into a coupe.",
+      "Float or stir in chilled wine; garnish."
+    ]
+  },
+  {
+    "name": "London Sour",
+    "slug": "london-sour",
+    "glass": "Rocks",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "lemon-juice",
+        "name": "Lemon juice",
+        "type": "juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "triple-sec",
+        "name": "Triple sec",
+        "type": "liqueur",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "simple-syrup",
+        "name": "Simple syrup",
+        "type": "syrup",
+        "amount": 7.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "red-wine",
+        "name": "Red wine",
+        "type": "wine",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lemon wheel"
+    ],
+    "preparation": [
+      "Shake gin, citrus, triple sec, and syrup with ice.",
+      "Strain over ice.",
+      "Float red wine on top."
+    ]
+  },
+  {
+    "name": "Luau Grog",
+    "slug": "luau-grog",
+    "glass": "Tiki mug",
+    "family": "Tiki",
+    "method": "Blend",
+    "tags": [
+      "tiki",
+      "classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "rum-white",
+        "name": "White rum",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "rum-dark",
+        "name": "Dark rum",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "falernum",
+        "name": "Falernum",
+        "type": "liqueur",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "passion-fruit-syrup",
+        "name": "Passion fruit syrup",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "club-soda",
+        "name": "Club soda",
+        "type": "mixer",
+        "amount": 30,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Mint sprig",
+      "edible flower"
+    ],
+    "preparation": [
+      "Blend with crushed ice.",
+      "Pour into a tiki mug.",
+      "Top with splash of soda; garnish."
+    ]
+  },
+  {
+    "name": "Honolulu Cooler",
+    "slug": "honolulu-cooler",
+    "glass": "Collins",
+    "family": "Highball",
+    "method": "Shaken",
+    "tags": [
+      "classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "pineapple-juice",
+        "name": "Pineapple juice",
+        "type": "juice",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "lemon-juice",
+        "name": "Lemon juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "simple-syrup",
+        "name": "Simple syrup",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "club-soda",
+        "name": "Club soda",
+        "type": "mixer",
+        "amount": 60,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Pineapple wedge",
+      "mint"
+    ],
+    "preparation": [
+      "Shake gin, juices, and syrup with ice.",
+      "Strain into Collins over ice.",
+      "Top with soda and garnish."
+    ]
+  },
+  {
+    "name": "Havana Cooler",
+    "slug": "havana-cooler",
+    "glass": "Collins",
+    "family": "Highball",
+    "method": "Built",
+    "tags": [
+      "classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "rum-white",
+        "name": "White rum",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "simple-syrup",
+        "name": "Simple syrup",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "mint-leaves",
+        "name": "Mint leaves",
+        "type": "garnish",
+        "amount": 8,
+        "unit": "leaves"
+      },
+      {
+        "ref": "club-soda",
+        "name": "Club soda",
+        "type": "mixer",
+        "amount": 90,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Mint sprig"
+    ],
+    "preparation": [
+      "Muddle mint with syrup and lime in glass.",
+      "Add rum and ice; top with soda.",
+      "Garnish with mint."
+    ]
+  },
+  {
+    "name": "Martinique Sour",
+    "slug": "martinique-sour",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "classic",
+      "tiki"
+    ],
+    "ingredients": [
+      {
+        "ref": "rhum-agricole",
+        "name": "Rhum agricole",
+        "type": "spirit",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "orange-curacao",
+        "name": "Orange curaçao",
+        "type": "liqueur",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "orgeat",
+        "name": "Orgeat",
+        "type": "syrup",
+        "amount": 7.5,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lime wheel"
+    ],
+    "preparation": [
+      "Shake with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lime."
+    ]
+  },
+  {
+    "name": "Park Avenue",
+    "slug": "park-avenue",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "sweet-vermouth",
+        "name": "Sweet vermouth",
+        "type": "wine",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "pineapple-juice",
+        "name": "Pineapple juice",
+        "type": "juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "orange-juice",
+        "name": "Orange juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Orange twist"
+    ],
+    "preparation": [
+      "Shake with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with orange twist."
+    ]
+  },
+  {
+    "name": "Prohibition Punch",
+    "slug": "prohibition-punch",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "lemon-juice",
+        "name": "Lemon juice",
+        "type": "juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "grenadine",
+        "name": "Grenadine",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "egg-white",
+        "name": "Egg white",
+        "type": "dairy-egg",
+        "amount": 1,
+        "unit": "white"
+      }
+    ],
+    "garnish": [
+      "Nutmeg"
+    ],
+    "preparation": [
+      "Dry-shake, then shake with ice.",
+      "Strain into a coupe.",
+      "Grate nutmeg."
+    ]
+  },
+  {
+    "name": "Violet Fizz",
+    "slug": "violet-fizz",
+    "glass": "Collins",
+    "family": "Fizz",
+    "method": "Shaken",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "creme-de-violette",
+        "name": "Crème de violette",
+        "type": "liqueur",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "lemon-juice",
+        "name": "Lemon juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "simple-syrup",
+        "name": "Simple syrup",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "egg-white",
+        "name": "Egg white",
+        "type": "dairy-egg",
+        "amount": 1,
+        "unit": "white"
+      },
+      {
+        "ref": "club-soda",
+        "name": "Club soda",
+        "type": "mixer",
+        "amount": 60,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lemon twist"
+    ],
+    "preparation": [
+      "Dry-shake, shake with ice.",
+      "Strain into Collins over ice.",
+      "Top with soda."
+    ]
+  },
+  {
+    "name": "Viking Fizz",
+    "slug": "viking-fizz",
+    "glass": "Collins",
+    "family": "Fizz",
+    "method": "Shaken",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "aquavit",
+        "name": "Aquavit",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "lemon-juice",
+        "name": "Lemon juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "simple-syrup",
+        "name": "Simple syrup",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "egg-white",
+        "name": "Egg white",
+        "type": "dairy-egg",
+        "amount": 1,
+        "unit": "white"
+      },
+      {
+        "ref": "club-soda",
+        "name": "Club soda",
+        "type": "mixer",
+        "amount": 60,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lemon wheel"
+    ],
+    "preparation": [
+      "Dry-shake, shake with ice.",
+      "Strain into Collins.",
+      "Top with soda."
+    ]
+  },
+  {
+    "name": "White Sangria",
+    "slug": "white-sangria",
+    "glass": "Wine glass",
+    "family": "Punch",
+    "method": "Built",
+    "tags": [
+      "classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "dry-white-wine",
+        "name": "Dry white wine",
+        "type": "wine",
+        "amount": 120,
+        "unit": "ml"
+      },
+      {
+        "ref": "brandy",
+        "name": "Brandy",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "orange-juice",
+        "name": "Orange juice",
+        "type": "juice",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "simple-syrup",
+        "name": "Simple syrup",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "club-soda",
+        "name": "Club soda",
+        "type": "mixer",
+        "amount": 30,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Orange slices",
+      "apple"
+    ],
+    "preparation": [
+      "Build in a pitcher with fruit.",
+      "Chill and serve over ice.",
+      "Top individual glasses with soda."
+    ]
+  },
+  {
+    "name": "Polynesian Paralysis",
+    "slug": "polynesian-paralysis",
+    "glass": "Tiki mug",
+    "family": "Tiki",
+    "method": "Blend",
+    "tags": [
+      "tiki"
+    ],
+    "ingredients": [
+      {
+        "ref": "rum-white",
+        "name": "White rum",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "rum-dark",
+        "name": "Dark rum",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "orgeat",
+        "name": "Orgeat",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "falernum",
+        "name": "Falernum",
+        "type": "liqueur",
+        "amount": 7.5,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Mint sprig"
+    ],
+    "preparation": [
+      "Blend with crushed ice.",
+      "Pour into a tiki mug.",
+      "Garnish with mint."
+    ]
+  },
+  {
+    "name": "Apple Car",
+    "slug": "apple-car",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "applejack",
+        "name": "Applejack",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "lemon-juice",
+        "name": "Lemon juice",
+        "type": "juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "grenadine",
+        "name": "Grenadine",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lemon twist"
+    ],
+    "preparation": [
+      "Shake with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lemon twist."
+    ]
+  },
+  {
+    "name": "Autumn Leaves",
+    "slug": "autumn-leaves",
+    "glass": "Coupe",
+    "family": "Manhattan",
+    "method": "Stirred",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "rye-whiskey",
+        "name": "Rye whiskey",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "sweet-vermouth",
+        "name": "Sweet vermouth",
+        "type": "wine",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "apricot-brandy",
+        "name": "Apricot brandy",
+        "type": "liqueur",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "angostura-bitters",
+        "name": "Angostura bitters",
+        "type": "bitters",
+        "amount": 2,
+        "unit": "dash"
+      }
+    ],
+    "garnish": [
+      "Orange twist"
+    ],
+    "preparation": [
+      "Stir with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with orange twist."
+    ]
+  },
+  {
+    "name": "Beachcomber",
+    "slug": "beachcomber",
+    "glass": "Coupe",
+    "family": "Tiki",
+    "method": "Shaken",
+    "tags": [
+      "tiki",
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "rum-white",
+        "name": "White rum",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "triple-sec",
+        "name": "Triple sec",
+        "type": "liqueur",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "absinthe",
+        "name": "Absinthe",
+        "type": "spirit",
+        "amount": 1,
+        "unit": "dash"
+      }
+    ],
+    "garnish": [
+      "Lime wheel"
+    ],
+    "preparation": [
+      "Shake with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lime."
+    ]
+  },
+  {
+    "name": "Blackthorn",
+    "slug": "blackthorn",
+    "glass": "Coupe",
+    "family": "Aperitif",
+    "method": "Stirred",
+    "tags": [
+      "classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "sloe-gin",
+        "name": "Sloe gin",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "dry-vermouth",
+        "name": "Dry vermouth",
+        "type": "wine",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "angostura-bitters",
+        "name": "Angostura bitters",
+        "type": "bitters",
+        "amount": 1,
+        "unit": "dash"
+      }
+    ],
+    "garnish": [
+      "Lemon twist"
+    ],
+    "preparation": [
+      "Stir with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lemon twist."
+    ]
+  },
+  {
+    "name": "Charlie Chaplin",
+    "slug": "charlie-chaplin",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "sloe-gin",
+        "name": "Sloe gin",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "apricot-liqueur",
+        "name": "Apricot liqueur",
+        "type": "liqueur",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lime wheel"
+    ],
+    "preparation": [
+      "Shake with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lime."
+    ]
+  },
+  {
+    "name": "Don the Beachcomber",
+    "slug": "don-the-beachcomber",
+    "glass": "Tiki mug",
+    "family": "Tiki",
+    "method": "Blend",
+    "tags": [
+      "tiki",
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "gold-rum",
+        "name": "Gold rum",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "rum-dark",
+        "name": "Dark rum",
+        "type": "spirit",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "grapefruit-juice",
+        "name": "Grapefruit juice",
+        "type": "juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "grenadine",
+        "name": "Grenadine",
+        "type": "syrup",
+        "amount": 7.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "falernum",
+        "name": "Falernum",
+        "type": "liqueur",
+        "amount": 7.5,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Mint sprig"
+    ],
+    "preparation": [
+      "Blend with crushed ice.",
+      "Pour into a tiki mug.",
+      "Garnish with mint."
+    ]
+  },
+  {
+    "name": "Hawaiian Eye",
+    "slug": "hawaiian-eye",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "rum-white",
+        "name": "White rum",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "dry-vermouth",
+        "name": "Dry vermouth",
+        "type": "wine",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "lemon-juice",
+        "name": "Lemon juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "simple-syrup",
+        "name": "Simple syrup",
+        "type": "syrup",
+        "amount": 7.5,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lemon twist"
+    ],
+    "preparation": [
+      "Shake with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lemon twist."
+    ]
+  },
+  {
+    "name": "Torpedo",
+    "slug": "torpedo",
+    "glass": "Coupe",
+    "family": "Manhattan",
+    "method": "Stirred",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "sweet-vermouth",
+        "name": "Sweet vermouth",
+        "type": "wine",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "absinthe",
+        "name": "Absinthe",
+        "type": "spirit",
+        "amount": 7.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "angostura-bitters",
+        "name": "Angostura bitters",
+        "type": "bitters",
+        "amount": 2,
+        "unit": "dash"
+      }
+    ],
+    "garnish": [
+      "Lemon twist"
+    ],
+    "preparation": [
+      "Stir with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lemon twist."
+    ]
+  },
+  {
+    "name": "Jamaican Mule",
+    "slug": "jamaican-mule",
+    "glass": "Copper mug",
+    "family": "Highball",
+    "method": "Built",
+    "tags": [
+      "modern-classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "jamaican-rum",
+        "name": "Jamaican rum",
+        "type": "spirit",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "ginger-beer",
+        "name": "Ginger beer",
+        "type": "mixer",
+        "amount": 120,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lime wedge"
+    ],
+    "preparation": [
+      "Build rum and lime over ice in a mug.",
+      "Top with ginger beer.",
+      "Garnish with lime."
+    ]
+  },
+  {
+    "name": "Kansas City Ice Water",
+    "slug": "kansas-city-ice-water",
+    "glass": "Coupe",
+    "family": "Manhattan",
+    "method": "Stirred",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "rye-whiskey",
+        "name": "Rye whiskey",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "sweet-vermouth",
+        "name": "Sweet vermouth",
+        "type": "wine",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "absinthe",
+        "name": "Absinthe",
+        "type": "spirit",
+        "amount": 7.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "angostura-bitters",
+        "name": "Angostura bitters",
+        "type": "bitters",
+        "amount": 2,
+        "unit": "dash"
+      }
+    ],
+    "garnish": [
+      "Lemon twist"
+    ],
+    "preparation": [
+      "Stir with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lemon twist."
+    ]
+  },
+  {
+    "name": "Knickerbocker",
+    "slug": "knickerbocker",
+    "glass": "Wine glass",
+    "family": "Punch",
+    "method": "Shaken",
+    "tags": [
+      "historical",
+      "classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "rum-aged",
+        "name": "Aged rum",
+        "type": "spirit",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ref": "raspberry-syrup",
+        "name": "Raspberry syrup",
+        "type": "syrup",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "orange-curacao",
+        "name": "Orange curaçao",
+        "type": "liqueur",
+        "amount": 7.5,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Raspberries"
+    ],
+    "preparation": [
+      "Shake with ice.",
+      "Strain into a wine glass over crushed ice.",
+      "Garnish with raspberries."
+    ]
+  },
+  {
+    "name": "Lawrence of Arabia",
+    "slug": "lawrence-of-arabia",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "brandy",
+        "name": "Brandy",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "lemon-juice",
+        "name": "Lemon juice",
+        "type": "juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "simple-syrup",
+        "name": "Simple syrup",
+        "type": "syrup",
+        "amount": 7.5,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lemon twist"
+    ],
+    "preparation": [
+      "Shake with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lemon twist."
+    ]
+  },
+  {
+    "name": "Mojito Cubano",
+    "slug": "mojito-cubano",
+    "glass": "Collins",
+    "family": "Highball",
+    "method": "Built",
+    "tags": [
+      "classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "rum-white",
+        "name": "White rum",
+        "type": "spirit",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "simple-syrup",
+        "name": "Simple syrup",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "mint-leaves",
+        "name": "Mint leaves",
+        "type": "garnish",
+        "amount": 10,
+        "unit": "leaves"
+      },
+      {
+        "ref": "club-soda",
+        "name": "Club soda",
+        "type": "mixer",
+        "amount": 60,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Mint sprig"
+    ],
+    "preparation": [
+      "Muddle mint with syrup and lime.",
+      "Add rum and ice; churn.",
+      "Top with soda and garnish."
+    ]
+  },
+  {
+    "name": "Port O' Call",
+    "slug": "port-o-call",
+    "glass": "Tiki mug",
+    "family": "Tiki",
+    "method": "Shaken",
+    "tags": [
+      "tiki"
+    ],
+    "ingredients": [
+      {
+        "ref": "rum-aged",
+        "name": "Aged rum",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "ruby-port",
+        "name": "Ruby port",
+        "type": "wine",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "falernum",
+        "name": "Falernum",
+        "type": "liqueur",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Mint sprig"
+    ],
+    "preparation": [
+      "Shake with ice.",
+      "Strain over crushed ice in a mug.",
+      "Garnish with mint."
+    ]
+  },
+  {
+    "name": "Rose",
+    "slug": "rose",
+    "glass": "Coupe",
+    "family": "Aperitif",
+    "method": "Stirred",
+    "tags": [
+      "classic",
+      "iba"
+    ],
+    "ingredients": [
+      {
+        "ref": "dry-vermouth",
+        "name": "Dry vermouth",
+        "type": "wine",
+        "amount": 50,
+        "unit": "ml"
+      },
+      {
+        "ref": "apple-brandy",
+        "name": "Apple brandy",
+        "type": "spirit",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "raspberry-syrup",
+        "name": "Raspberry syrup",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lemon twist"
+    ],
+    "preparation": [
+      "Stir with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish; apple brandy stands in for kirsch in inventory mapping."
+    ]
+  },
+  {
+    "name": "Yacht Club",
+    "slug": "yacht-club",
+    "glass": "Coupe",
+    "family": "Aperitif",
+    "method": "Stirred",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "rum-white",
+        "name": "White rum",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "dry-vermouth",
+        "name": "Dry vermouth",
+        "type": "wine",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 7.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "orange-bitters",
+        "name": "Orange bitters",
+        "type": "bitters",
+        "amount": 2,
+        "unit": "dash"
+      }
+    ],
+    "garnish": [
+      "Lime twist"
+    ],
+    "preparation": [
+      "Stir with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lime twist."
+    ]
+  },
+  {
+    "name": "Sbagliato",
+    "slug": "sbagliato",
+    "glass": "Wine glass",
+    "family": "Spritz",
+    "method": "Built",
+    "tags": [
+      "classic",
+      "iba",
+      "modern-classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "prosecco",
+        "name": "Prosecco",
+        "type": "wine",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ref": "campari",
+        "name": "Campari",
+        "type": "liqueur",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "sweet-vermouth",
+        "name": "Sweet vermouth",
+        "type": "wine",
+        "amount": 30,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Orange slice"
+    ],
+    "preparation": [
+      "Build Campari and sweet vermouth over ice in a wine glass.",
+      "Top with chilled prosecco.",
+      "Garnish with orange."
+    ]
+  },
+  {
+    "name": "Dry Martini",
+    "slug": "dry-martini",
+    "glass": "Coupe",
+    "family": "Spirit-Forward",
+    "method": "Stirred",
+    "tags": [
+      "classic",
+      "iba"
+    ],
+    "ingredients": [
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ref": "dry-vermouth",
+        "name": "Dry vermouth",
+        "type": "wine",
+        "amount": 10,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lemon twist or olive"
+    ],
+    "preparation": [
+      "Stir gin and vermouth with ice until very cold.",
+      "Strain into a chilled coupe.",
+      "Garnish with lemon twist or olive."
+    ]
+  },
+  {
+    "name": "Mermaid",
+    "slug": "mermaid",
+    "glass": "Tiki mug",
+    "family": "Tiki",
+    "method": "Shaken",
+    "tags": [
+      "tiki"
+    ],
+    "ingredients": [
+      {
+        "ref": "rum-white",
+        "name": "White rum",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 22.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "falernum",
+        "name": "Falernum",
+        "type": "liqueur",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "simple-syrup",
+        "name": "Simple syrup",
+        "type": "syrup",
+        "amount": 7.5,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lime wheel"
+    ],
+    "preparation": [
+      "Shake with ice.",
+      "Strain over crushed ice.",
+      "Garnish with lime."
+    ]
+  },
+  {
+    "name": "Imperial Cocktail",
+    "slug": "imperial-cocktail",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "historical"
+    ],
+    "ingredients": [
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "maraschino-liqueur",
+        "name": "Maraschino liqueur",
+        "type": "liqueur",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "apricot-liqueur",
+        "name": "Apricot liqueur",
+        "type": "liqueur",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lime wheel"
+    ],
+    "preparation": [
+      "Shake with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with lime."
+    ]
+  },
+  {
+    "name": "Japanese Slipper",
+    "slug": "japanese-slipper",
+    "glass": "Coupe",
+    "family": "Sour",
+    "method": "Shaken",
+    "tags": [
+      "classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "midori",
+        "name": "Midori",
+        "type": "liqueur",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "cointreau",
+        "name": "Cointreau",
+        "type": "liqueur",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "lemon-juice",
+        "name": "Lemon juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Maraschino cherry"
+    ],
+    "preparation": [
+      "Shake with ice.",
+      "Strain into a chilled coupe.",
+      "Garnish with cherry."
+    ]
+  },
+  {
+    "name": "London Fog",
+    "slug": "london-fog",
+    "glass": "Coupe",
+    "family": "Hot",
+    "method": "Shaken",
+    "tags": [
+      "modern-classic"
+    ],
+    "ingredients": [
+      {
+        "ref": "london-dry-gin",
+        "name": "London dry gin",
+        "type": "spirit",
+        "amount": 45,
+        "unit": "ml"
+      },
+      {
+        "ref": "black-tea",
+        "name": "Black tea",
+        "type": "mixer",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ref": "vanilla-syrup",
+        "name": "Vanilla syrup",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "heavy-cream",
+        "name": "Heavy cream",
+        "type": "dairy-egg",
+        "amount": 15,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Lemon twist"
+    ],
+    "preparation": [
+      "Brew strong tea and chill.",
+      "Shake gin, tea, syrups, and cream with ice.",
+      "Strain into a coupe."
+    ]
+  },
+  {
+    "name": "Mimosa",
+    "slug": "mimosa",
+    "glass": "Flute",
+    "family": "Highball",
+    "method": "Built",
+    "tags": [
+      "classic",
+      "champagne"
+    ],
+    "ingredients": [
+      {
+        "ref": "champagne",
+        "name": "Champagne",
+        "type": "wine",
+        "amount": 75,
+        "unit": "ml"
+      },
+      {
+        "ref": "orange-juice",
+        "name": "Orange juice",
+        "type": "juice",
+        "amount": 75,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Orange slice"
+    ],
+    "preparation": [
+      "Pour orange juice into a flute.",
+      "Top with chilled champagne.",
+      "Garnish lightly; do not stir aggressively."
+    ]
+  }
+]

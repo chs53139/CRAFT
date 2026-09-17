@@ -201,7 +201,8 @@ export function enrichCocktail(raw: RawCocktail, allCocktails: RawCocktail[]): E
   return {
     obscurityScore,
     popularityScore: inferPopularityScore(obscurityScore, isVerifiedClassic, isWellKnown),
-    yearInvented: provenance?.yearInvented ?? metadata.yearInvented,
+    yearInvented:
+      provenance?.yearInvented != null ? provenance.yearInvented : metadata.yearInvented,
     regionOfOrigin: provenance?.regionOfOrigin ?? metadata.regionOfOrigin,
     sourceAttribution: provenance?.sourceAttribution ?? metadata.sourceAttribution,
     era,

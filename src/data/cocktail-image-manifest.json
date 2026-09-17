@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-09-17T03:48:20.374Z",
+  "generatedAt": "2026-09-17T04:36:35.709Z",
   "stats": {
-    "total": 588,
-    "direct": 500,
-    "trustedOverride": 29,
-    "missing": 59,
+    "total": 672,
+    "direct": 501,
+    "trustedOverride": 31,
+    "missing": 140,
     "staleOverridesRemoved": 0
   },
   "entries": {
@@ -2215,6 +2215,261 @@
       "tier": "missing"
     },
     "151-swizzle": {
+      "tier": "missing"
+    },
+    "lion-tail": {
+      "tier": "missing"
+    },
+    "corn-and-oil": {
+      "tier": "missing"
+    },
+    "airmail": {
+      "tier": "missing"
+    },
+    "taboo": {
+      "tier": "missing"
+    },
+    "donn-beach-grog": {
+      "tier": "missing"
+    },
+    "eastern-standard": {
+      "tier": "missing"
+    },
+    "hotel-nacional": {
+      "tier": "missing"
+    },
+    "pimm-cup": {
+      "tier": "missing"
+    },
+    "paradise": {
+      "tier": "missing"
+    },
+    "yellow-bird": {
+      "tier": "missing"
+    },
+    "flamingo": {
+      "tier": "missing"
+    },
+    "deauville": {
+      "tier": "missing"
+    },
+    "dubonnet-cocktail": {
+      "tier": "missing"
+    },
+    "morning-glory-fizz": {
+      "tier": "missing"
+    },
+    "purgatory": {
+      "tier": "missing"
+    },
+    "satan-whiskers": {
+      "tier": "missing"
+    },
+    "vermouth-cassiss": {
+      "tier": "missing"
+    },
+    "whiskey-rickey": {
+      "tier": "missing"
+    },
+    "charleston": {
+      "tier": "missing"
+    },
+    "harvard": {
+      "tier": "missing"
+    },
+    "horse-neck": {
+      "tier": "missing"
+    },
+    "kir": {
+      "tier": "missing"
+    },
+    "palmetto": {
+      "tier": "missing"
+    },
+    "coffee-cocktail": {
+      "tier": "missing"
+    },
+    "blue-blazer": {
+      "tier": "missing"
+    },
+    "brandy-flip": {
+      "tier": "missing"
+    },
+    "cooperstown": {
+      "tier": "missing"
+    },
+    "chicago-fizz": {
+      "tier": "missing"
+    },
+    "artillery": {
+      "tier": "missing"
+    },
+    "ford-cocktail": {
+      "tier": "missing"
+    },
+    "golden-cadillac": {
+      "tier": "missing"
+    },
+    "metropole": {
+      "tier": "missing"
+    },
+    "opera": {
+      "tier": "missing"
+    },
+    "poets-dream": {
+      "tier": "missing"
+    },
+    "port-flip": {
+      "tier": "missing"
+    },
+    "princeton": {
+      "tier": "missing"
+    },
+    "tipperary-cocktail": {
+      "tier": "trusted-override",
+      "cdnSlug": "tipperary"
+    },
+    "hemingway-special": {
+      "tier": "missing"
+    },
+    "periodista": {
+      "tier": "missing"
+    },
+    "milk-punch": {
+      "tier": "missing"
+    },
+    "queens": {
+      "tier": "missing"
+    },
+    "rose-cocktail": {
+      "tier": "missing"
+    },
+    "star-cocktail": {
+      "tier": "missing"
+    },
+    "imperial-fizz": {
+      "tier": "missing"
+    },
+    "nightcap": {
+      "tier": "missing"
+    },
+    "king-cole": {
+      "tier": "missing"
+    },
+    "man-o-war": {
+      "tier": "missing"
+    },
+    "royal-hawaiian": {
+      "tier": "missing"
+    },
+    "san-francisco": {
+      "tier": "missing"
+    },
+    "left-bank": {
+      "tier": "missing"
+    },
+    "london-sour": {
+      "tier": "missing"
+    },
+    "luau-grog": {
+      "tier": "missing"
+    },
+    "honolulu-cooler": {
+      "tier": "missing"
+    },
+    "havana-cooler": {
+      "tier": "missing"
+    },
+    "martinique-sour": {
+      "tier": "missing"
+    },
+    "park-avenue": {
+      "tier": "missing"
+    },
+    "prohibition-punch": {
+      "tier": "missing"
+    },
+    "violet-fizz": {
+      "tier": "missing"
+    },
+    "viking-fizz": {
+      "tier": "missing"
+    },
+    "white-sangria": {
+      "tier": "missing"
+    },
+    "polynesian-paralysis": {
+      "tier": "missing"
+    },
+    "apple-car": {
+      "tier": "missing"
+    },
+    "autumn-leaves": {
+      "tier": "missing"
+    },
+    "beachcomber": {
+      "tier": "missing"
+    },
+    "blackthorn": {
+      "tier": "missing"
+    },
+    "charlie-chaplin": {
+      "tier": "missing"
+    },
+    "don-the-beachcomber": {
+      "tier": "missing"
+    },
+    "hawaiian-eye": {
+      "tier": "missing"
+    },
+    "torpedo": {
+      "tier": "missing"
+    },
+    "jamaican-mule": {
+      "tier": "missing"
+    },
+    "kansas-city-ice-water": {
+      "tier": "missing"
+    },
+    "knickerbocker": {
+      "tier": "missing"
+    },
+    "lawrence-of-arabia": {
+      "tier": "missing"
+    },
+    "mojito-cubano": {
+      "tier": "trusted-override",
+      "cdnSlug": "mojito"
+    },
+    "port-o-call": {
+      "tier": "missing"
+    },
+    "rose": {
+      "tier": "missing"
+    },
+    "yacht-club": {
+      "tier": "missing"
+    },
+    "sbagliato": {
+      "tier": "direct",
+      "cdnSlug": "sbagliato"
+    },
+    "dry-martini": {
+      "tier": "missing"
+    },
+    "mermaid": {
+      "tier": "missing"
+    },
+    "imperial-cocktail": {
+      "tier": "missing"
+    },
+    "japanese-slipper": {
+      "tier": "missing"
+    },
+    "london-fog": {
+      "tier": "missing"
+    },
+    "mimosa": {
       "tier": "missing"
     },
     "craft-ember-line": {

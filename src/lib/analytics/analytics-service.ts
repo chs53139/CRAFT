@@ -1,3 +1,4 @@
+import { enrichProductEvent } from "@/lib/analytics/enrich-event";
 import { AnalyticsProvider, ProductEvent, ProductEventName, ProductEventPayload } from "@/lib/analytics/types";
 
 const noopProvider: AnalyticsProvider = {
@@ -24,7 +25,7 @@ export function trackProductEvent<Name extends ProductEventName>(
 ): void {
   const event = {
     name,
-    payload,
+    payload: enrichProductEvent(name, payload),
     at: new Date().toISOString(),
   } as ProductEvent;
 

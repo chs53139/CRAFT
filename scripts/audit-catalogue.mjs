@@ -14,6 +14,7 @@ function loadJson(rel) {
 const raw = [
   ...loadJson("src/data/cocktails.json"),
   ...loadJson("src/data/cocktails-expanded.json"),
+  ...loadJson("src/data/catalogue-batch-1.json"),
   ...loadJson("src/data/craft-originals.json"),
   ...loadJson("src/data/mocktails.json"),
 ];

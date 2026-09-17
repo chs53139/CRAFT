@@ -20,6 +20,7 @@ export const COCKTAIL_IMAGE_SLUGS: Record<string, string> = {
   "jungle-bird-mezcal": "jungle-bird",
   "mai-tai-royal-hawaiian": "mai-tai",
   "mai-tai-trader-vics": "mai-tai",
+  "mojito-cubano": "mojito",
   "mulled-wine-spritz": "mulled-wine",
   "navy-grog-modern": "navy-grog",
   "old-pal-rye": "old-pal",
@@ -31,6 +32,7 @@ export const COCKTAIL_IMAGE_SLUGS: Record<string, string> = {
   "sazerac-split-base": "sazerac",
   "singapore-sling-modern": "singapore-sling",
   "ti-punch-spiced": "ti-punch",
+  "tipperary-cocktail": "tipperary",
   "tradewinds": "trade-winds",
   "ward-eight-boston": "ward-eight",
 };

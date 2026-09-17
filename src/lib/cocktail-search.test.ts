@@ -60,7 +60,53 @@ describe("searchCocktails", () => {
   it("includes newly expanded cocktails in the catalogue", () => {
     expect(cocktails.some((c) => c.id === "pearl-diver")).toBe(true);
     expect(cocktails.some((c) => c.id === "aku-aku")).toBe(true);
-    expect(cocktails.length).toBeGreaterThanOrEqual(580);
+    expect(cocktails.length).toBe(588);
+  });
+
+  const PROCEDURAL_EXPANSION_IDS = [
+    "potted-parrot",
+    "tradewinds",
+    "chief-lapu-lapu",
+    "qb-cooler",
+    "ancient-mariner",
+    "151-swizzle",
+  ] as const;
+
+  it.each(PROCEDURAL_EXPANSION_IDS)("finds %s by exact catalogue name", (id) => {
+    const cocktail = cocktails.find((c) => c.id === id);
+    expect(cocktail).toBeDefined();
+    const results = searchCocktails(cocktail!.name, cocktails);
+    expect(results[0]?.id).toBe(id);
+  });
+
+  it("finds Potted Parrot from partial name queries", () => {
+    for (const query of ["Potted Parrot", "potted parrot", "potted", "parrot"]) {
+      const results = searchCocktails(query, cocktails);
+      expect(results.some((c) => c.id === "potted-parrot")).toBe(true);
+    }
+  });
+
+  it("keeps discovery-style ingredient searches working", () => {
+    expect(searchCocktails("Gin", cocktails).length).toBeGreaterThan(10);
+    expect(searchCocktails("Orange Juice", cocktails).length).toBeGreaterThan(0);
+    expect(searchCocktails("Tiki", cocktails).length).toBeGreaterThan(10);
+
+    const matches = matchCocktails([]);
+    const ginAndOrange = searchMatches("Gin + Orange Juice", matches);
+    expect(ginAndOrange.length).toBeGreaterThan(0);
+    for (const match of ginAndOrange) {
+      const ids = match.cocktail.ingredients.map((i) => i.ingredientId);
+      expect(ids.some((id) => id.includes("gin"))).toBe(true);
+      expect(ids).toContain("orange-juice");
+    }
+
+    const excludeLemon = searchMatches("Gin + Orange Juice without Lemon Juice", matches);
+    expect(excludeLemon.length).toBeGreaterThan(0);
+    for (const match of excludeLemon) {
+      expect(match.cocktail.ingredients.some((i) => i.ingredientId === "lemon-juice")).toBe(
+        false
+      );
+    }
   });
 });
 
@@ -73,5 +119,22 @@ describe("searchMatches", () => {
     const matches = matchCocktails(["gin", "campari", "sweet-vermouth"]);
     const results = searchMatches("negroni", matches);
     expect(results.some((m) => m.cocktail.id.includes("negroni"))).toBe(true);
+  });
+
+  it("finds procedural expansion cocktails by name even when not pourable", () => {
+    const matches = matchCocktails(["gin", "rum-white", "lime-juice"]);
+    for (const id of [
+      "potted-parrot",
+      "tradewinds",
+      "chief-lapu-lapu",
+      "qb-cooler",
+      "ancient-mariner",
+      "151-swizzle",
+    ]) {
+      const cocktail = matches.find((m) => m.cocktail.id === id)?.cocktail;
+      expect(cocktail).toBeDefined();
+      const results = searchMatches(cocktail!.name, matches);
+      expect(results.some((m) => m.cocktail.id === id)).toBe(true);
+    }
   });
 });

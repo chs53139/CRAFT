@@ -141,6 +141,11 @@ function CocktailsContent() {
     [processedMatches]
   );
 
+  const browseGridMatches = useMemo(
+    () => (search.trim().length > 0 ? processedMatches : makeableMatches),
+    [search, processedMatches, makeableMatches]
+  );
+
   const exactCount = useMemo(() => countExactMakeable(allMatches), [allMatches]);
   const totalMakeable = useMemo(() => countMakeable(allMatches), [allMatches]);
 
@@ -156,7 +161,7 @@ function CocktailsContent() {
   const showOneAway = view === "one-away";
 
   const hasVisibleResults =
-    (showBrowse && makeableMatches.length > 0) ||
+    (showBrowse && browseGridMatches.length > 0) ||
     (showReady &&
       (visibleExact.length > 0 ||
         visibleSubstitutions.length > 0 ||
@@ -170,7 +175,9 @@ function CocktailsContent() {
 
   const headerSubtitle =
     view === "browse"
-      ? `${makeableMatches.length} cocktails to explore`
+      ? searchActive
+        ? `${browseGridMatches.length} matching your search`
+        : `${makeableMatches.length} cocktails to explore`
       : view === "ready"
         ? `${visibleExact.length} exact · ${visibleSubstitutions.length} with subs`
         : view === "one-away"
@@ -254,12 +261,12 @@ function CocktailsContent() {
           ) : showBrowse ? (
             <div className="app-section">
               <p className="discovery-results-count">
-                Showing <strong>{makeableMatches.length}</strong> cocktail
-                {makeableMatches.length === 1 ? "" : "s"}
+                Showing <strong>{browseGridMatches.length}</strong> cocktail
+                {browseGridMatches.length === 1 ? "" : "s"}
                 {searchActive ? " matching your search" : " you can make"}
               </p>
               <InfiniteCocktailGrid
-                items={makeableMatches}
+                items={browseGridMatches}
                 resetKey={filterResetKey}
                 showObscurity
               />

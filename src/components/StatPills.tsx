@@ -35,9 +35,11 @@ function StatPill({ stat }: { stat: Stat }) {
 export function StatPills({ topRow, bottomRow, centerAction }: Props) {
   return (
     <div className="stat-pills">
-      <div className="stat-pills-row">
+      <div
+        className={`stat-pills-row ${centerAction ? "stat-pills-row-three" : "stat-pills-row-two"}`}
+      >
         <StatPill stat={topRow[0]} />
-        {centerAction ?? <div className="stat-pill-spacer" aria-hidden />}
+        {centerAction}
         <StatPill stat={topRow[1]} />
       </div>
       <div className="stat-pills-row">

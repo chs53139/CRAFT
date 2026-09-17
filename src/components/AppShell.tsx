@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { AppTopBar } from "./AppTopBar";
 import { BottomNav } from "./BottomNav";
 import { OfflineBanner } from "./OfflineBanner";
+import { SyncStatusBanner } from "./SyncStatusBanner";
 
 function shouldHideNav(pathname: string) {
   if (pathname.startsWith("/auth")) return true;
@@ -19,6 +20,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="app-frame">
       <OfflineBanner />
+      <SyncStatusBanner />
       {showNav && <AppTopBar />}
       <main className={showNav ? "app-main" : "app-main app-main-full"}>{children}</main>
       {showNav && <BottomNav />}

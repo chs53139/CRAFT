@@ -1,16 +1,24 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { withTimeout } from "@/lib/supabase/resilience";
 
 const MAX_RECENT = 12;
+const QUERY_TIMEOUT_MS = 8_000;
+
+function timed<T extends PromiseLike<unknown>>(promise: T): Promise<Awaited<T>> {
+  return withTimeout(Promise.resolve(promise), QUERY_TIMEOUT_MS);
+}
 
 export async function fetchBarItems(
   supabase: SupabaseClient,
   userId: string
 ): Promise<string[]> {
-  const { data, error } = await supabase
-    .from("bar_items")
-    .select("ingredient_id")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: true });
+  const { data, error } = await timed(
+    supabase
+      .from("bar_items")
+      .select("ingredient_id")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: true })
+  );
 
   if (error) throw error;
   return (data ?? []).map((row) => row.ingredient_id);
@@ -21,20 +29,42 @@ export async function saveBarItems(
   userId: string,
   ingredientIds: string[]
 ): Promise<void> {
-  const { error: deleteError } = await supabase
-    .from("bar_items")
-    .delete()
-    .eq("user_id", userId);
+  const desired = [...new Set(ingredientIds)];
 
-  if (deleteError) throw deleteError;
+  const { data: existingRows, error: fetchError } = await timed(
+    supabase.from("bar_items").select("ingredient_id").eq("user_id", userId)
+  );
 
-  if (ingredientIds.length === 0) return;
+  if (fetchError) throw fetchError;
 
-  const { error: insertError } = await supabase.from("bar_items").insert(
-    ingredientIds.map((ingredient_id) => ({
-      user_id: userId,
-      ingredient_id,
-    }))
+  const existing = new Set((existingRows ?? []).map((row) => row.ingredient_id));
+  const desiredSet = new Set(desired);
+
+  const toRemove = [...existing].filter((id) => !desiredSet.has(id));
+  const toAdd = desired.filter((id) => !existing.has(id));
+
+  if (toRemove.length === 0 && toAdd.length === 0) return;
+
+  if (toRemove.length > 0) {
+    const { error: deleteError } = await timed(
+      supabase
+        .from("bar_items")
+        .delete()
+        .eq("user_id", userId)
+        .in("ingredient_id", toRemove)
+    );
+    if (deleteError) throw deleteError;
+  }
+
+  if (toAdd.length === 0) return;
+
+  const { error: insertError } = await timed(
+    supabase.from("bar_items").insert(
+      toAdd.map((ingredient_id) => ({
+        user_id: userId,
+        ingredient_id,
+      }))
+    )
   );
 
   if (insertError) throw insertError;
@@ -44,11 +74,13 @@ export async function fetchFavorites(
   supabase: SupabaseClient,
   userId: string
 ): Promise<string[]> {
-  const { data, error } = await supabase
-    .from("favorites")
-    .select("cocktail_id")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false });
+  const { data, error } = await timed(
+    supabase
+      .from("favorites")
+      .select("cocktail_id")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+  );
 
   if (error) throw error;
   return (data ?? []).map((row) => row.cocktail_id);
@@ -59,9 +91,11 @@ export async function addFavorite(
   userId: string,
   cocktailId: string
 ): Promise<void> {
-  const { error } = await supabase.from("favorites").upsert(
-    { user_id: userId, cocktail_id: cocktailId },
-    { onConflict: "user_id,cocktail_id" }
+  const { error } = await timed(
+    supabase.from("favorites").upsert(
+      { user_id: userId, cocktail_id: cocktailId },
+      { onConflict: "user_id,cocktail_id" }
+    )
   );
   if (error) throw error;
 }
@@ -71,11 +105,13 @@ export async function removeFavorite(
   userId: string,
   cocktailId: string
 ): Promise<void> {
-  const { error } = await supabase
-    .from("favorites")
-    .delete()
-    .eq("user_id", userId)
-    .eq("cocktail_id", cocktailId);
+  const { error } = await timed(
+    supabase
+      .from("favorites")
+      .delete()
+      .eq("user_id", userId)
+      .eq("cocktail_id", cocktailId)
+  );
   if (error) throw error;
 }
 
@@ -84,24 +120,69 @@ export async function syncFavoritesToServer(
   userId: string,
   favoriteIds: string[]
 ): Promise<void> {
-  await Promise.all(
-    favoriteIds.map((cocktailId) => addFavorite(supabase, userId, cocktailId))
+  if (favoriteIds.length === 0) return;
+
+  const { error } = await timed(
+    supabase.from("favorites").upsert(
+      favoriteIds.map((cocktail_id) => ({ user_id: userId, cocktail_id })),
+      { onConflict: "user_id,cocktail_id" }
+    )
   );
+
+  if (error) throw error;
 }
 
 export async function fetchRecentCocktails(
   supabase: SupabaseClient,
   userId: string
 ): Promise<string[]> {
-  const { data, error } = await supabase
-    .from("recent_cocktails")
-    .select("cocktail_id, viewed_at")
-    .eq("user_id", userId)
-    .order("viewed_at", { ascending: false })
-    .limit(MAX_RECENT);
+  const { data, error } = await timed(
+    supabase
+      .from("recent_cocktails")
+      .select("cocktail_id, viewed_at")
+      .eq("user_id", userId)
+      .order("viewed_at", { ascending: false })
+      .limit(MAX_RECENT)
+  );
 
   if (error) throw error;
   return (data ?? []).map((row) => row.cocktail_id);
+}
+
+function isRecentUpsertUnavailable(error: unknown): boolean {
+  if (!error || typeof error !== "object") return false;
+  const e = error as { code?: string; message?: string };
+  return (
+    e.code === "42P10" ||
+    (typeof e.message === "string" &&
+      e.message.toLowerCase().includes("on conflict") &&
+      e.message.toLowerCase().includes("unique"))
+  );
+}
+
+async function trackRecentLegacy(
+  supabase: SupabaseClient,
+  userId: string,
+  cocktailId: string,
+  viewed_at: string
+): Promise<void> {
+  await timed(
+    supabase
+      .from("recent_cocktails")
+      .delete()
+      .eq("user_id", userId)
+      .eq("cocktail_id", cocktailId)
+  );
+
+  const { error } = await timed(
+    supabase.from("recent_cocktails").insert({
+      user_id: userId,
+      cocktail_id: cocktailId,
+      viewed_at,
+    })
+  );
+
+  if (error) throw error;
 }
 
 export async function trackRecentCocktail(
@@ -109,34 +190,44 @@ export async function trackRecentCocktail(
   userId: string,
   cocktailId: string
 ): Promise<void> {
-  await supabase
-    .from("recent_cocktails")
-    .delete()
-    .eq("user_id", userId)
-    .eq("cocktail_id", cocktailId);
+  const viewed_at = new Date().toISOString();
 
-  const { error } = await supabase.from("recent_cocktails").insert({
-    user_id: userId,
-    cocktail_id: cocktailId,
-    viewed_at: new Date().toISOString(),
-  });
+  const { error } = await timed(
+    supabase.from("recent_cocktails").upsert(
+      { user_id: userId, cocktail_id: cocktailId, viewed_at },
+      { onConflict: "user_id,cocktail_id" }
+    )
+  );
 
-  if (error) throw error;
+  if (error) {
+    if (isRecentUpsertUnavailable(error)) {
+      await trackRecentLegacy(supabase, userId, cocktailId, viewed_at);
+    } else {
+      throw error;
+    }
+  }
 
-  const { data: overflow } = await supabase
-    .from("recent_cocktails")
-    .select("id")
-    .eq("user_id", userId)
-    .order("viewed_at", { ascending: false })
-    .range(MAX_RECENT, MAX_RECENT + 50);
+  const { data: overflow, error: overflowError } = await timed(
+    supabase
+      .from("recent_cocktails")
+      .select("id")
+      .eq("user_id", userId)
+      .order("viewed_at", { ascending: false })
+      .range(MAX_RECENT, MAX_RECENT + 50)
+  );
+
+  if (overflowError) throw overflowError;
 
   if (overflow && overflow.length > 0) {
-    await supabase
-      .from("recent_cocktails")
-      .delete()
-      .in(
-        "id",
-        overflow.map((r) => r.id)
-      );
+    const { error: trimError } = await timed(
+      supabase
+        .from("recent_cocktails")
+        .delete()
+        .in(
+          "id",
+          overflow.map((r) => r.id)
+        )
+    );
+    if (trimError) throw trimError;
   }
 }

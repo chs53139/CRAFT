@@ -14,7 +14,6 @@ import { EmptyState } from "@/components/EmptyState";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { FlavorTags } from "@/components/FlavorTags";
 import { ObscurityBadge } from "@/components/ObscurityBadge";
-import { PageLoader } from "@/components/LoadingState";
 import { ShareCocktailButton } from "@/components/ShareCocktailButton";
 import { ERA_LABELS } from "@/lib/cocktail-curation";
 import { MOCKTAIL_SUBCATEGORY_LABELS } from "@/lib/mocktail-curation";
@@ -32,7 +31,7 @@ export function CocktailDetailClient() {
   const params = useParams();
   const router = useRouter();
   const id = params.id as string;
-  const { barIds, loaded: barLoaded } = useMyBar();
+  const { barIds } = useMyBar();
   const { isFavorite, toggleFavorite, loaded: favLoaded } = useFavorites();
   const { trackRecent } = useRecentCocktails();
 
@@ -41,10 +40,6 @@ export function CocktailDetailClient() {
   useEffect(() => {
     if (cocktail) trackRecent(cocktail.id);
   }, [cocktail, trackRecent]);
-
-  if (!barLoaded) {
-    return <PageLoader message="Loading recipe…" />;
-  }
 
   if (!cocktail) {
     return (

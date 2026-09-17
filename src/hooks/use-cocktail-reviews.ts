@@ -25,9 +25,13 @@ export function useCocktailReviews(cocktailId: string) {
     setReviewsUnavailable(false);
 
     try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 10_000);
       const response = await fetch(
-        `/api/reviews?cocktailId=${encodeURIComponent(cocktailId)}`
+        `/api/reviews?cocktailId=${encodeURIComponent(cocktailId)}`,
+        { signal: controller.signal }
       );
+      clearTimeout(timeout);
       const data = (await response.json()) as ReviewsResponse;
 
       if (data.reviewsUnavailable) {

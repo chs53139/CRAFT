@@ -24,7 +24,16 @@ export async function updateSession(request: NextRequest) {
   );
 
   // Refresh session — do not run code between createServerClient and getUser.
-  await supabase.auth.getUser();
+  try {
+    await Promise.race([
+      supabase.auth.getUser(),
+      new Promise<void>((_, reject) => {
+        setTimeout(() => reject(new Error("middleware auth timeout")), 4_000);
+      }),
+    ]);
+  } catch {
+    // Paused/unreachable Supabase must not block page navigation.
+  }
 
   return supabaseResponse;
 }

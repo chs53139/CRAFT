@@ -34,7 +34,6 @@ import {
   filterMatchesBySearch,
   groupCocktailMatches,
   isPourable,
-  matchCocktails,
 } from "@/lib/cocktail-matching";
 import {
   matchPassesSubstitutionMode,
@@ -42,6 +41,7 @@ import {
 } from "@/lib/substitution-display";
 import { filterMatchesByDrinkType } from "@/lib/drink-type";
 import { CocktailCollection } from "@/lib/types";
+import { useCocktailMatches } from "@/hooks/use-cocktail-matches";
 import { useMyBar } from "@/hooks/use-my-bar";
 
 type TonightView = "all" | "ready" | "one-away" | "browse";
@@ -91,6 +91,7 @@ function CocktailsContent() {
   const searchParams = useSearchParams();
   const view = parseView(searchParams.get("view"));
   const { barIds, loaded, error, clearError } = useMyBar();
+  const { matches: allMatches } = useCocktailMatches(barIds);
   const [search, setSearch] = useState("");
   const [collection, setCollection] = useState<"all" | CocktailCollection>("all");
   const [substitutionMode, setSubstitutionMode] =
@@ -102,8 +103,6 @@ function CocktailsContent() {
     DEFAULT_DISCOVERY_FILTERS
   );
   const [sort, setSort] = useState<DiscoverySort>("best-match");
-
-  const allMatches = useMemo(() => matchCocktails(barIds), [barIds]);
 
   const processedMatches = useMemo(() => {
     let results = filterMatchesByDrinkType(allMatches, drinkTypeFilter);

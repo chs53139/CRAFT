@@ -23,6 +23,7 @@ import {
 import { migrateBarInventory } from "@/lib/inventory-migration";
 import { isHouseStaple } from "@/lib/inventory-tiers";
 import { createClient } from "@/lib/supabase/client";
+import { humanizeSupabaseUnavailable, withTimeout } from "@/lib/supabase/resilience";
 
 const BAR_KEY = "craft-my-bar";
 const FAVORITES_KEY = "craft-favorites";
@@ -82,17 +83,33 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
   const isAuthenticated = !!user;
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      setAuthReady(true);
-    });
+    setBarIdsState(normalizeBarIds(readJson(BAR_KEY, [])));
+    setFavoriteIds(readJson(FAVORITES_KEY, []));
+    setRecentIds(readJson(RECENT_KEY, []));
+    setLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    withTimeout(supabase.auth.getSession(), 6_000)
+      .then(({ data: { session } }) => {
+        setUser(session?.user ?? null);
+      })
+      .catch(() => {
+        setUser(null);
+      })
+      .finally(() => {
+        setAuthReady(true);
+      });
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      hydratedForUser.current = null;
-      setLoaded(false);
+      const nextUser = session?.user ?? null;
+      setUser((prev) => {
+        if (prev?.id === nextUser?.id) return nextUser;
+        hydratedForUser.current = null;
+        return nextUser;
+      });
     });
 
     return () => subscription.unsubscribe();
@@ -101,29 +118,24 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!authReady) return;
 
+    const localBar = normalizeBarIds(readJson<string[]>(BAR_KEY, []));
+    const localFavorites = readJson<string[]>(FAVORITES_KEY, []);
+    const localRecent = readJson<string[]>(RECENT_KEY, []);
+
     if (!user) {
-      setBarIdsState(normalizeBarIds(readJson(BAR_KEY, [])));
-      setFavoriteIds(readJson(FAVORITES_KEY, []));
-      setRecentIds(readJson(RECENT_KEY, []));
-      setLoaded(true);
       hydratedForUser.current = null;
       return;
     }
 
     if (hydratedForUser.current === user.id) {
-      setLoaded(true);
       return;
     }
 
     let cancelled = false;
 
-    async function hydrate() {
+    async function syncFromServer() {
       setSyncing(true);
       setError(null);
-
-      const localBar = readJson<string[]>(BAR_KEY, []);
-      const localFavorites = readJson<string[]>(FAVORITES_KEY, []);
-      const localRecent = readJson<string[]>(RECENT_KEY, []);
 
       try {
         const [serverBar, serverFavorites, serverRecent] = await Promise.all([
@@ -173,22 +185,18 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
         }
 
         hydratedForUser.current = user!.id;
-      } catch {
+      } catch (syncError) {
         if (!cancelled) {
-          setError("Could not load your saved bar. Showing what is on this device.");
-          setBarIdsState(normalizeBarIds(localBar));
-          setFavoriteIds(localFavorites);
-          setRecentIds(localRecent);
+          setError(humanizeSupabaseUnavailable(syncError));
         }
       } finally {
         if (!cancelled) {
           setSyncing(false);
-          setLoaded(true);
         }
       }
     }
 
-    hydrate();
+    syncFromServer();
     return () => {
       cancelled = true;
     };
@@ -311,7 +319,7 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
       barIds,
       favoriteIds,
       recentIds,
-      loaded: authReady && loaded,
+      loaded,
       syncing,
       error,
       isAuthenticated,
@@ -330,7 +338,6 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
       barIds,
       favoriteIds,
       recentIds,
-      authReady,
       loaded,
       syncing,
       error,

@@ -1,10 +1,10 @@
 import { NextRequest } from "next/server";
 import { humanizeReviewError } from "@/lib/review-errors";
+import { humanizeSupabaseUnavailable, withTimeout } from "@/lib/supabase/resilience";
 import { resolveReviewerDisplayName } from "@/lib/reviewer-names";
 import { getSupabaseConfigError } from "@/lib/supabase/config";
 import {
   fetchReviewsForCocktail,
-  fetchUserReviews,
   isReviewsTableMissing,
   upsertCocktailReview,
 } from "@/lib/supabase/reviews-sync";
@@ -50,12 +50,12 @@ export async function GET(request: NextRequest) {
     return Response.json({ error: "cocktailId is required." }, { status: 400 });
   }
 
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
   try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await withTimeout(supabase.auth.getUser(), 6_000);
+
     const reviews = await fetchReviewsForCocktail(supabase, cocktailId, user?.id);
     return Response.json({ reviews });
   } catch (error) {
@@ -63,8 +63,11 @@ export async function GET(request: NextRequest) {
       return Response.json({ reviewsUnavailable: true, reviews: [] });
     }
     return Response.json(
-      { error: humanizeReviewError(error) },
-      { status: 500 }
+      {
+        error: humanizeSupabaseUnavailable(error) || humanizeReviewError(error),
+        reviews: [],
+      },
+      { status: 503 }
     );
   }
 }
@@ -90,16 +93,16 @@ export async function POST(request: Request) {
     );
   }
 
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return Response.json({ error: "Sign in to review." }, { status: 401 });
-  }
-
   try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await withTimeout(supabase.auth.getUser(), 6_000);
+
+    if (!user) {
+      return Response.json({ error: "Sign in to review." }, { status: 401 });
+    }
+
     const authorName = resolveReviewerDisplayName(user);
     await upsertCocktailReview(
       supabase,
@@ -118,6 +121,11 @@ export async function POST(request: Request) {
       );
     }
 
-    return Response.json({ error: humanizeReviewError(error) }, { status: 400 });
+    return Response.json(
+      {
+        error: humanizeSupabaseUnavailable(error) || humanizeReviewError(error),
+      },
+      { status: 503 }
+    );
   }
 }

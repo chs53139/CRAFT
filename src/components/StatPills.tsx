@@ -6,11 +6,16 @@ type Stat = {
   href?: string;
 };
 
+export type HomeStatGroup = {
+  ready: Stat;
+  withSwaps: Stat;
+  oneAway: Stat;
+  library: Stat;
+  mocktails: Stat;
+};
+
 type Props = {
-  /** Left and right stats on the top row (Mixologist sits between them). */
-  topRow: [Stat, Stat];
-  /** Three stats on the bottom row. */
-  bottomRow: [Stat, Stat, Stat];
+  stats: HomeStatGroup;
   centerAction?: React.ReactNode;
 };
 
@@ -32,21 +37,43 @@ function StatPill({ stat }: { stat: Stat }) {
   );
 }
 
-export function StatPills({ topRow, bottomRow, centerAction }: Props) {
+export function StatPills({ stats, centerAction }: Props) {
+  if (centerAction) {
+    return (
+      <div className="stat-pills">
+        <div className="stat-pills-row stat-pills-row-three">
+          <StatPill stat={stats.ready} />
+          {centerAction}
+          <StatPill stat={stats.withSwaps} />
+        </div>
+        <div className="stat-pills-row stat-pills-row-three">
+          <StatPill stat={stats.oneAway} />
+          <StatPill stat={stats.library} />
+          <StatPill stat={stats.mocktails} />
+        </div>
+      </div>
+    );
+  }
+
+  const mocktailsHref = stats.mocktails.href ?? "/discover?type=mocktails";
+
   return (
     <div className="stat-pills">
-      <div
-        className={`stat-pills-row ${centerAction ? "stat-pills-row-three" : "stat-pills-row-two"}`}
-      >
-        <StatPill stat={topRow[0]} />
-        {centerAction}
-        <StatPill stat={topRow[1]} />
+      <div className="stat-pills-grid-2x2">
+        <StatPill stat={stats.ready} />
+        <StatPill stat={stats.withSwaps} />
+        <StatPill stat={stats.oneAway} />
+        <StatPill stat={stats.library} />
       </div>
-      <div className="stat-pills-row">
-        {bottomRow.map((stat) => (
-          <StatPill key={stat.label} stat={stat} />
-        ))}
-      </div>
+      <Link href={mocktailsHref} className="stat-pills-secondary-link">
+        <span className="stat-pills-secondary-label">{stats.mocktails.label}</span>
+        <span className="stat-pills-secondary-meta">
+          {stats.mocktails.value} zero-proof
+          <span className="stat-pills-secondary-arrow" aria-hidden>
+            →
+          </span>
+        </span>
+      </Link>
     </div>
   );
 }

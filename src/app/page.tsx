@@ -38,9 +38,9 @@ export default function HomePage() {
     return (
       <div className="app-screen space-y-6">
         <div className="h-12 w-40 shimmer rounded-xl" />
-        <div className="flex gap-3">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-24 w-32 shrink-0 shimmer rounded-2xl" />
+        <div className="grid grid-cols-2 gap-2">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="h-[4.25rem] shimmer rounded-2xl" />
           ))}
         </div>
         <SkeletonGrid count={2} />
@@ -81,19 +81,25 @@ export default function HomePage() {
       />
 
       <StatPills
-        topRow={[
-          { value: summary.readyTonight, label: "Ready", href: "/cocktails" },
-          {
+        stats={{
+          ready: { value: summary.readyTonight, label: "Ready", href: "/cocktails" },
+          withSwaps: {
             value: summary.withSubstitutions,
             label: "With swaps",
             href: "/cocktails?view=browse",
           },
-        ]}
-        bottomRow={[
-          { value: summary.oneAway, label: "One away", href: "/cocktails?view=one-away" },
-          { value: cocktailCount, label: "Library", href: "/discover" },
-          { value: mocktailCount, label: "Mocktails", href: "/discover?type=mocktails" },
-        ]}
+          oneAway: {
+            value: summary.oneAway,
+            label: "One away",
+            href: "/cocktails?view=one-away",
+          },
+          library: { value: cocktailCount, label: "Library", href: "/discover" },
+          mocktails: {
+            value: mocktailCount,
+            label: "Mocktails",
+            href: "/discover?type=mocktails",
+          },
+        }}
         centerAction={
           isMixologistLaunchHidden() ? undefined : (
             <StatPillAction href="/mixologist" label="Mixologist" />

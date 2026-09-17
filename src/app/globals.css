@@ -2786,6 +2786,25 @@ button.star-rating-star:active {
   color: var(--muted);
 }
 
+.find-nearby-saved-zip {
+  margin-top: 1.25rem;
+  font-size: 0.875rem;
+  color: var(--foreground);
+}
+
+.find-nearby-change-zip {
+  margin-left: 0.15rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.find-nearby-error {
+  margin-top: 0.65rem;
+  font-size: 0.8125rem;
+  color: #e8a598;
+}
+
 .find-nearby-label {
   display: block;
   margin-top: 1.25rem;

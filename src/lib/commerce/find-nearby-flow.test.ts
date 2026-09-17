@@ -15,9 +15,19 @@ describe("Find Nearby commerce flow", () => {
       location: { postalCode: "94110", countryCode: "US" },
     });
 
-    expect(result.status).toBe("integration_pending");
-    expect(result.destinationUrl).toBeUndefined();
-    expect(result.externalSearchQuery?.toLowerCase()).toContain("campari");
-    expect(result.message).toMatch(/retailer/i);
+    expect(result.status).toBe("external_handoff");
+    expect(result.externalSearchQuery).toBe("Campari near 94110");
+    expect(result.destinationUrl).toContain(encodeURIComponent("Campari near 94110"));
+    expect(result.message).toBe("");
+  });
+
+  it("requires ZIP before handoff query is produced", async () => {
+    const campari = ingredients.find((i) => i.id === "campari");
+    expect(campari).toBeTruthy();
+    if (!campari) return;
+
+    const normalized = normalizeCommerceIngredient(campari);
+    const result = await findNearbyForIngredient({ ingredient: normalized });
+    expect(result.externalSearchQuery).toBeUndefined();
   });
 });

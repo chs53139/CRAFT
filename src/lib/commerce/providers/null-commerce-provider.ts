@@ -1,30 +1,34 @@
 import {
+  buildExternalSearchUrl,
+  buildLocalShoppingSearchQuery,
+} from "@/lib/commerce/external-handoff";
+import {
   CommerceProductQuery,
   CommerceProvider,
   CommerceResult,
 } from "@/lib/commerce/types";
-
-function buildExternalSearchQuery(query: CommerceProductQuery): string | undefined {
-  const label = query.ingredient.searchLabel;
-  if (!label) return undefined;
-  const zip = query.location?.postalCode?.trim();
-  if (zip) return `${label} near ${zip}`;
-  return `${label} bottle shop`;
-}
 
 export const nullCommerceProvider: CommerceProvider = {
   id: "craft-null",
   name: "CRAFT (no retailer connected)",
 
   async findNearby(query: CommerceProductQuery): Promise<CommerceResult> {
-    const externalSearchQuery = buildExternalSearchQuery(query);
+    const externalSearchQuery = buildLocalShoppingSearchQuery(query);
+
+    if (!externalSearchQuery) {
+      return {
+        status: "integration_pending",
+        query,
+        message: "",
+      };
+    }
 
     return {
-      status: "integration_pending",
+      status: "external_handoff",
       query,
       externalSearchQuery,
-      message:
-        "Retailer partnerships are coming soon. You can save your ZIP here so CRAFT is ready when store lookup goes live.",
+      destinationUrl: buildExternalSearchUrl(externalSearchQuery),
+      message: "",
     };
   },
 };

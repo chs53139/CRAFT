@@ -13,6 +13,7 @@ import {
   SPIRIT_FILTER_OPTIONS,
   STRENGTH_FILTER_OPTIONS,
 } from "@/lib/discovery-filters";
+import { trackProductEvent } from "@/lib/analytics";
 
 type Props = {
   filters: DiscoveryFilters;
@@ -62,6 +63,12 @@ export function DiscoveryFilterPanel({
   compact = false,
 }: Props) {
   const update = <K extends keyof DiscoveryFilters>(key: K, value: DiscoveryFilters[K]) => {
+    if (filters[key] !== value) {
+      trackProductEvent("discovery_filter_used", {
+        filter: String(key),
+        value: typeof value === "boolean" ? (value ? "true" : "false") : String(value),
+      });
+    }
     onFiltersChange({ ...filters, [key]: value });
   };
 
@@ -74,7 +81,13 @@ export function DiscoveryFilterPanel({
           <span className="sr-only">Sort by</span>
           <select
             value={sort}
-            onChange={(e) => onSortChange(e.target.value as DiscoverySort)}
+            onChange={(e) => {
+              const next = e.target.value as DiscoverySort;
+              if (next !== sort) {
+                trackProductEvent("discovery_filter_used", { filter: "sort", value: next });
+              }
+              onSortChange(next);
+            }}
             className="discovery-sort-input"
           >
             {SORT_OPTIONS.map((option) => (

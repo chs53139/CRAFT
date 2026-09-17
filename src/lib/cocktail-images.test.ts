@@ -33,18 +33,32 @@ describe("cocktail image integrity", () => {
     }
   });
 
-  it("only maps overrides to live catalogue parent slugs", () => {
+  const ALLOWED_EXTERNAL_CDN_SLUGS = new Set(["trade-winds"]);
+
+  it("only maps overrides from catalogue slugs to trusted CDN targets", () => {
     for (const [from, to] of Object.entries(COCKTAIL_IMAGE_SLUGS)) {
       expect(catalogueSlugs.has(from), `override source ${from}`).toBe(true);
-      expect(catalogueSlugs.has(to), `override target ${to} for ${from}`).toBe(true);
+      expect(
+        catalogueSlugs.has(to) || ALLOWED_EXTERNAL_CDN_SLUGS.has(to),
+        `override target ${to} for ${from}`
+      ).toBe(true);
       expect(manifest[from]?.tier).toBe("trusted-override");
     }
   });
 
-  it("uses placeholder for drinks without direct or trusted override (e.g. Potted Parrot)", () => {
-    expect(getCocktailImageTier("potted-parrot")).toBe("missing");
-    expect(getCocktailImageSrc("potted-parrot")).toBe(COCKTAIL_PLACEHOLDER);
-    expect(COCKTAIL_IMAGE_SLUGS["potted-parrot"]).toBeUndefined();
+  it("assigns trusted CDN images to the six curated expansion tiki classics", () => {
+    for (const id of [
+      "potted-parrot",
+      "tradewinds",
+      "chief-lapu-lapu",
+      "qb-cooler",
+      "ancient-mariner",
+      "151-swizzle",
+    ]) {
+      expect(getCocktailImageTier(id), id).toBe("trusted-override");
+      expect(getCocktailImageSrc(id)).toMatch(/^https:\/\/cocktail\.glass\/images\/.+\.webp$/);
+      expect(COCKTAIL_IMAGE_SLUGS[id as keyof typeof COCKTAIL_IMAGE_SLUGS]).toBeDefined();
+    }
   });
 
   it("does not treat family-proxy mappings as cocktail-specific URLs", () => {

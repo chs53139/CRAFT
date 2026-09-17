@@ -2910,7 +2910,7 @@
   {
     "name": "Potted Parrot",
     "slug": "potted-parrot",
-    "glass": "Tiki mug",
+    "glass": "Sling glass",
     "family": "Tiki",
     "method": "Shaken",
     "tags": [
@@ -2920,69 +2920,54 @@
     "ingredients": [
       {
         "ref": "rum-white",
-        "name": "White rum",
+        "name": "Light Puerto Rican rum",
         "type": "spirit",
-        "amount": 30,
+        "amount": 60,
         "unit": "ml"
       },
       {
-        "ref": "rum-dark",
-        "name": "Dark rum",
-        "type": "spirit",
-        "amount": 30,
-        "unit": "ml"
-      },
-      {
-        "ref": "lime-juice",
-        "name": "Lime juice",
-        "type": "juice",
-        "amount": 15,
-        "unit": "ml"
-      },
-      {
-        "ref": "grapefruit-juice",
-        "name": "Grapefruit juice",
-        "type": "juice",
-        "amount": 15,
-        "unit": "ml"
-      },
-      {
-        "ref": "honey-syrup",
-        "name": "Honey syrup",
-        "type": "syrup",
-        "amount": 15,
-        "unit": "ml"
-      },
-      {
-        "ref": "falernum",
-        "name": "Falernum",
+        "ref": "triple-sec",
+        "name": "Cointreau or curaçao",
         "type": "liqueur",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "orange-juice",
+        "name": "Orange juice",
+        "type": "juice",
+        "amount": 60,
+        "unit": "ml"
+      },
+      {
+        "ref": "lemon-juice",
+        "name": "Lemon juice",
+        "type": "juice",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "rock-candy-syrup",
+        "name": "Rock candy syrup",
+        "type": "syrup",
         "amount": 7.5,
         "unit": "ml"
       },
       {
-        "ref": "absinthe",
-        "name": "Absinthe",
-        "type": "liqueur",
-        "amount": 2.5,
+        "ref": "orgeat",
+        "name": "Orgeat",
+        "type": "syrup",
+        "amount": 7.5,
         "unit": "ml"
-      },
-      {
-        "ref": "angostura-bitters",
-        "name": "Angostura bitters",
-        "type": "bitters",
-        "amount": 1,
-        "unit": "dash"
       }
     ],
     "garnish": [
-      "Mint sprig",
-      "edible orchid"
+      "Mint sprig"
     ],
     "preparation": [
       "Shake all ingredients with ice.",
-      "Strain into a tiki mug over crushed ice.",
-      "Garnish with mint and orchid."
+      "Strain into a sling glass filled with crushed ice.",
+      "Garnish with mint."
     ]
   },
   {
@@ -3025,27 +3010,27 @@
         "unit": "ml"
       },
       {
-        "ref": "lime-juice",
-        "name": "Lime juice",
+        "ref": "lemon-juice",
+        "name": "Lemon juice",
         "type": "juice",
-        "amount": 15,
+        "amount": 30,
         "unit": "ml"
       }
     ],
     "garnish": [
-      "Pineapple wedge",
-      "cherry"
+      "Lemon wedge",
+      "cocktail umbrella"
     ],
     "preparation": [
-      "Blend all ingredients with crushed ice until smooth.",
-      "Pour into a tiki mug.",
-      "Garnish with pineapple and cherry."
+      "Flash-blend all ingredients with crushed ice and a few agitator cubes (3–4 seconds).",
+      "Open-pour into a zombie or tiki mug.",
+      "Garnish with lemon and an inside-out cocktail umbrella."
     ]
   },
   {
     "name": "Chief Lapu Lapu",
     "slug": "chief-lapu-lapu",
-    "glass": "Tiki mug",
+    "glass": "Snifter",
     "family": "Tiki",
     "method": "Shaken",
     "tags": [
@@ -3054,125 +3039,153 @@
     ],
     "ingredients": [
       {
-        "ref": "rum-white",
-        "name": "White rum",
+        "ref": "rum-dark",
+        "name": "Dark Jamaican rum",
         "type": "spirit",
         "amount": 45,
         "unit": "ml"
       },
       {
-        "ref": "rum-dark",
-        "name": "Dark rum",
+        "ref": "rum-white",
+        "name": "Light Puerto Rican rum",
         "type": "spirit",
-        "amount": 22.5,
+        "amount": 45,
         "unit": "ml"
       },
       {
         "ref": "orange-juice",
         "name": "Orange juice",
         "type": "juice",
-        "amount": 45,
-        "unit": "ml"
-      },
-      {
-        "ref": "lime-juice",
-        "name": "Lime juice",
-        "type": "juice",
-        "amount": 22.5,
-        "unit": "ml"
-      },
-      {
-        "ref": "orgeat",
-        "name": "Orgeat",
-        "type": "syrup",
-        "amount": 15,
-        "unit": "ml"
-      },
-      {
-        "ref": "simple-syrup",
-        "name": "Simple syrup",
-        "type": "syrup",
-        "amount": 7.5,
-        "unit": "ml"
-      }
-    ],
-    "garnish": [
-      "Mint sprig",
-      "orchid"
-    ],
-    "preparation": [
-      "Shake all ingredients with ice.",
-      "Strain into a tiki mug over crushed ice.",
-      "Garnish with mint and orchid."
-    ]
-  },
-  {
-    "name": "QB Cooler",
-    "slug": "qb-cooler",
-    "glass": "Collins",
-    "family": "Tiki",
-    "method": "Shaken",
-    "tags": [
-      "tiki",
-      "classic-tiki"
-    ],
-    "ingredients": [
-      {
-        "ref": "rum-aged",
-        "name": "Aged rum",
-        "type": "spirit",
-        "amount": 45,
-        "unit": "ml"
-      },
-      {
-        "ref": "lime-juice",
-        "name": "Lime juice",
-        "type": "juice",
-        "amount": 22.5,
+        "amount": 90,
         "unit": "ml"
       },
       {
         "ref": "lemon-juice",
         "name": "Lemon juice",
         "type": "juice",
-        "amount": 22.5,
+        "amount": 60,
         "unit": "ml"
       },
       {
-        "ref": "falernum",
-        "name": "Falernum",
-        "type": "liqueur",
-        "amount": 15,
+        "ref": "passion-fruit-syrup",
+        "name": "Passion fruit syrup",
+        "type": "syrup",
+        "amount": 30,
         "unit": "ml"
       },
       {
         "ref": "simple-syrup",
         "name": "Simple syrup",
         "type": "syrup",
+        "amount": 30,
+        "unit": "ml"
+      }
+    ],
+    "garnish": [
+      "Mint sprig",
+      "lemon peel"
+    ],
+    "preparation": [
+      "Shake all ingredients with ice.",
+      "Pour unstrained into a large snifter and add more ice to fill.",
+      "Garnish with mint and a long lemon peel."
+    ]
+  },
+  {
+    "name": "QB Cooler",
+    "slug": "qb-cooler",
+    "glass": "Double old-fashioned",
+    "family": "Tiki",
+    "method": "Blend",
+    "tags": [
+      "tiki",
+      "classic-tiki"
+    ],
+    "ingredients": [
+      {
+        "ref": "rum-dark",
+        "name": "Gold Jamaican rum",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "rum-white",
+        "name": "Light Puerto Rican rum",
+        "type": "spirit",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "demerara-rum",
+        "name": "Demerara rum",
+        "type": "spirit",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "orange-juice",
+        "name": "Orange juice",
+        "type": "juice",
+        "amount": 30,
+        "unit": "ml"
+      },
+      {
+        "ref": "lime-juice",
+        "name": "Lime juice",
+        "type": "juice",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "honey-syrup",
+        "name": "Honey mix (1:1 honey and water)",
+        "type": "syrup",
+        "amount": 15,
+        "unit": "ml"
+      },
+      {
+        "ref": "falernum",
+        "name": "Falernum",
+        "type": "liqueur",
         "amount": 7.5,
+        "unit": "ml"
+      },
+      {
+        "ref": "ginger-syrup",
+        "name": "Ginger syrup",
+        "type": "syrup",
+        "amount": 2.5,
         "unit": "ml"
       },
       {
         "ref": "club-soda",
         "name": "Club soda",
         "type": "mixer",
-        "amount": 60,
+        "amount": 30,
         "unit": "ml"
+      },
+      {
+        "ref": "angostura-bitters",
+        "name": "Angostura bitters",
+        "type": "bitters",
+        "amount": 2,
+        "unit": "dash"
       }
     ],
     "garnish": [
       "Mint sprig"
     ],
     "preparation": [
-      "Shake rum, juices, falernum, and syrup with ice.",
-      "Strain into a Collins glass over ice and top with soda.",
-      "Garnish with mint."
+      "Add all ingredients and about 120 ml crushed ice to a blender.",
+      "Blend on high for 5 seconds.",
+      "Pour unstrained into a double old-fashioned glass, top with more crushed ice, and garnish with mint."
     ]
   },
   {
     "name": "Ancient Mariner",
     "slug": "ancient-mariner",
-    "glass": "Tiki mug",
+    "glass": "Double old-fashioned",
     "family": "Tiki",
     "method": "Shaken",
     "tags": [
@@ -3189,7 +3202,7 @@
       },
       {
         "ref": "rum-dark",
-        "name": "Dark rum",
+        "name": "Dark Jamaican rum",
         "type": "spirit",
         "amount": 30,
         "unit": "ml"
@@ -3203,42 +3216,42 @@
       },
       {
         "ref": "grapefruit-juice",
-        "name": "Grapefruit juice",
+        "name": "White grapefruit juice",
         "type": "juice",
-        "amount": 22.5,
+        "amount": 15,
         "unit": "ml"
       },
       {
-        "ref": "passion-fruit-syrup",
-        "name": "Passion fruit syrup",
+        "ref": "simple-syrup",
+        "name": "Simple syrup (1:1)",
         "type": "syrup",
         "amount": 15,
         "unit": "ml"
       },
       {
         "ref": "pimento-dram",
-        "name": "Pimento dram",
+        "name": "Allspice dram",
         "type": "liqueur",
         "amount": 7.5,
         "unit": "ml"
       }
     ],
     "garnish": [
-      "Lime wheel",
-      "mint"
+      "Scored lime wedge",
+      "mint sprig"
     ],
     "preparation": [
       "Shake all ingredients with ice.",
-      "Strain into a tiki mug over crushed ice.",
-      "Garnish with lime and mint."
+      "Strain into a double old-fashioned glass filled with crushed ice.",
+      "Garnish with mint and a scored lime wedge."
     ]
   },
   {
     "name": "151 Swizzle",
     "slug": "151-swizzle",
-    "glass": "Collins",
+    "glass": "Swizzle cup or pilsner",
     "family": "Tiki",
-    "method": "Swizzled",
+    "method": "Blend",
     "tags": [
       "tiki",
       "classic-tiki"
@@ -3246,16 +3259,16 @@
     "ingredients": [
       {
         "ref": "overproof-rum",
-        "name": "Overproof rum",
+        "name": "151-proof Demerara rum",
         "type": "spirit",
-        "amount": 22.5,
+        "amount": 45,
         "unit": "ml"
       },
       {
         "ref": "lime-juice",
         "name": "Lime juice",
         "type": "juice",
-        "amount": 22.5,
+        "amount": 15,
         "unit": "ml"
       },
       {
@@ -3266,28 +3279,29 @@
         "unit": "ml"
       },
       {
-        "ref": "falernum",
-        "name": "Falernum",
+        "ref": "absinthe",
+        "name": "Pernod or absinthe",
         "type": "liqueur",
-        "amount": 7.5,
-        "unit": "ml"
+        "amount": 1,
+        "unit": "dash"
       },
       {
         "ref": "angostura-bitters",
         "name": "Angostura bitters",
         "type": "bitters",
-        "amount": 2,
+        "amount": 1,
         "unit": "dash"
       }
     ],
     "garnish": [
-      "Mint sprig",
-      "nutmeg"
+      "Grated nutmeg",
+      "cinnamon stick"
     ],
     "preparation": [
-      "Build in a Collins glass with crushed ice.",
-      "Swizzle until frosted.",
-      "Garnish with mint and grated nutmeg."
+      "Add all ingredients and about 240 ml crushed ice to a blender.",
+      "Flash-blend on high for no more than 5 seconds.",
+      "Pour unstrained into a tall swizzle cup, top with crushed ice, and dust with nutmeg.",
+      "Garnish with a cinnamon stick."
     ]
   }
 ]

@@ -11,6 +11,19 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
 const IMAGE_BASE = "https://cocktail.glass/images";
 
+/**
+ * Curated CDN targets when cocktail.glass has no slug-specific art yet.
+ * Same-drink alias or documented visual sibling — never family-pool Mai Tai proxies.
+ */
+const EXPLICIT_CDN_OVERRIDES = {
+  tradewinds: "trade-winds",
+  "ancient-mariner": "navy-grog",
+  "151-swizzle": "queens-park-swizzle",
+  "qb-cooler": "test-pilot",
+  "chief-lapu-lapu": "hurricane",
+  "potted-parrot": "planters-punch",
+};
+
 const TRUSTED_STRIP_SUFFIXES = [
   "-trader-vics",
   "-royal-hawaiian",
@@ -112,6 +125,14 @@ async function main() {
     if (parent && (await cdnExists(parent))) {
       overrides[slug] = parent;
       manifest[slug] = { tier: "trusted-override", cdnSlug: parent };
+      stats.trustedOverride++;
+      continue;
+    }
+
+    const explicit = EXPLICIT_CDN_OVERRIDES[slug];
+    if (explicit && (await cdnExists(explicit))) {
+      overrides[slug] = explicit;
+      manifest[slug] = { tier: "trusted-override", cdnSlug: explicit };
       stats.trustedOverride++;
       continue;
     }

@@ -49,8 +49,8 @@ describe("cocktail provenance", () => {
     const qb = cocktails.find((c) => c.id === "qb-cooler");
 
     expect(pearl?.funFact).toMatch(/Don the Beachcomber|buttered rum/i);
-    expect(parrot?.funFact).toMatch(/Don the Beachcomber|Berry|tiki/i);
-    expect(qb?.funFact).toMatch(/Queen's Park|Don the Beachcomber|QB/i);
+    expect(parrot?.funFact).toMatch(/Trader Vic|Bergeron|Polly/i);
+    expect(qb?.funFact).toMatch(/Quiet Birdmen|Don the Beachcomber|Q\.?B/i);
     expect(pearl?.funFact).not.toBe(parrot?.funFact);
     expect(pearl?.funFact).not.toMatch(/sibling pour|undefined/i);
     expect(isNoveltyTaglineVoice(pearl?.funFact ?? "")).toBe(false);

@@ -4,8 +4,6 @@
  * Do not add family-pool proxies (e.g. unrelated Mai Tai for other Tiki drinks).
  */
 export const COCKTAIL_IMAGE_SLUGS: Record<string, string> = {
-  "151-swizzle": "queens-park-swizzle",
-  "ancient-mariner": "navy-grog",
   "aviation-violette": "aviation",
   "bees-knees-lavender": "bees-knees",
   "blood-and-sand-smoky": "blood-and-sand",
@@ -13,7 +11,6 @@ export const COCKTAIL_IMAGE_SLUGS: Record<string, string> = {
   "bronx-cocktail": "bronx",
   "caipirinha-passion": "caipirinha",
   "chartreuse-swizzle-yellow": "chartreuse-swizzle",
-  "chief-lapu-lapu": "hurricane",
   "eggnog-spiked": "eggnog",
   "french-75-cognac": "french-75",
   "gold-rush-honey": "gold-rush",
@@ -30,8 +27,6 @@ export const COCKTAIL_IMAGE_SLUGS: Record<string, string> = {
   "paper-plane-split": "paper-plane",
   "penicillin-smoky": "penicillin",
   "pisco-sour-amargo": "pisco-sour",
-  "potted-parrot": "planters-punch",
-  "qb-cooler": "test-pilot",
   "saturn-variation": "saturn",
   "sazerac-split-base": "sazerac",
   "singapore-sling-modern": "singapore-sling",

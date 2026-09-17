@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-09-17T03:41:38.389Z",
+  "generatedAt": "2026-09-17T03:48:20.374Z",
   "stats": {
     "total": 588,
     "direct": 500,
-    "trustedOverride": 34,
-    "missing": 54,
+    "trustedOverride": 29,
+    "missing": 59,
     "staleOverridesRemoved": 0
   },
   "entries": {
@@ -2199,28 +2199,23 @@
       "tier": "missing"
     },
     "potted-parrot": {
-      "tier": "trusted-override",
-      "cdnSlug": "planters-punch"
+      "tier": "missing"
     },
     "tradewinds": {
       "tier": "trusted-override",
       "cdnSlug": "trade-winds"
     },
     "chief-lapu-lapu": {
-      "tier": "trusted-override",
-      "cdnSlug": "hurricane"
+      "tier": "missing"
     },
     "qb-cooler": {
-      "tier": "trusted-override",
-      "cdnSlug": "test-pilot"
+      "tier": "missing"
     },
     "ancient-mariner": {
-      "tier": "trusted-override",
-      "cdnSlug": "navy-grog"
+      "tier": "missing"
     },
     "151-swizzle": {
-      "tier": "trusted-override",
-      "cdnSlug": "queens-park-swizzle"
+      "tier": "missing"
     },
     "craft-ember-line": {
       "tier": "missing"

@@ -1,38 +1,32 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useEffect } from "react";
 import Link from "next/link";
 import { AlcoholBadge } from "@/components/AlcoholBadge";
 import { CocktailImage } from "@/components/CocktailImage";
 import { DifficultyBadge } from "@/components/DifficultyBadge";
-import { FindNearbyButton } from "@/components/FindNearbySheet";
-import { trackProductEvent } from "@/lib/analytics";
+import { BestNextPurchaseSection } from "@/components/BestNextPurchaseSection";
 import { BarAdvice } from "@/lib/bar-intelligence/bar-advice";
-import { getBuyLabel } from "@/lib/ingredient-brands";
+import { CocktailMatch } from "@/lib/types";
 
 type Props = {
   advice: BarAdvice;
+  barIds: string[];
+  matches: CocktailMatch[];
 };
 
-export function MyBarAdvice({ advice }: Props) {
-  const { tonightsRecommendation, bestNextPurchase, hiddenGem, neglectedBottle } = advice;
-
-  useEffect(() => {
-    if (!bestNextPurchase) return;
-    trackProductEvent("best_next_purchase_viewed", {
-      ingredientId: bestNextPurchase.ingredient.id,
-      unlocksCount: bestNextPurchase.unlocksCount,
-    });
-  }, [bestNextPurchase]);
+export function MyBarAdvice({ advice, barIds, matches }: Props) {
+  const { tonightsRecommendation, hiddenGem, neglectedBottle } = advice;
 
   return (
     <section className="my-bar-advice animate-fade-in-up">
+      <BestNextPurchaseSection barIds={barIds} matches={matches} />
+
       <div className="my-bar-advice-intro">
         <p className="eyebrow">From your bar</p>
         <h2 className="section-row-title mt-2">What I&apos;d do tonight</h2>
         <p className="section-row-subtitle">
-          Four quick calls based on your shelf, taste, and what you&apos;ve been ignoring.
+          Quick calls based on your shelf, taste, and what you&apos;ve been ignoring.
         </p>
       </div>
 
@@ -57,31 +51,6 @@ export function MyBarAdvice({ advice }: Props) {
               <p className="my-bar-advice-copy">{tonightsRecommendation.reason}</p>
             </div>
           </AdviceCard>
-        )}
-
-        {bestNextPurchase && (
-          <div className="my-bar-advice-card">
-            <p className="my-bar-advice-label">Best next purchase</p>
-            <h3 className="my-bar-advice-title">{getBuyLabel(bestNextPurchase.ingredient)}</h3>
-            <p className="my-bar-advice-footnote">
-              Unlocks {bestNextPurchase.unlocksCount} cocktail
-              {bestNextPurchase.unlocksCount !== 1 ? "s" : ""}
-            </p>
-            {bestNextPurchase.exampleCocktails.length > 0 && (
-              <p className="my-bar-advice-copy">
-                {bestNextPurchase.exampleCocktails.slice(0, 4).join(" · ")}
-                {bestNextPurchase.exampleCocktails.length > 4 ? " · …" : ""}
-              </p>
-            )}
-            {bestNextPurchase.reason ? (
-              <p className="my-bar-advice-copy">{bestNextPurchase.reason}</p>
-            ) : null}
-            <FindNearbyButton
-              ingredient={bestNextPurchase.ingredient}
-              context="best_next_purchase"
-              className="my-bar-advice-find"
-            />
-          </div>
         )}
 
         {hiddenGem && (

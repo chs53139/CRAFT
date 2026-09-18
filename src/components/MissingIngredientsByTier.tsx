@@ -35,13 +35,14 @@ export function MissingIngredientsByTier({
 
   return (
     <div className="missing-by-tier">
+      <p className="missing-by-tier-heading">You&apos;re missing</p>
       {tiers.map((tier) => (
         <div key={tier.id} className="missing-by-tier-group">
           <p className="missing-by-tier-label">{tier.shelfLabel}</p>
           <ul className="missing-by-tier-list">
             {missingByTier[tier.id]!.map((ing) => (
               <li key={ing.id} className="missing-by-tier-item">
-                <span>{ing.name}</span>
+                <span className="missing-by-tier-name">{ing.name}</span>
                 {showFindNearby && isBrowsableIngredient(ing) && (
                   <FindNearbyButton
                     ingredient={ing}

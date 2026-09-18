@@ -130,7 +130,7 @@ export function FindNearbySheet({
         >
           <p className="eyebrow text-[var(--accent-dim)]">Find nearby</p>
           <h2 id="find-nearby-title" className="find-nearby-title">
-            {commerceIngredient.displayName}
+            Find {commerceIngredient.displayName} nearby
           </h2>
           <p className="find-nearby-copy">Find it near you.</p>
 
@@ -158,7 +158,7 @@ export function FindNearbySheet({
                 className="find-nearby-input"
                 inputMode="numeric"
                 autoComplete="postal-code"
-                placeholder="91384"
+                placeholder="ZIP code"
                 value={draftZip}
                 onChange={(e) => {
                   setDraftZip(e.target.value);

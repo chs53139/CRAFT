@@ -147,7 +147,7 @@ export default function BarPage() {
 
       {advice && barIds.length > 0 && (
         <div className="mt-8">
-          <MyBarAdvice advice={advice} />
+          <MyBarAdvice advice={advice} barIds={deferredBarIds} matches={deferredMatches} />
         </div>
       )}
 

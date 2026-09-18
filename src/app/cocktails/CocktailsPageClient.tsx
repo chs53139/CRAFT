@@ -6,6 +6,7 @@ import { trackProductEvent } from "@/lib/analytics";
 import { normalizeSearchKey } from "@/lib/analytics/search-key";
 import { useSearchParams } from "next/navigation";
 import { CocktailSection } from "@/components/CocktailSection";
+import { OneAwaySection } from "@/components/OneAwaySection";
 import { CollectionFilter } from "@/components/CollectionFilter";
 import {
   DiscoveryFilterPanel,
@@ -222,7 +223,7 @@ function CocktailsContent() {
       : view === "ready"
         ? `${visibleExact.length} exact · ${visibleSubstitutions.length} with subs`
         : view === "one-away"
-          ? `${oneAway.length} one bottle away`
+          ? `${oneAway.length} cocktails · one ingredient each`
           : barIds.length === 0
             ? "Stock your bar first"
             : `${exactCount} exact · ${totalMakeable} makeable`;
@@ -342,14 +343,7 @@ function CocktailsContent() {
                 />
               )}
 
-              {showOneAway && (
-                <CocktailSection
-                  title="One away"
-                  subtitle="One bottle from an exact match"
-                  items={oneAway}
-                  empty="Nothing teasing you tonight. Yet."
-                />
-              )}
+              {showOneAway && <OneAwaySection items={oneAway} count={oneAway.length} />}
 
               {showAllSections && stillMissing.length > 0 && (
                 <CocktailSection

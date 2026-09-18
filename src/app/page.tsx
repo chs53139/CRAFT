@@ -7,6 +7,7 @@ import { MakeableCountBanner } from "@/components/InfiniteCocktailGrid";
 import { RecentCocktails } from "@/components/RecentCocktails";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { SkeletonGrid } from "@/components/LoadingState";
+import { HomeSearchEntry } from "@/components/HomeSearchEntry";
 import { StatPillAction, StatPills } from "@/components/StatPills";
 import { isMixologistLaunchHidden } from "@/lib/feature-flags";
 import { EmptyState } from "@/components/EmptyState";
@@ -108,6 +109,8 @@ export default function HomePage() {
           )
         }
       />
+
+      <HomeSearchEntry />
 
       <HorizontalCocktailRow
         title="Pour tonight"

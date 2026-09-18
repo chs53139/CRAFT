@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { trackProductEvent } from "@/lib/analytics";
 import type { FindNearbyContext } from "@/lib/analytics/types";
+import { AppOverlayPortal } from "@/components/AppOverlayPortal";
 import { findNearbyForIngredient } from "@/lib/commerce";
 import { shouldTrackMissingIngredientSelected } from "@/lib/commerce/find-nearby-analytics";
 import {
@@ -35,6 +36,7 @@ export function FindNearbySheet({
     [ingredient]
   );
   const ctaLabel = buildFindNearbyCtaLabel(commerceIngredient.displayName);
+  const sheetRef = useRef<HTMLDivElement>(null);
 
   const [draftZip, setDraftZip] = useState("");
   const [editingZip, setEditingZip] = useState(false);
@@ -56,6 +58,22 @@ export function FindNearbySheet({
       setEditingZip(!postalCode.trim());
     }
   }, [open, loaded, postalCode]);
+
+  useEffect(() => {
+    if (!open) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    const t = window.setTimeout(() => sheetRef.current?.focus(), 0);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      document.removeEventListener("keydown", onKey);
+      window.clearTimeout(t);
+    };
+  }, [open, onClose]);
 
   const runHandoff = useCallback(
     async (zipInput: string) => {
@@ -99,70 +117,75 @@ export function FindNearbySheet({
   if (!open) return null;
 
   return (
-    <div className="find-nearby-backdrop" role="presentation" onClick={onClose}>
-      <div
-        className="find-nearby-sheet animate-fade-in-up"
-        role="dialog"
-        aria-labelledby="find-nearby-title"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <p className="eyebrow text-[var(--accent-dim)]">Find nearby</p>
-        <h2 id="find-nearby-title" className="find-nearby-title">
-          {commerceIngredient.displayName}
-        </h2>
-        <p className="find-nearby-copy">Find it near you.</p>
+    <AppOverlayPortal active={open}>
+      <div className="find-nearby-backdrop" role="presentation" onClick={onClose}>
+        <div
+          ref={sheetRef}
+          className="find-nearby-sheet animate-fade-in-up"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="find-nearby-title"
+          tabIndex={-1}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <p className="eyebrow text-[var(--accent-dim)]">Find nearby</p>
+          <h2 id="find-nearby-title" className="find-nearby-title">
+            {commerceIngredient.displayName}
+          </h2>
+          <p className="find-nearby-copy">Find it near you.</p>
 
-        {showSavedZip ? (
-          <p className="find-nearby-saved-zip">
-            Near {savedZip}
+          {showSavedZip ? (
+            <p className="find-nearby-saved-zip">
+              Near {savedZip}
+              <button
+                type="button"
+                className="find-nearby-change-zip"
+                onClick={() => {
+                  setEditingZip(true);
+                  setDraftZip(savedZip);
+                }}
+              >
+                · Change
+              </button>
+            </p>
+          ) : (
+            <>
+              <label className="find-nearby-label" htmlFor="commerce-zip">
+                ZIP / postal code
+              </label>
+              <input
+                id="commerce-zip"
+                className="find-nearby-input"
+                inputMode="numeric"
+                autoComplete="postal-code"
+                placeholder="91384"
+                value={draftZip}
+                onChange={(e) => {
+                  setDraftZip(e.target.value);
+                  if (zipError) setZipError(null);
+                }}
+              />
+            </>
+          )}
+
+          {zipError && <p className="find-nearby-error">{zipError}</p>}
+
+          <div className="find-nearby-actions">
+            <button type="button" className="btn-secondary flex-1" onClick={onClose}>
+              Cancel
+            </button>
             <button
               type="button"
-              className="find-nearby-change-zip"
-              onClick={() => {
-                setEditingZip(true);
-                setDraftZip(savedZip);
-              }}
+              className="btn-primary flex-1"
+              disabled={loading}
+              onClick={() => void runHandoff(showSavedZip ? savedZip : draftZip)}
             >
-              · Change
+              {loading ? "Opening…" : ctaLabel}
             </button>
-          </p>
-        ) : (
-          <>
-            <label className="find-nearby-label" htmlFor="commerce-zip">
-              ZIP / postal code
-            </label>
-            <input
-              id="commerce-zip"
-              className="find-nearby-input"
-              inputMode="numeric"
-              autoComplete="postal-code"
-              placeholder="91384"
-              value={draftZip}
-              onChange={(e) => {
-                setDraftZip(e.target.value);
-                if (zipError) setZipError(null);
-              }}
-            />
-          </>
-        )}
-
-        {zipError && <p className="find-nearby-error">{zipError}</p>}
-
-        <div className="find-nearby-actions">
-          <button type="button" className="btn-secondary flex-1" onClick={onClose}>
-            Cancel
-          </button>
-          <button
-            type="button"
-            className="btn-primary flex-1"
-            disabled={loading}
-            onClick={() => void runHandoff(showSavedZip ? savedZip : draftZip)}
-          >
-            {loading ? "Opening…" : ctaLabel}
-          </button>
+          </div>
         </div>
       </div>
-    </div>
+    </AppOverlayPortal>
   );
 }
 
@@ -175,8 +198,11 @@ type ButtonProps = {
 
 export function FindNearbyButton({ ingredient, context, cocktailId, className = "" }: ButtonProps) {
   const [open, setOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
 
-  function handleOpen() {
+  function handleOpen(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    e.stopPropagation();
     if (shouldTrackMissingIngredientSelected(context)) {
       trackProductEvent("missing_ingredient_selected", {
         ingredientId: ingredient.id,
@@ -186,9 +212,15 @@ export function FindNearbyButton({ ingredient, context, cocktailId, className = 
     setOpen(true);
   }
 
+  function handleClose() {
+    setOpen(false);
+    triggerRef.current?.focus();
+  }
+
   return (
     <>
       <button
+        ref={triggerRef}
         type="button"
         className={`find-nearby-btn ${className}`}
         onClick={handleOpen}
@@ -200,7 +232,7 @@ export function FindNearbyButton({ ingredient, context, cocktailId, className = 
         context={context}
         cocktailId={cocktailId}
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={handleClose}
       />
     </>
   );

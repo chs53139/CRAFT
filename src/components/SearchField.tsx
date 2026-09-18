@@ -3,9 +3,16 @@ type Props = {
   onChange: (value: string) => void;
   placeholder: string;
   className?: string;
+  ariaLabel?: string;
 };
 
-export function SearchField({ value, onChange, placeholder, className = "" }: Props) {
+export function SearchField({
+  value,
+  onChange,
+  placeholder,
+  className = "",
+  ariaLabel,
+}: Props) {
   return (
     <div className={`relative ${className}`}>
       <input
@@ -13,6 +20,7 @@ export function SearchField({ value, onChange, placeholder, className = "" }: Pr
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
+        aria-label={ariaLabel ?? placeholder}
         className="input-field py-3 pl-4 pr-11"
       />
       {value && (

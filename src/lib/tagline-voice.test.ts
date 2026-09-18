@@ -30,10 +30,10 @@ describe("tagline system removed", () => {
     expect(bad.length).toBe(0);
   });
 
-  it("uses fun-fact-led catalogue descriptions instead of taglines", () => {
-    const withDescription = cocktails.filter((c) => c.description.trim().length > 0);
-    expect(withDescription.length).toBe(cocktails.length);
+  it("allows optional subtitles; history stays in funFact", () => {
     expect(cocktails.every((c) => c.funFact.trim().length > 0)).toBe(true);
+    const withDescription = cocktails.filter((c) => c.description.trim().length > 0);
+    expect(withDescription.length).toBeLessThan(cocktails.length);
   });
 
   it("does not ship familyDescriptions tagline templates in cocktail-data", () => {

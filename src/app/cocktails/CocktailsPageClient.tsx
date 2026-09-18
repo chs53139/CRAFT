@@ -96,7 +96,16 @@ function CocktailsContent() {
   const view = parseView(searchParams.get("view"));
   const { barIds, loaded, error, clearError } = useMyBar();
   const { matches: allMatches } = useCocktailMatches(barIds);
-  const [search, setSearch] = useState("");
+  const initialQuery = (searchParams.get("q") ?? "").trim();
+  const [search, setSearch] = useState(initialQuery);
+  const syncedQueryRef = useRef(initialQuery);
+
+  useEffect(() => {
+    const q = (searchParams.get("q") ?? "").trim();
+    if (q === syncedQueryRef.current) return;
+    syncedQueryRef.current = q;
+    if (q) setSearch(q);
+  }, [searchParams]);
   const [collection, setCollection] = useState<"all" | CocktailCollection>("all");
   const [substitutionMode, setSubstitutionMode] =
     useState<SubstitutionMode>("include-substitutions");

@@ -32,7 +32,7 @@ const BANNED_DESCRIPTION_PATTERNS = [
 
 export function isGenericDescription(text: string): boolean {
   const trimmed = text.trim();
-  if (!trimmed) return true;
+  if (!trimmed) return false;
   if (isNoveltyTaglineVoice(trimmed)) return true;
   return BANNED_DESCRIPTION_PATTERNS.some((pattern) => pattern.test(trimmed));
 }

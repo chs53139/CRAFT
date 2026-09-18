@@ -2749,10 +2749,18 @@ button.star-rating-star:active {
   color: var(--accent-dim);
 }
 
+.home-search-entry .input-field {
+  border-color: rgba(212, 181, 106, 0.22);
+}
+
+.home-search-entry .input-field:focus {
+  border-color: rgba(212, 181, 106, 0.45);
+}
+
 .find-nearby-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 70;
+  z-index: 80;
   display: flex;
   align-items: flex-end;
   justify-content: center;

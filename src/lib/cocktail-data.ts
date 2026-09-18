@@ -5,6 +5,7 @@ import craftOriginals from "@/data/craft-originals.json";
 import mocktails from "@/data/mocktails.json";
 import { enrichCocktail } from "@/lib/cocktail-enrichment";
 import { getCocktailImageUrl } from "@/lib/cocktail-images";
+import { extractFlavorSubtitleFromFunFact } from "@/lib/copy-hierarchy";
 import { isGenericDescription } from "@/lib/description-quality";
 import { inferDrinkType, inferMocktailSubcategory } from "@/lib/drink-type";
 import {
@@ -148,28 +149,21 @@ export function buildIngredientsFromCocktails(cocktails: RawCocktail[]): Ingredi
   return [...map.values()].sort((a, b) => a.name.localeCompare(b.name));
 }
 
-function catalogueDescriptionFromFunFact(funFact: string | undefined, maxLen = 220): string | null {
-  if (!funFact?.trim()) return null;
-  if (isGenericDescription(funFact)) return null;
-  const sentences = funFact.match(/[^.!?]+[.!?]+/g)?.map((s) => s.trim()) ?? [funFact.trim()];
-  const lead = sentences.slice(0, 2).join(" ").trim();
-  if (lead.length < 20) return null;
-  return lead.length > maxLen ? `${lead.slice(0, maxLen - 1)}…` : lead;
-}
-
 function buildCatalogueDescription(
   raw: RawCocktail,
   enriched: ReturnType<typeof enrichCocktail>,
   drinkType: "cocktail" | "mocktail"
 ): string {
-  const fromFact = catalogueDescriptionFromFunFact(enriched.funFact);
+  const fromFact = extractFlavorSubtitleFromFunFact(enriched.funFact);
   if (fromFact) return fromFact;
 
   if (drinkType === "mocktail") {
-    return `${raw.name} — zero-proof ${raw.method.toLowerCase()} with ${raw.ingredients
+    const template = `${raw.name} — zero-proof ${raw.method.toLowerCase()} with ${raw.ingredients
       .slice(0, 3)
       .map((item) => item.name)
       .join(", ")}.`;
+    if (isGenericDescription(template)) return "";
+    return template;
   }
 
   return "";

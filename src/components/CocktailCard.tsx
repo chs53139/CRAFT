@@ -18,6 +18,7 @@ import { FavoriteButton } from "./FavoriteButton";
 import { MatchQualityBadge } from "./MatchQualityBadge";
 import { ObscurityBadge } from "./ObscurityBadge";
 import { useFavorites } from "@/hooks/use-my-bar";
+import { getCocktailDisplaySubtitle } from "@/lib/copy-hierarchy";
 
 type Props = {
   match: CocktailMatch;
@@ -43,6 +44,7 @@ export const CocktailCard = memo(function CocktailCard({
   const isExact = matchGroup === "exact";
   const isSubMatch = matchGroup === "substitution" || matchGroup === "experimental";
   const confidence = getSubstitutionConfidence(match);
+  const subtitle = getCocktailDisplaySubtitle(cocktail.description, cocktail.funFact);
 
   return (
     <Link
@@ -109,9 +111,9 @@ export const CocktailCard = memo(function CocktailCard({
           {cocktail.name}
         </h3>
 
-        {!compact && !isCarousel && cocktail.description.trim() ? (
+        {!compact && !isCarousel && subtitle ? (
           <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-[var(--muted)]">
-            {cocktail.description}
+            {subtitle}
           </p>
         ) : null}
 

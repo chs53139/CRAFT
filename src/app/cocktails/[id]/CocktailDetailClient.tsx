@@ -21,6 +21,7 @@ import { FindNearbyButton } from "@/components/FindNearbySheet";
 import { MissingIngredientsByTier } from "@/components/MissingIngredientsByTier";
 import { OneIngredientAwayPanel } from "@/components/OneIngredientAwayPanel";
 import { trackProductEvent } from "@/lib/analytics";
+import { getCocktailDisplaySubtitle, getHistoryDisplayText } from "@/lib/copy-hierarchy";
 import {
   getCocktailById,
   getIngredientById,
@@ -40,6 +41,12 @@ export function CocktailDetailClient() {
 
   const cocktail = getCocktailById(id);
   const viewedRef = useRef<string | null>(null);
+  const headerSubtitle = cocktail
+    ? getCocktailDisplaySubtitle(cocktail.description, cocktail.funFact)
+    : "";
+  const historyText = cocktail
+    ? getHistoryDisplayText(cocktail.funFact, headerSubtitle)
+    : "";
 
   useEffect(() => {
     if (!cocktail) return;
@@ -140,13 +147,13 @@ export function CocktailDetailClient() {
         </div>
 
         <h1 className="screen-title-large mt-5">{cocktail.name}</h1>
-        {cocktail.description.trim() ? (
-          <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">{cocktail.description}</p>
+        {headerSubtitle ? (
+          <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">{headerSubtitle}</p>
         ) : null}
 
         <div className="premium-card mt-6 px-4 py-4">
-          <p className="eyebrow text-[var(--accent-dim)]">History & fun fact</p>
-          <p className="mt-2 text-sm leading-relaxed text-[var(--foreground)]">{cocktail.funFact}</p>
+          <p className="eyebrow text-[var(--accent-dim)]">History</p>
+          <p className="mt-2 text-sm leading-relaxed text-[var(--foreground)]">{historyText}</p>
         </div>
 
         <div className="mt-4 grid grid-cols-2 gap-3">

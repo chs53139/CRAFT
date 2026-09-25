@@ -1,3 +1,4 @@
+import { AddToShoppingListButton } from "@/components/AddToShoppingListButton";
 import { FindNearbyButton } from "@/components/FindNearbySheet";
 import { INVENTORY_TIERS, InventoryTier, isBrowsableIngredient } from "@/lib/inventory-tiers";
 import { Ingredient } from "@/lib/types";
@@ -44,12 +45,19 @@ export function MissingIngredientsByTier({
               <li key={ing.id} className="missing-by-tier-item">
                 <span className="missing-by-tier-name">{ing.name}</span>
                 {showFindNearby && isBrowsableIngredient(ing) && (
-                  <FindNearbyButton
-                    ingredient={ing}
-                    context="cocktail_detail"
-                    cocktailId={cocktailId}
-                    className="missing-by-tier-find"
-                  />
+                  <span className="missing-by-tier-actions">
+                    <AddToShoppingListButton
+                      ingredientId={ing.id}
+                      source="cocktail_detail"
+                      cocktailId={cocktailId}
+                    />
+                    <FindNearbyButton
+                      ingredient={ing}
+                      context="cocktail_detail"
+                      cocktailId={cocktailId}
+                      className="missing-by-tier-find"
+                    />
+                  </span>
                 )}
               </li>
             ))}

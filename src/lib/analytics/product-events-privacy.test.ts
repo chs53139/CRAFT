@@ -18,8 +18,12 @@ describe("product event privacy", () => {
       ingredientId: "campari",
       cocktailId: "negroni",
     });
+    trackProductEvent("shopping_list_item_added", { ingredientId: "campari", source: "bnp" });
+    trackProductEvent("cocktail_made", { cocktailId: "negroni", rating: 5 });
+    trackProductEvent("bar_scan_started", {});
 
     const serialized = JSON.stringify(getBufferedProductEvents());
+    expect(serialized).not.toMatch(/image|base64|photo/i);
     expect(serialized).not.toMatch(/91384|postal|zip/i);
   });
 });

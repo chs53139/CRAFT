@@ -3250,3 +3250,137 @@ button.star-rating-star:active {
   color: var(--muted);
   white-space: nowrap;
 }
+
+.shopping-list-chip {
+  border: 1px solid var(--border-subtle);
+  border-radius: 9999px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-dim);
+  background: transparent;
+}
+
+.shopping-list-chip-active {
+  border-color: rgba(212, 181, 106, 0.45);
+  color: var(--accent);
+}
+
+.shopping-list-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.shopping-list-row {
+  padding: 1rem 1.125rem;
+}
+
+.shopping-list-row-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--foreground);
+}
+
+.shopping-list-row-unlocks {
+  margin-top: 0.35rem;
+  font-size: 0.8125rem;
+  color: var(--accent);
+}
+
+.shopping-list-row-preview {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.shopping-list-row-actions {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.shopping-list-remove {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-decoration: underline;
+}
+
+.made-it-btn {
+  border: 1px solid rgba(212, 181, 106, 0.35);
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: rgba(212, 181, 106, 0.08);
+}
+
+.made-it-btn-done {
+  opacity: 0.85;
+}
+
+.made-it-rate {
+  padding: 0.75rem 0;
+}
+
+.made-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.made-history-row {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.75rem;
+}
+
+.made-history-thumb {
+  width: 3.5rem;
+  height: 3.5rem;
+  flex-shrink: 0;
+  border-radius: 0.75rem;
+  object-fit: cover;
+}
+
+.made-history-name {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--foreground);
+}
+
+.made-history-meta {
+  margin-top: 0.2rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.bnp-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.missing-by-tier-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.install-steps {
+  padding-left: 1.1rem;
+}

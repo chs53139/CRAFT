@@ -156,11 +156,11 @@ export default function BarPage() {
           <BarStarterKits barIds={barIds} onApply={addIngredients} />
           <EmptyState
             title="Your shelf is empty"
-            description="Use a quick start above, try the demo scan, or add ingredients manually below."
+            description="Use a quick start above, scan your bar, or add ingredients manually below."
             icon="🍾"
             action={
               <button type="button" className="btn-secondary mt-2" onClick={() => setScanOpen(true)}>
-                Try demo scan
+                Scan my bar
               </button>
             }
           />

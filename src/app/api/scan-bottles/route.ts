@@ -1,5 +1,4 @@
-import { getMockScanResults } from "@/lib/scan-bottles/mock";
-import { ScanBottlesResponse } from "@/lib/scan-bottles/types";
+import { createBarScanProviderFromEnv } from "@/lib/scan-bottles/provider";
 
 export const runtime = "nodejs";
 
@@ -30,6 +29,7 @@ export async function POST(request: Request) {
     return Response.json({ error: "Unsupported image type." }, { status: 400 });
   }
 
-  const mock = getMockScanResults();
-  return Response.json(mock satisfies ScanBottlesResponse);
+  const provider = createBarScanProviderFromEnv();
+  const result = await provider.scanImage({ imageBase64, mimeType });
+  return Response.json(result);
 }

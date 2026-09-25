@@ -54,8 +54,8 @@ export default function HomePage() {
     return (
       <div className="app-screen">
         <EmptyState
-          title="Stock your bar"
-          description="Add what you own and CRAFT will show you exactly what you can pour tonight."
+          title="Add your bar"
+          description="Tell CRAFT what you have on the shelf — scan bottles or add manually — and we'll show what you can pour tonight."
           actionLabel="Open My Bar"
           actionHref="/bar"
           icon="🍾"

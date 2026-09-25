@@ -111,6 +111,15 @@ export function CraftPulseClient() {
         ) : null}
       </PulseSection>
 
+      <PulseSection title="Activation">
+        <div className="pulse-stat-grid">
+          <Stat label="Bar scan confirmations" value={data.barScanConfirmed} />
+          <Stat label="Install prompts shown" value={data.installPrompts} />
+          <Stat label="Cocktails made" value={data.cocktailsMade} />
+          <Stat label="Shopping list adds" value={data.shoppingListAdds} />
+        </div>
+      </PulseSection>
+
       <PulseSection title="Opportunity">
         <div className="pulse-stat-grid pulse-stat-grid-3">
           <Stat label="One Away views" value={data.oneAwayViews} />
@@ -134,8 +143,9 @@ export function CraftPulseClient() {
       </PulseSection>
 
       <PulseSection title="Commerce intent">
-        <div className="pulse-stat-grid pulse-stat-grid-2">
+        <div className="pulse-stat-grid pulse-stat-grid-3">
           <Stat label="Find Nearby actions" value={data.findNearbyClicks} />
+          <Stat label="Shopping list → bar" value={data.shoppingListPurchased} />
         </div>
         <RateRow label="Find Nearby / Best Next Purchase views" value={data.rates.findNearbyPerBnpView} />
         <RateRow label="Find Nearby / One Away views" value={data.rates.findNearbyPerOneAwayView} />

@@ -4,6 +4,13 @@ export type FindNearbyContext =
   | "best_next_purchase"
   | "ingredient_list";
 
+export type ShoppingListSource =
+  | "best_next_purchase"
+  | "one_away"
+  | "cocktail_detail"
+  | "find_nearby"
+  | "manual";
+
 export type ProductEventName =
   | "cocktail_viewed"
   | "cocktail_searched"
@@ -17,7 +24,19 @@ export type ProductEventName =
   | "cocktail_shared"
   | "bar_ingredient_added"
   | "bar_ingredient_removed"
-  | "mocktail_viewed";
+  | "mocktail_viewed"
+  | "shopping_list_item_added"
+  | "shopping_list_item_removed"
+  | "shopping_list_item_purchased"
+  | "shopping_list_viewed"
+  | "cocktail_made"
+  | "cocktail_rated"
+  | "install_prompt_shown"
+  | "install_started"
+  | "install_completed"
+  | "install_dismissed"
+  | "bar_scan_started"
+  | "bar_scan_confirmed";
 
 export type ProductEventPayload = {
   cocktail_viewed: {
@@ -44,6 +63,18 @@ export type ProductEventPayload = {
   bar_ingredient_added: { ingredientId: string };
   bar_ingredient_removed: { ingredientId: string };
   mocktail_viewed: { cocktailId: string; category?: string; rarityBucket?: string };
+  shopping_list_item_added: { ingredientId: string; source: ShoppingListSource };
+  shopping_list_item_removed: { ingredientId: string };
+  shopping_list_item_purchased: { ingredientId: string };
+  shopping_list_viewed: Record<string, never>;
+  cocktail_made: { cocktailId: string };
+  cocktail_rated: { cocktailId: string; rating: number };
+  install_prompt_shown: { platform: "ios" | "android" | "other" };
+  install_started: { platform: "ios" | "android" | "other" };
+  install_completed: { platform: "ios" | "android" | "other" };
+  install_dismissed: { platform: "ios" | "android" | "other" };
+  bar_scan_started: Record<string, never>;
+  bar_scan_confirmed: { ingredientCount: number };
 };
 
 export type ProductEvent = {

@@ -22,6 +22,7 @@ import {
 } from "@/lib/supabase/bar-sync";
 import { migrateBarInventory } from "@/lib/inventory-migration";
 import { trackProductEvent } from "@/lib/analytics";
+import { incrementBarAdds } from "@/lib/pwa/engagement";
 import { isHouseStaple } from "@/lib/inventory-tiers";
 import { createClient } from "@/lib/supabase/client";
 import { humanizeSupabaseUnavailable, withTimeout } from "@/lib/supabase/resilience";
@@ -241,6 +242,7 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
           removing ? "bar_ingredient_removed" : "bar_ingredient_added",
           { ingredientId: id }
         );
+        if (!removing) incrementBarAdds(1);
         persistBar(next);
         return next;
       });
@@ -256,11 +258,14 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
       if (filtered.length === 0) return;
       setBarIdsState((prev) => {
         const next = normalizeBarIds([...new Set([...prev, ...filtered])]);
+        let added = 0;
         for (const id of filtered) {
           if (!prev.includes(id)) {
             trackProductEvent("bar_ingredient_added", { ingredientId: id });
+            added += 1;
           }
         }
+        if (added > 0) incrementBarAdds(added);
         persistBar(next);
         return next;
       });

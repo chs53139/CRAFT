@@ -1,7 +1,9 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
+import { AppOverlayPortal } from "@/components/AppOverlayPortal";
 import { ErrorBanner } from "@/components/ErrorBanner";
+import { trackProductEvent } from "@/lib/analytics";
 import { ScanDetection, ScanBottlesResponse } from "@/lib/scan-bottles/types";
 
 type Step = "capture" | "scanning" | "review" | "done";
@@ -109,6 +111,7 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
 
     setStep("scanning");
     setError(null);
+    trackProductEvent("bar_scan_started", {});
 
     try {
       const base64 = await fileToBase64(file);
@@ -125,6 +128,15 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
 
       if (!response.ok) {
         throw new Error(data.error ?? "Scan failed. Try another photo.");
+      }
+
+      if (data.unconfigured) {
+        setStep("capture");
+        setError(
+          data.message ??
+            "Bottle recognition is not configured yet. Add bottles manually for now."
+        );
+        return;
       }
 
       if (data.detections.length === 0) {
@@ -164,6 +176,7 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
       return;
     }
 
+    trackProductEvent("bar_scan_confirmed", { ingredientCount: ids.length });
     onConfirm(ids);
     setAddedCount(ids.length);
     setStep("done");
@@ -173,7 +186,8 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
   const selectedCount = selected.size;
 
   return (
-    <div className="bar-scan-overlay" role="dialog" aria-modal="true" aria-labelledby="bar-scan-title">
+    <AppOverlayPortal active={open}>
+      <div className="bar-scan-overlay" role="dialog" aria-modal="true" aria-labelledby="bar-scan-title">
       <div className="bar-scan-panel animate-fade-in">
         <input
           ref={cameraInputRef}
@@ -193,10 +207,10 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
 
         <div className="bar-scan-header">
           <div>
-            <p className="eyebrow text-[var(--accent-dim)]">Demo bar scan</p>
+            <p className="eyebrow text-[var(--accent-dim)]">Scan my bar</p>
             <h2 id="bar-scan-title" className="screen-title mt-1">
               {step === "capture" && (hasPhoto ? "Ready to preview" : "Snap your shelf")}
-              {step === "scanning" && "Running demo scan…"}
+              {step === "scanning" && "Reading your shelf…"}
               {step === "review" && "Confirm additions"}
               {step === "done" && "Bar updated"}
             </h2>
@@ -216,12 +230,12 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
           {step === "capture" && (
             <>
               <p className="bar-scan-demo-note">
-                Demo mode — sample bottle detections only. Your photo is not analyzed yet. Confirm
-                each item before adding.
+                Take a clear photo of your bottles. You confirm every ingredient before it enters My
+                Bar. Photos are not stored.
               </p>
               <p className="text-sm leading-relaxed text-[var(--muted)]">
                 {hasPhoto
-                  ? "Preview your photo, then run the demo scan to see sample matches."
+                  ? "Preview your photo, then scan to see probable matches."
                   : "Take or upload a photo to walk through the flow. Nothing is added until you confirm."}
               </p>
 
@@ -388,6 +402,7 @@ export function BarScan({ open, onClose, barIds, onConfirm }: Props) {
         </div>
       </div>
     </div>
+    </AppOverlayPortal>
   );
 }
 

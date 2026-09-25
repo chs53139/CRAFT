@@ -21,6 +21,8 @@ import { FindNearbyButton } from "@/components/FindNearbySheet";
 import { MissingIngredientsByTier } from "@/components/MissingIngredientsByTier";
 import { OneIngredientAwayPanel } from "@/components/OneIngredientAwayPanel";
 import { trackProductEvent } from "@/lib/analytics";
+import { incrementCocktailViews } from "@/lib/pwa/engagement";
+import { MadeItButton } from "@/components/MadeItButton";
 import { getCocktailDisplaySubtitle, getHistoryDisplayText } from "@/lib/copy-hierarchy";
 import {
   getCocktailById,
@@ -53,6 +55,7 @@ export function CocktailDetailClient() {
     if (viewedRef.current === cocktail.id) return;
     viewedRef.current = cocktail.id;
     trackRecent(cocktail.id);
+    incrementCocktailViews(1);
     trackProductEvent("cocktail_viewed", {
       cocktailId: cocktail.id,
       drinkType: cocktail.drinkType,
@@ -147,6 +150,9 @@ export function CocktailDetailClient() {
         </div>
 
         <h1 className="screen-title-large mt-5">{cocktail.name}</h1>
+        <div className="mt-4">
+          <MadeItButton cocktailId={cocktail.id} />
+        </div>
         {headerSubtitle ? (
           <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">{headerSubtitle}</p>
         ) : null}

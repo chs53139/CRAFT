@@ -37,6 +37,11 @@ export type CraftPulseSummary = {
   missingIngredientSelections: number;
   bestNextPurchaseViews: number;
   findNearbyClicks: number;
+  shoppingListAdds: number;
+  shoppingListPurchased: number;
+  cocktailsMade: number;
+  barScanConfirmed: number;
+  installPrompts: number;
   topViewed: Array<{ cocktailId: string; count: number }>;
   topFavorited: Array<{ cocktailId: string; count: number }>;
   topShared: Array<{ cocktailId: string; count: number }>;
@@ -121,6 +126,13 @@ export function buildCraftPulseSummary(rows: ProductEventRow[], windowDays = 7):
     (r) => r.event_name === "best_next_purchase_viewed"
   ).length;
   const findNearbyClicks = rows.filter((r) => r.event_name === "find_nearby_clicked").length;
+  const shoppingListAdds = rows.filter((r) => r.event_name === "shopping_list_item_added").length;
+  const shoppingListPurchased = rows.filter(
+    (r) => r.event_name === "shopping_list_item_purchased"
+  ).length;
+  const cocktailsMade = rows.filter((r) => r.event_name === "cocktail_made").length;
+  const barScanConfirmed = rows.filter((r) => r.event_name === "bar_scan_confirmed").length;
+  const installPrompts = rows.filter((r) => r.event_name === "install_prompt_shown").length;
 
   const topViewed = countBy(
     rows.filter((r) => r.event_name === "cocktail_viewed"),
@@ -205,6 +217,11 @@ export function buildCraftPulseSummary(rows: ProductEventRow[], windowDays = 7):
     missingIngredientSelections,
     bestNextPurchaseViews,
     findNearbyClicks,
+    shoppingListAdds,
+    shoppingListPurchased,
+    cocktailsMade,
+    barScanConfirmed,
+    installPrompts,
     topViewed,
     topFavorited,
     topShared,

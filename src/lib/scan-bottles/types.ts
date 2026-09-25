@@ -11,6 +11,7 @@ export type ScanDetection = {
 export type ScanBottlesResponse = {
   detections: ScanDetection[];
   mock: boolean;
+  unconfigured?: boolean;
   message?: string;
 };
 

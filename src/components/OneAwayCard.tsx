@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { CocktailImage } from "@/components/CocktailImage";
+import { AddToShoppingListButton } from "@/components/AddToShoppingListButton";
 import { FindNearbyButton } from "@/components/FindNearbySheet";
 import { getIngredientById } from "@/lib/cocktail-matching";
 import {
@@ -58,12 +59,19 @@ export function OneAwayCard({ match }: Props) {
             e.stopPropagation();
           }}
         >
-          <FindNearbyButton
-            ingredient={missing}
-            context="one_away"
-            cocktailId={match.cocktail.id}
-            className="find-nearby-btn-compact"
-          />
+          <div className="flex flex-col gap-2">
+            <AddToShoppingListButton
+              ingredientId={missing.id}
+              source="one_away"
+              cocktailId={match.cocktail.id}
+            />
+            <FindNearbyButton
+              ingredient={missing}
+              context="one_away"
+              cocktailId={match.cocktail.id}
+              className="find-nearby-btn-compact"
+            />
+          </div>
         </div>
       ) : null}
     </Link>

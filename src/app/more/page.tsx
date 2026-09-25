@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { useUserData } from "@/components/UserDataProvider";
+import { InstallCraftManualButton } from "@/components/InstallCraftPrompt";
 import { isMixologistLaunchHidden } from "@/lib/feature-flags";
 
 export default function MorePage() {
@@ -18,6 +19,22 @@ export default function MorePage() {
       <ScreenHeader title="More" subtitle="Browse, account, and tools" large />
 
       <div className="app-section space-y-3">
+        <Link href="/shopping-list" className="account-row">
+          <div>
+            <p className="text-sm font-semibold text-[var(--foreground)]">Shopping list</p>
+            <p className="mt-0.5 text-xs text-[var(--muted)]">Ingredients to pick up next</p>
+          </div>
+          <span className="text-[var(--accent)]">→</span>
+        </Link>
+
+        <Link href="/made" className="account-row">
+          <div>
+            <p className="text-sm font-semibold text-[var(--foreground)]">Made</p>
+            <p className="mt-0.5 text-xs text-[var(--muted)]">Cocktails you actually poured</p>
+          </div>
+          <span className="text-[var(--accent)]">→</span>
+        </Link>
+
         <Link href="/find-ingredient" className="account-row">
           <div>
             <p className="text-sm font-semibold text-[var(--foreground)]">Find by ingredient</p>
@@ -69,6 +86,7 @@ export default function MorePage() {
         </div>
 
         <div className="mt-3 space-y-3">
+          <InstallCraftManualButton />
           {isAuthenticated ? (
             <>
               <div className="account-row">

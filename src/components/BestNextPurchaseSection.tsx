@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo } from "react";
+import { AddToShoppingListButton } from "@/components/AddToShoppingListButton";
 import { FindNearbyButton } from "@/components/FindNearbySheet";
 import { trackProductEvent } from "@/lib/analytics";
 import { getUnlockRecommendations } from "@/lib/bar-intelligence/unlock-graph";
@@ -41,11 +42,17 @@ function BnpRow({ rec, featured }: { rec: UnlockRecommendation; featured?: boole
         </p>
         {preview ? <p className="bnp-card-preview">{preview}</p> : null}
       </div>
-      <FindNearbyButton
-        ingredient={rec.ingredient}
-        context="best_next_purchase"
-        className={featured ? "bnp-card-cta" : "find-nearby-btn-compact bnp-card-cta-secondary"}
-      />
+<div className="bnp-card-actions">
+        <AddToShoppingListButton
+          ingredientId={rec.ingredient.id}
+          source="best_next_purchase"
+        />
+        <FindNearbyButton
+          ingredient={rec.ingredient}
+          context="best_next_purchase"
+          className={featured ? "bnp-card-cta" : "find-nearby-btn-compact bnp-card-cta-secondary"}
+        />
+      </div>
     </article>
   );
 }

@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { StarRating } from "@/components/StarRating";
 import { useMadeHistory } from "@/components/MadeHistoryProvider";
-import { useCocktailReviews } from "@/hooks/use-cocktail-reviews";
 
 type Props = {
   cocktailId: string;
@@ -11,32 +10,14 @@ type Props = {
 
 export function MadeItButton({ cocktailId }: Props) {
   const { recordMade } = useMadeHistory();
-  const { submitReview, isAuthenticated, reviewsUnavailable } = useCocktailReviews(cocktailId);
   const [phase, setPhase] = useState<"idle" | "rate" | "done">("idle");
   const [rating, setRating] = useState(0);
   const [submitting, setSubmitting] = useState(false);
 
   async function finish(ratingValue?: number) {
+    setSubmitting(true);
     recordMade(cocktailId, ratingValue);
-    if (
-      ratingValue &&
-      ratingValue >= 1 &&
-      isAuthenticated &&
-      !reviewsUnavailable
-    ) {
-      setSubmitting(true);
-      try {
-        await submitReview({
-          rating: ratingValue,
-          text: "",
-          wouldMakeAgain: ratingValue >= 4,
-        });
-      } catch {
-        /* made history still recorded locally */
-      } finally {
-        setSubmitting(false);
-      }
-    }
+    setSubmitting(false);
     setPhase("done");
     window.setTimeout(() => setPhase("idle"), 2200);
   }
@@ -79,11 +60,7 @@ export function MadeItButton({ cocktailId }: Props) {
   }
 
   return (
-    <button
-      type="button"
-      className="made-it-btn"
-      onClick={() => setPhase("rate")}
-    >
+    <button type="button" className="made-it-btn" onClick={() => setPhase("rate")}>
       Made it ✓
     </button>
   );

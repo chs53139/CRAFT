@@ -13,6 +13,7 @@ import {
 import { normalizeCommerceIngredient } from "@/lib/commerce/normalize-ingredient";
 import { isValidPostalCode, normalizePostalCode } from "@/lib/commerce/postal-code";
 import { useCommerceZip } from "@/hooks/use-commerce-zip";
+import { AddToShoppingListButton } from "@/components/AddToShoppingListButton";
 import { Ingredient } from "@/lib/types";
 
 type Props = {
@@ -182,6 +183,16 @@ export function FindNearbySheet({
             >
               {loading ? "Opening…" : ctaLabel}
             </button>
+          </div>
+
+          <div className="find-nearby-later">
+            <p className="find-nearby-later-label">Not ready to buy?</p>
+            <AddToShoppingListButton
+              ingredientId={ingredient.id}
+              source="find_nearby"
+              cocktailId={cocktailId}
+              presentation="sheet"
+            />
           </div>
         </div>
       </div>

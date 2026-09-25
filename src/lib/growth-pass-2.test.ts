@@ -33,7 +33,7 @@ describe("Growth Pass 2 regressions", () => {
     expect(JSON.stringify(out)).not.toMatch(/secret|photo/i);
   });
 
-  it("install prompt not offered on cold start (no window / zero engagement)", () => {
+  it("install prompt not offered without browser engagement (node env)", () => {
     expect(shouldOfferInstallPrompt()).toBe(false);
   });
 

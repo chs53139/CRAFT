@@ -2840,6 +2840,47 @@ button.star-rating-star:active {
   margin-top: 1.25rem;
 }
 
+.find-nearby-later {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-subtle);
+  text-align: center;
+}
+
+.find-nearby-later-label {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.find-nearby-list-link {
+  border: none;
+  background: transparent;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--accent-dim);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.find-nearby-list-link-saved {
+  color: var(--accent);
+  text-decoration: none;
+  cursor: default;
+}
+
+.one-away-panel-actions {
+  margin-top: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.one-away-panel-action {
+  margin-top: 0;
+}
+
 .find-nearby-result {
   margin-top: 1.25rem;
   padding-top: 1rem;

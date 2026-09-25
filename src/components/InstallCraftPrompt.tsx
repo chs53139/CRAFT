@@ -10,6 +10,7 @@ import {
   shouldOfferInstallPrompt,
   type InstallPlatform,
 } from "@/lib/pwa/engagement";
+import { runDeferredInstallPrompt } from "@/lib/pwa/install-flow";
 
 type BeforeInstallPromptEvent = Event & {
   prompt: () => Promise<void>;
@@ -57,18 +58,12 @@ export function InstallCraftPromptHost() {
 
   async function startInstall() {
     trackProductEvent("install_started", { platform });
-    const prompt = deferred.current;
-    if (prompt) {
-      await prompt.prompt();
-      const choice = await prompt.userChoice;
-      if (choice.outcome === "accepted") {
-        markInstallCompleted();
-        trackProductEvent("install_completed", { platform });
-      }
-      setOpen(false);
-      return;
+    const outcome = await runDeferredInstallPrompt(deferred.current);
+    if (outcome === "accepted") {
+      markInstallCompleted();
+      trackProductEvent("install_completed", { platform });
     }
-    setOpen(true);
+    setOpen(false);
   }
 
   if (!open) return null;

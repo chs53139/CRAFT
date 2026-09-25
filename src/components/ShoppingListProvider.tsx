@@ -10,6 +10,7 @@ import {
   useState,
 } from "react";
 import { trackProductEvent } from "@/lib/analytics";
+import { appendShoppingListItem } from "@/lib/shopping-list/mutations";
 import { ShoppingListItem, ShoppingListSource } from "@/lib/shopping-list/types";
 import {
   fetchShoppingList,
@@ -94,14 +95,14 @@ export function ShoppingListProvider({ children }: { children: React.ReactNode }
       if (!id) return;
 
       setItems((prev) => {
-        if (prev.some((x) => x.ingredientId === id)) return prev;
         const row: ShoppingListItem = {
           ingredientId: id,
           addedAt: new Date().toISOString(),
           source: input.source,
           cocktailId: input.cocktailId,
         };
-        const next = [row, ...prev];
+        const { items: next, added } = appendShoppingListItem(prev, row);
+        if (!added) return prev;
         writeLocal(next);
         trackProductEvent("shopping_list_item_added", {
           ingredientId: id,

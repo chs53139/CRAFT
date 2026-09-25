@@ -8,6 +8,8 @@ type Props = {
   source?: ShoppingListSource;
   cocktailId?: string;
   className?: string;
+  /** Compact chip on cards; subtle text link in Find Nearby sheet. */
+  presentation?: "chip" | "sheet";
 };
 
 export function AddToShoppingListButton({
@@ -15,14 +17,28 @@ export function AddToShoppingListButton({
   source,
   cocktailId,
   className = "",
+  presentation = "chip",
 }: Props) {
   const { hasIngredient, addItem, removeItem } = useShoppingList();
   const onList = hasIngredient(ingredientId);
 
+  const label =
+    presentation === "sheet"
+      ? onList
+        ? "On your shopping list"
+        : "Add to shopping list"
+      : onList
+        ? "On list"
+        : "+ List";
+
   return (
     <button
       type="button"
-      className={`shopping-list-chip ${onList ? "shopping-list-chip-active" : ""} ${className}`}
+      className={
+        presentation === "sheet"
+          ? `find-nearby-list-link ${onList ? "find-nearby-list-link-saved" : ""} ${className}`
+          : `shopping-list-chip ${onList ? "shopping-list-chip-active" : ""} ${className}`
+      }
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -30,7 +46,8 @@ export function AddToShoppingListButton({
         else addItem({ ingredientId, source, cocktailId });
       }}
     >
-      {onList ? "On list" : "+ List"}
+      {presentation === "sheet" && !onList ? "+ " : null}
+      {label}
     </button>
   );
 }

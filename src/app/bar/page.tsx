@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { BarToolsInventory } from "@/components/BarTools";
 import { useMemo, useDeferredValue, useState } from "react";
 import { BarScan } from "@/components/BarScan";
 import { BarStarterKits } from "@/components/BarStarterKits";
@@ -144,6 +145,8 @@ export default function BarPage() {
           </Link>
         )}
       </div>
+
+      <BarToolsInventory />
 
       {advice && barIds.length > 0 && (
         <div className="mt-8">

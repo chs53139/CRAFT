@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
+import { CocktailTools } from "@/components/BarTools";
 import { useParams, useRouter } from "next/navigation";
 import { CocktailReviews } from "@/components/CocktailReviews";
 import { MatchQualityBadge } from "@/components/MatchQualityBadge";
@@ -349,7 +350,8 @@ export function CocktailDetailClient() {
         </section>
 
         <section className="app-section">
-          <h2 className="section-row-title">Instructions</h2>
+          <CocktailTools cocktail={cocktail} />
+          <h2 className="section-row-title mt-6">Instructions</h2>
           <ol className="mt-4 space-y-0">
             {cocktail.instructions.map((step, i) => (
               <li key={`${i}-${step.slice(0, 20)}`} className="relative flex gap-4 pb-7 last:pb-0">

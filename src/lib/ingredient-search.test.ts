@@ -95,7 +95,7 @@ describe("ingredient search", () => {
   });
 
   it("toggles ingredients between buckets", () => {
-    let filters = {
+    let filters: import("./ingredient-search").IngredientSearchFilters = {
       mustInclude: [] as string[],
       niceToHave: [] as string[],
       exclude: [] as string[],

@@ -1,3 +1,4 @@
+import { normalizeIngredientIds } from "@/lib/ingredient-intelligence";
 import { ingredients } from "@/lib/cocktail-data";
 import { isHouseStaple } from "@/lib/inventory-tiers";
 
@@ -10,7 +11,8 @@ const VALID_INGREDIENT_IDS = new Set(ingredients.map((ing) => ing.id));
  * 2. **Strip house staples** — remove ice, water, crushed-ice, hot-water, branch-water if
  *    they were ever added manually (they are now assumed available).
  * 3. **Drop unknown IDs** — remove refs that no longer exist in the cocktail catalog.
- * 4. **Dedupe** — preserve first-seen order, remove duplicates.
+ * 4. **Canonicalize exact aliases and dedupe** — preserve first-seen order.
+ *    Derived juice stays virtual; only the whole fruit remains in saved inventory.
  * 5. **Category reclassification is display-only** — existing IDs map to Spirits/Mixers/Pantry
  *    via `getInventoryTier()`; no user action needed.
  * 6. **Sync** — on next login or page load, migrated bar is written back to localStorage
@@ -22,7 +24,7 @@ export function migrateBarInventory(barIds: string[]): string[] {
   const seen = new Set<string>();
   const migrated: string[] = [];
 
-  for (const id of barIds) {
+  for (const id of normalizeIngredientIds(barIds)) {
     if (isHouseStaple(id)) continue;
     if (!VALID_INGREDIENT_IDS.has(id)) continue;
     if (seen.has(id)) continue;

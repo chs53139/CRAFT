@@ -1,3 +1,4 @@
+import { ingredientSupplies, suppliedIngredientIds } from "@/lib/ingredient-intelligence";
 import {
   ingredients,
   matchCocktails,
@@ -19,8 +20,8 @@ const EXAMPLE_LIMIT = 6;
 
 function candidateMayUnlockExact(before: CocktailMatch, candidateId: string): boolean {
   if (before.canMake) return false;
-  if (before.missing.some((m) => m.id === candidateId)) return true;
-  if (before.substitutions.some((s) => s.requiredId === candidateId)) return true;
+  if (before.missing.some((m) => ingredientSupplies(candidateId, m.id))) return true;
+  if (before.substitutions.some((s) => ingredientSupplies(candidateId, s.requiredId))) return true;
   return false;
 }
 
@@ -79,7 +80,7 @@ export function getUnlockRecommendations(
   if (barIds.length === 0) return [];
 
   const limit = options?.limit ?? 3;
-  const barSet = new Set(barIds);
+  const barSet = new Set(suppliedIngredientIds(barIds));
   const before = options?.precomputedMatches ?? matchCocktails(barIds);
   const candidates = ingredients.filter(
     (ing) => !barSet.has(ing.id) && isBrowsableIngredient(ing)

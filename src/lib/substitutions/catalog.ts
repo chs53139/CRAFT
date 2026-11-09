@@ -1,3 +1,4 @@
+import { canonicalIngredientId } from "@/lib/ingredient-intelligence";
 import {
   isBarSubstitution,
   substitutions,
@@ -8,8 +9,8 @@ import { IngredientSubstitutionRule } from "./types";
 export const SUBSTITUTION_CATALOG: IngredientSubstitutionRule[] = substitutions
   .filter(isBarSubstitution)
   .map((sub) => ({
-    originalId: sub.missingIngredient,
-    substituteId: sub.substituteIngredient,
+    originalId: canonicalIngredientId(sub.missingIngredient),
+    substituteId: canonicalIngredientId(sub.substituteIngredient),
     confidence: sub.confidenceScore,
     notes: sub.notes,
     flavorImpact: sub.flavorImpact,
@@ -28,5 +29,5 @@ for (const list of substitutionsByOriginal.values()) {
 }
 
 export function getSubstitutionRules(originalId: string): IngredientSubstitutionRule[] {
-  return substitutionsByOriginal.get(originalId) ?? [];
+  return substitutionsByOriginal.get(canonicalIngredientId(originalId)) ?? [];
 }

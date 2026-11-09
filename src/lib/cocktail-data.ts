@@ -1,3 +1,4 @@
+import { canonicalIngredientId } from "@/lib/ingredient-intelligence";
 import rawCocktails from "@/data/cocktails.json";
 import cocktailsExpanded from "@/data/cocktails-expanded.json";
 import catalogueBatch1 from "@/data/catalogue-batch-1.json";
@@ -136,9 +137,10 @@ export function buildIngredientsFromCocktails(cocktails: RawCocktail[]): Ingredi
 
   for (const cocktail of cocktails) {
     for (const ing of cocktail.ingredients) {
-      if (!map.has(ing.ref)) {
-        map.set(ing.ref, {
-          id: ing.ref,
+      const id = canonicalIngredientId(ing.ref);
+      if (!map.has(id)) {
+        map.set(id, {
+          id,
           name: ing.name,
           category: mapIngredientType(ing.type),
         });
@@ -197,7 +199,7 @@ export function transformCocktail(raw: RawCocktail): Cocktail {
     garnish: raw.garnish.length > 0 ? raw.garnish.join(", ") : "None",
     imageUrl: getCocktailImageUrl(raw.slug),
     ingredients: raw.ingredients.map((ing) => ({
-      ingredientId: ing.ref,
+      ingredientId: canonicalIngredientId(ing.ref),
       amount: formatAmount(ing.amount, ing.unit),
     })),
     instructions: raw.preparation,

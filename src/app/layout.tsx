@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import { AppShell } from "@/components/AppShell";
 import { Providers } from "@/components/Providers";
 import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
@@ -7,15 +7,17 @@ import { CRAFT_DESCRIPTION } from "@/lib/brand";
 import { buildDefaultCraftOpenGraph } from "@/lib/share-metadata";
 import "./globals.css";
 
-const display = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+const display = localFont({
+  src: "./fonts/cormorant-garamond-latin.woff2",
+  weight: "300 600",
+  display: "swap",
   variable: "--font-display",
 });
 
-const body = DM_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
+const body = localFont({
+  src: "./fonts/dm-sans-latin.woff2",
+  weight: "400 600",
+  display: "swap",
   variable: "--font-body",
 });
 

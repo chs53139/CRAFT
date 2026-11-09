@@ -10,6 +10,7 @@ import {
   useState,
 } from "react";
 import { trackProductEvent } from "@/lib/analytics";
+import { canonicalIngredientId } from "@/lib/ingredient-intelligence";
 import { appendShoppingListItem } from "@/lib/shopping-list/mutations";
 import { ShoppingListItem, ShoppingListSource } from "@/lib/shopping-list/types";
 import {
@@ -41,7 +42,7 @@ function readLocal(): ShoppingListItem[] {
   if (typeof window === "undefined") return [];
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as ShoppingListItem[]) : [];
+    return raw ? mergeShoppingLists(JSON.parse(raw) as ShoppingListItem[], []) : [];
   } catch {
     return [];
   }
@@ -91,7 +92,7 @@ export function ShoppingListProvider({ children }: { children: React.ReactNode }
 
   const addItem = useCallback(
     (input: { ingredientId: string; source?: ShoppingListSource; cocktailId?: string }) => {
-      const id = input.ingredientId.trim();
+      const id = canonicalIngredientId(input.ingredientId);
       if (!id) return;
 
       setItems((prev) => {
@@ -142,7 +143,7 @@ export function ShoppingListProvider({ children }: { children: React.ReactNode }
   );
 
   const hasIngredient = useCallback(
-    (ingredientId: string) => items.some((x) => x.ingredientId === ingredientId),
+    (ingredientId: string) => items.some((x) => canonicalIngredientId(x.ingredientId) === canonicalIngredientId(ingredientId)),
     [items]
   );
 
@@ -159,8 +160,9 @@ export function ShoppingListProvider({ children }: { children: React.ReactNode }
 function mergeShoppingLists(local: ShoppingListItem[], server: ShoppingListItem[]): ShoppingListItem[] {
   const map = new Map<string, ShoppingListItem>();
   for (const row of [...server, ...local]) {
-    const prev = map.get(row.ingredientId);
-    if (!prev || row.addedAt > prev.addedAt) map.set(row.ingredientId, row);
+    const key = canonicalIngredientId(row.ingredientId);
+    const prev = map.get(key);
+    if (!prev || row.addedAt > prev.addedAt) map.set(key, row);
   }
   return [...map.values()].sort((a, b) => b.addedAt.localeCompare(a.addedAt));
 }

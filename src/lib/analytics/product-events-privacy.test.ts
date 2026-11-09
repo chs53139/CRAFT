@@ -18,8 +18,8 @@ describe("product event privacy", () => {
       ingredientId: "campari",
       cocktailId: "negroni",
     });
-    trackProductEvent("shopping_list_item_added", { ingredientId: "campari", source: "bnp" });
-    trackProductEvent("cocktail_made", { cocktailId: "negroni", rating: 5 });
+    trackProductEvent("shopping_list_item_added", { ingredientId: "campari", source: "best_next_purchase" });
+    trackProductEvent("cocktail_made", { cocktailId: "negroni" });
     trackProductEvent("bar_scan_started", {});
 
     const serialized = JSON.stringify(getBufferedProductEvents());

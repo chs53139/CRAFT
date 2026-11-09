@@ -1,3 +1,4 @@
+import { canonicalIngredientId, suppliedIngredientIds, ingredientSupplies } from "@/lib/ingredient-intelligence";
 import { getIngredientById } from "@/lib/cocktail-matching";
 import { getEffectiveBarIds, isHouseStaple } from "@/lib/inventory-tiers";
 import { Cocktail } from "@/lib/types";
@@ -16,6 +17,10 @@ export function findBestSubstitutionRule(
   requiredId: string,
   barIds: Set<string>
 ): IngredientSubstitutionRule | undefined {
+  return findRuleForSupplies(canonicalIngredientId(requiredId), new Set(suppliedIngredientIds([...barIds])));
+}
+
+function findRuleForSupplies(requiredId: string, barIds: Set<string>): IngredientSubstitutionRule | undefined {
   if (barIds.has(requiredId)) return undefined;
 
   const rules = getSubstitutionRules(requiredId);
@@ -30,12 +35,15 @@ export function findSubstitution(
   requiredId: string,
   availableIds: Set<string>
 ): string | undefined {
-  if (availableIds.has(requiredId)) return requiredId;
+  const source = [...availableIds].find((id) => ingredientSupplies(id, requiredId));
+  if (source) return source;
   return findBestSubstitutionRule(requiredId, availableIds)?.substituteId;
 }
 
 export function canSubstitute(requiredId: string, availableId: string): boolean {
-  if (requiredId === availableId) return true;
+  if (ingredientSupplies(availableId, requiredId)) return true;
+  requiredId = canonicalIngredientId(requiredId);
+  availableId = canonicalIngredientId(availableId);
   return getSubstitutionRules(requiredId).some((rule) => rule.substituteId === availableId);
 }
 
@@ -103,12 +111,11 @@ export function matchCocktailWithSubstitutions(
   const missingIds: string[] = [];
   const homemadeSuggestions: HomemadeAlternative[] = [];
 
-  for (const item of cocktail.ingredients) {
-    const requiredId = item.ingredientId;
+  for (const requiredId of new Set(cocktail.ingredients.map((item) => canonicalIngredientId(item.ingredientId)))) {
 
     if (isHouseStaple(requiredId) || barSet.has(requiredId)) continue;
 
-    const rule = findBestSubstitutionRule(requiredId, barSet);
+    const rule = findRuleForSupplies(requiredId, barSet);
     if (rule) {
       substitutions.push(ruleToApplied(rule));
       continue;

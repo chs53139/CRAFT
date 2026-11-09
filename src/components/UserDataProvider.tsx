@@ -20,6 +20,7 @@ import {
   syncFavoritesToServer,
   trackRecentCocktail,
 } from "@/lib/supabase/bar-sync";
+import { canonicalIngredientId, normalizeIngredientIds } from "@/lib/ingredient-intelligence";
 import { migrateBarInventory } from "@/lib/inventory-migration";
 import { trackProductEvent } from "@/lib/analytics";
 import { incrementBarAdds } from "@/lib/pwa/engagement";
@@ -232,6 +233,7 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
 
   const toggleIngredient = useCallback(
     (id: string) => {
+      id = canonicalIngredientId(id);
       if (isHouseStaple(id)) return;
       setBarIdsState((prev) => {
         const removing = prev.includes(id);
@@ -254,7 +256,7 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
 
   const addIngredients = useCallback(
     (ids: string[]) => {
-      const filtered = ids.filter((id) => !isHouseStaple(id));
+      const filtered = normalizeIngredientIds(ids).filter((id) => !isHouseStaple(id));
       if (filtered.length === 0) return;
       setBarIdsState((prev) => {
         const next = normalizeBarIds([...new Set([...prev, ...filtered])]);

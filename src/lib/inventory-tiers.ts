@@ -1,3 +1,4 @@
+import { suppliedIngredientIds } from "@/lib/ingredient-intelligence";
 import { Ingredient } from "@/lib/types";
 
 export type InventoryTier = "spirits-liqueurs" | "mixers" | "pantry";
@@ -99,8 +100,15 @@ export function getInventoryTier(
   return "pantry";
 }
 
+let effectiveKey: string | undefined;
+let effectiveIds: string[] = [];
 export function getEffectiveBarIds(barIds: string[]): string[] {
-  return [...barIds, ...HOUSE_STAPLE_IDS];
+  const key = JSON.stringify(barIds);
+  if (key !== effectiveKey) {
+    effectiveKey = key;
+    effectiveIds = suppliedIngredientIds([...barIds, ...HOUSE_STAPLE_IDS]);
+  }
+  return [...effectiveIds];
 }
 
 export function groupByInventoryTier<T extends Pick<Ingredient, "id" | "name" | "category">>(

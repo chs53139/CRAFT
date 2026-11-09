@@ -1,3 +1,4 @@
+import { canonicalIngredientId, isAmbiguousIngredient } from "@/lib/ingredient-intelligence";
 import { ingredients } from "@/lib/cocktail-data";
 import { Ingredient } from "@/lib/types";
 import { RawVisionDetection, ScanDetection } from "./types";
@@ -47,6 +48,9 @@ export function findBestIngredientMatch(
   bottleName: string,
   likelyCategory?: string
 ): { ingredient: Ingredient | null; confidence: number } {
+  if (isAmbiguousIngredient(bottleName)) return { ingredient: null, confidence: 0 };
+  const exact = ingredientById.get(canonicalIngredientId(bottleName));
+  if (exact) return { ingredient: exact, confidence: 1 };
   const categoryHint = likelyCategory ? normalize(likelyCategory) : "";
   let best: Ingredient | null = null;
   let bestScore = 0;
@@ -83,7 +87,7 @@ export function buildIngredientCatalogForPrompt(): string {
 export function finalizeDetection(raw: RawVisionDetection): ScanDetection {
   const likelyCategory = raw.likelyCategory?.trim() || "unknown";
   const suggested = raw.suggestedIngredientId?.trim() || null;
-  const suggestedIngredient = suggested ? ingredientById.get(suggested) : null;
+  const suggestedIngredient = suggested && !isAmbiguousIngredient(raw.detectedBottleName) ? ingredientById.get(canonicalIngredientId(suggested)) : null;
 
   let mappedIngredient = suggestedIngredient ?? null;
   let confidence = raw.confidence ?? 0.5;
@@ -97,6 +101,7 @@ export function finalizeDetection(raw: RawVisionDetection): ScanDetection {
   }
 
   const needsReview =
+    isAmbiguousIngredient(raw.detectedBottleName) ||
     !mappedIngredient ||
     confidence < REVIEW_THRESHOLD ||
     !!raw.notes?.toLowerCase().includes("uncertain") ||

@@ -1,3 +1,4 @@
+import { canonicalIngredientId, normalizeIngredientIds, ingredientSupplies, suppliedIngredientIds } from "@/lib/ingredient-intelligence";
 import { cocktails, cocktailCount, mocktailCount, alcoholicCount, ingredients } from "@/lib/cocktail-data";
 import { getBuyLabel } from "@/lib/ingredient-brands";
 import { getIngredientCostUsd } from "@/lib/ingredient-costs";
@@ -21,7 +22,7 @@ let matchCacheResult: CocktailMatch[] | null = null;
 
 function barIdsCacheKey(barIds: string[]): string {
   if (barIds.length === 0) return "";
-  return [...barIds].sort().join("|");
+  return normalizeIngredientIds(barIds).sort().join("|");
 }
 
 export function clearMatchCache(): void {
@@ -32,11 +33,11 @@ export function clearMatchCache(): void {
 export { cocktails, cocktailCount, mocktailCount, alcoholicCount, ingredients };
 
 export function getIngredientById(id: string): Ingredient | undefined {
-  return ingredientMap.get(id);
+  return ingredientMap.get(canonicalIngredientId(id));
 }
 
 export function getIngredientsByIds(ids: string[]): Ingredient[] {
-  return ids
+  return normalizeIngredientIds(ids)
     .map((id) => ingredientMap.get(id))
     .filter((ing): ing is Ingredient => !!ing);
 }
@@ -137,8 +138,8 @@ export function isPourable(match: CocktailMatch): boolean {
 
 function candidateMayUnlockExact(before: CocktailMatch, candidateId: string): boolean {
   if (before.canMake) return false;
-  if (before.missing.some((m) => m.id === candidateId)) return true;
-  if (before.substitutions.some((s) => s.requiredId === candidateId)) return true;
+  if (before.missing.some((m) => ingredientSupplies(candidateId, m.id))) return true;
+  if (before.substitutions.some((s) => ingredientSupplies(candidateId, s.requiredId))) return true;
   return false;
 }
 
@@ -157,7 +158,7 @@ export function getBestNextIngredient(
 ): IngredientRecommendation | null {
   if (barIds.length === 0) return null;
 
-  const barSet = new Set(barIds);
+  const barSet = new Set(suppliedIngredientIds(barIds));
   const before = matchCocktails(barIds);
   const candidates = ingredients.filter(
     (ing) => !barSet.has(ing.id) && isBrowsableIngredient(ing) && !isHouseStaple(ing.id)

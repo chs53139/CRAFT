@@ -3,18 +3,14 @@
 import { useMemo } from "react";
 import Link from "next/link";
 import { HorizontalCocktailRow } from "@/components/HorizontalCocktailRow";
-import { MakeableCountBanner } from "@/components/InfiniteCocktailGrid";
 import { RecentCocktails } from "@/components/RecentCocktails";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { SkeletonGrid } from "@/components/LoadingState";
-import { HomeSearchEntry } from "@/components/HomeSearchEntry";
 import { StatPillAction, StatPills } from "@/components/StatPills";
 import { isMixologistLaunchHidden } from "@/lib/feature-flags";
 import { EmptyState } from "@/components/EmptyState";
-import { countExactMakeable } from "@/lib/discovery-filters";
 import {
   cocktailCount,
-  countWithinReach,
   getBarSummaryFromMatches,
   mocktailCount,
 } from "@/lib/cocktail-matching";
@@ -28,8 +24,6 @@ export default function HomePage() {
   const { matches, grouped } = useCocktailMatches(barIds);
 
   const summary = useMemo(() => getBarSummaryFromMatches(matches), [matches]);
-  const exactCount = useMemo(() => countExactMakeable(matches), [matches]);
-  const withinReach = useMemo(() => countWithinReach(matches), [matches]);
   const tonight = grouped.exactMatches;
   const withSwaps = useMemo(
     () => grouped.availableWithSubstitutions,
@@ -55,11 +49,12 @@ export default function HomePage() {
       <div className="app-screen">
         <EmptyState
           title="Add your bar"
-          description="Tell CRAFT what you have on the shelf — scan bottles or add manually — and we'll show what you can pour tonight."
+          description="Add what you have on the shelf to see what you can pour tonight."
           actionLabel="Open My Bar"
           actionHref="/bar"
           icon="🍾"
         />
+        <div className="app-section"><Link href="/discover" className="btn-secondary w-full text-center">Search or browse the Library</Link></div>
       </div>
     );
   }
@@ -68,19 +63,8 @@ export default function HomePage() {
     <div className="app-screen animate-fade-in">
       <ScreenHeader
         title="Home"
-        subtitle={
-          withinReach > 0
-            ? `${withinReach} cocktails within reach · explore your bar's potential`
-            : "Stock a few more bottles to unlock pours"
-        }
+        subtitle="Find your next pour"
         large
-      />
-
-      <MakeableCountBanner
-        exactCount={exactCount}
-        withinReach={withinReach}
-        swapCount={summary.withSubstitutions}
-        viewAllHref="/cocktails?view=browse"
       />
 
       <StatPills
@@ -110,17 +94,9 @@ export default function HomePage() {
         }
       />
 
-      <HomeSearchEntry />
-
       <HorizontalCocktailRow
         title="Pour tonight"
-        subtitle={
-          tonight.length > 0
-            ? `${tonight.length} exact match${tonight.length === 1 ? "" : "es"}`
-            : withSwaps.length > 0
-              ? "No exact matches — try a swap below"
-              : "Add a bottle to unlock more"
-        }
+        subtitle={tonight.length ? "Make these as written" : "Stock a few more ingredients to find exact matches"}
         items={tonight.slice(0, PREVIEW_COUNT)}
         seeAllHref="/cocktails?view=browse"
         empty="Stock a few more bottles and the magic happens."
@@ -129,19 +105,11 @@ export default function HomePage() {
       {withSwaps.length > 0 && (
         <HorizontalCocktailRow
           title="Close with a swap"
-          subtitle={`${withSwaps.length} cocktail${withSwaps.length === 1 ? "" : "s"} with a simple substitute`}
+          subtitle="Make these with a simple substitute"
           items={withSwaps.slice(0, PREVIEW_COUNT)}
           seeAllHref="/cocktails?view=browse"
           empty=""
         />
-      )}
-
-      {withinReach > PREVIEW_COUNT && (
-        <div className="app-section">
-          <Link href="/cocktails?view=browse" className="btn-secondary w-full text-center">
-            Explore all {withinReach} cocktails
-          </Link>
-        </div>
       )}
 
       <RecentCocktails />

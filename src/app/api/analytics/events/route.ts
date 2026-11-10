@@ -1,3 +1,4 @@
+import { readJsonObject } from "@/lib/request-json";
 import { NextResponse } from "next/server";
 import { enrichProductEvent } from "@/lib/analytics/enrich-event";
 import {
@@ -13,26 +14,21 @@ type IncomingEvent = {
   at: string;
 };
 
-type Body = {
-  events?: IncomingEvent[];
-  sessionId?: string;
-};
-
 export async function POST(request: Request) {
-  let body: Body;
-  try {
-    body = (await request.json()) as Body;
-  } catch {
-    return NextResponse.json({ ok: false }, { status: 400 });
-  }
-
-  const sessionId = (body.sessionId ?? "").trim().slice(0, 64);
-  const events = body.events ?? [];
+  const parsed = await readJsonObject(request, 24 * 1024);
+  if (parsed.status !== 200) return NextResponse.json({ ok: false }, { status: parsed.status });
+  const { sessionId: rawSessionId, events = [] } = parsed.body;
+  if (typeof rawSessionId !== "string" || !Array.isArray(events) || events.length > 12 || events.some((event) => {
+    return !event || typeof event !== "object" || Array.isArray(event) || typeof event.name !== "string" ||
+      typeof event.at !== "string" || !Number.isFinite(Date.parse(event.at)) ||
+      !event.payload || typeof event.payload !== "object" || Array.isArray(event.payload);
+  })) return NextResponse.json({ ok: false }, { status: 400 });
+  const sessionId = rawSessionId.trim().slice(0, 64);
   if (!sessionId || events.length === 0) {
     return NextResponse.json({ ok: true, stored: 0 });
   }
 
-  const rows = events.slice(0, 12).flatMap((raw) => {
+  const rows = (events as IncomingEvent[]).flatMap((raw) => {
     if (!isPersistedProductEventName(raw.name)) return [];
     const payload = enrichProductEvent(raw.name, raw.payload);
     return [

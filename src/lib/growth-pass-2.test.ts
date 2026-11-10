@@ -44,9 +44,5 @@ describe("Growth Pass 2 regressions", () => {
     expect(blank.length).toBeGreaterThan(100);
   });
 
-  it("Home count logic unchanged", () => {
-    const home = readFileSync(join(process.cwd(), "src/app/page.tsx"), "utf8");
-    expect(home).toContain("countWithinReach");
-    expect(home).toContain("MakeableCountBanner");
-  });
+
 });

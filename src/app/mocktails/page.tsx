@@ -1,5 +1,5 @@
-import MocktailsPageClient from "./MocktailsPageClient";
+import { redirect } from "next/navigation";
 
 export default function MocktailsPage() {
-  return <MocktailsPageClient />;
+  redirect("/discover?type=mocktails");
 }

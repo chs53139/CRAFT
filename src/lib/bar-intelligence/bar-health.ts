@@ -1,3 +1,5 @@
+import { suppliedIngredientIds } from "@/lib/ingredient-intelligence";
+import { SUBSTITUTION_CATALOG } from "@/lib/substitutions/catalog";
 import {
   getIngredientsByIds,
   matchCocktails,
@@ -244,12 +246,20 @@ export function ingredientUnlockPreview(
 ): { unlocks: number; movesToOneAway: number; examples: string[] } {
   const before = precomputedMatches ?? matchCocktails(barIds);
   const extended = [...barIds, candidateId];
+  const exactSupplies = new Set(suppliedIngredientIds([candidateId]));
+  const coveredGaps = new Set(exactSupplies);
+  for (const rule of SUBSTITUTION_CATALOG) {
+    if (exactSupplies.has(rule.substituteId)) coveredGaps.add(rule.originalId);
+  }
   const examples: string[] = [];
   let unlocks = 0;
   let movesToOneAway = 0;
 
   for (const match of before) {
     if (match.canMake) continue;
+    // A candidate can only change readiness if it fills a gap or replaces a swap.
+    if (!match.missing.some((item) => coveredGaps.has(item.id)) &&
+        !match.substitutions.some((swap) => exactSupplies.has(swap.requiredId))) continue;
     const after = matchSingleCocktail(match.cocktail, extended);
     if (after.canMake && !match.canMake) {
       unlocks += 1;

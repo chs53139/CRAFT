@@ -1,19 +1,15 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { AddToShoppingListButton } from "@/components/AddToShoppingListButton";
 import { FindNearbyButton } from "@/components/FindNearbySheet";
 import { trackProductEvent } from "@/lib/analytics";
-import { getUnlockRecommendations } from "@/lib/bar-intelligence/unlock-graph";
 import { UnlockRecommendation } from "@/lib/bar-intelligence/types";
 import { getBuyLabel } from "@/lib/ingredient-brands";
 import { getInventoryTierLabel, getInventoryTier } from "@/lib/inventory-tiers";
-import { CocktailMatch } from "@/lib/types";
 
 type Props = {
-  barIds: string[];
-  matches: CocktailMatch[];
-  limit?: number;
+  recommendations: UnlockRecommendation[];
 };
 
 function formatUnlockPreview(rec: UnlockRecommendation): string {
@@ -57,25 +53,18 @@ function BnpRow({ rec, featured }: { rec: UnlockRecommendation; featured?: boole
   );
 }
 
-export function BestNextPurchaseSection({ barIds, matches, limit = 6 }: Props) {
-  const recommendations = useMemo(
-    () =>
-      getUnlockRecommendations(barIds, {
-        limit,
-        precomputedMatches: matches,
-      }),
-    [barIds, limit, matches]
-  );
-
+export function BestNextPurchaseSection({ recommendations }: Props) {
   const top = recommendations[0];
+  const ingredientId = top?.ingredient.id;
+  const unlocksCount = top?.unlocksCount;
 
   useEffect(() => {
-    if (!top) return;
+    if (!ingredientId || unlocksCount === undefined) return;
     trackProductEvent("best_next_purchase_viewed", {
-      ingredientId: top.ingredient.id,
-      unlocksCount: top.unlocksCount,
+      ingredientId,
+      unlocksCount,
     });
-  }, [top?.ingredient.id, top?.unlocksCount]);
+  }, [ingredientId, unlocksCount]);
 
   if (recommendations.length === 0) return null;
 

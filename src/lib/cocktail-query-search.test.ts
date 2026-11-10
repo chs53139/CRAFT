@@ -25,6 +25,14 @@ describe("cocktail query search", () => {
     }
   });
 
+  it("keeps compound qualifiers and handles commas without spaces", () => {
+    const parsed = parseIngredientQuery("tiki with rum without lemon and mint");
+    expect(parsed).toEqual({ freeText: "tiki", includeIngredientIds: ["rum"], excludeIngredientIds: ["lemon", "mint"] });
+    const matches = searchMatches("gin,lime", matchCocktails([]));
+    expect(matches.length).toBeGreaterThan(0);
+    expect(matches.every((m) => m.cocktail.ingredients.some((i) => i.ingredientId === "lime-juice" || i.ingredientId === "lime"))).toBe(true);
+  });
+
   it("supports exclusion terms", () => {
     const parsed = parseIngredientQuery("gin + orange juice without lemon juice");
     const matches = matchCocktails([]);

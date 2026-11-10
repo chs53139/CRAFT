@@ -129,11 +129,11 @@ export function FindNearbySheet({
           tabIndex={-1}
           onClick={(e) => e.stopPropagation()}
         >
-          <p className="eyebrow text-[var(--accent-dim)]">Find nearby</p>
+          <p className="eyebrow text-[var(--accent-dim)]">Web search</p>
           <h2 id="find-nearby-title" className="find-nearby-title">
-            Find {commerceIngredient.displayName} nearby
+            Search the web for {commerceIngredient.displayName}
           </h2>
-          <p className="find-nearby-copy">Find it near you.</p>
+          <p className="find-nearby-copy">Opens a web search using your ZIP code. Store stock is not checked.</p>
 
           {showSavedZip ? (
             <p className="find-nearby-saved-zip">
@@ -236,7 +236,7 @@ export function FindNearbyButton({ ingredient, context, cocktailId, className = 
         className={`find-nearby-btn ${className}`}
         onClick={handleOpen}
       >
-        Find nearby
+        Search web
       </button>
       <FindNearbySheet
         ingredient={ingredient}

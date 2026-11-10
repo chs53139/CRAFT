@@ -3425,3 +3425,156 @@ button.star-rating-star:active {
 .install-steps {
   padding-left: 1.1rem;
 }
+
+/* Tonight · Perfection Pass */
+.tonight-screen .screen-header {
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.tonight-controls {
+  max-width: 24rem;
+  margin: 0 auto 1.5rem;
+}
+
+.tonight-readiness {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.tonight-readiness-link {
+  display: flex;
+  min-height: 4rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  padding: 0.5rem 0.25rem;
+  border: 1px solid var(--border);
+  border-radius: 0.9rem;
+  background: var(--card);
+  color: var(--foreground-soft);
+  text-align: center;
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+.tonight-readiness-link strong {
+  color: var(--foreground);
+  font-size: 1.25rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.tonight-readiness-link[aria-current="page"] {
+  border-color: var(--accent-dim);
+  background: var(--accent-glow);
+  color: var(--accent);
+}
+
+.tonight-readiness-link[aria-current="page"] strong { color: var(--accent); }
+
+.tonight-drink-type {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+
+.tonight-drink-type .surprise-chip { min-height: 2.75rem; }
+
+.tonight-guest-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+  max-width: 22rem;
+  margin: 1.5rem auto 0;
+}
+
+.tonight-guest-actions a { justify-content: center; text-align: center; }
+
+.tonight-feature {
+  overflow: hidden;
+  border: 1px solid var(--accent-dim);
+  border-radius: var(--radius-xl);
+  background: var(--card);
+  margin: 0 0 1.5rem;
+}
+
+.tonight-feature-link {
+  display: grid;
+  grid-template-columns: minmax(5.5rem, 34%) minmax(0, 1fr);
+}
+
+.tonight-feature-image { min-height: 8.75rem; }
+.tonight-feature-copy { min-width: 0; padding: 0.85rem 1rem; }
+.tonight-feature-kicker {
+  color: var(--accent);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.tonight-feature-copy h2 {
+  margin: 0.25rem 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.4rem, 5.5vw, 1.9rem);
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+.tonight-feature-reason { color: var(--foreground-soft); font-size: 0.75rem; line-height: 1.4; }
+.tonight-feature-action { display: inline-block; margin-top: 0.5rem; color: var(--accent); font-size: 0.75rem; font-weight: 650; }
+
+.tonight-results { margin: 0 0 1.25rem; }
+.tonight-result-list { display: grid; gap: 0.4rem; margin: 0.6rem 0 0; padding: 0; list-style: none; }
+
+.tonight-recipe-row {
+  display: grid;
+  grid-template-columns: 3.25rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 3.75rem;
+  padding: 0.3rem 0.7rem 0.3rem 0.3rem;
+  border: 1px solid var(--border);
+  border-radius: 0.85rem;
+  background: var(--card);
+}
+
+.tonight-recipe-row:hover, .tonight-feature-link:hover { background: var(--card-hover); }
+.tonight-recipe-thumb { height: 3.25rem; border-radius: 0.55rem; }
+.tonight-recipe-name, .tonight-recipe-detail { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tonight-recipe-name { color: var(--foreground); font-size: 0.9rem; font-weight: 650; }
+.tonight-recipe-detail { color: var(--foreground-soft); font-size: 0.72rem; }
+.tonight-recipe-arrow { color: var(--accent); font-size: 1.2rem; }
+
+.tonight-pagination {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  gap: 0.4rem;
+  max-width: 21rem;
+  margin: 0.85rem auto 0;
+  color: var(--foreground-soft);
+  font-size: 0.75rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.tonight-pagination button {
+  min-height: 2.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+  background: var(--card);
+  color: var(--foreground);
+}
+.tonight-pagination button:disabled { opacity: 0.4; }
+
+.tonight-empty-note { padding: 1rem 0; color: var(--foreground-soft); text-align: center; font-size: 0.875rem; }
+.tonight-bold { margin-top: 1rem; color: var(--foreground-soft); }
+.tonight-bold summary { margin-bottom: 0.75rem; cursor: pointer; }
+.tonight-screen :is(a, button, summary):focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+@media (max-width: 350px) {
+  .tonight-guest-actions { grid-template-columns: 1fr; }
+}

@@ -16,7 +16,7 @@ export default function MorePage() {
 
   return (
     <div className="app-screen animate-fade-in">
-      <ScreenHeader title="More" subtitle="Browse, account, and tools" large />
+      <ScreenHeader title="More" subtitle="Account, shopping, and tools" large />
 
       <div className="app-section space-y-3">
         <Link href="/shopping-list" className="account-row">
@@ -31,16 +31,6 @@ export default function MorePage() {
           <div>
             <p className="text-sm font-semibold text-[var(--foreground)]">Made</p>
             <p className="mt-0.5 text-xs text-[var(--muted)]">Cocktails you actually poured</p>
-          </div>
-          <span className="text-[var(--accent)]">→</span>
-        </Link>
-
-        <Link href="/discover" className="account-row">
-          <div>
-            <p className="text-sm font-semibold text-[var(--foreground)]">Library</p>
-            <p className="mt-0.5 text-xs text-[var(--muted)]">
-              Browse cocktails, mocktails, and collections
-            </p>
           </div>
           <span className="text-[var(--accent)]">→</span>
         </Link>

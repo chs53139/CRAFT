@@ -2,6 +2,7 @@ type Props = {
   value: "both" | "cocktails" | "mocktails";
   onChange: (value: "both" | "cocktails" | "mocktails") => void;
   hideMocktails?: boolean;
+  centered?: boolean;
 };
 
 const OPTIONS: Array<{ id: "both" | "cocktails" | "mocktails"; label: string }> = [
@@ -10,17 +11,18 @@ const OPTIONS: Array<{ id: "both" | "cocktails" | "mocktails"; label: string }> 
   { id: "mocktails", label: "Mocktails" },
 ];
 
-export function DrinkTypeFilter({ value, onChange, hideMocktails }: Props) {
+export function DrinkTypeFilter({ value, onChange, hideMocktails, centered }: Props) {
   const options = hideMocktails
     ? OPTIONS.filter((option) => option.id !== "mocktails")
     : OPTIONS;
 
   return (
-    <div className="flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+    <div role="group" aria-label="Drink type" className={centered ? "tonight-drink-type" : "flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"}>
       {options.map((option) => (
         <button
           key={option.id}
           type="button"
+          aria-pressed={value === option.id}
           onClick={() => onChange(option.id)}
           className={`surprise-chip shrink-0 ${value === option.id ? "surprise-chip-active" : ""}`}
         >

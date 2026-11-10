@@ -5,40 +5,6 @@ import { usePathname } from "next/navigation";
 
 const tabs = [
   {
-    href: "/",
-    label: "Home",
-    icon: (active: boolean) => (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
-        <path
-          d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"
-          stroke="currentColor"
-          strokeWidth={active ? 2 : 1.5}
-          strokeLinejoin="round"
-        />
-      </svg>
-    ),
-  },
-  {
-    href: "/bar",
-    label: "Bar",
-    icon: (active: boolean) => (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
-        <path
-          d="M8 3h8v3H8V3Zm0 5h8v13H8V8Z"
-          stroke="currentColor"
-          strokeWidth={active ? 2 : 1.5}
-          strokeLinejoin="round"
-        />
-        <path
-          d="M6 8h12"
-          stroke="currentColor"
-          strokeWidth={active ? 2 : 1.5}
-          strokeLinecap="round"
-        />
-      </svg>
-    ),
-  },
-  {
     href: "/cocktails",
     label: "Tonight",
     icon: (active: boolean) => (
@@ -51,6 +17,40 @@ const tabs = [
         />
         <path
           d="M6 11h12"
+          stroke="currentColor"
+          strokeWidth={active ? 2 : 1.5}
+          strokeLinecap="round"
+        />
+      </svg>
+    ),
+  },
+  {
+    href: "/discover",
+    label: "Library",
+    icon: (active: boolean) => (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
+        <path
+          d="M4 5h6a2 2 0 0 1 2 2v13a3 3 0 0 0-3-3H4V5Zm16 0h-6a2 2 0 0 0-2 2v13a3 3 0 0 1 3-3h5V5Z"
+          stroke="currentColor"
+          strokeWidth={active ? 2 : 1.5}
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+  },
+  {
+    href: "/bar",
+    label: "My Bar",
+    icon: (active: boolean) => (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
+        <path
+          d="M8 3h8v3H8V3Zm0 5h8v13H8V8Z"
+          stroke="currentColor"
+          strokeWidth={active ? 2 : 1.5}
+          strokeLinejoin="round"
+        />
+        <path
+          d="M6 8h12"
           stroke="currentColor"
           strokeWidth={active ? 2 : 1.5}
           strokeLinecap="round"
@@ -97,7 +97,7 @@ const tabs = [
 ];
 
 function isActive(pathname: string, href: string) {
-  if (href === "/") return pathname === "/";
+  if (href === "/cocktails" && pathname === "/") return true;
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 

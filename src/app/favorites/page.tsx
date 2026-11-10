@@ -5,6 +5,7 @@ import { CocktailCard } from "@/components/CocktailCard";
 import { EmptyState } from "@/components/EmptyState";
 import { ErrorBanner } from "@/components/ErrorBanner";
 import { SkeletonGrid } from "@/components/LoadingState";
+import { RecentCocktails } from "@/components/RecentCocktails";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { useFavorites, useMyBar } from "@/hooks/use-my-bar";
 import { matchCocktails } from "@/lib/cocktail-matching";
@@ -36,7 +37,7 @@ export default function FavoritesPage() {
         subtitle={
           favoriteIds.length > 0
             ? `${favoriteIds.length} starred cocktail${favoriteIds.length !== 1 ? "s" : ""}`
-            : "Star cocktails from Tonight"
+            : "Favorites and recently viewed drinks"
         }
         large
       />
@@ -51,16 +52,16 @@ export default function FavoritesPage() {
         <EmptyState
           title="No favorites yet"
           description="Tap the star on any cocktail to save it here."
-          actionLabel="Browse Tonight"
-          actionHref="/cocktails"
+          actionLabel="Browse Library"
+          actionHref="/discover"
           icon="★"
         />
       ) : matches.length === 0 ? (
         <EmptyState
           title="Saved cocktails unavailable"
           description="Some starred drinks aren't in the catalogue anymore."
-          actionLabel="Browse Tonight"
-          actionHref="/cocktails"
+          actionLabel="Browse Library"
+          actionHref="/discover"
           icon="★"
         />
       ) : (
@@ -70,6 +71,7 @@ export default function FavoritesPage() {
           ))}
         </div>
       )}
+      <RecentCocktails excludeIds={favoriteIds} />
     </div>
   );
 }

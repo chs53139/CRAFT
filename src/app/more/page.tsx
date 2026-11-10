@@ -7,7 +7,7 @@ import { InstallCraftManualButton } from "@/components/InstallCraftPrompt";
 import { isMixologistLaunchHidden } from "@/lib/feature-flags";
 
 export default function MorePage() {
-  const { user, isAuthenticated, signOut } = useUserData();
+  const { user, isAuthenticated, signOut, syncing, error } = useUserData();
 
   const displayName =
     user?.user_metadata?.display_name ||
@@ -31,16 +31,6 @@ export default function MorePage() {
           <div>
             <p className="text-sm font-semibold text-[var(--foreground)]">Made</p>
             <p className="mt-0.5 text-xs text-[var(--muted)]">Cocktails you actually poured</p>
-          </div>
-          <span className="text-[var(--accent)]">→</span>
-        </Link>
-
-        <Link href="/find-ingredient" className="account-row">
-          <div>
-            <p className="text-sm font-semibold text-[var(--foreground)]">Find by ingredient</p>
-            <p className="mt-0.5 text-xs text-[var(--muted)]">
-              Search the catalogue by what goes in the glass
-            </p>
           </div>
           <span className="text-[var(--accent)]">→</span>
         </Link>
@@ -93,11 +83,11 @@ export default function MorePage() {
                 <div>
                   <p className="text-sm font-medium text-[var(--foreground)]">Sync status</p>
                   <p className="mt-0.5 text-xs text-[var(--muted)]">
-                    Bar, favorites, and recents sync to your account
+                    {error ? "Couldn’t complete sync. Your changes are saved on this device." : "Bar, favorites, and recents sync to your account."}
                   </p>
                 </div>
                 <span className="rounded-full bg-emerald-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-emerald-300">
-                  On
+                  {error ? "Needs attention" : syncing ? "Syncing" : "Connected"}
                 </span>
               </div>
               <button

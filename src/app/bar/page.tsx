@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { BarToolsInventory } from "@/components/BarTools";
 import { useMemo, useDeferredValue, useState } from "react";
-import { BarScan } from "@/components/BarScan";
 import { BarStarterKits } from "@/components/BarStarterKits";
 import { EmptyState } from "@/components/EmptyState";
 import { ErrorBanner } from "@/components/ErrorBanner";
@@ -38,7 +37,6 @@ export default function BarPage() {
   const { recentIds } = useRecentCocktails();
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState<InventoryTier | "all">("all");
-  const [scanOpen, setScanOpen] = useState(false);
 
   const deferredBarIds = useDeferredValue(barIds);
   const { matches: deferredMatches } = useCocktailMatches(deferredBarIds);
@@ -122,13 +120,6 @@ export default function BarPage() {
         }
       />
 
-      <BarScan
-        open={scanOpen}
-        onClose={() => setScanOpen(false)}
-        barIds={barIds}
-        onConfirm={addIngredients}
-      />
-
       {error && (
         <div className="mt-6">
           <ErrorBanner message={error} onDismiss={clearError} />
@@ -150,7 +141,7 @@ export default function BarPage() {
 
       {advice && barIds.length > 0 && (
         <div className="mt-8">
-          <MyBarAdvice advice={advice} barIds={deferredBarIds} matches={deferredMatches} />
+          <MyBarAdvice advice={advice} />
         </div>
       )}
 
@@ -159,13 +150,8 @@ export default function BarPage() {
           <BarStarterKits barIds={barIds} onApply={addIngredients} />
           <EmptyState
             title="Your shelf is empty"
-            description="Use a quick start above, scan your bar, or add ingredients manually below."
+            description="Use a quick start above or add ingredients below."
             icon="🍾"
-            action={
-              <button type="button" className="btn-secondary mt-2" onClick={() => setScanOpen(true)}>
-                Scan my bar
-              </button>
-            }
           />
         </div>
       )}

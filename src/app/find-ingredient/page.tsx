@@ -1,5 +1,5 @@
-import FindByIngredientClient from "./FindByIngredientClient";
+import { redirect } from "next/navigation";
 
 export default function FindByIngredientPage() {
-  return <FindByIngredientClient />;
+  redirect("/discover?filters=ingredients");
 }

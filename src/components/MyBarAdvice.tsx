@@ -7,20 +7,17 @@ import { CocktailImage } from "@/components/CocktailImage";
 import { DifficultyBadge } from "@/components/DifficultyBadge";
 import { BestNextPurchaseSection } from "@/components/BestNextPurchaseSection";
 import { BarAdvice } from "@/lib/bar-intelligence/bar-advice";
-import { CocktailMatch } from "@/lib/types";
 
 type Props = {
   advice: BarAdvice;
-  barIds: string[];
-  matches: CocktailMatch[];
 };
 
-export function MyBarAdvice({ advice, barIds, matches }: Props) {
+export function MyBarAdvice({ advice }: Props) {
   const { tonightsRecommendation, hiddenGem, neglectedBottle } = advice;
 
   return (
     <section className="my-bar-advice animate-fade-in-up">
-      <BestNextPurchaseSection barIds={barIds} matches={matches} />
+      <BestNextPurchaseSection recommendations={advice.purchaseRecommendations} />
 
       <div className="my-bar-advice-intro">
         <p className="eyebrow">From your bar</p>

@@ -263,7 +263,7 @@ export function searchMatches(query: string, matches: CocktailMatch[]): Cocktail
     scoped = filterMatchesByIngredientQuery(scoped, parsed);
   }
 
-  const textQuery = parsed.freeText || (parsed.includeIngredientIds.length === 0 ? q : "");
+  const textQuery = parsed.freeText || (parsed.includeIngredientIds.length === 0 && parsed.excludeIngredientIds.length === 0 ? q : "");
   if (!textQuery.trim()) return scoped;
 
   const index = getSearchIndex();

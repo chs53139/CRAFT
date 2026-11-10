@@ -55,7 +55,7 @@ export { getUnderutilizedBottles } from "./underutilized";
 
 import { CocktailMatch } from "@/lib/types";
 import { analyzeBarHealth } from "./bar-health";
-import { getBestUnlockRecommendation, getUnlockRecommendations } from "./unlock-graph";
+import { getUnlockRecommendations } from "./unlock-graph";
 
 export function buildBarIntelligence(input: {
   barIds: string[];
@@ -72,18 +72,11 @@ export function buildBarIntelligence(input: {
 
   const tasteVector = health?.tasteProfile?.vector;
 
-  return {
-    health,
-    unlockRecommendations: getUnlockRecommendations(input.barIds, {
-      tasteVector,
-      categoryCounts: health?.categoryCounts,
-      precomputedMatches: input.matches,
-      limit: 3,
-    }),
-    bestUnlock: getBestUnlockRecommendation(input.barIds, {
-      tasteVector,
-      categoryCounts: health?.categoryCounts,
-      precomputedMatches: input.matches,
-    }),
-  };
+  const unlockRecommendations = getUnlockRecommendations(input.barIds, {
+    tasteVector,
+    categoryCounts: health?.categoryCounts,
+    precomputedMatches: input.matches,
+    limit: 3,
+  });
+  return { health, unlockRecommendations, bestUnlock: unlockRecommendations[0] ?? null };
 }

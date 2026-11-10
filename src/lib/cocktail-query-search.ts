@@ -1,3 +1,4 @@
+import { canonicalIngredientId } from "@/lib/ingredient-intelligence";
 import { ingredients } from "@/lib/cocktail-data";
 import { INGREDIENT_ALIASES, SPIRIT_SEARCH_TERMS } from "@/lib/cocktail-search";
 import { CocktailMatch } from "@/lib/types";
@@ -12,28 +13,13 @@ function resolveIngredientToken(token: string): string | null {
   const normalized = token.toLowerCase().trim().replace(/\s+/g, " ");
   if (!normalized) return null;
 
-  if (ingredientByName.has(normalized)) {
-    return ingredientByName.get(normalized)!;
-  }
-
-  for (const [spirit, ids] of Object.entries(SPIRIT_SEARCH_TERMS)) {
-    if (normalized === spirit || normalized.includes(spirit)) {
-      return ids[0] ?? spirit;
-    }
-  }
-
-  for (const [alias, ids] of Object.entries(INGREDIENT_ALIASES)) {
-    if (normalized === alias || normalized.includes(alias)) {
-      return ids[0] ?? null;
-    }
-  }
-
-  const partial = ingredients.find(
-    (ing) =>
-      ing.name.toLowerCase().includes(normalized) ||
-      ing.id.replace(/-/g, " ").includes(normalized)
-  );
-  return partial?.id ?? null;
+  if (Object.hasOwn(SPIRIT_SEARCH_TERMS, normalized)) return normalized;
+  if (["lemon", "lime", "mint"].includes(normalized)) return normalized;
+  const canonical = canonicalIngredientId(normalized);
+  const exact = ingredientByName.get(canonical.replace(/-/g, " "));
+  if (exact) return exact;
+  if (Object.hasOwn(INGREDIENT_ALIASES, normalized)) return normalized;
+  return null;
 }
 
 export type ParsedIngredientQuery = {
@@ -42,24 +28,13 @@ export type ParsedIngredientQuery = {
   excludeIngredientIds: string[];
 };
 
-const SPLIT = /\s+(?:\+|and|&|,)\s+/i;
-const WITHOUT = /\b(?:without|exclude|no|minus)\s+([^+]+)/gi;
+const SPLIT = /\s*[+,&]\s*|\s+(?:and|with)\s+/i;
+const WITHOUT = /\b(?:without|exclude|no|minus)\s+/i;
 
 export function parseIngredientQuery(raw: string): ParsedIngredientQuery {
-  let working = raw.trim();
-  const excludeIngredientIds: string[] = [];
-  let match;
-
-  while ((match = WITHOUT.exec(working)) !== null) {
-    const chunk = match[1]?.trim();
-    if (chunk) {
-      const id = resolveIngredientToken(chunk);
-      if (id) excludeIngredientIds.push(id);
-    }
-  }
-
-  working = working.replace(WITHOUT, " ").trim();
-
+  const [positive, ...negative] = raw.trim().split(WITHOUT);
+  const working = positive.trim();
+  const excludeIngredientIds = negative.flatMap((chunk) => chunk.split(SPLIT)).map(resolveIngredientToken).filter((id): id is string => Boolean(id));
   const parts = working
     .split(SPLIT)
     .map((p) => p.trim())
@@ -100,13 +75,9 @@ function ingredientPresent(cocktail: CocktailMatch["cocktail"], ingredientId: st
     return true;
   }
 
-  for (const [spirit, ids] of Object.entries(SPIRIT_SEARCH_TERMS)) {
-    if (spirit === ingredientId || ids.includes(ingredientId)) {
-      return cocktail.ingredients.some((ing) => ids.includes(ing.ingredientId));
-    }
-  }
-
-  return false;
+  const family = Object.hasOwn(SPIRIT_SEARCH_TERMS, ingredientId) ? SPIRIT_SEARCH_TERMS[ingredientId] : [];
+  const aliases = Object.hasOwn(INGREDIENT_ALIASES, ingredientId) ? INGREDIENT_ALIASES[ingredientId] : [];
+  return cocktail.ingredients.some((ing) => [...family, ...aliases].includes(canonicalIngredientId(ing.ingredientId)));
 }
 
 export function filterMatchesByIngredientQuery(

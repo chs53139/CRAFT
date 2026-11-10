@@ -3,12 +3,13 @@ import { CocktailMatch } from "@/lib/types";
 import { analyzeBarHealth } from "./bar-health";
 import { getBestDrinkTonight } from "./best-tonight";
 import { getNeverThinkToMakeMatch, getNeglectedBottleInsight } from "./discovery-modes";
-import { getBestUnlockRecommendation } from "./unlock-graph";
+import { getUnlockRecommendations } from "./unlock-graph";
 import { scoreTasteFit } from "./taste-vector";
 import { BestDrinkTonight, NeglectedBottleInsight, UnlockRecommendation } from "./types";
 
 export type BarAdvice = {
   tonightsRecommendation: BestDrinkTonight | null;
+  purchaseRecommendations: UnlockRecommendation[];
   bestNextPurchase: UnlockRecommendation | null;
   hiddenGem: HiddenGemAdvice | null;
   neglectedBottle: NeglectedBottleAdvice | null;
@@ -100,7 +101,8 @@ export function buildBarAdvice(input: BarAdviceInput): BarAdvice | null {
     recentIds: input.recentIds,
   });
 
-  const bestNextPurchase = getBestUnlockRecommendation(input.barIds, {
+  const purchaseRecommendations = getUnlockRecommendations(input.barIds, {
+    limit: 6,
     tasteVector,
     categoryCounts: health?.categoryCounts,
     precomputedMatches: input.matches,
@@ -143,7 +145,8 @@ export function buildBarAdvice(input: BarAdviceInput): BarAdvice | null {
 
   return {
     tonightsRecommendation,
-    bestNextPurchase,
+    purchaseRecommendations,
+    bestNextPurchase: purchaseRecommendations[0] ?? null,
     hiddenGem,
     neglectedBottle,
   };

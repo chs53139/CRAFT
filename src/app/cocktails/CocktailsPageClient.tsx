@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { trackProductEvent } from "@/lib/analytics";
-import { normalizeSearchKey } from "@/lib/analytics/search-key";
 import { useSearchParams } from "next/navigation";
 import { CocktailSection } from "@/components/CocktailSection";
 import { OneAwaySection } from "@/components/OneAwaySection";
@@ -21,7 +20,6 @@ import {
 } from "@/components/InfiniteCocktailGrid";
 import { MenuPageSkeleton, PageLoader } from "@/components/LoadingState";
 import { ScreenHeader } from "@/components/ScreenHeader";
-import { SearchField } from "@/components/SearchField";
 import { SubstitutionModeFilter } from "@/components/SubstitutionModeFilter";
 import {
   countExactMakeable,
@@ -35,7 +33,6 @@ import {
 } from "@/lib/discovery-filters";
 import {
   countWithinReach,
-  filterMatchesBySearch,
   getBarSummaryFromMatches,
   groupCocktailMatches,
   isPourable,
@@ -97,16 +94,6 @@ function CocktailsContent() {
   const view = parseView(searchParams.get("view"));
   const { barIds, loaded, error, clearError } = useMyBar();
   const { matches: allMatches } = useCocktailMatches(barIds);
-  const initialQuery = (searchParams.get("q") ?? "").trim();
-  const [search, setSearch] = useState(initialQuery);
-  const syncedQueryRef = useRef(initialQuery);
-
-  useEffect(() => {
-    const q = (searchParams.get("q") ?? "").trim();
-    if (q === syncedQueryRef.current) return;
-    syncedQueryRef.current = q;
-    if (q) setSearch(q);
-  }, [searchParams]);
   const [collection, setCollection] = useState<"all" | CocktailCollection>("all");
   const [substitutionMode, setSubstitutionMode] =
     useState<SubstitutionMode>("include-substitutions");
@@ -120,13 +107,12 @@ function CocktailsContent() {
 
   const processedMatches = useMemo(() => {
     let results = filterMatchesByDrinkType(allMatches, drinkTypeFilter);
-    results = filterMatchesBySearch(results, search);
     results = applyDiscoveryFilters(results, {
       ...discoveryFilters,
       collection: collection === "all" ? undefined : collection,
     });
-    return sortDiscoveryResults(results, sort, search);
-  }, [allMatches, drinkTypeFilter, search, discoveryFilters, collection, sort]);
+    return sortDiscoveryResults(results, sort);
+  }, [allMatches, drinkTypeFilter, discoveryFilters, collection, sort]);
 
   const { exactMatches, availableWithSubstitutions, experimentalMatches, stillMissing } =
     useMemo(() => groupCocktailMatches(processedMatches), [processedMatches]);
@@ -155,30 +141,12 @@ function CocktailsContent() {
     [processedMatches]
   );
 
-  const browseGridMatches = useMemo(
-    () => (search.trim().length > 0 ? processedMatches : makeableMatches),
-    [search, processedMatches, makeableMatches]
-  );
+  const browseGridMatches = makeableMatches;
 
   const exactCount = useMemo(() => countExactMakeable(allMatches), [allMatches]);
   const totalMakeable = useMemo(() => countMakeable(allMatches), [allMatches]);
   const withinReach = useMemo(() => countWithinReach(allMatches), [allMatches]);
   const barSummary = useMemo(() => getBarSummaryFromMatches(allMatches), [allMatches]);
-
-  const lastSearchTracked = useRef("");
-  useEffect(() => {
-    const q = search.trim();
-    if (q.length < 2 || q === lastSearchTracked.current) return;
-    lastSearchTracked.current = q;
-    const searchKey = normalizeSearchKey(q);
-    trackProductEvent("cocktail_searched", {
-      queryLength: q.length,
-      resultCount: processedMatches.length,
-      hasExclusion: /\bwithout\b/i.test(q),
-      searchKey: searchKey || undefined,
-      zeroResults: processedMatches.length === 0,
-    });
-  }, [search, processedMatches.length]);
 
   const oneAway = stillMissing.filter((m) => m.missingCount === 1);
   useEffect(() => {
@@ -196,7 +164,7 @@ function CocktailsContent() {
     return <MenuPageSkeleton />;
   }
 
-  const searchActive = search.trim().length > 0 || hasActiveDiscoveryFilters(discoveryFilters);
+  const searchActive = hasActiveDiscoveryFilters(discoveryFilters);
   const showBrowse = view === "browse" || (searchActive && view !== "one-away");
   const showAllSections = view === "all";
   const showReady = view === "ready" || view === "all";
@@ -213,12 +181,12 @@ function CocktailsContent() {
 
   const noResults = !hasVisibleResults;
 
-  const filterResetKey = `${search}|${JSON.stringify(discoveryFilters)}|${sort}|${view}|${collection}`;
+  const filterResetKey = `${JSON.stringify(discoveryFilters)}|${sort}|${view}|${collection}`;
 
   const headerSubtitle =
     view === "browse"
       ? searchActive
-        ? `${browseGridMatches.length} matching your search`
+        ? `${browseGridMatches.length} matching your filters`
         : `${makeableMatches.length} cocktails to explore`
       : view === "ready"
         ? `${visibleExact.length} exact · ${visibleSubstitutions.length} with subs`
@@ -256,11 +224,7 @@ function CocktailsContent() {
 
           <TonightViewTabs active={view} />
 
-          <SearchField
-            value={search}
-            onChange={setSearch}
-            placeholder="Try Gin, Campari, Tiki, or Gin + Orange Juice without Lemon"
-          />
+          <Link href="/discover" className="btn-secondary w-full text-center">Search the Library</Link>
 
           <div className="app-section space-y-4">
             <SubstitutionModeFilter value={substitutionMode} onChange={setSubstitutionMode} />
@@ -282,7 +246,6 @@ function CocktailsContent() {
                 <DrinkTypeFilter
                   value={drinkTypeFilter}
                   onChange={setDrinkTypeFilter}
-                  hideMocktails
                 />
                 <CollectionFilter
                   value={collection}
@@ -296,8 +259,8 @@ function CocktailsContent() {
           {noResults ? (
             <div className="app-section">
               <EmptyState
-                title={searchActive ? `No matches for “${search.trim() || "your filters"}”` : "Nothing here yet"}
-                description="Try a spirit, ingredient, flavor, or clear your filters."
+                title={searchActive ? "No matches for your filters" : "Nothing here yet"}
+                description="Adjust your filters or browse the Library for more ideas."
                 icon="🔍"
               />
             </div>
@@ -306,7 +269,7 @@ function CocktailsContent() {
               <p className="discovery-results-count">
                 Showing <strong>{browseGridMatches.length}</strong> cocktail
                 {browseGridMatches.length === 1 ? "" : "s"}
-                {searchActive ? " matching your search" : " you can make"}
+                {searchActive ? " matching your filters" : " you can make"}
               </p>
               <InfiniteCocktailGrid
                 items={browseGridMatches}

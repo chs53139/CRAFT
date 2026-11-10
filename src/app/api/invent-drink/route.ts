@@ -1,3 +1,5 @@
+import { readJsonObject } from "@/lib/request-json";
+import { normalizeIngredientIds } from "@/lib/ingredient-intelligence";
 import {
   findExistingCocktail,
   findCocktailVariation,
@@ -9,30 +11,18 @@ import { InventDrinkResponse } from "@/lib/mixologist/types";
 
 export const runtime = "nodejs";
 
-type InventRequestBody = {
-  ingredientIds?: string[];
-};
-
 export async function POST(request: Request) {
-  let body: InventRequestBody;
-
-  try {
-    body = (await request.json()) as InventRequestBody;
-  } catch {
-    return Response.json({ error: "Invalid JSON body." } satisfies InventDrinkResponse, {
-      status: 400,
-    });
-  }
-
-  const ingredientIds = body.ingredientIds;
-  if (!Array.isArray(ingredientIds) || ingredientIds.length < 2) {
+  const parsed = await readJsonObject(request, 4096);
+  if (parsed.status !== 200) return Response.json({ error: "Invalid or oversized request." }, { status: parsed.status });
+  const { ingredientIds } = parsed.body;
+  if (!Array.isArray(ingredientIds) || ingredientIds.length < 2 || ingredientIds.length > 32 || !ingredientIds.every((id) => typeof id === "string" && id.length <= 128)) {
     return Response.json(
-      { error: "Select at least two ingredients to invent a drink." } satisfies InventDrinkResponse,
+      { error: "Select 2 to 32 valid ingredients to invent a drink." } satisfies InventDrinkResponse,
       { status: 400 }
     );
   }
 
-  const uniqueIds = [...new Set(ingredientIds.map((id) => id.trim()).filter(Boolean))];
+  const uniqueIds = normalizeIngredientIds(ingredientIds).filter((id) => Boolean(getIngredientById(id)));
   if (uniqueIds.length < 2) {
     return Response.json(
       { error: "Select at least two ingredients to invent a drink." } satisfies InventDrinkResponse,

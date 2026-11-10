@@ -1,13 +1,18 @@
 "use client";
 
-import Link from "next/link";
-import { useMemo, useState } from "react";
+import { filterBrowsableIngredients } from "@/lib/ingredient-search";
+import { filterMatchesBySearch } from "@/lib/cocktail-matching";
+import { trackProductEvent } from "@/lib/analytics";
+import { normalizeSearchKey } from "@/lib/analytics/search-key";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import {
   DiscoveryFilterPanel,
   DiscoveryFilterToggle,
 } from "@/components/DiscoveryFilterPanel";
+import { MocktailSubcategoryFilter } from "@/components/MocktailSubcategoryFilter";
+import { filterMatchesByMocktailSubcategory } from "@/lib/drink-type";
 import { DrinkTypeFilter } from "@/components/DrinkTypeFilter";
 import { EmptyState } from "@/components/EmptyState";
 import { InfiniteCocktailGrid } from "@/components/InfiniteCocktailGrid";
@@ -34,12 +39,10 @@ import {
 } from "@/lib/discovery-filters";
 import {
   cocktailCount,
-  isPourable,
   matchCocktails,
-  matchSingleCocktail,
   mocktailCount,
 } from "@/lib/cocktail-matching";
-import { CocktailCollection } from "@/lib/types";
+import { CocktailCollection, MocktailSubcategory } from "@/lib/types";
 import { useMyBar } from "@/hooks/use-my-bar";
 
 function parseDrinkType(value: string | null): "both" | "cocktails" | "mocktails" {
@@ -71,12 +74,17 @@ function LibraryContent() {
   const [collection, setCollection] = useState<CocktailCollection | null>(
     isCollection(initialCollection) ? initialCollection : null
   );
-  const [search, setSearch] = useState("");
-  const [showMakeable, setShowMakeable] = useState(false);
+  const queryParam = searchParams.get("q") ?? "";
+  const [search, setSearch] = useState(queryParam);
+  useEffect(() => setSearch(queryParam), [queryParam]);
+  const [include, setInclude] = useState<string[]>([]);
+  const [exclude, setExclude] = useState<string[]>([]);
+  const ingredientOptions = useMemo(() => filterBrowsableIngredients(""), []);
   const [drinkTypeFilter, setDrinkTypeFilter] = useState<"both" | "cocktails" | "mocktails">(
     () => parseDrinkType(initialType)
   );
-  const [showFilters, setShowFilters] = useState(false);
+  const [mocktailStyle, setMocktailStyle] = useState<MocktailSubcategory | "all">("all");
+  const [showFilters, setShowFilters] = useState(searchParams.get("filters") === "ingredients");
   const [discoveryFilters, setDiscoveryFilters] = useState<DiscoveryFilters>(
     DEFAULT_DISCOVERY_FILTERS
   );
@@ -87,14 +95,13 @@ function LibraryContent() {
 
   const catalogue = useMemo(() => {
     const base = collection ? getCatalogueByCollection(collection) : searchCatalogue("");
-    const searched = search.trim() ? searchCatalogue(search, collection ?? undefined) : base;
-    if (drinkTypeFilter === "both") return searched;
-    return searched.filter((cocktail) =>
+    if (drinkTypeFilter === "both") return base;
+    return base.filter((cocktail) =>
       drinkTypeFilter === "mocktails"
         ? cocktail.drinkType === "mocktail"
         : cocktail.drinkType === "cocktail"
     );
-  }, [collection, search, drinkTypeFilter]);
+  }, [collection, drinkTypeFilter]);
 
   const matches = useMemo(() => {
     if (!loaded) return [];
@@ -106,31 +113,33 @@ function LibraryContent() {
   }, [barIds, catalogue, loaded]);
 
   const filteredMatches = useMemo(() => {
-    let results = applyDiscoveryFilters(matches, {
+    let results = applyDiscoveryFilters(filterMatchesBySearch(matches, search), {
       ...discoveryFilters,
       collection: collection ?? undefined,
     });
-    results = sortDiscoveryResults(results, sort, search);
-    return results;
-  }, [matches, discoveryFilters, collection, sort, search]);
+    if (drinkTypeFilter === "mocktails") results = filterMatchesByMocktailSubcategory(results, mocktailStyle);
+    results = results.filter(({ cocktail }) => {
+      const ids = new Set(cocktail.ingredients.map((item) => item.ingredientId));
+      return include.every((id) => ids.has(id)) && exclude.every((id) => !ids.has(id));
+    });
+    return sortDiscoveryResults(results, sort, search);
+  }, [matches, discoveryFilters, collection, sort, search, include, exclude, drinkTypeFilter, mocktailStyle]);
 
-  const makeable = filteredMatches.filter((m) => isPourable(m));
+  const hasSearchOrFilters = Boolean(search.trim() || include.length || exclude.length || hasActiveDiscoveryFilters(discoveryFilters));
 
-  const hasSearchOrFilters =
-    search.trim().length > 0 || hasActiveDiscoveryFilters(discoveryFilters);
-
-  const displayMatches = showMakeable
-    ? makeable
-    : hasSearchOrFilters
-      ? filteredMatches
-      : filteredMatches.length > 0
-        ? filteredMatches
-        : catalogue.map((cocktail) => {
-            const match = matches.find((m) => m.cocktail.id === cocktail.id);
-            return match ?? matchSingleCocktail(cocktail, barIds);
-          });
-
-  const filterResetKey = `${search}|${JSON.stringify(discoveryFilters)}|${sort}|${showMakeable}|${collection}`;
+  const lastSearch = useRef("");
+  useEffect(() => {
+    const q = search.trim();
+    if (!q) { lastSearch.current = ""; return; }
+    if (!loaded || q.length < 2) return;
+    const timer = window.setTimeout(() => {
+      if (lastSearch.current === q) return;
+      lastSearch.current = q;
+      trackProductEvent("cocktail_searched", { queryLength: q.length, resultCount: filteredMatches.length, hasExclusion: /\b(?:without|exclude|no|minus)\b/i.test(q), searchKey: normalizeSearchKey(q) || undefined, zeroResults: filteredMatches.length === 0 });
+    }, 350);
+    return () => window.clearTimeout(timer);
+  }, [search, loaded, filteredMatches.length]);
+  const filterResetKey = JSON.stringify([search, discoveryFilters, sort, collection, drinkTypeFilter, mocktailStyle, include, exclude]);
 
   return (
     <div className="app-screen animate-fade-in">
@@ -139,6 +148,56 @@ function LibraryContent() {
         subtitle={`${cocktailCount} drinks · ${mocktailCount} zero-proof mocktails · search by spirit, flavor, or ingredient`}
         large
       />
+
+      <div className="app-section space-y-4">
+        <SearchField
+          value={search}
+          onChange={setSearch}
+          placeholder="Search drinks, flavors, or gin + lime juice…"
+        />
+
+        <DrinkTypeFilter value={drinkTypeFilter} onChange={setDrinkTypeFilter} />
+        {drinkTypeFilter === "mocktails" && <MocktailSubcategoryFilter value={mocktailStyle} onChange={setMocktailStyle} />}
+
+        <DiscoveryFilterToggle
+          expanded={showFilters}
+          onToggle={() => setShowFilters((value) => !value)}
+          activeCount={countActiveFilters(discoveryFilters) + include.length + exclude.length}
+        />
+
+        {showFilters && (
+          <>
+          <DiscoveryFilterPanel
+            filters={discoveryFilters}
+            sort={sort}
+            onFiltersChange={setDiscoveryFilters}
+            onSortChange={setSort}
+          />
+          {([["Must include", include, setInclude, setExclude], ["Exclude", exclude, setExclude, setInclude]] as const).map(([label, ids, setIds, setOther]) => (
+            <div key={label} className="space-y-2">
+              <label className="block text-sm">{label}
+                <select className="mt-1 block w-full rounded-lg bg-[var(--surface)] p-2" value="" onChange={(e) => {
+                  const id = e.target.value;
+                  if (!id) return;
+                  setIds((prev) => [...new Set([...prev, id])]);
+                  setOther((prev) => prev.filter((value) => value !== id));
+                }}>
+                  <option value="">Choose an ingredient</option>
+                  {ingredientOptions.filter((item) => !ids.includes(item.id)).map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
+                </select>
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {ids.map((id) => {
+                  const name = ingredientOptions.find((item) => item.id === id)?.name ?? id;
+                  return <button key={id} type="button" className="surprise-chip" aria-label={"Remove " + name + " from " + label.toLowerCase()} onClick={() => setIds((prev) => prev.filter((value) => value !== id))}>{name} ×</button>;
+                })}
+              </div>
+            </div>
+          ))}
+          </>
+        )}
+
+      </div>
 
       <div className="discover-collection-grid">
         {DISCOVER_COLLECTIONS.map((id) => (
@@ -157,88 +216,22 @@ function LibraryContent() {
         ))}
       </div>
 
-      <div className="app-section space-y-4">
-        <SearchField
-          value={search}
-          onChange={setSearch}
-          placeholder="Search gin, tiki, orange, smoky, glassware…"
-        />
-
-        <DrinkTypeFilter value={drinkTypeFilter} onChange={setDrinkTypeFilter} />
-
-        <DiscoveryFilterToggle
-          expanded={showFilters}
-          onToggle={() => setShowFilters((value) => !value)}
-          activeCount={countActiveFilters(discoveryFilters)}
-        />
-
-        {showFilters && (
-          <DiscoveryFilterPanel
-            filters={discoveryFilters}
-            sort={sort}
-            onFiltersChange={setDiscoveryFilters}
-            onSortChange={setSort}
-          />
-        )}
-
-        <Link href="/find-ingredient" className="account-row">
-          <div>
-            <p className="text-sm font-semibold text-[var(--foreground)]">Find by ingredient</p>
-            <p className="mt-0.5 text-xs text-[var(--muted)]">
-              Must-haves, exclusions, and match-ranked results
-            </p>
-          </div>
-          <span className="text-[var(--accent)]">→</span>
-        </Link>
-
-        <div className="flex gap-2">
-          <button
-            type="button"
-            className={`surprise-chip ${!showMakeable ? "surprise-chip-active" : ""}`}
-            onClick={() => setShowMakeable(false)}
-          >
-            Full catalogue
-          </button>
-          <button
-            type="button"
-            className={`surprise-chip ${showMakeable ? "surprise-chip-active" : ""}`}
-            onClick={() => setShowMakeable(true)}
-          >
-            Can make now
-          </button>
-        </div>
-      </div>
-
-      {drinkTypeFilter !== "cocktails" && (
-        <div className="app-section">
-          <Link href="/mocktails" className="account-row">
-            <div>
-              <p className="text-sm font-semibold text-[var(--foreground)]">Mocktails by style</p>
-              <p className="mt-0.5 text-xs text-[var(--muted)]">
-                Classic, wellness, coffee, tea, and party-ready pours
-              </p>
-            </div>
-            <span className="text-[var(--accent)]">→</span>
-          </Link>
-        </div>
-      )}
-
       {collection && (
         <p className="mb-4 text-sm text-[var(--muted)]">
           Showing <span className="text-[var(--foreground)]">{COLLECTION_LABELS[collection]}</span>
           {" · "}
-          {displayMatches.length} drinks
+          {filteredMatches.length} drinks
         </p>
       )}
 
-      {(search.trim() || hasActiveDiscoveryFilters(discoveryFilters)) && (
+      {hasSearchOrFilters && (
         <p className="discovery-results-count app-section">
-          Found <strong>{displayMatches.length}</strong> cocktail
-          {displayMatches.length === 1 ? "" : "s"}
+          Found <strong>{filteredMatches.length}</strong> drink
+          {filteredMatches.length === 1 ? "" : "s"}
         </p>
       )}
 
-      {displayMatches.length === 0 ? (
+      {!loaded ? <PageLoader message="Loading library…" /> : filteredMatches.length === 0 ? (
         <EmptyState
           title="Nothing matched"
           description="Try another spirit, category, or clear your search."
@@ -247,7 +240,7 @@ function LibraryContent() {
       ) : (
         <div className="app-section">
           <InfiniteCocktailGrid
-            items={displayMatches}
+            items={filteredMatches}
             resetKey={filterResetKey}
             showObscurity
           />
